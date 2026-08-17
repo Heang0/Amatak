@@ -12,6 +12,33 @@ const generateUniqueSlug = async (title, ProductModel) => {
   return slug;
 };
 
+const learnVariants = async (store, variants) => {
+  if (!variants || variants.length === 0) return;
+  
+  let storeUpdated = false;
+  const predefined = store.predefinedVariants || [];
+  
+  variants.forEach(v => {
+    const existing = predefined.find(p => p.name.toLowerCase() === v.name.toLowerCase());
+    if (existing) {
+      const newOptions = v.options.filter(o => !existing.options.includes(o));
+      if (newOptions.length > 0) {
+        existing.options.push(...newOptions);
+        storeUpdated = true;
+      }
+    } else {
+      predefined.push({ name: v.name, options: v.options });
+      storeUpdated = true;
+    }
+  });
+
+  if (storeUpdated) {
+    store.predefinedVariants = predefined;
+    await store.save();
+  }
+};
+
+
 // @desc    Get all products for a specific store
 // @route   GET /api/products/store/:storeId
 // @access  Public
@@ -124,6 +151,9 @@ const createProduct = async (req, res) => {
     });
 
     const createdProduct = await product.save();
+
+    await learnVariants(store, variants);
+
     res.status(201).json(createdProduct);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -167,6 +197,11 @@ const updateProduct = async (req, res) => {
       new: true,
       runValidators: true,
     });
+
+    if (req.body.variants) {
+      await learnVariants(store, req.body.variants);
+    }
+
     res.json(updatedProduct);
   } catch (error) {
     res.status(400).json({ message: error.message });

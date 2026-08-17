@@ -145,7 +145,7 @@
     "add_product": "Add Product",
     "edit_product": "Edit Product",
     "create_product": "Create New Product",
-    "product_title": "Title",
+    "product_title": "Product Name",
     "price": "Price (USD)",
     "stock": "Stock",
     "custom_category": "Custom Category",

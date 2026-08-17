@@ -70,6 +70,12 @@ const storeSchema = new mongoose.Schema(
     telegramGroupId: {
       type: String,
     },
+    predefinedVariants: [
+      {
+        name: { type: String, required: true },
+        options: [{ type: String }]
+      }
+    ],
     isActive: {
       type: Boolean,
       default: true,

@@ -108,7 +108,7 @@ const updatePaymentSettings = async (req, res) => {
 // @route   PUT /api/stores/:id
 // @access  Private (Store owner)
 const updateStore = async (req, res) => {
-  const { name, slug, category, branding, contact, customDomain } = req.body;
+  const { name, slug, category, branding, contact, customDomain, predefinedVariants } = req.body;
 
   try {
     const store = await Store.findById(req.params.id);
@@ -153,6 +153,9 @@ const updateStore = async (req, res) => {
           ...(store.deliverySettings?.toObject ? store.deliverySettings.toObject() : store.deliverySettings),
           ...req.body.deliverySettings,
         };
+      }
+      if (predefinedVariants) {
+        store.predefinedVariants = predefinedVariants;
       }
 
       const updatedStore = await store.save();

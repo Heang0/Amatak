@@ -118,18 +118,6 @@ export default function StoreTopNav({ storeName, storeLogo, primaryColor, slug, 
       {/* Top bar */}
       <div className="h-14 md:h-16 flex items-center px-4 md:px-8">
 
-        {/* MOBILE Left: back button */}
-        <div className="flex md:hidden shrink-0">
-          {!isHome && (
-            <button
-              onClick={() => router.back()}
-              className="p-1 -ml-1 text-gray-900 dark:text-white active:opacity-50"
-            >
-              <ChevronLeft size={26} strokeWidth={1.5} />
-            </button>
-          )}
-        </div>
-
         {/* MOBILE Left: logo + store name */}
         <Link href={homeHref} className="flex-1 flex justify-start items-center gap-2 md:hidden overflow-hidden">
           {logoUrl && (
@@ -164,9 +152,10 @@ export default function StoreTopNav({ storeName, storeLogo, primaryColor, slug, 
           </button>
           <button
             onClick={() => setIsSidebarOpen(true)}
-            className="p-2 -mr-1 text-gray-900 dark:text-white active:opacity-50"
+            className="p-3 -mr-1 rounded-full border border-gray-200 bg-white text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-300 hover:shadow-md dark:border-gray-700 dark:bg-[#111111] dark:text-white active:scale-95"
+            aria-label="Open Mobile Menu"
           >
-            <Menu size={24} strokeWidth={1.5} />
+            <Menu size={20} strokeWidth={1.75} />
           </button>
         </div>
 

@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useCartStore } from '@/lib/store/useCartStore';
-import { Plus, CheckCircle } from 'lucide-react';
+import { Plus, CheckCircle, Search, Grid, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import ProductCard from '@/components/store/ProductCard';
@@ -53,10 +53,13 @@ export default function StorefrontView({
   // We determine active category by the slug, or 'All'
   const [activeCategorySlug, setActiveCategorySlug] = useState<string>(categorySlug || 'All');
   const [loading, setLoading] = useState(!initialProducts && !cached);
+  const categoryTabsRef = useRef<HTMLDivElement | null>(null);
   const [primaryColor, setPrimaryColor] = useState<string>(previewColor || initialStore?.branding?.primaryColor || cached?.primaryColor || '#000000');
   const [themeStyle, setThemeStyle] = useState<string>(previewTheme || initialStore?.branding?.themeStyle || cached?.themeStyle || 'default');
   const [bannerUrl, setBannerUrl] = useState<string | null>(initialStore?.branding?.bannerUrl || cached?.bannerUrl || null);
   const [toast, setToast] = useState<{ message: string; visible: boolean }>({ message: '', visible: false });
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [sortOption, setSortOption] = useState<'name-asc' | 'name-desc' | 'price-asc' | 'price-desc' | 'newest' | 'best-seller'>('name-asc');
   const allLabel = params.locale === 'km' ? 'ទាំងអស់' : 'All';
   const isKm = params.locale === 'km';
 
@@ -130,19 +133,73 @@ export default function StorefrontView({
     setTimeout(() => setToast(t => ({ ...t, visible: false })), 2500);
   }, []);
 
+  useEffect(() => {
+    const activeTab = categoryTabsRef.current?.querySelector('a[data-category-active="true"]');
+    const container = categoryTabsRef.current;
+    if (!activeTab || !container) return;
+
+    setTimeout(() => {
+      const activeRect = (activeTab as HTMLElement).getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+      const targetScroll = activeRect.left - containerRect.left - (container.clientWidth / 2 - activeRect.width / 2);
+      container.scrollTo({ left: container.scrollLeft + targetScroll, behavior: 'smooth' });
+    }, 80);
+  }, [activeCategorySlug, categories, viewMode]);
+
   const filteredProducts = products.filter(p => {
     // If we're on the promotions page, we only show best sellers
     if (viewMode === 'promotions' && !p.isBestSeller) return false;
 
-    if (activeCategorySlug === 'All') return true;
-    const cat = categories.find(c => c.slug === activeCategorySlug);
-    if (!cat) return false;
-    const pCat = p.category?._id ?? p.category;
-    return String(pCat) === String(cat._id);
+    if (activeCategorySlug !== 'All') {
+      const cat = categories.find(c => c.slug === activeCategorySlug);
+      if (!cat) return false;
+      const pCat = p.category?._id ?? p.category;
+      if (String(pCat) !== String(cat._id)) return false;
+    }
+
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      return String(p.title || '').toLowerCase().includes(query) || String(p.description || '').toLowerCase().includes(query);
+    }
+
+    return true;
+  });
+
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    switch (sortOption) {
+      case 'name-desc':
+        return String(b.title || '').localeCompare(String(a.title || ''));
+      case 'price-asc': {
+        const pa = Number(a.price || 0);
+        const pb = Number(b.price || 0);
+        return pa - pb;
+      }
+      case 'price-desc': {
+        const pa = Number(a.price || 0);
+        const pb = Number(b.price || 0);
+        return pb - pa;
+      }
+      case 'newest': {
+        const ta = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+        const tb = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+        return tb - ta;
+      }
+      case 'best-seller': {
+        const ba = a.isBestSeller ? 1 : 0;
+        const bb = b.isBestSeller ? 1 : 0;
+        return bb - ba;
+      }
+      case 'name-asc':
+      default:
+        return String(a.title || '').localeCompare(String(b.title || ''));
+    }
   });
 
   const bestSellers = products.filter(p => p.isBestSeller);
+  const visibleBestSellers = bestSellers.slice(0, 8);
+  const showBestSellerViewAll = bestSellers.length > 8;
   const newArrivals = [...products].reverse().slice(0, 8);
+  const productList = viewMode === 'catalog' ? sortedProducts : filteredProducts;
 
   let bannerContainerClass = "w-full bg-gray-100 dark:bg-gray-900 flex ";
   if (themeStyle === 'minimalist') {
@@ -163,6 +220,14 @@ export default function StorefrontView({
     }
   };
 
+  const getCategoryPillClass = (isActive: boolean) => {
+    if (themeStyle === 'neo-brutalism') {
+      return `flex items-center whitespace-nowrap rounded-md border px-4 py-2 text-sm font-black uppercase tracking-[0.18em] transition ${isActive ? 'bg-black text-white border-black dark:bg-white dark:text-black dark:border-white' : 'bg-white text-black dark:bg-black dark:text-white border-black dark:border-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-0.5 hover:shadow-none'}`;
+    }
+
+    return `flex items-center whitespace-nowrap rounded-md border px-4 py-2 text-sm font-medium transition ${isActive ? 'bg-gray-900 text-white border-gray-900 dark:bg-white dark:text-black dark:border-white' : 'bg-gray-100 text-gray-700 border-transparent hover:bg-gray-200 dark:bg-[#111111] dark:text-gray-300 dark:hover:bg-[#1f1f1f]'}`;
+  };
+
   const getAppendParams = (href: string) => {
     if (!previewTheme && !previewColor) return href;
     const url = new URL(href, 'http://localhost');
@@ -175,9 +240,16 @@ export default function StorefrontView({
     <div>
       <AddToCartToast message={toast.message} visible={toast.visible} />
 
-      {bannerUrl ? (
+      {viewMode === 'home' && !categorySlug && bannerUrl ? (
         <div className={bannerContainerClass}>
-          <img src={bannerUrl} alt="Store Banner" className="w-full h-auto max-h-[60vh] object-cover object-center" />
+          <div className="relative w-full overflow-hidden h-[140px] sm:h-[180px] md:h-[240px] lg:h-[300px] max-h-[55vh]">
+            <img
+              src={bannerUrl}
+              alt="Store Banner"
+              className="absolute inset-0 w-full h-full object-cover object-center"
+              loading="lazy"
+            />
+          </div>
         </div>
       ) : null}
 
@@ -189,13 +261,111 @@ export default function StorefrontView({
           </div>
         )}
 
+        {categories.length > 0 && (viewMode === 'home' || viewMode === 'catalog' || viewMode === 'categories') && (
+          <div className="mb-10 overflow-x-auto pb-4 scrollbar-hide scroll-smooth -mx-4 px-4 sm:-mx-0 sm:px-0 border-b border-gray-200 dark:border-gray-800" ref={categoryTabsRef}>
+            <div className="flex gap-3 min-w-max">
+              <Link
+                href={getAppendParams(`/${params.locale}/store/${params.slug}/products`)}
+                className={getCategoryPillClass(activeCategorySlug === 'All')}
+                data-category-active={activeCategorySlug === 'All' ? 'true' : 'false'}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setActiveCategorySlug('All');
+                }}
+              >
+                {isKm ? 'ទាំង​អស់' : 'All'} ({products.length})
+              </Link>
+              {categories
+                .filter(cat => products.some(p => {
+                  const pCat = p.category?._id ?? p.category;
+                  return String(pCat) === String(cat._id);
+                }))
+                .map(cat => {
+                  const count = products.filter(p => {
+                    const pCat = p.category?._id ?? p.category;
+                    return String(pCat) === String(cat._id);
+                  }).length;
+
+                  // On home/catalog, tabs should set the active category client-side and navigate to the products root (no query param).
+                  if (viewMode === 'categories') {
+                    const href = getAppendParams(`/${params.locale}/store/${params.slug}/category/${cat.slug}`);
+                    return (
+                      <Link
+                        key={cat._id}
+                        href={href}
+                        className={getCategoryPillClass(activeCategorySlug === cat.slug)}
+                        data-category-active={activeCategorySlug === cat.slug ? 'true' : 'false'}
+                      >
+                        {params.locale === 'km' && cat.nameKm ? cat.nameKm : cat.name} ({count})
+                      </Link>
+                    );
+                  }
+
+                  return (
+                    <a
+                      key={cat._id}
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setActiveCategorySlug(cat.slug);
+                      }}
+                      className={getCategoryPillClass(activeCategorySlug === cat.slug)}
+                      data-category-active={activeCategorySlug === cat.slug ? 'true' : 'false'}
+                    >
+                      {params.locale === 'km' && cat.nameKm ? cat.nameKm : cat.name} ({count})
+                    </a>
+                  );
+                })}
+            </div>
+          </div>
+        )}
+
         {/* CATEGORIES VIEW */}
         {viewMode === 'categories' && (
           <div className="pt-2 pb-10">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight mb-8">
-              {isKm ? 'ប្រភេទទាំងអស់' : 'All Categories'}
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            <div className="mb-8 max-w-4xl">
+              <div className="inline-flex items-center rounded-full bg-red-50 text-red-700 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] mb-4">
+                {isKm ? 'ញតាមប្រភេទ' : 'Shop by category'}
+              </div>
+              <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white tracking-tight mb-4">
+                {isKm ? 'ចំណាត់ថ្នាក់តាមប្រភេទរបស់យើង' : 'Explore products by category'}
+              </h2>
+              <p className="text-gray-600 dark:text-gray-400 text-base sm:text-lg max-w-2xl">
+                {isKm ? 'ស្គាល់ប្រភេទផលិតផលដែលត្រូវបានរៀបចំដោយប្រភេទសមរម្យសម្រាប់ការទិញងាយ និងជ្រាបចិត្តទាន់ពេល។' : 'Browse curated category collections to find what you need faster.'}
+              </p>
+            </div>
+
+            <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide scroll-smooth border-b border-gray-200 dark:border-gray-800 -mx-4 px-4 sm:-mx-0 sm:px-0 mb-10" ref={categoryTabsRef}>
+              <Link href={getAppendParams(`/${params.locale}/store/${params.slug}/products`)}
+                className={getCategoryPillClass(activeCategorySlug === 'All')}
+                data-category-active={activeCategorySlug === 'All' ? 'true' : 'false'}
+              >
+                {isKm ? 'ទាំង​អស់' : 'All'} ({products.length})
+              </Link>
+              {categories
+                .filter(cat => products.some(p => {
+                  const pCat = p.category?._id ?? p.category;
+                  return String(pCat) === String(cat._id);
+                }))
+                .map(cat => {
+                  const count = products.filter(p => {
+                    const pCat = p.category?._id ?? p.category;
+                    return String(pCat) === String(cat._id);
+                  }).length;
+                  return (
+                    <Link
+                      key={cat._id}
+                      href={getAppendParams(`/${params.locale}/store/${params.slug}/category/${cat.slug}`)}
+                      className={getCategoryPillClass(activeCategorySlug === cat.slug)}
+                      data-category-active={activeCategorySlug === cat.slug ? 'true' : 'false'}
+                    >
+                      {params.locale === 'km' && cat.nameKm ? cat.nameKm : cat.name} ({count})
+                    </Link>
+                  );
+                })}
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {categories.map(cat => {
                 const count = products.filter(p => {
                   const pCat = p.category?._id ?? p.category;
@@ -204,21 +374,27 @@ export default function StorefrontView({
                 return (
                   <Link 
                     key={cat._id}
-                    href={getAppendParams(`/${params.locale}/category/${cat.slug}`)}
-                    className={`relative flex flex-col justify-between overflow-hidden bg-white dark:bg-[#111111] border rounded-3xl p-6 sm:p-8 transition-all duration-300 group min-h-[160px] ${themeStyle === 'neo-brutalism' ? 'border-[3px] border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-xl' : 'border-gray-100 dark:border-gray-800 hover:shadow-xl hover:border-gray-200 dark:hover:border-gray-700 hover:-translate-y-1 hover:bg-gray-50 dark:hover:bg-gray-900/50'}`}
+                    href={getAppendParams(`/${params.locale}/store/${params.slug}/category/${cat.slug}`)}
+                    className={`group relative overflow-hidden rounded-3xl border bg-white dark:bg-[#111111] p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl ${themeStyle === 'neo-brutalism' ? 'border-[3px] border-black dark:border-white' : 'border-gray-100 dark:border-gray-800'}`}
                   >
-                    <div className="flex items-center justify-between mb-auto">
-                      <span className={`inline-flex items-center justify-center text-xs font-bold uppercase tracking-wider px-3 py-1 ${themeStyle === 'neo-brutalism' ? 'border-2 border-black dark:border-white bg-white text-black dark:bg-black dark:text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]' : 'text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 rounded-full'}`}>
-                        {count} {isKm ? 'ផលិតផល' : 'Items'}
-                      </span>
-                      <div className={`w-8 h-8 flex items-center justify-center transition-all duration-300 ${themeStyle === 'neo-brutalism' ? 'border-2 border-black dark:border-white bg-[#f0f0f0] dark:bg-gray-800' : 'bg-gray-100 dark:bg-gray-800 rounded-full group-hover:bg-white dark:group-hover:bg-[#222]'}`} style={themeStyle !== 'neo-brutalism' ? { color: primaryColor } : { color: 'black' }}>
-                        <svg className="w-4 h-4 transform group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" /></svg>
+                    <div className="flex items-center justify-between gap-3 mb-5">
+                      <div>
+                        <p className="text-sm uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400">
+                          {isKm ? 'ក្រុម' : 'Category'}
+                        </p>
+                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white leading-tight">
+                          {isKm && cat.nameKm ? cat.nameKm : cat.name}
+                        </h3>
                       </div>
+                      <span className="inline-flex items-center justify-center rounded-full bg-[#f8fafc] px-3 py-2 text-sm font-semibold text-gray-700 dark:bg-gray-900 dark:text-gray-200">
+                        {count} {isKm ? 'ផលិតផល' : 'items'}
+                      </span>
                     </div>
-                    <div className="mt-8">
-                      <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white line-clamp-2">
-                        {isKm && cat.nameKm ? cat.nameKm : cat.name}
-                      </h3>
+                    <div className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+                      {isKm ? 'ស្វែងរកផលិតផលដ៏ល្អបំផុតក្នុងប្រភេទនេះ។' : 'Find top product picks in this category.'}
+                    </div>
+                    <div className="absolute right-6 bottom-6 rounded-full bg-gray-100 text-gray-900 dark:bg-white dark:text-black w-11 h-11 flex items-center justify-center transition-transform duration-300 group-hover:translate-x-1">
+                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
                     </div>
                   </Link>
                 );
@@ -236,38 +412,106 @@ export default function StorefrontView({
                 <p className="text-gray-500 mt-1">{isKm ? 'ផលិតផលលក់ដាច់បំផុតនិងប្រូម៉ូសិន' : 'Best sellers and special offers'}</p>
               </div>
             )}
-            {categories.length > 0 && viewMode !== 'promotions' && (
-              <div className={`flex gap-5 overflow-x-auto pb-4 scrollbar-hide -mx-4 px-4 ${themeStyle === 'neo-brutalism' ? 'pt-2' : ''}`}>
-                <Link
-                  href={getAppendParams(`/${params.locale}/products`)}
-                  className={getCategoryClass(activeCategorySlug === 'All')}
-                >
-                  {allLabel} ({products.length})
-                </Link>
-                {categories
-                  .filter(cat => products.some(p => {
-                    const pCat = p.category?._id ?? p.category;
-                    return String(pCat) === String(cat._id);
-                  }))
-                  .map(cat => {
-                    const count = products.filter(p => {
+            {viewMode === 'catalog' && (
+              <div className="mb-6">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="min-w-0">
+                    <p className="text-xs uppercase tracking-[0.25em] text-gray-500 dark:text-gray-400 mb-2">{isKm ? 'ស្វែងរក' : 'Search'}</p>
+                    <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">{isKm ? 'ផលិតផលទាំងអស់' : 'All Products'}</h2>
+                  </div>
+
+                  <div className="flex items-center gap-3 w-full sm:max-w-[520px]">
+                    <label htmlFor="store-search" className="sr-only">{isKm ? 'ស្វែងរក' : 'Search'}</label>
+                    <div className="relative flex-1">
+                      <Search size={18} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                      <input
+                        id="store-search"
+                        type="search"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder={isKm ? 'ស្វែងរកផលិតផល' : 'Search products'}
+                        className="w-full rounded-none border border-gray-200 bg-white py-3 pl-11 pr-4 text-sm text-gray-900 shadow-sm outline-none transition focus:border-black"
+                      />
+                    </div>
+
+                    <div className="relative w-40">
+                      <label htmlFor="store-sort" className="sr-only">{isKm ? 'តម្រៀប' : 'Sort'}</label>
+                      <select
+                        id="store-sort"
+                        value={sortOption}
+                        onChange={(e) => setSortOption(e.target.value as 'name-asc' | 'name-desc')}
+                        className="w-full rounded-none appearance-none border border-gray-200 bg-white py-3 px-4 pr-8 text-sm text-gray-900 shadow-sm outline-none transition focus:border-black"
+                      >
+                        <option value="name-asc">{isKm ? 'ឈ្មោះ (A-Z)' : 'Name (A-Z)'}</option>
+                        <option value="name-desc">{isKm ? 'ឈ្មោះ (Z-A)' : 'Name (Z-A)'}</option>
+                        <option value="price-asc">{isKm ? 'តម្លៃ (ទាប → ខ្ពស់)' : 'Price (Low → High)'}</option>
+                        <option value="price-desc">{isKm ? 'តម្លៃ (ខ្ពស់ → ទាប)' : 'Price (High → Low)'}</option>
+                        <option value="newest">{isKm ? 'ថ្មីបំផុត' : 'Newest'}</option>
+                        <option value="best-seller">{isKm ? 'លក់ដាច់' : 'Best sellers'}</option>
+                      </select>
+                      <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+            {categories.length > 0 && viewMode === 'home' && !categorySlug && (
+              <div className="mb-10">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{isKm ? 'ប្រភេទពិព័រណ៍' : 'Browse Categories'}</h3>
+                  <Link href={getAppendParams(`/${params.locale}/store/${params.slug}/categories`)} className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:underline">
+                    {isKm ? 'មើល​ទាំងអស់' : 'View all'}
+                  </Link>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  {categories
+                    .filter(cat => products.some(p => {
                       const pCat = p.category?._id ?? p.category;
                       return String(pCat) === String(cat._id);
-                    }).length;
+                    }))
+                    .slice(0, 8)
+                    .map((cat, index) => {
+                      const count = products.filter(p => {
+                        const pCat = p.category?._id ?? p.category;
+                        return String(pCat) === String(cat._id);
+                      }).length;
 
-                    const catHref = getAppendParams(`/${params.locale}/category/${cat.slug}`);
+                      const repProduct = products.find(p => {
+                        const pCat = p.category?._id ?? p.category;
+                        return String(pCat) === String(cat._id) && p.imageUrl;
+                      });
 
-                    return (
-                      <Link
-                        key={cat._id}
-                        href={catHref}
-                        className={getCategoryClass(activeCategorySlug === cat.slug)}
-                      >
-                        {params.locale === 'km' && cat.nameKm ? cat.nameKm : cat.name} ({count})
-                      </Link>
-                    );
-                  })
-                }
+                      const imageUrl = repProduct ? repProduct.imageUrl : '/logo/logo-website.png';
+
+                      return (
+                        <a
+                          key={cat._id}
+                          href="#"
+                          onClick={(e) => { e.preventDefault(); setActiveCategorySlug(cat.slug); }}
+                          className={`group block overflow-hidden bg-white dark:bg-[#0b0b0b] border border-gray-100 dark:border-gray-800 rounded-md ${index >= 4 ? 'hidden lg:block' : ''}`}
+                        >
+                          <div className="w-full aspect-square overflow-hidden bg-gray-100">
+                            <img src={imageUrl} alt={cat.name} className="w-full h-full object-cover transition-transform group-hover:scale-105" />
+                          </div>
+                          <div className="p-3">
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm font-medium text-gray-900 dark:text-white">{params.locale === 'km' && cat.nameKm ? cat.nameKm : cat.name}</span>
+                              <span className="text-xs text-gray-500">{count}</span>
+                            </div>
+                          </div>
+                        </a>
+                      );
+                    })}
+                </div>
+                <div className="mt-6 flex justify-center">
+                  <Link
+                    href={getAppendParams(`/${params.locale}/store/${params.slug}/categories`)}
+                    className="px-4 py-2 text-sm font-semibold text-gray-900 bg-white border border-gray-200 rounded-md shadow-sm hover:bg-gray-50 dark:bg-[#111111] dark:text-white dark:border-gray-700"
+                  >
+                    {isKm ? 'មើល​ទាំងអស់' : 'View all'}
+                  </Link>
+                </div>
               </div>
             )}
 
@@ -282,13 +526,13 @@ export default function StorefrontView({
                   </div>
                 ))}
               </div>
-            ) : filteredProducts.length === 0 ? (
+            ) : productList.length === 0 ? (
               <div className="text-center py-24 bg-gray-50 dark:bg-[#111111] rounded-3xl border border-gray-100 dark:border-gray-800/50">
                 <p className="text-gray-500 dark:text-gray-400 font-medium">{isKm ? 'មិនមានផលិតផលទេ។' : 'No products found.'}</p>
               </div>
             ) : (
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-10 sm:gap-x-6 sm:gap-y-14">
-                {filteredProducts.map((product) => (
+                {productList.map((product) => (
                   <ProductCard 
                     key={product._id} 
                     product={product} 
@@ -313,66 +557,32 @@ export default function StorefrontView({
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">{isKm ? 'លក់ដាច់បំផុត' : 'Best Sellers'}</h3>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
-                  {bestSellers.slice(0, 10).map((product, index) => (
-                    <div 
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                  {visibleBestSellers.map(product => (
+                    <ProductCard 
                       key={product._id} 
-                      className={`w-full ${index >= 6 ? 'hidden lg:block' : ''}`}
-                    >
-                      <ProductCard 
-                        product={product} 
-                        primaryColor={primaryColor} 
-                        themeStyle={themeStyle}
-                        onAddToCart={showToast}
-                        isBestSeller={product.isBestSeller}
-                      />
-                    </div>
+                      product={product} 
+                      primaryColor={primaryColor} 
+                      themeStyle={themeStyle}
+                      onAddToCart={showToast}
+                      isBestSeller={product.isBestSeller}
+                    />
                   ))}
                 </div>
-                <div className="mt-6 flex justify-center">
-                  <Link 
-                    href={getAppendParams(`/${params.locale}/promotions`)} 
-                    className={`px-8 py-3 text-sm font-semibold rounded-full transition-all duration-300 ${themeStyle === 'neo-brutalism' ? 'border-2 border-black dark:border-white text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]' : 'text-white hover:shadow-lg hover:-translate-y-0.5'}`}
-                    style={themeStyle === 'neo-brutalism' ? { backgroundColor: primaryColor || '#f0f0f0' } : { backgroundColor: primaryColor || '#000' }}
-                  >
-                    {isKm ? 'មើលទាំងអស់' : 'View All'}
-                  </Link>
-                </div>
+                {showBestSellerViewAll && (
+                  <div className="mt-6 flex justify-center">
+                    <Link 
+                      href={getAppendParams(`/${params.locale}/store/${params.slug}/promotions`)} 
+                      className={`px-8 py-3 text-sm font-semibold rounded-md transition-all duration-300 ${themeStyle === 'neo-brutalism' ? 'border-2 border-black dark:border-white text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]' : 'text-white hover:shadow-lg hover:-translate-y-0.5'}`}
+                      style={themeStyle === 'neo-brutalism' ? { backgroundColor: primaryColor || '#f0f0f0' } : { backgroundColor: primaryColor || '#000' }}
+                    >
+                      {isKm ? 'មើលទាំងអស់' : 'View All'}
+                    </Link>
+                  </div>
+                )}
               </section>
             )}
 
-            {/* Shop by Category Section */}
-            {categories.length > 0 && (
-              <section>
-                <div className="mb-6">
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">{isKm ? 'ទិញតាមប្រភេទ' : 'Shop by Category'}</h3>
-                </div>
-                <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
-                  {categories.map(cat => {
-                    return (
-                      <Link 
-                        key={cat._id}
-                        href={getAppendParams(`/${params.locale}/category/${cat.slug}`)}
-                        className={`flex items-center justify-center bg-white dark:bg-[#111111] border rounded-full px-6 py-3 sm:px-8 sm:py-4 min-w-max hover:-translate-y-1 transition-all duration-300 group shrink-0 ${themeStyle === 'neo-brutalism' ? 'border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]' : 'border-gray-200 dark:border-gray-800 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] dark:hover:shadow-[0_8px_30px_rgb(255,255,255,0.05)]'}`}
-                      >
-                        <span className="text-sm sm:text-base font-bold text-gray-900 dark:text-white group-hover:opacity-80 transition-opacity">
-                          {isKm && cat.nameKm ? cat.nameKm : cat.name}
-                        </span>
-                      </Link>
-                    );
-                  })}
-                </div>
-                <div className="mt-6 flex justify-center">
-                  <Link 
-                    href={getAppendParams(`/${params.locale}/categories`)} 
-                    className={`px-8 py-3 text-sm font-semibold rounded-full transition-all duration-300 ${themeStyle === 'neo-brutalism' ? 'border-2 border-black dark:border-white text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]' : 'text-white hover:shadow-lg hover:-translate-y-0.5'}`}
-                    style={themeStyle === 'neo-brutalism' ? { backgroundColor: primaryColor || '#f0f0f0' } : { backgroundColor: primaryColor || '#000' }}
-                  >
-                    {isKm ? 'មើលទាំងអស់' : 'View All'}
-                  </Link>
-                </div>
-              </section>
-            )}
 
             {/* New Arrivals Section */}
             {newArrivals.length > 0 && (
@@ -394,8 +604,8 @@ export default function StorefrontView({
                 </div>
                 <div className="mt-8 flex justify-center">
                   <Link 
-                    href={getAppendParams(`/${params.locale}/products`)} 
-                    className={`px-8 py-3 text-sm font-semibold rounded-full transition-all duration-300 ${themeStyle === 'neo-brutalism' ? 'border-2 border-black dark:border-white text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]' : 'text-white hover:shadow-lg hover:-translate-y-0.5'}`}
+                    href={getAppendParams(`/${params.locale}/store/${params.slug}/products`)} 
+                    className={`px-8 py-3 text-sm font-semibold rounded-md transition-all duration-300 ${themeStyle === 'neo-brutalism' ? 'border-2 border-black dark:border-white text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]' : 'text-white hover:shadow-lg hover:-translate-y-0.5'}`}
                     style={themeStyle === 'neo-brutalism' ? { backgroundColor: primaryColor || '#f0f0f0' } : { backgroundColor: primaryColor || '#000' }}
                   >
                     {isKm ? 'មើលទាំងអស់' : 'Shop All'}

@@ -104,7 +104,7 @@ export default function ProductDetailClient({
       <div className="md:max-w-6xl md:mx-auto md:w-full md:grid md:grid-cols-2 md:gap-12 md:px-5 md:py-12">
         {/* Product Image Carousel */}
         <div className="w-full flex flex-col gap-4 shrink-0">
-          <div className="w-full aspect-square bg-[#F8F9FA] dark:bg-[#161616] relative md:rounded-2xl overflow-hidden group">
+          <div className="w-full aspect-square bg-[#F8F9FA] dark:bg-[#161616] relative md:rounded-none overflow-hidden group">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
               src={imagesList[currentImageIndex]} 
@@ -131,13 +131,13 @@ export default function ProductDetailClient({
           </div>
           
           {/* Thumbnails */}
-          {imagesList.length > 1 && (
+            {imagesList.length > 1 && (
             <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide px-4 md:px-0">
               {imagesList.map((img: string, idx: number) => (
                 <button 
                   key={idx} 
                   onClick={() => setCurrentImageIndex(idx)}
-                  className={`w-20 h-20 shrink-0 rounded-xl overflow-hidden border-2 transition-all ${
+                  className={`w-20 h-20 shrink-0 rounded-none overflow-hidden border-2 transition-all ${
                     currentImageIndex === idx ? 'border-gray-900 dark:border-white opacity-100' : 'border-transparent opacity-60 hover:opacity-100'
                   }`}
                 >
@@ -189,7 +189,7 @@ export default function ProductDetailClient({
                                     ? 'bg-black text-white dark:bg-white dark:text-black border-black dark:border-white'
                                     : 'bg-transparent text-gray-600 dark:text-gray-400 border-gray-300 dark:border-gray-700 hover:border-black dark:hover:border-white'
                                 }`
-                              : `rounded-full font-medium ${
+                              : `rounded-none font-medium ${
                                   isSelected
                                     ? 'bg-black dark:bg-white text-white dark:text-black scale-105 shadow-md'
                                     : 'bg-gray-100 dark:bg-[#1a1a1a] text-gray-700 dark:text-gray-300 hover:bg-gray-200'
@@ -209,17 +209,17 @@ export default function ProductDetailClient({
           {/* Quantity Selection */}
           <div className="mt-8 flex items-center justify-between border-t border-gray-100 dark:border-gray-800 pt-6">
             <span className="font-bold text-gray-900 dark:text-white">{text.quantity}</span>
-            <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-full p-1">
+            <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-none p-1">
               <button 
                 onClick={() => setQuantity(Math.max(1, quantity - 1))} 
-                className="w-10 h-10 flex items-center justify-center rounded-full bg-white dark:bg-gray-700 shadow-sm text-gray-900 dark:text-white hover:bg-gray-50 transition-colors"
+                className="w-10 h-10 flex items-center justify-center rounded-none bg-white dark:bg-gray-700 shadow-sm text-gray-900 dark:text-white hover:bg-gray-50 transition-colors"
               >
                 <Minus size={18} />
               </button>
               <span className="w-12 text-center font-bold text-gray-900 dark:text-white">{quantity}</span>
               <button 
                 onClick={() => setQuantity(quantity + 1)} 
-                className="w-10 h-10 flex items-center justify-center rounded-full bg-white dark:bg-gray-700 shadow-sm text-gray-900 dark:text-white hover:bg-gray-50 transition-colors"
+                className="w-10 h-10 flex items-center justify-center rounded-none bg-white dark:bg-gray-700 shadow-sm text-gray-900 dark:text-white hover:bg-gray-50 transition-colors"
               >
                 <Plus size={18} />
               </button>
@@ -263,7 +263,7 @@ export default function ProductDetailClient({
       )}
 
       {/* Sticky Bottom Add to Cart (Mobile Only) */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white dark:bg-[#111111] border-t border-gray-100 dark:border-gray-800 md:hidden z-[100] pb-safe">
+      <div className="fixed left-0 right-0 bottom-16 p-4 bg-white dark:bg-[#111111] border-t border-gray-100 dark:border-gray-800 md:hidden z-[100]">
         <button
           onClick={handleAddToCart}
           className={`w-full py-4 text-lg font-bold text-white transition-all ${

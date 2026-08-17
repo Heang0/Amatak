@@ -144,8 +144,8 @@ export default function ProductCard({
                 themeStyle === 'neo-brutalism' 
                   ? 'border-2 border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none rounded-none text-white bg-black' 
                   : themeStyle === 'minimalist' 
-                    ? 'rounded-sm text-white hover:opacity-90' 
-                    : 'rounded-full text-white shadow-md hover:shadow-lg hover:-translate-y-0.5'
+                    ? 'rounded-md text-white hover:opacity-90' 
+                    : 'rounded-md text-white shadow-md hover:shadow-lg hover:-translate-y-0.5'
               }`}
               style={themeStyle !== 'neo-brutalism' ? { backgroundColor: primaryColor || '#000' } : undefined}
               title="Add to cart"
@@ -158,8 +158,8 @@ export default function ProductCard({
                 themeStyle === 'neo-brutalism'
                   ? 'border-2 border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none rounded-none text-white bg-black'
                   : themeStyle === 'minimalist'
-                    ? 'rounded-sm text-white hover:opacity-90'
-                    : 'rounded-full text-white shadow-md hover:shadow-lg hover:-translate-y-0.5'
+                    ? 'rounded-md text-white hover:opacity-90'
+                    : 'rounded-md text-white shadow-md hover:shadow-lg hover:-translate-y-0.5'
               }`}
               style={themeStyle !== 'neo-brutalism' ? { backgroundColor: primaryColor || '#000' } : undefined}
               title="Add to wishlist"

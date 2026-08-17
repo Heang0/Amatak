@@ -33,8 +33,8 @@ export default function StoreBottomNav({ locale, primaryColor, slug, initialThem
     fetchTheme();
   }, [slug, searchParams]);
 
-  // Hide on product detail and cart pages
-  if (pathname?.includes('/product/') || pathname?.includes('/cart')) return null;
+  // Hide on cart page only (allow bottom nav on product detail pages)
+  if (pathname?.includes('/cart')) return null;
 
   // Clean paths — middleware rewrites subdomain paths automatically
   const previewTheme = searchParams.get('theme');
@@ -50,6 +50,9 @@ export default function StoreBottomNav({ locale, primaryColor, slug, initialThem
 
   const isPathRouting = pathname?.includes('/store/');
   const basePath = isPathRouting ? `/${locale}/store/${slug}` : `/${locale}`;
+
+  // Also support paths that don't include the locale in the pathname (dev hosts, rewrites)
+  const storePathNoLocale = `/store/${slug}`;
 
   const homeHref = appendParams(basePath);
   const productsHref = appendParams(`${basePath}/products`);
@@ -70,13 +73,14 @@ export default function StoreBottomNav({ locale, primaryColor, slug, initialThem
       label: t('Home', 'ទំព័រដើម'),
       href: homeHref,
       icon: Home,
-      isActive: pathname === `/${locale}` || pathname === `/${locale}/` || pathname === '/' || pathname === basePath || pathname === `${basePath}/`,
+      isActive: pathname === `/${locale}` || pathname === `/${locale}/` || pathname === '/' || pathname === basePath || pathname === `${basePath}/` || pathname === storePathNoLocale || pathname === `${storePathNoLocale}/`,
     },
     {
       label: t('Products', 'ផលិតផល'),
       href: productsHref,
       icon: ShoppingBag,
-      isActive: pathname?.endsWith('/products') || pathname?.endsWith('/products/'),
+      // Consider product list and individual product pages as active for Products
+      isActive: pathname?.includes('/product') || pathname?.endsWith('/products') || pathname?.endsWith('/products/'),
     },
     {
       label: t('Search', 'ស្វែងរក'),

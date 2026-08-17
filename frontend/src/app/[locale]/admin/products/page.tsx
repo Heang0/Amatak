@@ -22,6 +22,7 @@ export default function ManageProducts() {
   const locale = useLocale();
   const [products, setProducts] = useState<Product[]>([]);
   const [storeId, setStoreId] = useState<string | null>(null);
+  const [predefinedVariants, setPredefinedVariants] = useState<{ name: string, options: string[] }[]>([]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -94,20 +95,51 @@ export default function ManageProducts() {
   const getCategoryName = (category: any) =>
     locale === 'km' && category.nameKm ? category.nameKm : category.name;
 
+  const fetchMyStore = async () => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/stores`, {
+        headers: { Authorization: `Bearer ${user?.token}` }
+      });
+      const data = await res.json();
+      const myStore = data.find((s: any) => s.ownerId._id === user?._id || s.ownerId === user?._id);
+      if (myStore) {
+        setStoreId(myStore._id);
+        const cat = myStore.category || 'General Retail';
+        setStoreCategory(cat);
+        if (myStore.predefinedVariants && myStore.predefinedVariants.length > 0) {
+          setPredefinedVariants(myStore.predefinedVariants);
+        } else {
+          if (cat === 'Clothing') {
+            setPredefinedVariants([
+              { name: 'Size', options: ['S', 'M', 'L', 'XL'] },
+              { name: 'Color', options: ['Black', 'White', 'Red', 'Blue'] }
+            ]);
+          } else if (cat === 'Food & Beverage') {
+            setPredefinedVariants([
+              { name: 'Size', options: ['Small', 'Medium', 'Large'] },
+              { name: 'Add-ons', options: ['Extra Cheese', 'No Onion'] }
+            ]);
+          } else if (cat === 'Electronics') {
+            setPredefinedVariants([
+              { name: 'Storage', options: ['64GB', '128GB', '256GB'] },
+              { name: 'Color', options: ['Black', 'Silver', 'Gold'] }
+            ]);
+          } else if (cat === 'Supplements') {
+            setPredefinedVariants([
+              { name: 'Flavor (រសជាតិ)', options: ['Vanilla', 'Chocolate', 'Strawberry', 'Unflavored'] },
+              { name: 'Size (ទំហំ/ទម្ងន់)', options: ['30 Servings', '60 Servings', '1KG', '2KG'] }
+            ]);
+          }
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     // 1. Get store ID
-    fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/stores`, {
-      headers: { Authorization: `Bearer ${user?.token}` }
-    })
-      .then(res => res.json())
-      .then(data => {
-        const myStore = data.find((s: any) => s.ownerId._id === user?._id || s.ownerId === user?._id);
-        if (myStore) {
-          setStoreId(myStore._id);
-          if (myStore.category) setStoreCategory(myStore.category);
-        }
-      })
-      .catch(console.error);
+    fetchMyStore();
 
     // 2. Fetch categories
     fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/categories`, {
@@ -234,6 +266,7 @@ export default function ManageProducts() {
         setEditingProduct(null);
         setTitle(''); setTitleKm(''); setDescription(''); setDescriptionKm(''); setPrice(''); setStock(''); setImageUrl(''); setImages([]); setCategoryId(''); setVariants([]); setIsBestSeller(false);
         fetchProducts(storeId, currentPage);
+        fetchMyStore(); // Refresh predefined variants
       } else {
         const data = await res.json();
         alert(data.message);
@@ -317,29 +350,7 @@ export default function ManageProducts() {
       setEditingProduct(null);
       setTitle(''); setTitleKm(''); setDescription(''); setDescriptionKm(''); setPrice(''); setStock(''); setImageUrl(''); setImages([]); setCategoryId(''); setIsBestSeller(false);
 
-      if (storeCategory === 'Clothing') {
-        setVariants([
-          { name: 'Size', options: 'S, M, L, XL' },
-          { name: 'Color', options: 'Black, White, Red, Blue' }
-        ]);
-      } else if (storeCategory === 'Food & Beverage') {
-        setVariants([
-          { name: 'Size', options: 'Small, Medium, Large' },
-          { name: 'Add-ons', options: 'Extra Cheese, No Onion' }
-        ]);
-      } else if (storeCategory === 'Electronics') {
-        setVariants([
-          { name: 'Storage', options: '64GB, 128GB, 256GB' },
-          { name: 'Color', options: 'Black, Silver, Gold' }
-        ]);
-      } else if (storeCategory === 'Supplements') {
-        setVariants([
-          { name: 'Flavor (រសជាតិ)', options: 'Vanilla, Chocolate, Strawberry, Unflavored' },
-          { name: 'Size (ទំហំ/ទម្ងន់)', options: '30 Servings, 60 Servings, 1KG, 2KG' }
-        ]);
-      } else {
-        setVariants([]);
-      }
+      setVariants([]);
     } else {
       setEditingProduct(null);
     }
@@ -491,22 +502,89 @@ export default function ManageProducts() {
                   {t('add_variant')}
                 </button>
               </div>
+              
+              {predefinedVariants.length > 0 && (
+                <div className="flex flex-wrap items-center gap-5 mb-5">
+                  {predefinedVariants.map((pv, idx) => {
+                    const isChecked = variants.some(v => v.name.toLowerCase() === pv.name.toLowerCase());
+                    return (
+                      <label key={idx} className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={isChecked}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setVariants([...variants, { name: pv.name, options: pv.options.join(', ') }]);
+                            } else {
+                              setVariants(variants.filter(v => v.name.toLowerCase() !== pv.name.toLowerCase()));
+                            }
+                          }}
+                          className="w-4 h-4 rounded border-gray-300 text-[#E84C3D] focus:ring-[#E84C3D]"
+                        />
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{pv.name}</span>
+                      </label>
+                    );
+                  })}
+                </div>
+              )}
+
               <div className="space-y-4">
-                {variants.map((variant, index) => (
-                  <div key={index} className="flex gap-4 items-start bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg border border-gray-100 dark:border-gray-700">
-                    <div className="flex-1">
-                      <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{t('variant_name')}</label>
-                      <input type="text" value={variant.name} onChange={e => { const newV = [...variants]; newV[index].name = e.target.value; setVariants(newV); }} className="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-[#E84C3D] text-sm dark:text-white" />
+                {variants.map((variant, index) => {
+                  const predefinedMatch = predefinedVariants.find(pv => pv.name.toLowerCase() === variant.name.toLowerCase());
+                  const currentOptionsList = variant.options.split(',').map(s => s.trim()).filter(Boolean);
+
+                  return (
+                    <div key={index} className="flex flex-col gap-3 bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg border border-gray-100 dark:border-gray-700">
+                      <div className="flex gap-4 items-start">
+                        <div className="flex-1">
+                          <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{t('variant_name')}</label>
+                          <input type="text" value={variant.name} onChange={e => { const newV = [...variants]; newV[index].name = e.target.value; setVariants(newV); }} className="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-[#E84C3D] text-sm dark:text-white" />
+                        </div>
+                        <div className="flex-[2]">
+                          <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{t('variant_options')}</label>
+                          <input type="text" value={variant.options} onChange={e => { const newV = [...variants]; newV[index].options = e.target.value; setVariants(newV); }} placeholder="e.g. S, M, L or custom" className="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-[#E84C3D] text-sm dark:text-white" />
+                        </div>
+                        <button type="button" onClick={() => { const newV = variants.filter((_, i) => i !== index); setVariants(newV); }} className="mt-6 text-gray-400 hover:text-red-500 p-2">
+                          ✕
+                        </button>
+                      </div>
+
+                      {(predefinedMatch || currentOptionsList.length > 0) && (
+                        <div className="flex flex-wrap gap-3 pl-1 pt-1 border-t border-gray-200 dark:border-gray-700">
+                          <span className="text-[11px] uppercase font-bold text-gray-400 dark:text-gray-500 mt-0.5">Quick Tick:</span>
+                          {Array.from(new Set([
+                            ...(predefinedMatch ? predefinedMatch.options.map(o => o.trim()) : []),
+                            ...currentOptionsList
+                          ])).map((opt, optIdx) => {
+                            if (!opt) return null;
+                            const isOptChecked = currentOptionsList.some(o => o.toLowerCase() === opt.toLowerCase());
+                            return (
+                              <label key={optIdx} className="flex items-center gap-1.5 cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={isOptChecked}
+                                  onChange={(e) => {
+                                    let newOptionsList = [...currentOptionsList];
+                                    if (e.target.checked) {
+                                      if (!isOptChecked) newOptionsList.push(opt);
+                                    } else {
+                                      newOptionsList = newOptionsList.filter(o => o.toLowerCase() !== opt.toLowerCase());
+                                    }
+                                    const newV = [...variants];
+                                    newV[index].options = newOptionsList.join(', ');
+                                    setVariants(newV);
+                                  }}
+                                  className="w-3.5 h-3.5 rounded border-gray-300 text-[#E84C3D] focus:ring-[#E84C3D]"
+                                />
+                                <span className="text-xs font-medium text-gray-600 dark:text-gray-300">{opt}</span>
+                              </label>
+                            );
+                          })}
+                        </div>
+                      )}
                     </div>
-                    <div className="flex-[2]">
-                      <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{t('variant_options')}</label>
-                      <input type="text" value={variant.options} onChange={e => { const newV = [...variants]; newV[index].options = e.target.value; setVariants(newV); }} className="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-[#E84C3D] text-sm dark:text-white" />
-                    </div>
-                    <button type="button" onClick={() => { const newV = variants.filter((_, i) => i !== index); setVariants(newV); }} className="mt-6 text-gray-400 hover:text-red-500 p-2">
-                      ✕
-                    </button>
-                  </div>
-                ))}
+                  );
+                })}
                 {variants.length === 0 && (
                   <p className="text-sm text-gray-500 dark:text-gray-400 italic">{t('no_variants')}</p>
                 )}

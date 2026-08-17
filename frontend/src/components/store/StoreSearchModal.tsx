@@ -77,7 +77,7 @@ export default function StoreSearchModal({ isOpen, onClose, slug, locale, primar
             placeholder={t('Search products...', 'ស្វែងរកផលិតផល...')}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full bg-gray-100 dark:bg-gray-800 border-transparent rounded-full py-3 pl-12 pr-4 outline-none text-gray-900 dark:text-white placeholder-gray-500 focus:ring-2 transition-all shadow-inner"
+            className="w-full bg-gray-100 dark:bg-gray-800 border-transparent rounded-none py-3 pl-12 pr-4 outline-none text-gray-900 dark:text-white placeholder-gray-500 focus:ring-2 transition-all shadow-inner"
             style={{ '--tw-ring-color': primaryColor } as any}
           />
         </div>

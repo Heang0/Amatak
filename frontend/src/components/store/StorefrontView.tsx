@@ -195,19 +195,19 @@ export default function StorefrontView({
     }
   });
 
-  const bestSellers = products.filter(p => p.isBestSeller);
+  const bestSellers = filteredProducts.filter(p => p.isBestSeller);
   const visibleBestSellers = bestSellers.slice(0, 8);
   const showBestSellerViewAll = bestSellers.length > 8;
-  const newArrivals = [...products].reverse().slice(0, 8);
+  const newArrivals = [...filteredProducts].reverse().slice(0, 8);
   const productList = viewMode === 'catalog' ? sortedProducts : filteredProducts;
 
-  let bannerContainerClass = "w-full bg-gray-100 dark:bg-gray-900 flex ";
+  let bannerContainerClass = "w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 mb-4 md:mb-6 ";
   if (themeStyle === 'minimalist') {
-    bannerContainerClass += "md:mx-auto md:max-w-7xl md:rounded-sm overflow-hidden mb-6 md:mb-10";
+    bannerContainerClass += "rounded-sm overflow-hidden";
   } else if (themeStyle === 'neo-brutalism') {
-    bannerContainerClass += "md:mx-auto md:max-w-7xl md:rounded-none md:border-[3px] md:border-black md:dark:border-white md:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] overflow-hidden mb-6 md:mb-10";
+    bannerContainerClass += "rounded-none border-[3px] border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] overflow-hidden";
   } else {
-    bannerContainerClass += "md:mx-auto md:max-w-7xl md:px-4 md:py-4 md:rounded-3xl overflow-hidden mb-6 md:mb-10";
+    bannerContainerClass += "overflow-hidden";
   }
 
   const getCategoryClass = (isActive: boolean) => {
@@ -242,7 +242,7 @@ export default function StorefrontView({
 
       {viewMode === 'home' && !categorySlug && bannerUrl ? (
         <div className={bannerContainerClass}>
-          <div className="relative w-full overflow-hidden h-[140px] sm:h-[180px] md:h-[240px] lg:h-[300px] max-h-[55vh]">
+          <div className={`relative w-full overflow-hidden h-[140px] sm:h-[180px] md:h-[240px] lg:h-[300px] max-h-[55vh] ${themeStyle === 'default' ? 'rounded-2xl md:rounded-3xl' : ''}`}>
             <img
               src={bannerUrl}
               alt="Store Banner"
@@ -253,7 +253,7 @@ export default function StorefrontView({
         </div>
       ) : null}
 
-      <div className="w-full mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 py-8 sm:py-12 space-y-10 sm:space-y-14">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-8 sm:space-y-10">
         {!bannerUrl && (
           <div className="pt-2">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white tracking-tight mb-2">{isKm ? 'ស្វែងយល់' : 'Discover'}</h2>
@@ -262,7 +262,7 @@ export default function StorefrontView({
         )}
 
         {categories.length > 0 && (viewMode === 'home' || viewMode === 'catalog' || viewMode === 'categories') && (
-          <div className="mb-10 overflow-x-auto pb-4 scrollbar-hide scroll-smooth -mx-4 px-4 sm:-mx-0 sm:px-0 border-b border-gray-200 dark:border-gray-800" ref={categoryTabsRef}>
+          <div className="mb-6 md:mb-10 overflow-x-auto pb-4 scrollbar-hide scroll-smooth -mx-4 px-4 sm:-mx-0 sm:px-0 border-b border-gray-200 dark:border-gray-800" ref={categoryTabsRef}>
             <div className="flex gap-3 min-w-max">
               <Link
                 href={getAppendParams(`/${params.locale}/store/${params.slug}/products`)}
@@ -413,14 +413,13 @@ export default function StorefrontView({
               </div>
             )}
             {viewMode === 'catalog' && (
-              <div className="mb-6">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="mb-4 sm:mb-6">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div className="min-w-0">
-                    <p className="text-xs uppercase tracking-[0.25em] text-gray-500 dark:text-gray-400 mb-2">{isKm ? 'ស្វែងរក' : 'Search'}</p>
-                    <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">{isKm ? 'ផលិតផលទាំងអស់' : 'All Products'}</h2>
+                    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">{isKm ? 'ផលិតផលទាំងអស់' : 'All Products'}</h2>
                   </div>
 
-                  <div className="flex items-center gap-3 w-full sm:max-w-[520px]">
+                  <div className="flex items-center gap-2 w-full sm:max-w-[480px]">
                     <label htmlFor="store-search" className="sr-only">{isKm ? 'ស្វែងរក' : 'Search'}</label>
                     <div className="relative flex-1">
                       <Search size={18} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -456,7 +455,7 @@ export default function StorefrontView({
               </div>
             )}
             {categories.length > 0 && viewMode === 'home' && !categorySlug && (
-              <div className="mb-10">
+              <div className="mb-6">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{isKm ? 'ប្រភេទពិព័រណ៍' : 'Browse Categories'}</h3>
                   <Link href={getAppendParams(`/${params.locale}/store/${params.slug}/categories`)} className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:underline">
@@ -516,7 +515,7 @@ export default function StorefrontView({
             )}
 
             {loading ? (
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-10 sm:gap-x-6 sm:gap-y-14">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-3 gap-y-8 sm:gap-x-5 sm:gap-y-10">
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => (
                   <div key={i} className="animate-pulse flex flex-col">
                     <div className="aspect-square bg-gray-100 dark:bg-[#1a1a1a] rounded-2xl mb-4 w-full" />
@@ -531,7 +530,7 @@ export default function StorefrontView({
                 <p className="text-gray-500 dark:text-gray-400 font-medium">{isKm ? 'មិនមានផលិតផលទេ។' : 'No products found.'}</p>
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-10 sm:gap-x-6 sm:gap-y-14">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-3 gap-y-8 sm:gap-x-5 sm:gap-y-10">
                 {productList.map((product) => (
                   <ProductCard 
                     key={product._id} 
@@ -549,15 +548,21 @@ export default function StorefrontView({
 
         {/* HOME VIEW */}
         {viewMode === 'home' && !categorySlug && (
-          <div className="flex flex-col gap-16 md:gap-24">
+          <div className="flex flex-col gap-10 md:gap-14">
             
             {/* Best Sellers Section */}
             {bestSellers.length > 0 && (
               <section>
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center justify-between mb-4">
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">{isKm ? 'លក់ដាច់បំផុត' : 'Best Sellers'}</h3>
+                  {showBestSellerViewAll && (
+                    <Link href={getAppendParams(`/${params.locale}/store/${params.slug}/promotions`)} className="group flex items-center text-sm font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors">
+                      {isKm ? 'មើលទាំងអស់' : 'View all'} 
+                      <span className="ml-1 inline-block transition-transform group-hover:translate-x-1">→</span>
+                    </Link>
+                  )}
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
                   {visibleBestSellers.map(product => (
                     <ProductCard 
                       key={product._id} 
@@ -569,17 +574,6 @@ export default function StorefrontView({
                     />
                   ))}
                 </div>
-                {showBestSellerViewAll && (
-                  <div className="mt-6 flex justify-center">
-                    <Link 
-                      href={getAppendParams(`/${params.locale}/store/${params.slug}/promotions`)} 
-                      className={`px-8 py-3 text-sm font-semibold rounded-md transition-all duration-300 ${themeStyle === 'neo-brutalism' ? 'border-2 border-black dark:border-white text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]' : 'text-white hover:shadow-lg hover:-translate-y-0.5'}`}
-                      style={themeStyle === 'neo-brutalism' ? { backgroundColor: primaryColor || '#f0f0f0' } : { backgroundColor: primaryColor || '#000' }}
-                    >
-                      {isKm ? 'មើលទាំងអស់' : 'View All'}
-                    </Link>
-                  </div>
-                )}
               </section>
             )}
 
@@ -587,10 +581,14 @@ export default function StorefrontView({
             {/* New Arrivals Section */}
             {newArrivals.length > 0 && (
               <section>
-                <div className="mb-6">
+                <div className="flex items-center justify-between mb-4">
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">{isKm ? 'ទំនិញថ្មី' : 'New Arrivals'}</h3>
+                  <Link href={getAppendParams(`/${params.locale}/store/${params.slug}/products`)} className="group flex items-center text-sm font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors">
+                    {isKm ? 'មើលទាំងអស់' : 'View all'} 
+                    <span className="ml-1 inline-block transition-transform group-hover:translate-x-1">→</span>
+                  </Link>
                 </div>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-10 sm:gap-x-6 sm:gap-y-14">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-3 gap-y-8 sm:gap-x-5 sm:gap-y-10">
                   {newArrivals.map(product => (
                     <ProductCard 
                       key={product._id} 
@@ -601,15 +599,6 @@ export default function StorefrontView({
                       isBestSeller={product.isBestSeller}
                     />
                   ))}
-                </div>
-                <div className="mt-8 flex justify-center">
-                  <Link 
-                    href={getAppendParams(`/${params.locale}/store/${params.slug}/products`)} 
-                    className={`px-8 py-3 text-sm font-semibold rounded-md transition-all duration-300 ${themeStyle === 'neo-brutalism' ? 'border-2 border-black dark:border-white text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]' : 'text-white hover:shadow-lg hover:-translate-y-0.5'}`}
-                    style={themeStyle === 'neo-brutalism' ? { backgroundColor: primaryColor || '#f0f0f0' } : { backgroundColor: primaryColor || '#000' }}
-                  >
-                    {isKm ? 'មើលទាំងអស់' : 'Shop All'}
-                  </Link>
                 </div>
               </section>
             )}

@@ -36,7 +36,7 @@ export default async function LocaleLayout({
   const fontClass = locale === 'km' ? `${kantumruy.className} ${kantumruy.variable} lang-km` : `${outfit.className} ${kantumruy.variable}`;
 
   return (
-    <div className={fontClass}>
+    <div id="app-root" className={fontClass}>
       <NextIntlClientProvider messages={messages}>
         {children}
       </NextIntlClientProvider>

@@ -2,6 +2,7 @@
 
 import { QRCodeSVG } from 'qrcode.react';
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X, CheckCircle2, Clock, ShieldCheck } from 'lucide-react';
 
 interface BakongKHQRModalProps {
@@ -28,7 +29,12 @@ export default function BakongKHQRModal({
 }: BakongKHQRModalProps) {
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const [timeLeft, setTimeLeft] = useState(300);
+  const [mounted, setMounted] = useState(false);
   const isKm = locale === 'km';
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const khmerFont = { fontFamily: "var(--font-kantumruy), 'Kantumruy Pro', sans-serif" };
   const numFont = { fontFamily: '"Nunito Sans", "Inter", sans-serif' };
@@ -60,8 +66,10 @@ export default function BakongKHQRModal({
     return `${m}:${s.toString().padStart(2, '0')}`;
   };
 
-  return (
-    <div className="fixed inset-0 z-[200] bg-black/60 flex flex-col items-center justify-center p-4">
+  if (!mounted) return null;
+
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] bg-black/60 flex flex-col items-center justify-center p-4">
 
       {/* Main Container */}
       <div className="relative flex flex-col items-center">
@@ -93,7 +101,7 @@ export default function BakongKHQRModal({
 
             {/* Text Alignment Left strictly enforced */}
             <div className="text-left w-full mb-auto">
-              <div className="text-xs font-medium uppercase tracking-widest text-gray-500 mb-1" style={isKm ? khmerFont : numFont}>{text.scanQR}</div>
+              <div className={`text-xs font-medium text-gray-500 mb-1 ${!isKm ? 'uppercase tracking-widest' : ''}`} style={isKm ? khmerFont : numFont}>{text.scanQR}</div>
               <div className="text-[#000000] text-[14px] font-normal mb-1 truncate" style={isKm ? khmerFont : numFont}>{merchantName}</div>
               <div className="flex items-baseline gap-1">
                 <span className="text-[#000000] text-[31px] font-bold leading-none tracking-[0px]" style={numFont}>{amount.toFixed(2)}</span>
@@ -109,7 +117,7 @@ export default function BakongKHQRModal({
               <QRCodeSVG value={qrString} size={234} />
 
               {/* Center Coin Badge */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[42px] h-[42px] bg-[#000000] rounded-full flex items-center justify-center border-[3px] border-[#FFFFFF] box-content">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[38px] h-[38px] bg-[#000000] rounded-full flex items-center justify-center border-[2.5px] border-[#FFFFFF] box-content">
                 <span className="text-white font-bold text-xl leading-none pt-0.5" style={numFont}>$</span>
               </div>
             </div>
@@ -189,6 +197,7 @@ export default function BakongKHQRModal({
         {/* Powered by tag */}
         <p className="text-white/30 text-xs mt-4 font-medium" style={numFont}>Powered by Bakong KHQR · NBC Cambodia</p>
       </div>
-    </div>
+    </div>,
+    document.getElementById('app-root') || document.body
   );
 }

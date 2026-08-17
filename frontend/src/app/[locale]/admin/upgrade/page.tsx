@@ -210,6 +210,7 @@ export default function UpgradePlan() {
   };
 
   const getDisplayPrice = (plan: any) => {
+    if (!plan || typeof plan.price !== 'number') return 0;
     if (plan.price === 0) return 0;
     if (billingCycle === 'annually') {
       const discount = plan.name === 'Premium' ? 0.7 : (plan.name === 'Pro' ? 0.8 : 1);
@@ -219,7 +220,7 @@ export default function UpgradePlan() {
   };
 
   const getOriginalPrice = (plan: any) => {
-    if (plan.price === 0 || billingCycle === 'monthly') return null;
+    if (!plan || typeof plan.price !== 'number' || plan.price === 0 || billingCycle === 'monthly') return null;
     return Number((plan.price * 12).toFixed(2));
   };
 
@@ -230,6 +231,8 @@ export default function UpgradePlan() {
 
   const getPresetBenefits = (plan: any) => {
     const benefits = [isKm ? 'ចូលប្រើមុខងារមូលដ្ឋានទាំងអស់' : 'Access to all basic features'];
+    if (!plan) return benefits;
+    
     if (plan.maxProducts) {
       benefits.push(isKm ? `ទំនិញរហូតដល់ ${plan.maxProducts}` : `Up to ${plan.maxProducts} Products`);
     }

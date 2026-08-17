@@ -175,27 +175,27 @@ export default function StoreTopNav({ storeName, storeLogo, primaryColor, slug, 
           <Link
             href={homeHref}
             className={`text-sm font-semibold uppercase tracking-wider transition-colors ${
-              isHome ? '' : 'text-gray-400 hover:text-gray-900 dark:hover:text-white'
+              isHome ? 'text-gray-900 dark:text-white' : 'text-gray-400 hover:text-gray-900 dark:hover:text-white'
             }`}
-            style={isHome ? { color: primaryColor || '#000' } : undefined}
+            style={isHome && primaryColor && primaryColor !== '#000000' && primaryColor !== '#000' ? { color: primaryColor } : undefined}
           >
             {locale === 'km' ? 'ទំព័រដើម' : 'Home'}
           </Link>
           <Link
             href={appendParams(`${basePath}/products`)}
             className={`text-sm font-semibold uppercase tracking-wider transition-colors ${
-              pathname?.endsWith('/products') || pathname?.endsWith('/products/') || pathname?.includes('/product/') ? '' : 'text-gray-400 hover:text-gray-900 dark:hover:text-white'
+              pathname?.endsWith('/products') || pathname?.endsWith('/products/') || pathname?.includes('/product/') ? 'text-gray-900 dark:text-white' : 'text-gray-400 hover:text-gray-900 dark:hover:text-white'
             }`}
-            style={pathname?.endsWith('/products') || pathname?.endsWith('/products/') || pathname?.includes('/product/') ? { color: primaryColor || '#000' } : undefined}
+            style={(pathname?.endsWith('/products') || pathname?.endsWith('/products/') || pathname?.includes('/product/')) && primaryColor && primaryColor !== '#000000' && primaryColor !== '#000' ? { color: primaryColor } : undefined}
           >
             {locale === 'km' ? 'ផលិតផល' : 'Products'}
           </Link>
           <Link
             href={appendParams(`${basePath}/promotions`)}
             className={`text-sm font-semibold uppercase tracking-wider transition-colors ${
-              pathname?.endsWith('/promotions') || pathname?.endsWith('/promotions/') ? '' : 'text-gray-400 hover:text-gray-900 dark:hover:text-white'
+              pathname?.endsWith('/promotions') || pathname?.endsWith('/promotions/') ? 'text-gray-900 dark:text-white' : 'text-gray-400 hover:text-gray-900 dark:hover:text-white'
             }`}
-            style={pathname?.endsWith('/promotions') || pathname?.endsWith('/promotions/') ? { color: primaryColor || '#000' } : undefined}
+            style={(pathname?.endsWith('/promotions') || pathname?.endsWith('/promotions/')) && primaryColor && primaryColor !== '#000000' && primaryColor !== '#000' ? { color: primaryColor } : undefined}
           >
             {locale === 'km' ? 'ប្រូម៉ូសិន' : 'Promotions'}
           </Link>

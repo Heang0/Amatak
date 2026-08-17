@@ -94,8 +94,8 @@ export default function ProductCard({
     priceClass = "text-[15px] font-black text-black dark:text-white bg-green-200 dark:bg-green-800 px-1 border-2 border-black dark:border-white";
   } else {
     // Premium Default
-    cardBaseClass += " p-3 sm:p-4 rounded-3xl bg-white dark:bg-[#161616] transition-all duration-500 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.4)] hover:-translate-y-1";
-    imageContainerClass += "bg-[#F8F9FA] dark:bg-[#222222] rounded-2xl mb-4 overflow-hidden";
+    cardBaseClass += " p-3 sm:p-4 rounded-2xl bg-white dark:bg-[#111111] border border-gray-100 dark:border-gray-800/60 shadow-sm transition-all duration-300 hover:shadow-xl hover:border-gray-200 dark:hover:border-gray-700 hover:-translate-y-1";
+    imageContainerClass += "bg-[#F8F9FA] dark:bg-[#1a1a1a] rounded-xl mb-4 overflow-hidden";
   }
 
   return (
@@ -105,18 +105,19 @@ export default function ProductCard({
         <img 
           src={product.imageUrl?.replace('/upload/', '/upload/w_600,c_limit,q_auto/')} 
           alt={product.title} 
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-2xl" 
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-xl" 
           loading="lazy"
           decoding="async"
         />
         
         {/* Badge - rendered after image so it appears on top */}
         {isBestSeller && (
-          <div className="absolute top-2 left-2 z-50">
+          <div className="absolute top-2.5 left-2.5 z-50">
             <span 
-              className="inline-block text-white text-[10px] font-bold px-2.5 py-1 rounded-sm uppercase tracking-wider whitespace-nowrap shadow-sm"
+              className="inline-flex items-center text-white text-[9px] sm:text-[10px] font-bold px-2.5 py-1.5 rounded-full uppercase tracking-widest whitespace-nowrap shadow-md"
               style={{ backgroundColor: primaryColor || '#000' }}
             >
+              <svg className="w-2.5 h-2.5 mr-1" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
               Best Seller
             </span>
           </div>
@@ -124,7 +125,7 @@ export default function ProductCard({
       </div>
 
       <div className="flex flex-col flex-1">
-        <h3 className={`line-clamp-2 ${themeStyle === 'minimalist' ? 'text-[15px] font-bold text-gray-900 dark:text-white mb-0.5' : themeStyle === 'neo-brutalism' ? 'text-base font-black uppercase text-black dark:text-white mb-1 leading-tight' : 'text-[15px] sm:text-base font-bold text-gray-900 dark:text-white mb-1 tracking-tight leading-snug'}`}>
+        <h3 className={`line-clamp-2 ${themeStyle === 'minimalist' ? 'text-[15px] font-bold text-gray-900 dark:text-white mb-1' : themeStyle === 'neo-brutalism' ? 'text-base font-black uppercase text-black dark:text-white mb-1 leading-tight' : 'text-[15px] sm:text-base font-bold text-gray-900 dark:text-white mb-1 tracking-tight leading-snug'}`}>
           {params.locale === 'km' && product.titleKm ? product.titleKm : product.title}
         </h3>
         <p className={`line-clamp-2 mt-0.5 ${themeStyle === 'minimalist' ? 'text-xs text-gray-500' : 'text-xs text-gray-500 dark:text-gray-400'}`}>
@@ -145,12 +146,12 @@ export default function ProductCard({
                   ? 'border-2 border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none rounded-none text-white bg-black' 
                   : themeStyle === 'minimalist' 
                     ? 'rounded-md text-white hover:opacity-90' 
-                    : 'rounded-md text-white shadow-md hover:shadow-lg hover:-translate-y-0.5'
+                    : 'rounded-full text-white shadow-md hover:shadow-lg hover:-translate-y-0.5'
               }`}
               style={themeStyle !== 'neo-brutalism' ? { backgroundColor: primaryColor || '#000' } : undefined}
               title="Add to cart"
             >
-              <ShoppingCart size={16} strokeWidth={2.5} className="text-white" />
+              <ShoppingCart size={15} strokeWidth={2.5} className="text-white" />
             </button>
             <button
               onClick={handleWishlist}
@@ -159,13 +160,13 @@ export default function ProductCard({
                   ? 'border-2 border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none rounded-none text-white bg-black'
                   : themeStyle === 'minimalist'
                     ? 'rounded-md text-white hover:opacity-90'
-                    : 'rounded-md text-white shadow-md hover:shadow-lg hover:-translate-y-0.5'
+                    : 'rounded-full text-white shadow-md hover:shadow-lg hover:-translate-y-0.5'
               }`}
               style={themeStyle !== 'neo-brutalism' ? { backgroundColor: primaryColor || '#000' } : undefined}
               title="Add to wishlist"
             >
               <Heart 
-                size={16} 
+                size={15} 
                 strokeWidth={2.5}
                 className={`transition-all ${isFavorite ? 'fill-white text-white scale-110' : 'fill-transparent text-white hover:scale-110'}`}
               />

@@ -73,13 +73,13 @@ export default function FavoritesPage({ params }: { params: { locale: string; sl
   };
 
   return (
-    <div className="w-full mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 pt-4 pb-24 sm:pt-8 space-y-8 min-h-[70vh]">
+    <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-4 pb-24 sm:pt-8 space-y-6 sm:space-y-8 min-h-[70vh]">
       <AddToCartToast message={toast.message} visible={toast.visible} />
       
-      <div className="flex items-center gap-4 border-b border-gray-100 dark:border-gray-800 pb-6">
+      <div className="flex items-center gap-3 sm:gap-4">
         <Link 
           href={`/${params.locale}`}
-          className="p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          className="p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors shrink-0"
         >
           <ArrowLeft size={24} className="text-gray-900 dark:text-white" />
         </Link>
@@ -94,7 +94,7 @@ export default function FavoritesPage({ params }: { params: { locale: string; sl
       </div>
 
       {loading ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-10 sm:gap-x-6 sm:gap-y-14">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-3 gap-y-8">
           {[1, 2, 3, 4].map(i => (
             <div key={i} className="animate-pulse flex flex-col">
               <div className="aspect-square bg-gray-100 dark:bg-[#1a1a1a] rounded-2xl mb-4 w-full" />
@@ -138,7 +138,7 @@ export default function FavoritesPage({ params }: { params: { locale: string; sl
           </Link>
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-10 sm:gap-x-6 sm:gap-y-14">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-3 gap-y-8">
           {displayProducts.map((product) => (
             <ProductCard 
               key={product._id} 

@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useTheme } from 'next-themes';
-import { ChevronLeft, Moon, Sun, Menu, ShoppingCart, Search, Heart, ChevronDown } from 'lucide-react';
+import { ChevronLeft, Moon, Sun, Menu, ShoppingCart, Search, Heart, ChevronDown, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import StoreSidebarMenu from './StoreSidebarMenu';
@@ -174,27 +174,21 @@ export default function StoreTopNav({ storeName, storeLogo, primaryColor, slug, 
         <nav className="hidden md:flex items-center gap-6 flex-1 justify-center">
           <Link
             href={homeHref}
-            className={`text-sm font-semibold uppercase tracking-wider transition-colors ${
-              isHome ? 'text-gray-900 dark:text-white' : 'text-gray-400 hover:text-gray-900 dark:hover:text-white'
-            }`}
+            className={`text-sm font-semibold uppercase tracking-wider transition-colors text-gray-900 dark:text-white`}
             style={isHome && primaryColor && primaryColor !== '#000000' && primaryColor !== '#000' ? { color: primaryColor } : undefined}
           >
             {locale === 'km' ? 'ទំព័រដើម' : 'Home'}
           </Link>
           <Link
             href={appendParams(`${basePath}/products`)}
-            className={`text-sm font-semibold uppercase tracking-wider transition-colors ${
-              pathname?.endsWith('/products') || pathname?.endsWith('/products/') || pathname?.includes('/product/') ? 'text-gray-900 dark:text-white' : 'text-gray-400 hover:text-gray-900 dark:hover:text-white'
-            }`}
+            className={`text-sm font-semibold uppercase tracking-wider transition-colors text-gray-900 dark:text-white`}
             style={(pathname?.endsWith('/products') || pathname?.endsWith('/products/') || pathname?.includes('/product/')) && primaryColor && primaryColor !== '#000000' && primaryColor !== '#000' ? { color: primaryColor } : undefined}
           >
             {locale === 'km' ? 'ផលិតផល' : 'Products'}
           </Link>
           <Link
             href={appendParams(`${basePath}/promotions`)}
-            className={`text-sm font-semibold uppercase tracking-wider transition-colors ${
-              pathname?.endsWith('/promotions') || pathname?.endsWith('/promotions/') ? 'text-gray-900 dark:text-white' : 'text-gray-400 hover:text-gray-900 dark:hover:text-white'
-            }`}
+            className={`text-sm font-semibold uppercase tracking-wider transition-colors text-gray-900 dark:text-white`}
             style={(pathname?.endsWith('/promotions') || pathname?.endsWith('/promotions/')) && primaryColor && primaryColor !== '#000000' && primaryColor !== '#000' ? { color: primaryColor } : undefined}
           >
             {locale === 'km' ? 'ប្រូម៉ូសិន' : 'Promotions'}
@@ -204,11 +198,7 @@ export default function StoreTopNav({ storeName, storeLogo, primaryColor, slug, 
           <div className="relative group">
             <Link
               href={appendParams(`${basePath}/categories`)}
-              className={`flex items-center gap-1 text-sm font-semibold uppercase tracking-wider transition-colors py-2 ${
-                pathname?.endsWith('/categories') || pathname?.endsWith('/categories/') || pathname?.includes('/category/') 
-                ? '' 
-                : 'text-gray-400 hover:text-gray-900 dark:hover:text-white'
-              }`}
+              className={`flex items-center gap-1 text-sm font-semibold uppercase tracking-wider transition-colors py-2 text-gray-900 dark:text-white`}
               style={pathname?.endsWith('/categories') || pathname?.endsWith('/categories/') || pathname?.includes('/category/') ? { color: primaryColor || '#000' } : undefined}
             >
               {locale === 'km' ? 'ប្រភេទ' : 'Categories'}
@@ -264,8 +254,8 @@ export default function StoreTopNav({ storeName, storeLogo, primaryColor, slug, 
               </span>
             )}
           </button>
-          <Link href={profileHref} className="p-2 text-gray-900 dark:text-white hover:opacity-60 transition-opacity text-sm font-medium uppercase tracking-wider">
-            Account
+          <Link href={profileHref} className="relative p-2 text-gray-900 dark:text-white hover:opacity-60 transition-opacity">
+            <User size={20} strokeWidth={1.5} />
           </Link>
 
           <div className="flex items-center gap-2 pl-3 ml-1 border-l border-gray-200 dark:border-gray-700">

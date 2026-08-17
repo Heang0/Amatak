@@ -273,7 +273,8 @@ export default function StorefrontView({
                   setActiveCategorySlug('All');
                 }}
               >
-                {isKm ? 'ទាំង​អស់' : 'All'} ({products.length})
+                <Grid size={16} className="shrink-0" />
+                {isKm ? 'ទាំង​អស់' : 'All'}
               </Link>
               {categories
                 .filter(cat => products.some(p => {
@@ -296,7 +297,7 @@ export default function StorefrontView({
                         className={getCategoryPillClass(activeCategorySlug === cat.slug)}
                         data-category-active={activeCategorySlug === cat.slug ? 'true' : 'false'}
                       >
-                        {params.locale === 'km' && cat.nameKm ? cat.nameKm : cat.name} ({count})
+                        {params.locale === 'km' && cat.nameKm ? cat.nameKm : cat.name}
                       </Link>
                     );
                   }
@@ -312,7 +313,7 @@ export default function StorefrontView({
                       className={getCategoryPillClass(activeCategorySlug === cat.slug)}
                       data-category-active={activeCategorySlug === cat.slug ? 'true' : 'false'}
                     >
-                      {params.locale === 'km' && cat.nameKm ? cat.nameKm : cat.name} ({count})
+                      {params.locale === 'km' && cat.nameKm ? cat.nameKm : cat.name}
                     </a>
                   );
                 })}
@@ -323,49 +324,16 @@ export default function StorefrontView({
         {/* CATEGORIES VIEW */}
         {viewMode === 'categories' && (
           <div className="pt-2 pb-10">
-            <div className="mb-8 max-w-4xl">
-              <div className="inline-flex items-center rounded-full bg-red-50 text-red-700 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] mb-4">
-                {isKm ? 'ញតាមប្រភេទ' : 'Shop by category'}
-              </div>
-              <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white tracking-tight mb-4">
-                {isKm ? 'ចំណាត់ថ្នាក់តាមប្រភេទរបស់យើង' : 'Explore products by category'}
+            <div className="mb-8 md:mb-12">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white tracking-tight mb-4">
+                {isKm ? 'ប្រភេទផលិតផល' : 'Categories'}
               </h2>
-              <p className="text-gray-600 dark:text-gray-400 text-base sm:text-lg max-w-2xl">
-                {isKm ? 'ស្គាល់ប្រភេទផលិតផលដែលត្រូវបានរៀបចំដោយប្រភេទសមរម្យសម្រាប់ការទិញងាយ និងជ្រាបចិត្តទាន់ពេល។' : 'Browse curated category collections to find what you need faster.'}
+              <p className="text-gray-500 dark:text-gray-400 text-base sm:text-lg max-w-2xl">
+                {isKm ? 'ស្វែងរកប្រភេទផលិតផលដែលយើងបានរៀបចំសម្រាប់អ្នក។' : 'Browse curated category collections to find what you need faster.'}
               </p>
             </div>
 
-            <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide scroll-smooth border-b border-gray-200 dark:border-gray-800 -mx-4 px-4 sm:-mx-0 sm:px-0 mb-10" ref={categoryTabsRef}>
-              <Link href={getAppendParams(`/${params.locale}/store/${params.slug}/products`)}
-                className={getCategoryPillClass(activeCategorySlug === 'All')}
-                data-category-active={activeCategorySlug === 'All' ? 'true' : 'false'}
-              >
-                {isKm ? 'ទាំង​អស់' : 'All'} ({products.length})
-              </Link>
-              {categories
-                .filter(cat => products.some(p => {
-                  const pCat = p.category?._id ?? p.category;
-                  return String(pCat) === String(cat._id);
-                }))
-                .map(cat => {
-                  const count = products.filter(p => {
-                    const pCat = p.category?._id ?? p.category;
-                    return String(pCat) === String(cat._id);
-                  }).length;
-                  return (
-                    <Link
-                      key={cat._id}
-                      href={getAppendParams(`/${params.locale}/store/${params.slug}/category/${cat.slug}`)}
-                      className={getCategoryPillClass(activeCategorySlug === cat.slug)}
-                      data-category-active={activeCategorySlug === cat.slug ? 'true' : 'false'}
-                    >
-                      {params.locale === 'km' && cat.nameKm ? cat.nameKm : cat.name} ({count})
-                    </Link>
-                  );
-                })}
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {categories.map(cat => {
                 const count = products.filter(p => {
                   const pCat = p.category?._id ?? p.category;
@@ -375,26 +343,30 @@ export default function StorefrontView({
                   <Link 
                     key={cat._id}
                     href={getAppendParams(`/${params.locale}/store/${params.slug}/category/${cat.slug}`)}
-                    className={`group relative overflow-hidden rounded-3xl border bg-white dark:bg-[#111111] p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl ${themeStyle === 'neo-brutalism' ? 'border-[3px] border-black dark:border-white' : 'border-gray-100 dark:border-gray-800'}`}
+                    className={`group relative overflow-hidden p-6 transition-all duration-300 flex flex-col justify-between min-h-[160px] ${
+                      themeStyle === 'neo-brutalism' 
+                        ? 'bg-white dark:bg-[#111111] border-[3px] border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1 hover:translate-x-[-1px] rounded-none' 
+                        : themeStyle === 'minimalist'
+                        ? 'bg-gray-50 dark:bg-[#1a1a1a] rounded-sm hover:bg-gray-100 dark:hover:bg-[#222]'
+                        : 'bg-white dark:bg-[#151515] rounded-3xl border border-gray-100 dark:border-gray-800 hover:-translate-y-1 hover:shadow-[0_12px_24px_-10px_rgba(0,0,0,0.05)]'
+                    }`}
                   >
-                    <div className="flex items-center justify-between gap-3 mb-5">
-                      <div>
-                        <p className="text-sm uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400">
-                          {isKm ? 'ក្រុម' : 'Category'}
-                        </p>
-                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white leading-tight">
-                          {isKm && cat.nameKm ? cat.nameKm : cat.name}
-                        </h3>
-                      </div>
-                      <span className="inline-flex items-center justify-center rounded-full bg-[#f8fafc] px-3 py-2 text-sm font-semibold text-gray-700 dark:bg-gray-900 dark:text-gray-200">
+                    <div className="flex items-start justify-between gap-3 mb-4">
+                      <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white leading-tight break-words pr-2">
+                        {isKm && cat.nameKm ? cat.nameKm : cat.name}
+                      </h3>
+                      <span className={`shrink-0 inline-flex items-center justify-center rounded-full px-3 py-1 text-sm font-semibold ${
+                        themeStyle === 'neo-brutalism' ? 'border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
+                      }`}>
                         {count} {isKm ? 'ផលិតផល' : 'items'}
                       </span>
                     </div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                      {isKm ? 'ស្វែងរកផលិតផលដ៏ល្អបំផុតក្នុងប្រភេទនេះ។' : 'Find top product picks in this category.'}
-                    </div>
-                    <div className="absolute right-6 bottom-6 rounded-full bg-gray-100 text-gray-900 dark:bg-white dark:text-black w-11 h-11 flex items-center justify-center transition-transform duration-300 group-hover:translate-x-1">
-                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
+                    
+                    <div className="flex items-center text-sm font-bold transition-colors mt-auto" style={{ color: primaryColor && primaryColor !== '#000000' && primaryColor !== '#000' ? primaryColor : undefined }}>
+                      <span className={`${!primaryColor || primaryColor === '#000000' || primaryColor === '#000' ? 'text-gray-900 dark:text-white' : ''}`}>
+                        {isKm ? 'មើលផលិតផល' : 'View products'}
+                      </span>
+                      <svg className={`w-4 h-4 ml-1.5 transition-transform duration-300 group-hover:translate-x-1 ${!primaryColor || primaryColor === '#000000' || primaryColor === '#000' ? 'text-gray-900 dark:text-white' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                     </div>
                   </Link>
                 );

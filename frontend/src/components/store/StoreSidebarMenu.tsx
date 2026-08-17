@@ -1,6 +1,6 @@
 'use client';
 
-import { X, Moon, Sun, Heart, ChevronDown } from 'lucide-react';
+import { X, Moon, Sun, Heart, ChevronDown, Home, ShoppingBag, Tag, Grid, User } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useTheme } from 'next-themes';
@@ -84,6 +84,11 @@ export default function StoreSidebarMenu({
     return appendParams(basePath);
   })();
 
+  const getActiveStyle = (isActive: boolean) => {
+    if (!isActive) return undefined;
+    return primaryColor && primaryColor !== '#000000' && primaryColor !== '#000' ? { color: primaryColor } : undefined;
+  };
+
   return (
     <>
       {/* Backdrop */}
@@ -96,7 +101,7 @@ export default function StoreSidebarMenu({
 
       {/* Drawer — slides from right */}
       <div
-        className={`fixed top-0 right-0 bottom-0 w-[90vw] sm:w-[85vw] md:max-w-[360px] z-[100] bg-white dark:bg-[#111111] flex flex-col transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 right-0 bottom-0 w-[70vw] sm:w-[320px] z-[100] bg-white dark:bg-[#111111] flex flex-col transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         } ${
           themeStyle === 'neo-brutalism'
@@ -107,110 +112,154 @@ export default function StoreSidebarMenu({
         }`}
       >
         {/* Header */}
-        <div className="h-14 md:h-16 flex items-center justify-between px-4 sm:px-5 border-b border-gray-100 dark:border-gray-800 shrink-0">
-          <div className="flex items-center gap-2 min-w-0">
+        <div className="h-16 md:h-[72px] flex items-center justify-between px-5 md:px-6 shrink-0">
+          <div className="flex items-center gap-3 min-w-0">
             {storeLogo && (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={storeLogo.replace('/upload/', '/upload/w_200,c_limit,q_auto/')} alt={storeName} className="h-8 md:h-9 w-auto object-contain shrink-0" />
+              <img src={storeLogo.replace('/upload/', '/upload/w_200,c_limit,q_auto/')} alt={storeName} className="h-8 md:h-10 w-auto object-contain shrink-0" />
             )}
-            <span className="text-base font-bold text-gray-900 dark:text-white tracking-tight truncate">{storeName}</span>
+            <span className="text-lg font-bold text-gray-900 dark:text-white tracking-tight truncate">{storeName}</span>
           </div>
-          <button onClick={onClose} className="ml-2 p-1 shrink-0 text-gray-900 dark:text-white active:opacity-50">
-            <X size={20} strokeWidth={1.5} className="w-5 h-5 sm:w-6 sm:h-6" />
+          <button onClick={onClose} className="p-2 -mr-2 shrink-0 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors">
+            <X size={24} strokeWidth={1.5} className="w-6 h-6" />
           </button>
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 overflow-y-auto px-4 sm:px-5 py-4 sm:py-6 flex flex-col gap-0">
-          <Link href={homeHref} onClick={onClose} className={`py-3 sm:py-4 text-lg sm:text-xl ${themeStyle === 'neo-brutalism' ? 'font-bold uppercase tracking-widest' : 'font-medium'} hover:opacity-50 transition-opacity border-b border-gray-50 dark:border-gray-900 ${pathname === `/${locale}` || pathname === '/' ? '' : 'text-gray-900 dark:text-white'}`} style={pathname === `/${locale}` || pathname === '/' ? { color: primaryColor || '#000' } : undefined}>
-            {homeLabel}
+        <nav className="flex-1 overflow-y-auto flex flex-col px-4 sm:px-6 pb-8">
+          
+          <div className="text-[13px] font-semibold text-gray-400 dark:text-gray-500 mt-6 mb-2 uppercase tracking-widest px-2">
+            {locale === 'km' ? 'ម៉ឺនុយ' : 'Menu'}
+          </div>
+
+          <Link href={homeHref} onClick={onClose} className="flex items-center gap-4 px-2 py-3.5 border-b border-gray-100 dark:border-gray-800/60 group">
+            <Home size={22} strokeWidth={1.5} className={`${pathname === `/${locale}` || pathname === '/' ? 'text-gray-900 dark:text-white' : 'text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-400'} transition-colors`} style={getActiveStyle(pathname === `/${locale}` || pathname === '/')} />
+            <span className={`text-[17px] text-gray-900 dark:text-white ${pathname === `/${locale}` || pathname === '/' ? 'font-semibold' : 'font-medium'} transition-colors`} style={getActiveStyle(pathname === `/${locale}` || pathname === '/')}>
+              {homeLabel}
+            </span>
           </Link>
-          <Link href={appendParams(`${basePath}/products`)} onClick={onClose} className={`py-3 sm:py-4 text-lg sm:text-xl ${themeStyle === 'neo-brutalism' ? 'font-bold uppercase tracking-widest' : 'font-medium'} hover:opacity-50 transition-opacity border-b border-gray-50 dark:border-gray-900 ${pathname?.endsWith('/products') || pathname?.endsWith('/products/') || pathname?.includes('/product/') ? '' : 'text-gray-900 dark:text-white'}`} style={pathname?.endsWith('/products') || pathname?.endsWith('/products/') || pathname?.includes('/product/') ? { color: primaryColor || '#000' } : undefined}>
-            {productsLabel}
+          
+          <Link href={appendParams(`${basePath}/products`)} onClick={onClose} className="flex items-center gap-4 px-2 py-3.5 border-b border-gray-100 dark:border-gray-800/60 group">
+            <ShoppingBag size={22} strokeWidth={1.5} className={`${pathname?.endsWith('/products') || pathname?.endsWith('/products/') || pathname?.includes('/product/') ? 'text-gray-900 dark:text-white' : 'text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-400'} transition-colors`} style={getActiveStyle(pathname?.endsWith('/products') || pathname?.endsWith('/products/') || pathname?.includes('/product/'))} />
+            <span className={`text-[17px] text-gray-900 dark:text-white ${pathname?.endsWith('/products') || pathname?.endsWith('/products/') || pathname?.includes('/product/') ? 'font-semibold' : 'font-medium'} transition-colors`} style={getActiveStyle(pathname?.endsWith('/products') || pathname?.endsWith('/products/') || pathname?.includes('/product/'))}>
+              {productsLabel}
+            </span>
           </Link>
-          <Link href={appendParams(`${basePath}/promotions`)} onClick={onClose} className={`py-3 sm:py-4 text-lg sm:text-xl ${themeStyle === 'neo-brutalism' ? 'font-bold uppercase tracking-widest' : 'font-medium'} hover:opacity-50 transition-opacity border-b border-gray-50 dark:border-gray-900 ${pathname?.endsWith('/promotions') || pathname?.endsWith('/promotions/') ? '' : 'text-gray-900 dark:text-white'}`} style={pathname?.endsWith('/promotions') || pathname?.endsWith('/promotions/') ? { color: primaryColor || '#000' } : undefined}>
-            {promotionsLabel}
+          
+          <Link href={appendParams(`${basePath}/promotions`)} onClick={onClose} className="flex items-center gap-4 px-2 py-3.5 border-b border-gray-100 dark:border-gray-800/60 group">
+            <Tag size={22} strokeWidth={1.5} className={`${pathname?.endsWith('/promotions') || pathname?.endsWith('/promotions/') ? 'text-gray-900 dark:text-white' : 'text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-400'} transition-colors`} style={getActiveStyle(pathname?.endsWith('/promotions') || pathname?.endsWith('/promotions/'))} />
+            <span className={`text-[17px] text-gray-900 dark:text-white ${pathname?.endsWith('/promotions') || pathname?.endsWith('/promotions/') ? 'font-semibold' : 'font-medium'} transition-colors`} style={getActiveStyle(pathname?.endsWith('/promotions') || pathname?.endsWith('/promotions/'))}>
+              {promotionsLabel}
+            </span>
           </Link>
-          {categories.length > 0 ? (
-            <div className="flex flex-col border-b border-gray-50 dark:border-gray-900">
+
+          {categories.length > 0 && (
+            <div className="flex flex-col border-b border-gray-100 dark:border-gray-800/60">
               <button
                 onClick={() => setIsCategoriesOpen(!isCategoriesOpen)}
-                className={`py-3 sm:py-4 text-lg sm:text-xl flex items-center justify-between ${themeStyle === 'neo-brutalism' ? 'font-bold uppercase tracking-widest' : 'font-medium'} hover:opacity-50 transition-opacity ${pathname?.endsWith('/categories') || pathname?.includes('/category/') ? '' : 'text-gray-900 dark:text-white'}`}
-                style={pathname?.endsWith('/categories') || pathname?.includes('/category/') ? { color: primaryColor || '#000' } : undefined}
+                className="flex items-center justify-between px-2 py-3.5 group w-full text-left"
               >
-                {allCategoriesLabel}
-                <ChevronDown size={20} className={`transition-transform duration-200 ${isCategoriesOpen ? 'rotate-180' : ''}`} />
+                <div className="flex items-center gap-4">
+                  <Grid size={22} strokeWidth={1.5} className={`${pathname?.endsWith('/categories') || pathname?.includes('/category/') ? 'text-gray-900 dark:text-white' : 'text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-400'} transition-colors`} style={getActiveStyle(pathname?.endsWith('/categories') || pathname?.includes('/category/'))} />
+                  <span className={`text-[17px] text-gray-900 dark:text-white ${pathname?.endsWith('/categories') || pathname?.includes('/category/') ? 'font-semibold' : 'font-medium'} transition-colors`} style={getActiveStyle(pathname?.endsWith('/categories') || pathname?.includes('/category/'))}>
+                    {allCategoriesLabel}
+                  </span>
+                </div>
+                <ChevronDown size={20} className={`text-gray-400 transition-transform duration-300 ${isCategoriesOpen ? 'rotate-180' : ''}`} />
               </button>
               
-              <div className={`flex flex-col pl-4 overflow-hidden transition-all duration-300 ${isCategoriesOpen ? 'max-h-[500px] mb-2 opacity-100' : 'max-h-0 opacity-0'}`}>
-                <Link
-                  href={appendParams(`${basePath}/categories`)}
-                  onClick={onClose}
-                  className={`py-2.5 px-1 text-sm sm:text-base font-semibold transition-colors border-b border-gray-50 dark:border-gray-900 last:border-0 ${pathname?.endsWith('/categories') || pathname?.endsWith('/categories/') ? '' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
-                  style={pathname?.endsWith('/categories') || pathname?.endsWith('/categories/') ? { color: primaryColor || '#000' } : undefined}
-                >
-                  {locale === 'km' ? 'មើលទាំងអស់' : 'View All Categories'}
-                </Link>
-                {categories.map(cat => {
-                  const isCatActive = pathname?.includes(`/category/${cat.slug}`);
-                  return (
-                    <Link
-                      key={cat._id}
-                      href={appendParams(`${basePath}/category/${cat.slug}`)}
-                      onClick={onClose}
-                      className={`py-2.5 px-1 text-sm sm:text-base font-semibold transition-colors border-b border-gray-50 dark:border-gray-900 last:border-0 break-words ${isCatActive ? '' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
-                      style={isCatActive ? { color: primaryColor || '#000' } : undefined}
-                    >
-                      {locale === 'km' && cat.nameKm ? cat.nameKm : cat.name}
-                    </Link>
-                  );
-                })}
+              <div className={`flex flex-col overflow-hidden transition-all duration-300 ease-in-out ${isCategoriesOpen ? 'max-h-[500px] opacity-100 pb-2' : 'max-h-0 opacity-0'}`}>
+                <div className="ml-[42px] flex flex-col gap-1 border-l-2 border-gray-100 dark:border-gray-800/60 pl-4 py-1 my-1">
+                  <Link
+                    href={appendParams(`${basePath}/categories`)}
+                    onClick={onClose}
+                    className={`py-2 text-[15px] text-gray-900 dark:text-white transition-colors ${pathname?.endsWith('/categories') || pathname?.endsWith('/categories/') ? 'font-semibold' : 'font-medium'}`}
+                    style={getActiveStyle(pathname?.endsWith('/categories') || pathname?.endsWith('/categories/'))}
+                  >
+                    {locale === 'km' ? 'មើលទាំងអស់' : 'View All Categories'}
+                  </Link>
+                  {categories.map(cat => {
+                    const isCatActive = pathname?.includes(`/category/${cat.slug}`);
+                    return (
+                      <Link
+                        key={cat._id}
+                        href={appendParams(`${basePath}/category/${cat.slug}`)}
+                        onClick={onClose}
+                        className={`py-2 text-[15px] text-gray-900 dark:text-white transition-colors break-words ${isCatActive ? 'font-semibold' : 'font-medium'}`}
+                        style={getActiveStyle(isCatActive)}
+                      >
+                        {locale === 'km' && cat.nameKm ? cat.nameKm : cat.name}
+                      </Link>
+                    );
+                  })}
+                </div>
               </div>
             </div>
-          ) : (
-            <Link href={appendParams(`${basePath}/categories`)} onClick={onClose} className={`py-3 sm:py-4 text-lg sm:text-xl ${themeStyle === 'neo-brutalism' ? 'font-bold uppercase tracking-widest' : 'font-medium'} hover:opacity-50 transition-opacity border-b border-gray-50 dark:border-gray-900 ${pathname?.endsWith('/categories') || pathname?.endsWith('/categories/') || pathname?.includes('/category/') ? '' : 'text-gray-900 dark:text-white'}`} style={pathname?.endsWith('/categories') || pathname?.endsWith('/categories/') || pathname?.includes('/category/') ? { color: primaryColor || '#000' } : undefined}>
-              {allCategoriesLabel}
-            </Link>
           )}
 
-          <Link href={cartHref} onClick={onClose} className={`py-3 sm:py-4 mt-4 text-lg sm:text-xl ${themeStyle === 'neo-brutalism' ? 'font-bold uppercase tracking-widest' : 'font-medium'} hover:opacity-50 transition-opacity border-b border-gray-50 dark:border-gray-900 ${pathname?.endsWith('/cart') || pathname?.endsWith('/cart/') ? '' : 'text-gray-900 dark:text-white'}`} style={pathname?.endsWith('/cart') || pathname?.endsWith('/cart/') ? { color: primaryColor || '#000' } : undefined}>
-            {cartLabel}
+          <div className="text-[13px] font-semibold text-gray-400 dark:text-gray-500 mt-8 mb-2 uppercase tracking-widest px-2">
+            {locale === 'km' ? 'គណនីរបស់អ្នក' : 'Your Account'}
+          </div>
+
+          <Link href={cartHref} onClick={onClose} className="flex items-center gap-4 px-2 py-3.5 border-b border-gray-100 dark:border-gray-800/60 group">
+            <ShoppingBag size={22} strokeWidth={1.5} className={`${pathname?.endsWith('/cart') || pathname?.endsWith('/cart/') ? 'text-gray-900 dark:text-white' : 'text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-400'} transition-colors`} style={getActiveStyle(pathname?.endsWith('/cart') || pathname?.endsWith('/cart/'))} />
+            <span className={`text-[17px] text-gray-900 dark:text-white ${pathname?.endsWith('/cart') || pathname?.endsWith('/cart/') ? 'font-semibold' : 'font-medium'} transition-colors`} style={getActiveStyle(pathname?.endsWith('/cart') || pathname?.endsWith('/cart/'))}>
+              {cartLabel}
+            </span>
           </Link>
-          <Link href={favoritesHref} onClick={onClose} className={`py-3 sm:py-4 text-lg sm:text-xl ${themeStyle === 'neo-brutalism' ? 'font-bold uppercase tracking-widest' : 'font-medium'} hover:opacity-50 transition-opacity border-b border-gray-50 dark:border-gray-900 flex items-center gap-2 ${pathname?.endsWith('/favorites') || pathname?.endsWith('/favorites/') ? '' : 'text-gray-900 dark:text-white'}`} style={pathname?.endsWith('/favorites') || pathname?.endsWith('/favorites/') ? { color: primaryColor || '#000' } : undefined}>
-            <Heart size={20} strokeWidth={1.5} />
-            {favoritesLabel}
-            {totalFavorites > 0 && (
-              <span className="ml-auto min-w-[24px] h-6 px-2 text-xs font-bold text-white bg-red-500 rounded-full flex items-center justify-center">
-                {totalFavorites > 99 ? '99+' : totalFavorites}
-              </span>
-            )}
+          
+          <Link href={favoritesHref} onClick={onClose} className="flex items-center gap-4 px-2 py-3.5 border-b border-gray-100 dark:border-gray-800/60 group">
+            <Heart size={22} strokeWidth={1.5} className={`${pathname?.endsWith('/favorites') || pathname?.endsWith('/favorites/') ? 'text-gray-900 dark:text-white' : 'text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-400'} transition-colors`} style={getActiveStyle(pathname?.endsWith('/favorites') || pathname?.endsWith('/favorites/'))} />
+            <span className={`text-[17px] text-gray-900 dark:text-white flex items-center flex-1 ${pathname?.endsWith('/favorites') || pathname?.endsWith('/favorites/') ? 'font-semibold' : 'font-medium'} transition-colors`} style={getActiveStyle(pathname?.endsWith('/favorites') || pathname?.endsWith('/favorites/'))}>
+              {favoritesLabel}
+              {totalFavorites > 0 && (
+                <span className="ml-auto min-w-[22px] h-[22px] px-1.5 text-[11px] font-bold text-white bg-gray-900 dark:bg-white dark:text-black rounded-full flex items-center justify-center" style={primaryColor && primaryColor !== '#000000' && primaryColor !== '#000' ? { backgroundColor: primaryColor, color: '#fff' } : undefined}>
+                  {totalFavorites > 99 ? '99+' : totalFavorites}
+                </span>
+              )}
+            </span>
           </Link>
-          <Link href={profileHref} onClick={onClose} className={`py-3 sm:py-4 text-lg sm:text-xl ${themeStyle === 'neo-brutalism' ? 'font-bold uppercase tracking-widest' : 'font-medium'} hover:opacity-50 transition-opacity border-b border-gray-50 dark:border-gray-900 ${pathname?.includes('/profile') ? '' : 'text-gray-900 dark:text-white'}`} style={pathname?.includes('/profile') ? { color: primaryColor || '#000' } : undefined}>
-            {accountLabel}
+          
+          <Link href={profileHref} onClick={onClose} className="flex items-center gap-4 px-2 py-3.5 border-b border-gray-100 dark:border-gray-800/60 group">
+            <User size={22} strokeWidth={1.5} className={`${pathname?.includes('/profile') ? 'text-gray-900 dark:text-white' : 'text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-400'} transition-colors`} style={getActiveStyle(pathname?.includes('/profile'))} />
+            <span className={`text-[17px] text-gray-900 dark:text-white ${pathname?.includes('/profile') ? 'font-semibold' : 'font-medium'} transition-colors`} style={getActiveStyle(pathname?.includes('/profile'))}>
+              {accountLabel}
+            </span>
           </Link>
         </nav>
 
         {/* Footer */}
-        <div className="shrink-0 px-3 sm:px-5 pb-6 sm:pb-8 pt-3 sm:pt-4 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between gap-3">
-          {mounted && (
-            <button
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white uppercase tracking-widest transition-colors whitespace-nowrap"
-            >
-              {theme === 'dark' ? <><Sun size={14} className="sm:w-4 sm:h-4" /> Light</> : <><Moon size={14} className="sm:w-4 sm:h-4" /> Dark</>}
-            </button>
-          )}
-          <a href={langHref} className="flex items-center gap-1 sm:gap-2 hover:opacity-60 transition-opacity ml-auto">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={locale === 'en' ? 'https://flagcdn.com/w40/us.png' : 'https://flagcdn.com/w40/kh.png'}
-              alt={locale}
-              className="w-6 sm:w-7 h-auto rounded-sm shadow"
-            />
-            <span className="text-xs sm:text-sm text-gray-500 font-medium uppercase tracking-widest">
-              {locale === 'en' ? 'EN' : 'KH'}
+        <div className="shrink-0 px-6 py-6 border-t border-gray-100 dark:border-gray-800 flex flex-col gap-4 bg-gray-50 dark:bg-[#151515]">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">
+              {locale === 'km' ? 'រចនាបថ' : 'Appearance'}
             </span>
-          </a>
+            {mounted && (
+              <button
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                className="flex items-center justify-center p-2 rounded-full bg-white dark:bg-[#222] shadow-sm border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-white transition-all hover:scale-105 active:scale-95"
+              >
+                {theme === 'dark' ? <Sun size={18} strokeWidth={2} /> : <Moon size={18} strokeWidth={2} />}
+              </button>
+            )}
+          </div>
+          
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">
+              {locale === 'km' ? 'ភាសា' : 'Language'}
+            </span>
+            <a href={langHref} className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-[#222] shadow-sm border border-gray-200 dark:border-gray-700 hover:scale-105 active:scale-95 transition-all">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={locale === 'en' ? 'https://flagcdn.com/w40/us.png' : 'https://flagcdn.com/w40/kh.png'}
+                alt={locale}
+                className="w-5 h-auto rounded-[2px]"
+              />
+              <span className="text-xs font-bold uppercase tracking-widest text-gray-700 dark:text-white">
+                {locale === 'en' ? 'EN' : 'KH'}
+              </span>
+            </a>
+          </div>
         </div>
       </div>
     </>

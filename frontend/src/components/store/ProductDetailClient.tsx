@@ -229,12 +229,12 @@ export default function ProductDetailClient({
           <div className="hidden md:block mt-8">
             <button
               onClick={handleAddToCart}
-              className={`w-full py-4 text-lg font-bold text-white transition-all flex items-center justify-center gap-2 ${
+              className={`w-full py-3.5 text-[15px] sm:text-base font-semibold text-white transition-all flex items-center justify-center gap-2 ${
                 themeStyle === 'neo-brutalism'
                   ? 'border-[3px] border-black dark:border-white rounded-none shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none uppercase tracking-widest'
                   : themeStyle === 'minimalist'
                   ? 'rounded-sm tracking-widest uppercase hover:opacity-90'
-                  : 'rounded-2xl shadow-xl hover:scale-[1.02] active:scale-[0.98]'
+                  : 'rounded-xl shadow-lg hover:scale-[1.02] active:scale-[0.98]'
               }`}
               style={{ backgroundColor: primaryColor || '#000' }}
             >
@@ -266,12 +266,12 @@ export default function ProductDetailClient({
       <div className="fixed left-0 right-0 bottom-16 p-4 bg-white dark:bg-[#111111] border-t border-gray-100 dark:border-gray-800 md:hidden z-[100]">
         <button
           onClick={handleAddToCart}
-          className={`w-full py-4 text-lg font-bold text-white transition-all ${
+          className={`w-full py-3.5 text-[15px] sm:text-base font-semibold text-white transition-all ${
             themeStyle === 'neo-brutalism'
               ? 'border-[3px] border-black dark:border-white rounded-none uppercase tracking-widest'
               : themeStyle === 'minimalist'
               ? 'rounded-sm tracking-widest uppercase hover:opacity-90'
-              : 'rounded-2xl shadow-xl hover:opacity-95'
+              : 'rounded-xl shadow-lg hover:opacity-95'
           }`}
           style={{ backgroundColor: primaryColor || '#000' }}
         >

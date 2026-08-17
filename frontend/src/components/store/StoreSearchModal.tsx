@@ -81,8 +81,8 @@ export default function StoreSearchModal({ isOpen, onClose, slug, locale, primar
             style={{ '--tw-ring-color': primaryColor } as any}
           />
         </div>
-        <button onClick={onClose} className="p-2 text-gray-500 hover:text-black dark:hover:text-white transition-colors bg-gray-100 dark:bg-gray-800 rounded-full active:scale-95">
-          <X size={20} />
+        <button onClick={onClose} className="p-2 text-red-600 bg-red-50 hover:bg-red-100 dark:text-red-400 dark:bg-red-500/10 dark:hover:bg-red-500/20 transition-colors rounded-full active:scale-95">
+          <X size={20} strokeWidth={2.5} />
         </button>
       </div>
 

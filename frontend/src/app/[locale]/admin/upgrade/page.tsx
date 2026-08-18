@@ -252,21 +252,24 @@ export default function UpgradePlan() {
   };
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-white">{t('title')}</h2>
+    <div className="space-y-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-[#111111] p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Manage your subscription plan</p>
+        </div>
         
         {/* Toggle Switch */}
-        <div className="flex items-center bg-gray-100 dark:bg-[#111111] p-1 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800">
+        <div className="flex items-center bg-gray-50 dark:bg-black p-1 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 shrink-0">
           <button 
             onClick={() => setBillingCycle('monthly')}
-            className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all ${billingCycle === 'monthly' ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm' : 'text-gray-500 hover:text-gray-900 dark:hover:text-white'}`}
+            className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all ${billingCycle === 'monthly' ? 'bg-white dark:bg-[#222] text-gray-900 dark:text-white shadow-sm' : 'text-gray-500 hover:text-gray-900 dark:hover:text-white'}`}
           >
             {isKm ? 'ប្រចាំខែ' : 'Monthly'}
           </button>
           <button 
             onClick={() => setBillingCycle('annually')}
-            className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ${billingCycle === 'annually' ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm' : 'text-gray-500 hover:text-gray-900 dark:hover:text-white'}`}
+            className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ${billingCycle === 'annually' ? 'bg-white dark:bg-[#222] text-gray-900 dark:text-white shadow-sm' : 'text-gray-500 hover:text-gray-900 dark:hover:text-white'}`}
           >
             {isKm ? 'ប្រចាំឆ្នាំ' : 'Annually'}
             <span className="bg-[#E1232E]/10 text-[#E1232E] text-[10px] uppercase px-1.5 py-0.5 rounded font-black tracking-wider">Save 30%</span>
@@ -306,8 +309,8 @@ export default function UpgradePlan() {
               
               <div className="flex items-center gap-4 bg-gray-50 dark:bg-gray-900/50 p-4 rounded-xl border border-gray-100 dark:border-gray-800">
                 {storeData.branding?.logoUrl ? (
-                  <div className="w-[120px] h-auto max-h-16 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex items-center justify-center shrink-0">
-                    <img src={storeData.branding.logoUrl} alt="Store Logo" className="w-full h-full object-contain p-1" />
+                  <div className="w-12 h-12 rounded-full overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex items-center justify-center shrink-0">
+                    <img src={storeData.branding.logoUrl} alt="Store Logo" className="w-full h-full object-cover p-0.5" />
                   </div>
                 ) : (
                   <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 text-[#E84C3D] rounded-full flex items-center justify-center font-bold text-lg shrink-0">

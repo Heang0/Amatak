@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useAuthStore } from '@/lib/store/useAuthStore';
 import { Tag, Plus, Trash2, Edit2, CheckCircle2, XCircle } from 'lucide-react';
 import { format } from 'date-fns';
@@ -161,15 +162,15 @@ export default function AdminPromotionsPage({ params }: { params: { locale: stri
   if (loading) return <div className="p-8">Loading...</div>;
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-[#111111] p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{isKm ? 'លេខកូដបញ្ចុះតម្លៃ' : 'Promo Codes'}</h1>
-          <p className="text-sm text-gray-500">{isKm ? 'បង្កើតលេខកូដបញ្ចុះតម្លៃសម្រាប់អតិថិជនរបស់អ្នក។' : 'Create discount codes for your customers.'}</p>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{isKm ? 'លេខកូដបញ្ចុះតម្លៃ' : 'Promo Codes'}</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{isKm ? 'បង្កើតលេខកូដបញ្ចុះតម្លៃសម្រាប់អតិថិជនរបស់អ្នក។' : 'Create discount codes for your customers.'}</p>
         </div>
         <button 
           onClick={() => { resetForm(); setShowModal(true); }}
-          className="w-full sm:w-auto justify-center bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 flex items-center gap-2"
+          className="w-full sm:w-auto justify-center bg-black dark:bg-white text-white dark:text-black px-4 py-2.5 rounded-lg text-sm font-medium hover:opacity-90 flex items-center gap-2 whitespace-nowrap shrink-0"
         >
           <Plus size={16} /> {isKm ? 'បង្កើតលេខកូដថ្មី' : 'New Promo Code'}
         </button>
@@ -237,9 +238,9 @@ export default function AdminPromotionsPage({ params }: { params: { locale: stri
         </table>
       </div>
 
-      {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-          <div className="bg-white dark:bg-[#111111] w-full max-w-md rounded-2xl shadow-xl overflow-hidden">
+      {showModal && typeof window !== 'undefined' && createPortal(
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50">
+          <div className="bg-white dark:bg-[#111111] w-full max-w-md rounded-2xl shadow-xl max-h-[95vh] overflow-y-auto flex flex-col">
             <div className="p-6 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
               <h2 className="text-xl font-bold">{editingPromoId ? (isKm ? 'កែប្រែលេខកូដ' : 'Update Promo Code') : (isKm ? 'បង្កើតលេខកូដថ្មី' : 'Create Promo Code')}</h2>
               <button onClick={() => { setShowModal(false); resetForm(); }} className="text-gray-400 hover:text-gray-900 dark:hover:text-white"><XCircle size={20} /></button>
@@ -288,7 +289,8 @@ export default function AdminPromotionsPage({ params }: { params: { locale: stri
               </button>
             </form>
           </div>
-        </div>
+        </div>,
+        document.getElementById('app-root') || document.body
       )}
     </div>
   );

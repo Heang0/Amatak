@@ -36,16 +36,16 @@ export default function AdminDashboard() {
   }, [user]);
 
   return (
-    <div className="space-y-8 max-w-6xl mx-auto">
-      <div className="bg-white dark:bg-[#111111] rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-gray-800 flex justify-between items-center">
+    <div className="space-y-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-[#111111] p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
         <div>
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">{t('overview_title')}</h2>
-          <p className="text-gray-500 dark:text-gray-400">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('overview_title')}</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
             {t('welcome_back', { name: user?.name || t('guest') })}
           </p>
         </div>
-        <Link href="/admin/settings" className="p-3 bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-          <Settings size={24} />
+        <Link href="/admin/settings" className="p-2.5 bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors shrink-0">
+          <Settings size={20} />
         </Link>
       </div>
 

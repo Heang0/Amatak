@@ -289,10 +289,16 @@ export default function AdminSettings() {
   const isFreePlan = Boolean(storeData && (!storeData.plan?.planId || (storeData.plan?.planId as any)?.name === 'Free' || typeof storeData.plan?.planId === 'string'));
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
+    <>
       <AdminToast message={successMsg} visible={!!successMsg} />
+      <div className="space-y-6">
       
-      <h2 className="text-3xl font-bold text-gray-900 dark:text-white">{t('settings')}</h2>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-[#111111] p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('settings')}</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{isKm ? 'គ្រប់គ្រងការកំណត់ហាង និងគណនីរបស់អ្នក' : 'Manage your store and profile settings'}</p>
+        </div>
+      </div>
 
       {/* Tabs */}
       <div className="flex space-x-2 sm:space-x-4 border-b border-gray-200 dark:border-gray-800 overflow-x-auto no-scrollbar mb-6 pb-px">
@@ -784,5 +790,6 @@ export default function AdminSettings() {
         )}
       </div>
     </div>
+    </>
   );
 }

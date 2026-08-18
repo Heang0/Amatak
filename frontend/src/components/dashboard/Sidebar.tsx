@@ -64,16 +64,16 @@ export function Sidebar({ items, title, isOpen, onClose }: SidebarProps) {
       `}>
         {/* Logo / Title Area */}
         <div className="h-16 flex items-center justify-between px-6 border-b border-gray-200 dark:border-gray-800">
-          <Link href="/" className="text-xl font-bold text-[#E84C3D] flex items-center gap-2">
-            <div className="w-8 h-8 bg-[#E84C3D] rounded-lg flex items-center justify-center text-white text-sm overflow-hidden">
+          <div className="text-xl font-bold text-[#E84C3D] flex items-center gap-2">
+            <div className="w-8 h-8 bg-[#E84C3D] rounded-lg flex items-center justify-center text-white text-sm overflow-hidden shrink-0">
               {storeLogo ? (
                 <img src={storeLogo} alt="Logo" className="w-full h-full object-cover" />
               ) : (
                 'S'
               )}
             </div>
-            <span>{title}</span>
-          </Link>
+            <span className="truncate">{title}</span>
+          </div>
           <button onClick={onClose} className="lg:hidden p-2 text-gray-500 hover:text-gray-900 dark:hover:text-white">
             <X size={20} />
           </button>

@@ -59,8 +59,13 @@ export default function OrderTracking() {
   };
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto">
-      <h2 className="text-3xl font-bold text-gray-900 dark:text-white">{t('title')}</h2>
+    <div className="space-y-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-[#111111] p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Track and manage customer orders</p>
+        </div>
+      </div>
 
       {loading ? (
         <p className="text-gray-500 dark:text-gray-400">{t('loading')}</p>
@@ -76,7 +81,7 @@ export default function OrderTracking() {
                 <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t('payment')}</th>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t('fulfillment')}</th>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t('date')}</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t('actions')}</th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{locale === 'km' ? 'សកម្មភាព' : 'Action'}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-800">

@@ -30,8 +30,8 @@ export function DashboardLayout({ children, sidebarItems, title }: DashboardLayo
           onMenuClick={() => setIsSidebarOpen(true)} 
         />
         
-        <main id="dashboard-main" className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
-          <div className="max-w-7xl mx-auto">
+        <main id="dashboard-main" className="flex-1 overflow-y-auto py-6 flex flex-col">
+          <div className="w-full px-4 sm:px-6 lg:px-8">
             {children}
           </div>
         </main>

@@ -117,7 +117,7 @@ export default function StoreBottomNav({ locale, primaryColor, slug, initialThem
         <div className="flex h-16 px-2 items-center">
           {navItems.map((item) => {
             let itemClass = "flex flex-1 flex-col items-center justify-center gap-0.5 relative h-full transition-all ";
-            let activeStyle: any = { color: item.isActive ? primaryColor : '#9CA3AF' };
+            let activeStyle: any = { color: item.isActive ? primaryColor : '#6B7280' };
 
             if (themeStyle === 'neo-brutalism' && item.isActive) {
               itemClass += " border-2 border-black dark:border-white bg-[#f0f0f0] dark:bg-gray-800 my-1 mx-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] translate-y-[-2px] ";

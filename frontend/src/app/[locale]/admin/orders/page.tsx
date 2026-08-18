@@ -60,67 +60,88 @@ export default function OrderTracking() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-[#111111] p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+      <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 pb-2">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Track and manage customer orders</p>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('title')}</h2>
+          <p className="text-sm text-gray-500 dark:text-white/40 mt-0.5">Track and manage customer orders</p>
         </div>
       </div>
 
       {loading ? (
-        <p className="text-gray-500 dark:text-gray-400">{t('loading')}</p>
+        <div className="bg-white dark:bg-[#111111] rounded-2xl border border-gray-100 dark:border-gray-800 p-12 flex flex-col items-center gap-3">
+          <div className="w-8 h-8 border-2 border-[#E84C3D]/30 border-t-[#E84C3D] rounded-full animate-spin" />
+          <p className="text-sm text-gray-400">{t('loading')}</p>
+        </div>
       ) : (
-        <div className="bg-white dark:bg-[#111111] rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
-            <thead className="bg-gray-50 dark:bg-gray-900/50">
-              <tr>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t('order_id')}</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t('customer')}</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t('items')}</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t('total_amount')}</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t('payment')}</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t('fulfillment')}</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t('date')}</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{locale === 'km' ? 'សកម្មភាព' : 'Action'}</th>
+        <div className="bg-white dark:bg-[#111111] rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
+          <div className="overflow-x-auto">
+          <table className="min-w-full">
+            <thead>
+              <tr className="border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/30">
+                <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('order_id')}</th>
+                <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('customer')}</th>
+                <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('items')}</th>
+                <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('total_amount')}</th>
+                <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('payment')}</th>
+                <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('fulfillment')}</th>
+                <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('date')}</th>
+                <th className="px-6 py-4 text-right text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{locale === 'km' ? 'សកម្មភាព' : 'Action'}</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
+            <tbody className="divide-y divide-gray-50 dark:divide-gray-800/50">
               {orders.map((order) => (
-                <tr key={order._id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400 font-mono">{order._id.substring(0, 8)}...</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                    {order.isGuest ? order.guestInfo?.name || t('guest') : order.customerId?.name || 'Unknown User'}
-                    <div className="text-xs text-gray-500 dark:text-gray-400">{order.isGuest ? order.guestInfo?.phone : order.customerId?.email}</div>
+                <tr key={order._id} className="hover:bg-gray-50/70 dark:hover:bg-gray-800/30 transition-colors duration-150 group">
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className="text-xs font-mono bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-2 py-1 rounded-md">
+                      #{order._id.substring(0, 8)}
+                    </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">
-                    {order.items.length} {t('items')}
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center text-xs font-bold text-gray-600 dark:text-gray-300 shrink-0">
+                        {(order.isGuest ? order.guestInfo?.name : order.customerId?.name)?.charAt(0)?.toUpperCase() || '?'}
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                          {order.isGuest ? order.guestInfo?.name || t('guest') : order.customerId?.name || 'Unknown'}
+                        </p>
+                        <p className="text-xs text-gray-400">{order.isGuest ? order.guestInfo?.phone : order.customerId?.email}</p>
+                      </div>
+                    </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900 dark:text-white">${order.totalAmount.toFixed(2)}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{order.items.length} <span className="text-gray-400">{t('items')}</span></span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className="text-sm font-black text-gray-900 dark:text-white">${order.totalAmount.toFixed(2)}</span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
                     {order.paymentStatus === 'PAID' ? (
-                      <span className="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800/50">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 ring-1 ring-emerald-200 dark:ring-emerald-800/50">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
                         {t('status_paid')}
                       </span>
                     ) : (
-                      <span className="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800/50">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 ring-1 ring-amber-200 dark:ring-amber-800/50">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block" />
                         {t('status_pending')}
                       </span>
                     )}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium" onClick={(e) => e.stopPropagation()}>
+                  <td className="px-6 py-4 whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
                     <select
                       value={order.orderStatus || 'PENDING'}
                       onChange={(e) => handleStatusChange(order._id, e.target.value)}
-                      className={`px-3 py-1.5 rounded-lg text-sm font-semibold border focus:outline-none focus:ring-2 focus:ring-[#E84C3D] transition-colors ${
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold border-0 ring-1 focus:outline-none focus:ring-2 focus:ring-[#E84C3D]/50 transition-colors cursor-pointer ${
                         order.orderStatus === 'DELIVERED' 
-                          ? 'bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800/50'
+                          ? 'bg-emerald-50 text-emerald-700 ring-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400 dark:ring-emerald-800/50'
                           : order.orderStatus === 'SHIPPED'
-                          ? 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800/50'
+                          ? 'bg-blue-50 text-blue-700 ring-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:ring-blue-800/50'
                           : order.orderStatus === 'PROCESSING'
-                          ? 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-900/20 dark:text-purple-400 dark:border-purple-800/50'
+                          ? 'bg-purple-50 text-purple-700 ring-purple-200 dark:bg-purple-900/20 dark:text-purple-400 dark:ring-purple-800/50'
                           : order.orderStatus === 'CANCELLED'
-                          ? 'bg-red-50 text-red-700 border-red-200 dark:bg-red-900/20 dark:text-red-400 dark:border-red-800/50'
-                          : 'bg-yellow-50 text-yellow-700 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400 dark:border-yellow-800/50'
+                          ? 'bg-red-50 text-red-700 ring-red-200 dark:bg-red-900/20 dark:text-red-400 dark:ring-red-800/50'
+                          : 'bg-amber-50 text-amber-700 ring-amber-200 dark:bg-amber-900/20 dark:text-amber-400 dark:ring-amber-800/50'
                       }`}
                     >
                       <option value="PENDING">{t('status_pending')}</option>
@@ -130,32 +151,39 @@ export default function OrderTracking() {
                       <option value="CANCELLED">{t('status_cancelled')}</option>
                     </select>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
                     {new Date(order.createdAt).toLocaleDateString()}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <td className="px-6 py-4 whitespace-nowrap text-right">
                     <button 
                       onClick={() => setSelectedOrder(order)} 
-                      className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors p-1"
-                      title={t('order_details')}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                         <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
                         <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
                       </svg>
+                      {t('order_details')}
                     </button>
                   </td>
                 </tr>
               ))}
               {orders.length === 0 && (
                 <tr>
-                  <td colSpan={8} className="px-6 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
-                    {t('no_orders')}
+                  <td colSpan={8} className="px-6 py-16 text-center">
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center text-gray-400">
+                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+                      </div>
+                      <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('no_orders')}</p>
+                    </div>
                   </td>
                 </tr>
               )}
             </tbody>
           </table>
+          </div>
+
           
           {totalPages > 1 && (
             <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between bg-gray-50 dark:bg-[#111111]">

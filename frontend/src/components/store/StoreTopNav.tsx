@@ -129,16 +129,8 @@ export default function StoreTopNav({ storeName, storeLogo, primaryColor, slug, 
           </span>
         </Link>
 
-        {/* MOBILE Right: favorites + cart badge + hamburger */}
+        {/* MOBILE Right: cart badge + hamburger */}
         <div className="flex md:hidden shrink-0 items-center justify-end gap-1">
-          <Link href={favoritesHref} className="relative p-2 text-gray-900 dark:text-white active:opacity-50">
-            <Heart size={22} strokeWidth={1.5} />
-            {mounted && totalFavorites > 0 && (
-              <span className="absolute top-0.5 right-0.5 min-w-[16px] h-4 px-[3px] text-[9px] font-bold text-white bg-red-500 rounded-full flex items-center justify-center leading-none">
-                {totalFavorites > 99 ? '99+' : totalFavorites}
-              </span>
-            )}
-          </Link>
           <button onClick={() => setDrawerOpen(true)} className="relative p-2 text-gray-900 dark:text-white active:opacity-50">
             <ShoppingCart size={22} strokeWidth={1.5} />
             {mounted && totalItems > 0 && (

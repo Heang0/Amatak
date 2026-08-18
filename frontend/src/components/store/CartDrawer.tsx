@@ -130,7 +130,10 @@ export default function CartDrawer({
                     )}
                   </div>
                   <div className="flex items-center justify-between mt-2">
-                    <span className="font-bold text-gray-900 dark:text-white">
+                    <span 
+                      className="font-bold text-[#E84C3D] dark:text-[#ff5c4d]"
+                      style={{ color: primaryColor && primaryColor !== '#000000' && primaryColor !== '#000' ? primaryColor : undefined }}
+                    >
                       ${item.price.toFixed(2)}
                     </span>
                     <div className="flex items-center gap-3 bg-gray-50 dark:bg-gray-900 px-2 py-1 rounded-lg border border-gray-200 dark:border-gray-700">
@@ -140,7 +143,7 @@ export default function CartDrawer({
                       >
                         <Minus size={14} />
                       </button>
-                      <span className="text-sm font-semibold w-4 text-center dark:text-white">
+                      <span className="text-sm font-semibold text-gray-900 dark:text-white min-w-[1.25rem] text-center">
                         {item.quantity}
                       </span>
                       <button
@@ -164,7 +167,10 @@ export default function CartDrawer({
               <span className="text-gray-500 dark:text-gray-400 font-medium">
                 {isKm ? 'សរុប' : 'Subtotal'}
               </span>
-              <span className="text-xl font-bold text-gray-900 dark:text-white tracking-tight">
+              <span 
+                className="text-xl font-bold text-[#E84C3D] dark:text-[#ff5c4d] tracking-tight"
+                style={{ color: primaryColor && primaryColor !== '#000000' && primaryColor !== '#000' ? primaryColor : undefined }}
+              >
                 ${getTotalPrice().toFixed(2)}
               </span>
             </div>

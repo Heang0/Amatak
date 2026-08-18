@@ -12,6 +12,7 @@ interface BakongKHQRModalProps {
   merchantName?: string;
   isPaid: boolean;
   locale?: string;
+  mode?: 'order' | 'subscription';
   onClose: () => void;
   onSuccessClose?: () => void;
   onSimulatePay?: () => void;
@@ -24,6 +25,7 @@ export default function BakongKHQRModal({
   merchantName = 'ShoppingOT Merchant',
   isPaid,
   locale = 'en',
+  mode = 'order',
   onClose,
   onSuccessClose,
 }: BakongKHQRModalProps) {
@@ -44,10 +46,18 @@ export default function BakongKHQRModal({
     cancelConfirm: isKm ? 'តើអ្នកប្រាកដជាចង់បោះបង់ប្រតិបត្តិការនេះមែនទេ?' : 'Are you sure you want to cancel this transaction?',
     no: isKm ? 'ទេ' : 'No, keep it',
     yes: isKm ? 'បាទ/ចាស, បោះបង់' : 'Yes, cancel',
-    paymentSuccessful: isKm ? 'ការទូទាត់បានជោគជ័យ!' : 'Payment Successful!',
-    verified: isKm ? 'ប្រតិបត្តិការរបស់អ្នកត្រូវបានផ្ទៀងផ្ទាត់និងបញ្ជាក់ដោយជោគជ័យ។' : 'Your payment has been verified and confirmed.',
-    orderConfirmed: isKm ? 'ការបញ្ជាទិញបានបញ្ជាក់' : 'Order Confirmed',
-    continue: isKm ? 'បន្ត' : 'Continue Shopping',
+    paymentSuccessful: mode === 'subscription' 
+      ? (isKm ? 'ការទិញសេវាកម្មជោគជ័យ!' : 'Upgrade Successful!')
+      : (isKm ? 'ការទូទាត់បានជោគជ័យ!' : 'Payment Successful!'),
+    verified: mode === 'subscription'
+      ? (isKm ? 'អ្នកបានទិញគម្រោងនេះដោយជោគជ័យ។' : 'Your plan has been upgraded successfully.')
+      : (isKm ? 'ប្រតិបត្តិការរបស់អ្នកត្រូវបានផ្ទៀងផ្ទាត់និងបញ្ជាក់ដោយជោគជ័យ។' : 'Your payment has been verified and confirmed.'),
+    orderConfirmed: mode === 'subscription'
+      ? (isKm ? 'ការជាវបានបញ្ជាក់' : 'Subscription Confirmed')
+      : (isKm ? 'ការបញ្ជាទិញបានបញ្ជាក់' : 'Order Confirmed'),
+    continue: mode === 'subscription'
+      ? (isKm ? 'ត្រឡប់ទៅកាន់ផ្ទាំងគ្រប់គ្រង' : 'Back to Dashboard')
+      : (isKm ? 'បន្តទិញទំនិញ' : 'Continue Shopping'),
     expiresIn: isKm ? 'ផុតកំណត់ក្នុង' : 'Expires in',
     scanQR: isKm ? 'ស្កេនដើម្បីទូទាត់' : 'Scan to Pay',
     awaitingPayment: isKm ? 'កំពុងរង់ចាំការទូទាត់...' : 'Awaiting payment...',
@@ -154,13 +164,13 @@ export default function BakongKHQRModal({
             <div className="absolute inset-0 bg-white z-30 flex flex-col items-center justify-center p-8 text-center">
               {/* Animated success ring */}
               <div className="relative mb-6">
-                <div className="w-24 h-24 rounded-full bg-green-50 flex items-center justify-center">
-                  <CheckCircle2 size={52} className="text-green-500" strokeWidth={1.8} />
+                <div className="w-24 h-24 rounded-full bg-[#E1232E]/10 flex items-center justify-center">
+                  <CheckCircle2 size={52} className="text-[#E1232E]" strokeWidth={1.8} />
                 </div>
-                <div className="absolute inset-0 rounded-full border-4 border-green-200 animate-ping opacity-30" />
+                <div className="absolute inset-0 rounded-full border-4 border-[#E1232E]/30 animate-ping opacity-30" />
               </div>
 
-              <span className="inline-block bg-green-50 text-green-600 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3" style={numFont}>
+              <span className="inline-block bg-[#E1232E]/10 text-[#E1232E] text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3" style={numFont}>
                 {text.orderConfirmed}
               </span>
 
@@ -185,7 +195,7 @@ export default function BakongKHQRModal({
 
               <button
                 onClick={onSuccessClose || onClose}
-                className="w-full py-4 bg-gray-900 hover:bg-black text-white font-semibold rounded-2xl transition-colors shadow-lg text-sm"
+                className="w-full py-4 bg-[#E1232E] hover:bg-red-700 text-white font-semibold rounded-xl transition-colors shadow-sm text-sm"
                 style={isKm ? khmerFont : numFont}
               >
                 {text.continue}

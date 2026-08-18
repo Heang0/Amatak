@@ -163,16 +163,16 @@ export default function AdminPromotionsPage({ params }: { params: { locale: stri
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-[#111111] p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+      <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 pb-2">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{isKm ? 'លេខកូដបញ្ចុះតម្លៃ' : 'Promo Codes'}</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{isKm ? 'បង្កើតលេខកូដបញ្ចុះតម្លៃសម្រាប់អតិថិជនរបស់អ្នក។' : 'Create discount codes for your customers.'}</p>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">{isKm ? 'លេខកូដបញ្ចុះតម្លៃ' : 'Promo Codes'}</h2>
+          <p className="text-sm text-gray-500 dark:text-white/40 mt-0.5">{isKm ? 'បង្កើតលេខកូដបញ្ចុះតម្លៃសម្រាប់អតិថិជនរបស់អ្នក។' : 'Create discount codes for your customers.'}</p>
         </div>
         <button 
           onClick={() => { resetForm(); setShowModal(true); }}
-          className="w-full sm:w-auto justify-center bg-black dark:bg-white text-white dark:text-black px-4 py-2.5 rounded-lg text-sm font-medium hover:opacity-90 flex items-center gap-2 whitespace-nowrap shrink-0"
+          className="bg-[#E84C3D] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-red-600 flex items-center gap-2 whitespace-nowrap shrink-0"
         >
-          <Plus size={16} /> {isKm ? 'បង្កើតលេខកូដថ្មី' : 'New Promo Code'}
+          <Plus size={15} /> {isKm ? 'បង្កើតលេខកូដថ្មី' : 'New Promo Code'}
         </button>
       </div>
 

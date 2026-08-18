@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useCustomerAuthStore } from '@/lib/store/useCustomerAuthStore';
 // @ts-ignore
 import TelegramLoginButton from 'react-telegram-login';
@@ -15,6 +16,8 @@ export default function StoreCustomerAuth({ primaryColor, themeStyle, isKm }: { 
   const [success, setSuccess] = useState(false);
   
   const setCustomerInfo = useCustomerAuthStore(state => state.setCustomerInfo);
+  const searchParams = useSearchParams();
+  const isSessionExpired = searchParams?.get('session') === 'expired';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -133,6 +136,15 @@ export default function StoreCustomerAuth({ primaryColor, themeStyle, isKm }: { 
 
   return (
     <div className="w-full max-w-md mx-auto pt-8 pb-20 px-4">
+
+      {/* Session expired banner */}
+      {isSessionExpired && (
+        <div className="mb-6 flex items-start gap-3 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700/40 text-amber-800 dark:text-amber-300 rounded-xl text-sm font-medium">
+          <svg className="w-5 h-5 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" /></svg>
+          <span>{isKm ? 'សម័យប្រើប្រាស់របស់អ្នកផុតកំណត់។ សូមចូលម្ដងទៀត។' : 'Your session has expired. Please sign in again.'}</span>
+        </div>
+      )}
+
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">
           {isLogin ? (isKm ? 'សូមស្វាគមន៍ត្រឡប់មកវិញ' : 'Welcome Back') : (isKm ? 'បង្កើតគណនី' : 'Create Account')}

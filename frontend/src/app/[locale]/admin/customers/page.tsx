@@ -56,23 +56,18 @@ export default function AdminCustomersPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center bg-white dark:bg-[#111111] p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl flex items-center justify-center">
-            <Users size={24} />
-          </div>
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              {isKm ? 'អតិថិជនទាំងអស់' : 'All Customers'}
-            </h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              {isKm ? 'អ្នកដែលបានទិញទំនិញពីហាងរបស់អ្នក' : 'People who have purchased from your store'}
-            </p>
-          </div>
+      <div className="flex items-start justify-between pb-2">
+        <div>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+            {isKm ? 'អតិថិជនទាំងអស់' : 'All Customers'}
+          </h2>
+          <p className="text-sm text-gray-500 dark:text-white/40 mt-0.5">
+            {isKm ? 'អ្នកដែលបានទិញទំនិញពីហាងរបស់អ្នក' : 'People who have purchased from your store'}
+          </p>
         </div>
         <div className="text-right">
-          <div className="text-3xl font-black text-gray-900 dark:text-white">{customers.length}</div>
-          <div className="text-sm text-gray-500 uppercase tracking-widest font-bold">
+          <div className="text-2xl font-black text-gray-900 dark:text-white">{customers.length}</div>
+          <div className="text-[10px] text-gray-400 dark:text-white/30 uppercase tracking-widest font-bold">
             {isKm ? 'សរុប' : 'Total'}
           </div>
         </div>
@@ -81,23 +76,23 @@ export default function AdminCustomersPage() {
       <div className="bg-white dark:bg-[#111111] rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="bg-gray-50 dark:bg-[#1a1a1a] border-b border-gray-100 dark:border-gray-800">
-              <tr>
-                <th className="px-6 py-4 font-bold text-gray-900 dark:text-white uppercase tracking-wider text-xs">
+            <thead>
+              <tr className="border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/30">
+                <th className="px-6 py-4 text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">
                   {isKm ? 'ឈ្មោះអតិថិជន' : 'Customer'}
                 </th>
-                <th className="px-6 py-4 font-bold text-gray-900 dark:text-white uppercase tracking-wider text-xs">
+                <th className="px-6 py-4 text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">
                   {isKm ? 'ទំនាក់ទំនង' : 'Contact'}
                 </th>
-                <th className="px-6 py-4 font-bold text-gray-900 dark:text-white uppercase tracking-wider text-xs text-center">
+                <th className="px-6 py-4 text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest text-center">
                   {isKm ? 'ចំនួនបញ្ជាទិញ' : 'Orders'}
                 </th>
-                <th className="px-6 py-4 font-bold text-gray-900 dark:text-white uppercase tracking-wider text-xs text-right">
+                <th className="px-6 py-4 text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest text-right">
                   {isKm ? 'ទឹកប្រាក់សរុប' : 'Total Spent'}
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
+            <tbody className="divide-y divide-gray-50 dark:divide-gray-800/50">
               {customers.map((c) => (
                 <tr key={c.id} className="hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors">
                   <td className="px-6 py-4">

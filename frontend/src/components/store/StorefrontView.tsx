@@ -128,10 +128,11 @@ export default function StorefrontView({
     loadProducts();
   }, [params.slug, previewColor, previewTheme, cacheKey, initialProducts, initialCategories, initialStore]);
 
-  const showToast = useCallback((product: any) => {
-    setToast({ message: `${product.title} added to cart!`, visible: true });
-    setTimeout(() => setToast(t => ({ ...t, visible: false })), 2500);
-  }, []);
+  const showToast = useCallback(() => {
+    const isKm = params.locale === 'km';
+    setToast({ message: isKm ? 'បានបញ្ចូលទៅកន្ត្រក!' : 'Added to cart!', visible: true });
+    setTimeout(() => setToast(t => ({ ...t, visible: false })), 1500);
+  }, [params.locale]);
 
   useEffect(() => {
     const activeTab = categoryTabsRef.current?.querySelector('a[data-category-active="true"]');

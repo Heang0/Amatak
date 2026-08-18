@@ -293,10 +293,10 @@ export default function AdminSettings() {
       <AdminToast message={successMsg} visible={!!successMsg} />
       <div className="space-y-6">
       
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-[#111111] p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+      <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 pb-2">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('settings')}</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{isKm ? 'គ្រប់គ្រងការកំណត់ហាង និងគណនីរបស់អ្នក' : 'Manage your store and profile settings'}</p>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('settings')}</h2>
+          <p className="text-sm text-gray-500 dark:text-white/40 mt-0.5">{isKm ? 'គ្រប់គ្រងការកំណត់ហាង និងគណនីរបស់អ្នក' : 'Manage your store and profile settings'}</p>
         </div>
       </div>
 

@@ -26,6 +26,7 @@ export default function ProductCard({
   const setDrawerOpen = useCartStore(state => state.setDrawerOpen);
   const user = useCustomerAuthStore(state => state.customerInfo);
   const setCustomerInfo = useCustomerAuthStore(state => state.setCustomerInfo);
+  const logout = useCustomerAuthStore(state => state.logout);
 
   // Check if we are testing on the main domain (e.g. shoppingot.vercel.app/store/slug)
   const isPathRouting = pathname?.includes('/store/');
@@ -71,6 +72,12 @@ export default function ProductCard({
           Authorization: `Bearer ${user.token}`
         }
       });
+      if (res.status === 401) {
+        // Token expired — clear session and redirect to login
+        logout();
+        router.push(`${basePath}/login?session=expired`);
+        return;
+      }
       if (res.ok) {
         const updatedFavorites = await res.json();
         setCustomerInfo({ ...user, favorites: updatedFavorites });
@@ -133,7 +140,10 @@ export default function ProductCard({
         </p>
         
         <div className={`mt-auto pt-4 flex items-end justify-between`}>
-          <span className={priceClass} style={{ color: themeStyle === 'default' ? (primaryColor || '#000') : undefined }}>
+          <span 
+            className={`${priceClass} text-[#E84C3D] dark:text-[#ff5c4d]`} 
+            style={{ color: primaryColor && primaryColor !== '#000000' && primaryColor !== '#000' ? primaryColor : undefined }}
+          >
             ${product.price.toFixed(2)}
           </span>
           

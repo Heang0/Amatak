@@ -253,23 +253,23 @@ export default function UpgradePlan() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-[#111111] p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+      <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 pb-2">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Manage your subscription plan</p>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('title')}</h2>
+          <p className="text-sm text-gray-500 dark:text-white/40 mt-0.5">Manage your subscription plan</p>
         </div>
         
         {/* Toggle Switch */}
-        <div className="flex items-center bg-gray-50 dark:bg-black p-1 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 shrink-0">
+        <div className="flex items-center bg-gray-100 dark:bg-white/[0.06] p-1 rounded-lg shrink-0">
           <button 
             onClick={() => setBillingCycle('monthly')}
-            className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all ${billingCycle === 'monthly' ? 'bg-white dark:bg-[#222] text-gray-900 dark:text-white shadow-sm' : 'text-gray-500 hover:text-gray-900 dark:hover:text-white'}`}
+            className={`px-5 py-1.5 rounded-md text-sm font-semibold transition-all ${billingCycle === 'monthly' ? 'bg-white dark:bg-white/10 text-gray-900 dark:text-white shadow-sm' : 'text-gray-500 dark:text-white/40 hover:text-gray-900 dark:hover:text-white'}`}
           >
             {isKm ? 'ប្រចាំខែ' : 'Monthly'}
           </button>
           <button 
             onClick={() => setBillingCycle('annually')}
-            className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ${billingCycle === 'annually' ? 'bg-white dark:bg-[#222] text-gray-900 dark:text-white shadow-sm' : 'text-gray-500 hover:text-gray-900 dark:hover:text-white'}`}
+            className={`px-5 py-1.5 rounded-md text-sm font-semibold transition-all flex items-center gap-2 ${billingCycle === 'annually' ? 'bg-white dark:bg-white/10 text-gray-900 dark:text-white shadow-sm' : 'text-gray-500 dark:text-white/40 hover:text-gray-900 dark:hover:text-white'}`}
           >
             {isKm ? 'ប្រចាំឆ្នាំ' : 'Annually'}
             <span className="bg-[#E1232E]/10 text-[#E1232E] text-[10px] uppercase px-1.5 py-0.5 rounded font-black tracking-wider">Save 30%</span>
@@ -456,9 +456,10 @@ export default function UpgradePlan() {
           qrString={qrData.qrString}
           amount={getDisplayPrice(plans.find(p => p._id === selectedPlanId))}
           currency="USD"
-          merchantName="ShoppingOT Superadmin"
+          merchantName="ShoppingOT Subscriptions"
           isPaid={paymentStatus === 'PAID'}
           locale={locale}
+          mode="subscription"
           onClose={() => { clearPolling(); setQrData(null); setSelectedPlanId(null); sessionStorage.removeItem('pendingUpgradeQR'); sessionStorage.removeItem('pendingUpgradePlanId'); }}
           onSuccessClose={() => { clearPolling(); setQrData(null); setSelectedPlanId(null); sessionStorage.removeItem('pendingUpgradeQR'); sessionStorage.removeItem('pendingUpgradePlanId'); window.location.reload(); }}
           onSimulatePay={handleSimulatePay}

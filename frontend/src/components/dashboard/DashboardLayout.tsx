@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Sidebar, SidebarItem } from "./Sidebar";
-import { Topbar } from "./Topbar";
+import { useState } from 'react';
+import { Sidebar, SidebarItem } from './Sidebar';
+import { Topbar } from './Topbar';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -14,7 +14,7 @@ export function DashboardLayout({ children, sidebarItems, title }: DashboardLayo
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="h-screen bg-gray-50 dark:bg-[#050505] flex overflow-hidden">
+    <div className="h-screen bg-[#f9f9f9] dark:bg-[#080808] flex overflow-hidden">
       {/* Sidebar */}
       <Sidebar 
         items={sidebarItems} 
@@ -30,8 +30,8 @@ export function DashboardLayout({ children, sidebarItems, title }: DashboardLayo
           onMenuClick={() => setIsSidebarOpen(true)} 
         />
         
-        <main id="dashboard-main" className="flex-1 overflow-y-auto py-6 flex flex-col">
-          <div className="w-full px-4 sm:px-6 lg:px-8">
+        <main className="flex-1 overflow-y-auto">
+          <div className="w-full px-5 sm:px-6 py-6">
             {children}
           </div>
         </main>

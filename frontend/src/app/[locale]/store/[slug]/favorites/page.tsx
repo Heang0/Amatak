@@ -67,9 +67,10 @@ export default function FavoritesPage({ params }: { params: { locale: string; sl
   // Remove products from local state immediately if un-favorited while on this page
   const displayProducts = products.filter(p => favorites.some(f => f.productId === p._id));
 
-  const showToast = (product: any) => {
-    setToast({ message: `${product.title} added to cart!`, visible: true });
-    setTimeout(() => setToast(t => ({ ...t, visible: false })), 2500);
+  const showToast = () => {
+    const isKm = params.locale === 'km';
+    setToast({ message: isKm ? 'បានបញ្ចូលទៅកន្ត្រក!' : 'Added to cart!', visible: true });
+    setTimeout(() => setToast(t => ({ ...t, visible: false })), 1500);
   };
 
   return (

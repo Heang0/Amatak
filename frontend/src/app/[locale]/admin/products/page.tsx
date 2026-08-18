@@ -359,14 +359,14 @@ export default function ManageProducts() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-[#111111] p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+      <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 pb-2">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Manage your store products</p>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('title')}</h2>
+          <p className="text-sm text-gray-500 dark:text-white/40 mt-0.5">Manage your store products</p>
         </div>
         <button
           onClick={handleToggleForm}
-          className="bg-[#E84C3D] text-white px-5 py-2.5 rounded-lg font-medium shadow-sm hover:bg-red-600 transition-colors whitespace-nowrap shrink-0"
+          className="bg-[#E84C3D] text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-sm hover:bg-red-600 transition-colors whitespace-nowrap shrink-0"
         >
           {showForm ? t('cancel') : t('add_product')}
         </button>
@@ -653,48 +653,56 @@ export default function ManageProducts() {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-[#111111] rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
-          <thead className="bg-gray-50 dark:bg-gray-900/50">
-            <tr>
-              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t('product')}</th>
-              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t('custom_category')}</th>
-              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t('price')}</th>
-              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t('stock')}</th>
-              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{locale === 'km' ? 'លក់ដាច់បំផុត' : 'Best Seller'}</th>
-              <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t('actions')}</th>
+      <div className="bg-white dark:bg-[#111111] rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
+        <div className="overflow-x-auto">
+        <table className="min-w-full">
+          <thead>
+            <tr className="border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/30">
+              <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('product')}</th>
+              <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('custom_category')}</th>
+              <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('price')}</th>
+              <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('stock')}</th>
+              <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{locale === 'km' ? 'លក់ដាច់បំផុត' : 'Best Seller'}</th>
+              <th className="px-6 py-4 text-right text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('actions')}</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
+          <tbody className="divide-y divide-gray-50 dark:divide-gray-800/50">
             {products.map((product) => {
               const productCategoryObj = categories.find(c => c._id === (typeof product.category === 'object' ? product.category?._id : product.category));
               return (
-              <tr key={product._id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+              <tr key={product._id} className="hover:bg-gray-50/70 dark:hover:bg-gray-800/30 transition-colors duration-150 group">
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0 h-12 w-12 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center gap-3">
+                    <div className="flex-shrink-0 h-11 w-11 rounded-xl overflow-hidden border border-gray-100 dark:border-gray-700 shadow-sm">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img className="h-full w-full object-cover" src={product.imageUrl} alt="" />
                     </div>
-                    <div className="ml-4">
-                      <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                        {locale === 'km' && product.titleKm ? product.titleKm : product.title}
-                      </div>
+                    <div className="font-semibold text-sm text-gray-900 dark:text-white">
+                      {locale === 'km' && product.titleKm ? product.titleKm : product.title}
                     </div>
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                <td className="px-6 py-4 whitespace-nowrap">
                   {productCategoryObj ? (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200">
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300">
                       {getCategoryName(productCategoryObj)}
                     </span>
                   ) : (
-                    <span className="text-gray-400 italic text-xs">{t('no_category')}</span>
+                    <span className="text-gray-300 dark:text-gray-600 text-xs">—</span>
                   )}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300 font-medium">${product.price.toFixed(2)}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${product.stock > 10 ? 'bg-green-100 text-green-700' : product.stock > 0 ? 'bg-orange-100 text-orange-700' : 'bg-red-100 text-red-700'}`}>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <span className="text-sm font-black text-gray-900 dark:text-white">${product.price.toFixed(2)}</span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold ${
+                    product.stock > 10 
+                      ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400' 
+                      : product.stock > 0 
+                      ? 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400' 
+                      : 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'
+                  }`}>
+                    <span className={`w-1.5 h-1.5 rounded-full inline-block ${product.stock > 10 ? 'bg-emerald-500' : product.stock > 0 ? 'bg-amber-400' : 'bg-red-500'}`} />
                     {product.stock}
                   </span>
                 </td>
@@ -710,10 +718,10 @@ export default function ManageProducts() {
                     {product.isBestSeller ? (locale === 'km' ? 'បាទ/ចាស' : 'Yes') : (locale === 'km' ? 'ទេ' : 'No')}
                   </button>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <div className="flex items-center gap-3">
-                    <button onClick={() => handleEdit(product)} className="text-blue-500 hover:text-blue-700 dark:hover:text-blue-400 transition-colors">{t('edit')}</button>
-                    <button onClick={() => handleDelete(product._id)} className="text-red-500 hover:text-red-700 dark:hover:text-red-400 transition-colors">{t('delete')}</button>
+                <td className="px-6 py-4 whitespace-nowrap text-right">
+                  <div className="flex items-center justify-end gap-2">
+                    <button onClick={() => handleEdit(product)} className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors">{t('edit')}</button>
+                    <button onClick={() => handleDelete(product._id)} className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">{t('delete')}</button>
                   </div>
                 </td>
               </tr>
@@ -728,7 +736,7 @@ export default function ManageProducts() {
             )}
           </tbody>
         </table>
-
+        </div>
         {totalPages > 1 && (
           <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between bg-gray-50 dark:bg-[#111111]">
             <button

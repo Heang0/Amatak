@@ -5,10 +5,19 @@ import mongoose from 'mongoose';
 const generateUniqueSlug = async (title, ProductModel) => {
   let baseSlug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
   if (!baseSlug) baseSlug = 'product';
-  let slug = baseSlug;
+
+  // Count total products to generate a sequential number
+  const totalCount = await ProductModel.countDocuments();
+  const seqNumber = String(totalCount + 1).padStart(5, '0');
+  let slug = `${baseSlug}-P${seqNumber}`;
+
+  // If somehow that slug already exists, increment until we find a unique one
+  let attempt = totalCount + 1;
   while (await ProductModel.findOne({ slug })) {
-    slug = `${baseSlug}-${Math.random().toString(36).substring(2, 6)}`;
+    attempt++;
+    slug = `${baseSlug}-P${String(attempt).padStart(5, '0')}`;
   }
+
   return slug;
 };
 

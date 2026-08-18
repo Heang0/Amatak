@@ -68,7 +68,7 @@ export default function StoreSearchModal({ isOpen, onClose, slug, locale, primar
         className="w-full max-w-2xl bg-white dark:bg-[#111111] rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh] animate-in slide-in-from-top-4 duration-300"
         onClick={(e) => e.stopPropagation()}
       >
-      <div className="flex items-center px-4 pt-safe h-20 border-b border-gray-100 dark:border-gray-900 shrink-0 gap-3">
+      <div className="flex items-center px-4 py-4 border-b border-gray-100 dark:border-gray-900 shrink-0 gap-3">
         <div className="relative flex-1">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
           <input

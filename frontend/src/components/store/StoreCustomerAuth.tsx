@@ -12,6 +12,7 @@ export default function StoreCustomerAuth({ primaryColor, themeStyle, isKm }: { 
   const [name, setName] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
   
   const setCustomerInfo = useCustomerAuthStore(state => state.setCustomerInfo);
 
@@ -41,18 +42,20 @@ export default function StoreCustomerAuth({ primaryColor, themeStyle, isKm }: { 
         throw new Error('Admins cannot log in as customers on the storefront.');
       }
 
-      setCustomerInfo({
-        _id: data._id,
-        name: data.name,
-        email: data.email,
-        role: data.role,
-        token: data.token,
-        profilePic: data.profilePic,
-      });
+      setSuccess(true);
+      setTimeout(() => {
+        setCustomerInfo({
+          _id: data._id,
+          name: data.name,
+          email: data.email,
+          role: data.role,
+          token: data.token,
+          profilePic: data.profilePic,
+        });
+      }, 1000);
       
     } catch (err: any) {
       setError(err.message);
-    } finally {
       setLoading(false);
     }
   };
@@ -74,18 +77,20 @@ export default function StoreCustomerAuth({ primaryColor, themeStyle, isKm }: { 
         throw new Error(data.message || 'Telegram authentication failed');
       }
 
-      setCustomerInfo({
-        _id: data._id,
-        name: data.name,
-        email: data.email,
-        role: data.role,
-        token: data.token,
-        profilePic: data.profilePic,
-      });
+      setSuccess(true);
+      setTimeout(() => {
+        setCustomerInfo({
+          _id: data._id,
+          name: data.name,
+          email: data.email,
+          role: data.role,
+          token: data.token,
+          profilePic: data.profilePic,
+        });
+      }, 1000);
       
     } catch (err: any) {
       setError(err.message);
-    } finally {
       setLoading(false);
     }
   };
@@ -107,6 +112,24 @@ export default function StoreCustomerAuth({ primaryColor, themeStyle, isKm }: { 
       ? 'border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] active:shadow-none active:translate-x-[4px] active:translate-y-[4px]'
       : 'border border-gray-200 dark:border-gray-800 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-900 active:scale-[0.98]'
   }`;
+
+  if (success) {
+    return (
+      <div className="w-full max-w-md mx-auto pt-16 pb-20 px-4 flex flex-col items-center justify-center animate-in fade-in zoom-in duration-300">
+        <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-6 shadow-sm border border-green-200">
+          <svg className="w-8 h-8 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">
+          {isLogin ? (isKm ? 'ចូលគណនីជោគជ័យ!' : 'Sign In Successful!') : (isKm ? 'បង្កើតគណនីជោគជ័យ!' : 'Account Created!')}
+        </h2>
+        <p className="text-gray-500 font-medium animate-pulse">
+          {isKm ? 'សូមរង់ចាំបន្តិច...' : 'Redirecting...'}
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-md mx-auto pt-8 pb-20 px-4">

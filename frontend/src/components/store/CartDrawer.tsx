@@ -3,8 +3,8 @@
 import { useCartStore } from '@/lib/store/useCartStore';
 import { X, Minus, Plus, Trash2 } from 'lucide-react';
 import Link from 'next/link';
-import { useParams, usePathname } from 'next/navigation';
-import { useEffect } from 'react';
+import { useParams, usePathname, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function CartDrawer({
   primaryColor = '#000000',
@@ -16,7 +16,9 @@ export default function CartDrawer({
   const { items, isDrawerOpen, setDrawerOpen, removeItem, updateQuantity, getTotalPrice } = useCartStore();
   const params = useParams();
   const pathname = usePathname();
+  const router = useRouter();
   const isKm = params.locale === 'km';
+  const [isCheckoutLoading, setIsCheckoutLoading] = useState(false);
 
   const isPathRouting = pathname?.includes('/store/');
   const checkoutHref = isPathRouting ? `/${params.locale}/store/${params.slug}/checkout` : `/${params.locale}/checkout`;
@@ -32,6 +34,14 @@ export default function CartDrawer({
       document.body.style.overflow = 'unset';
     };
   }, [isDrawerOpen]);
+
+  // Reset loading state and close drawer when route changes
+  useEffect(() => {
+    if (isCheckoutLoading) {
+      setIsCheckoutLoading(false);
+      setDrawerOpen(false);
+    }
+  }, [pathname, isCheckoutLoading, setDrawerOpen]);
 
   if (!isDrawerOpen) return null;
 
@@ -158,9 +168,13 @@ export default function CartDrawer({
                 ${getTotalPrice().toFixed(2)}
               </span>
             </div>
-            <Link 
-              href={checkoutHref}
-              onClick={() => setDrawerOpen(false)}
+            <button 
+              onClick={(e) => {
+                e.preventDefault();
+                setIsCheckoutLoading(true);
+                router.push(checkoutHref);
+              }}
+              disabled={isCheckoutLoading}
               className={`w-full py-4 text-lg font-bold text-white transition-all flex items-center justify-center gap-2 ${
                 themeStyle === 'neo-brutalism' ? 'border-[3px] border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none uppercase tracking-widest' :
                 themeStyle === 'minimalist' ? 'rounded-sm tracking-widest uppercase hover:opacity-90' :
@@ -168,8 +182,12 @@ export default function CartDrawer({
               }`}
               style={{ backgroundColor: primaryColor }}
             >
-              {isKm ? 'ទៅកាន់ការទូទាត់' : 'Checkout'}
-            </Link>
+              {isCheckoutLoading ? (
+                <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+              ) : (
+                isKm ? 'ទៅកាន់ការទូទាត់' : 'Checkout'
+              )}
+            </button>
           </div>
         )}
       </div>

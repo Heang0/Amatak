@@ -618,7 +618,7 @@ export default function CheckoutPage({ params }: { params: { slug: string, local
           isPaid={paymentStatus === 'PAID'}
           locale={params.locale}
           onClose={() => { clearPolling(); setQrData(null); sessionStorage.removeItem('pendingCartQR'); }}
-          onSuccessClose={() => { clearPolling(); setQrData(null); sessionStorage.removeItem('pendingCartQR'); clearCart(); window.location.href = `/${params.locale}/store/${params.slug}/orders/${qrData.orderId}`; }}
+          onSuccessClose={() => { clearPolling(); setQrData(null); sessionStorage.removeItem('pendingCartQR'); clearCart(); window.location.href = `/store/${params.slug}/orders/${qrData.orderId}`; }}
           onSimulatePay={handleSimulatePay}
         />
       )}

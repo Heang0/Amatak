@@ -29,7 +29,7 @@ export const getCategoriesForStore = async (req, res) => {
 // Create a category
 export const createCategory = async (req, res) => {
   try {
-    const { name, nameKm } = req.body;
+    const { name, nameKm, parentCategory } = req.body;
     console.log("CREATE CATEGORY CALLED:", name, "BY USER:", req.user._id);
     
     const store = await Store.findOne({ ownerId: req.user._id });
@@ -58,6 +58,7 @@ export const createCategory = async (req, res) => {
       nameKm,
       slug,
       storeId: store._id,
+      parentCategory: parentCategory || null,
     });
 
     const createdCategory = await category.save();
@@ -71,7 +72,7 @@ export const createCategory = async (req, res) => {
 // Update a category
 export const updateCategory = async (req, res) => {
   try {
-    const { name, nameKm } = req.body;
+    const { name, nameKm, parentCategory } = req.body;
     
     const category = await Category.findById(req.params.id);
     if (!category) {
@@ -96,6 +97,7 @@ export const updateCategory = async (req, res) => {
 
     category.name = name;
     if (nameKm !== undefined) category.nameKm = nameKm;
+    if (parentCategory !== undefined) category.parentCategory = parentCategory || null;
     category.slug = newSlug;
     const updatedCategory = await category.save();
     
@@ -123,6 +125,14 @@ export const deleteCategory = async (req, res) => {
     if (associatedProduct) {
       return res.status(400).json({
         message: 'Cannot delete category because it contains products. Please remove or reassign them first. / មិនអាចលុបប្រភេទនេះបានទេ ព្រោះវាមានផលិតផលនៅក្នុងនោះ។ សូមលុប ឬផ្លាស់ប្តូរប្រភេទផលិតផលទាំងនោះជាមុនសិន។'
+      });
+    }
+
+    // Check if category has subcategories
+    const associatedSubcategories = await Category.findOne({ parentCategory: category._id });
+    if (associatedSubcategories) {
+      return res.status(400).json({
+        message: 'Cannot delete category because it has subcategories. Please delete or move them first. / មិនអាចលុបប្រភេទនេះបានទេ ព្រោះវាមានប្រភេទរងនៅក្នុងនោះ។'
       });
     }
 

@@ -63,18 +63,13 @@ export function Sidebar({ items, title, isOpen, onClose }: SidebarProps) {
         />
       )}
 
-      {/* Sidebar — dark, premium */}
-      <div className={`
-        fixed lg:static inset-y-0 left-0 z-50
-        w-[240px] bg-[#0f0f0f] border-r border-white/[0.06]
-        flex flex-col transform transition-transform duration-200 ease-out
-        ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
-      `}>
+      {/* Sidebar — NextAdmin Theme */}
+      <div className={`fixed lg:static inset-y-0 left-0 z-50 w-[280px] h-full bg-white dark:bg-[#111111] shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none flex flex-col transform transition-transform duration-200 ease-out ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}>
         
         {/* Store Brand */}
-        <div className="h-14 flex items-center justify-between px-4 border-b border-white/[0.06]">
+        <div className="h-14 flex items-center justify-between px-4 border-b border-gray-100 dark:border-white/[0.05]">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="w-7 h-7 rounded-lg overflow-hidden shrink-0 ring-1 ring-white/10">
+            <div className="w-7 h-7 rounded-lg overflow-hidden shrink-0 ring-1 ring-gray-100 dark:ring-white/10">
               {storeLogo ? (
                 <img src={storeLogo} alt="Logo" className="w-full h-full object-cover" />
               ) : (
@@ -84,8 +79,8 @@ export function Sidebar({ items, title, isOpen, onClose }: SidebarProps) {
               )}
             </div>
             <div className="min-w-0">
-              <p className="text-sm font-semibold text-white truncate leading-tight">{storeName || title}</p>
-              <p className="text-[10px] text-white/30 font-medium uppercase tracking-widest leading-tight">Dashboard</p>
+              <p className="text-sm font-bold text-gray-900 dark:text-white truncate leading-tight">{storeName || title}</p>
+              <p className="text-[10px] text-gray-600 dark:text-gray-400 font-bold uppercase tracking-widest leading-tight">Dashboard</p>
             </div>
           </div>
           <button onClick={onClose} className="lg:hidden p-1.5 text-white/40 hover:text-white rounded-md transition-colors">
@@ -94,9 +89,9 @@ export function Sidebar({ items, title, isOpen, onClose }: SidebarProps) {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
+        <nav className="flex-1 overflow-y-auto py-6 px-4 space-y-2">
           {/* Section label */}
-          <p className="px-3 py-1.5 text-[10px] font-bold text-white/25 uppercase tracking-widest">
+          <p className="px-3 py-1.5 text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest mb-2">
             {locale === 'km' ? 'ម៉ឺនុយ' : 'Menu'}
           </p>
           {items.map((item) => {
@@ -106,14 +101,9 @@ export function Sidebar({ items, title, isOpen, onClose }: SidebarProps) {
                 key={item.href}
                 href={item.href}
                 onClick={onClose}
-                className={`
-                  flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 group relative
-                  ${isActive
-                    ? "bg-white/10 text-white"
-                    : "text-white/50 hover:text-white/90 hover:bg-white/[0.05]"}
-                `}
+                className={`flex items-center gap-4 px-5 py-4 rounded-xl text-[15px] font-bold transition-all duration-150 group relative ${isActive ? "bg-[#F4F7FE] dark:bg-white/5 text-gray-900 dark:text-white " : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:text-white dark:hover:text-white hover:bg-[#F4F7FE] dark:hover:bg-white/5"}`}
               >
-                <span className={`shrink-0 transition-colors ${isActive ? 'text-[#E84C3D]' : 'text-white/40 group-hover:text-white/70'}`}>
+                <span className={`shrink-0 transition-colors ${isActive ? 'text-[#E84C3D]' : 'text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:text-white dark:group-hover:text-white'}`}>
                   {item.icon}
                 </span>
                 <span className="flex-1 truncate">{item.label}</span>
@@ -126,9 +116,9 @@ export function Sidebar({ items, title, isOpen, onClose }: SidebarProps) {
         </nav>
 
         {/* User footer */}
-        <div className="p-3 border-t border-white/[0.06]">
-          <div className="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-white/[0.05] transition-colors group cursor-default">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#E84C3D] to-[#c0392b] flex items-center justify-center text-white text-xs font-black shrink-0 ring-1 ring-white/10 overflow-hidden">
+        <div className="p-3 border-t border-gray-100 dark:border-white/[0.05]">
+          <div className="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-[#F4F7FE] dark:hover:bg-white/5 transition-colors group cursor-default">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#E84C3D] to-[#c0392b] flex items-center justify-center text-white text-xs font-black shrink-0 shadow-sm overflow-hidden">
               {user?.profilePic ? (
                 <img src={user.profilePic} alt="Profile" className="w-full h-full object-cover" />
               ) : (
@@ -136,15 +126,15 @@ export function Sidebar({ items, title, isOpen, onClose }: SidebarProps) {
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-white truncate">{user?.name || 'Merchant'}</p>
-              <p className="text-[10px] text-white/30 truncate">{user?.email}</p>
+              <p className="text-xs font-bold text-gray-900 dark:text-white truncate">{user?.name || 'Merchant'}</p>
+              <p className="text-[10px] text-gray-600 dark:text-gray-400 truncate">{user?.email}</p>
             </div>
             <button
               onClick={handleLogout}
               title="Log out"
-              className="p-1.5 text-white/25 hover:text-red-400 rounded-md transition-colors opacity-0 group-hover:opacity-100"
+              className="p-1.5 text-gray-400 /40 hover:text-red-500 dark:hover:text-red-400 rounded-md transition-colors lg:opacity-0 group-hover:opacity-100"
             >
-              <LogOut size={14} />
+              <LogOut size={16} />
             </button>
           </div>
         </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useCustomerAuthStore } from '@/lib/store/useCustomerAuthStore';
 import { useCartStore } from '@/lib/store/useCartStore';
 import StoreCustomerAuth from '@/components/store/StoreCustomerAuth';
@@ -301,6 +302,19 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
     }
   };
 
+  const getStatusText = (status: string) => {
+    if (params.locale !== 'km') return status;
+    switch (status) {
+      case 'PENDING': return 'រង់ចាំ';
+      case 'PROCESSING': return 'កំពុងរៀបចំ';
+      case 'SHIPPED': return 'កំពុងដឹកជញ្ជូន';
+      case 'DELIVERED': return 'បានដឹកជញ្ជូន';
+      case 'CANCELLED': return 'បានលុបចោល';
+      case 'FAILED': return 'បរាជ័យ';
+      default: return status;
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex-1 flex justify-center py-20 min-h-[60vh]">
@@ -506,11 +520,22 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
                   </div>
                   <div className="flex items-center justify-between gap-4">
                     <p className="text-sm text-gray-500 flex items-center gap-1.5 shrink-0"><Activity size={14} />{params.locale === 'km' ? 'ស្ថានភាព' : 'Status'}</p>
-                    <p className={`font-bold text-right ${selectedOrder.orderStatus === 'FAILED' ? 'text-red-500' : 'text-green-500'}`}>{selectedOrder.orderStatus}</p>
+                    <p className={`font-bold text-right ${selectedOrder.orderStatus === 'FAILED' ? 'text-red-500' : 'text-green-500'}`}>{getStatusText(selectedOrder.orderStatus)}</p>
                   </div>
                   <div className="flex items-center justify-between gap-4">
                     <p className="text-sm text-gray-500 flex items-center gap-1.5 shrink-0"><CreditCard size={14} />{params.locale === 'km' ? 'វិធីបង់ប្រាក់' : 'Payment Method'}</p>
-                    <p className="font-semibold text-gray-900 dark:text-white text-right">{selectedOrder.paymentMethod === 'bakong_app' ? 'Bakong App' : selectedOrder.paymentMethod}</p>
+                    <div className="flex items-center justify-end">
+                      {selectedOrder.paymentMethod === 'bakong_app' ? (
+                        <span className="font-semibold text-gray-900 dark:text-white">Bakong App</span>
+                      ) : selectedOrder.paymentMethod === 'CASH' ? (
+                        <span className="font-semibold text-gray-900 dark:text-white">Cash</span>
+                      ) : (
+                        <span className="flex items-center justify-center bg-[#E1232E] w-8 h-[18px] rounded px-1 shadow-sm">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src="/logo/KHQR Logo.png" alt="KHQR" className="h-[10px] w-auto object-contain brightness-0 invert" />
+                        </span>
+                      )}
+                    </div>
                   </div>
                   <div className="flex items-center justify-between gap-4">
                     <p className="text-sm text-gray-500 flex items-center gap-1.5 shrink-0"><Tag size={14} />{params.locale === 'km' ? 'តម្លៃផលិតផល' : 'Product Price'}</p>
@@ -530,7 +555,7 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
                   </div>
                   <div className="flex items-start justify-between gap-4 pt-4 border-t border-gray-50 dark:border-gray-800/50">
                     <p className="text-sm text-gray-500 flex items-center gap-1.5 shrink-0"><FileText size={14} />{params.locale === 'km' ? 'ចំណាំ' : 'Note'}</p>
-                    <p className="font-semibold text-gray-900 dark:text-white text-right max-w-[60%]">{selectedOrder.deliveryNote || 'N/A'}</p>
+                    <p className="font-semibold text-gray-900 dark:text-white text-right max-w-[60%]">{selectedOrder.deliveryNote || '-'}</p>
                   </div>
                   <div className="flex items-start justify-between gap-4">
                     <p className="text-sm text-gray-500 flex items-center gap-1.5 shrink-0"><MapPin size={14} />{params.locale === 'km' ? 'អាសយដ្ឋានដឹកជញ្ជូន' : 'Delivery Address'}</p>
@@ -539,7 +564,7 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
                   <div className="flex items-center justify-between gap-4">
                     <p className="text-sm text-gray-500 flex items-center gap-1.5 shrink-0"><Calendar size={14} />{params.locale === 'km' ? 'បានបង្កើតនៅថ្ងៃ' : 'Created At'}</p>
                     <p className="font-semibold text-gray-900 dark:text-white text-right">
-                      {new Date(selectedOrder.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                      {new Date(selectedOrder.createdAt).toLocaleDateString(params.locale === 'km' ? 'km-KH' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                     </p>
                   </div>
                 </div>
@@ -664,20 +689,29 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
                           </td>
                           <td className="py-4 px-4 text-sm text-gray-900 dark:text-white">${order.subtotal?.toFixed(2) || (order.totalAmount - (order.deliveryFee || 0)).toFixed(2)}</td>
                           <td className="py-4 px-4 text-sm font-bold text-gray-900 dark:text-white">${order.totalAmount.toFixed(2)}</td>
-                          <td className="py-4 px-4 text-sm text-gray-900 dark:text-white">{order.paymentMethod === 'bakong_app' ? 'Bakong App' : order.paymentMethod}</td>
+                          <td className="py-4 px-4 text-sm text-gray-900 dark:text-white">
+                            {order.paymentMethod === 'bakong_app' ? 'Bakong App' : 
+                             order.paymentMethod === 'CASH' ? 'Cash' : 
+                             <span className="flex items-center">
+                               <span className="flex items-center justify-center bg-[#E1232E] w-8 h-[18px] rounded px-1 shadow-sm">
+                                 {/* eslint-disable-next-line @next/next/no-img-element */}
+                                 <img src="/logo/KHQR Logo.png" alt="KHQR" className="h-[10px] w-auto object-contain brightness-0 invert" />
+                               </span>
+                             </span>}
+                          </td>
                           <td className="py-4 px-4">
                             <span className={`px-2.5 py-1 text-xs font-bold rounded-full ${order.orderStatus === 'FAILED' ? 'bg-red-100 text-red-700' :
                                 order.orderStatus === 'PENDING' ? 'bg-yellow-100 text-yellow-700' :
                                   'bg-green-100 text-green-700'
                               }`}>
-                              {order.orderStatus}
+                              {getStatusText(order.orderStatus)}
                             </span>
                           </td>
                           <td className="py-4 px-4 text-sm text-gray-500 truncate max-w-[150px]" title={order.guestInfo?.address}>
                             {order.guestInfo?.address || 'N/A'}
                           </td>
                           <td className="py-4 px-4 text-sm text-gray-500 whitespace-nowrap">
-                            {new Date(order.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                            {new Date(order.createdAt).toLocaleDateString(params.locale === 'km' ? 'km-KH' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                           </td>
                           <td className="py-4 px-4 text-sm">
                             <button
@@ -708,7 +742,7 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
                             order.orderStatus === 'PENDING' ? 'bg-yellow-100 text-yellow-700' :
                               'bg-green-100 text-green-700'
                           }`}>
-                          {order.orderStatus}
+                          {getStatusText(order.orderStatus)}
                         </span>
                       </div>
 
@@ -716,7 +750,7 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
                         <div>
                           <p className="text-xs text-gray-500 mb-0.5">{params.locale === 'km' ? 'បានបង្កើតនៅថ្ងៃ' : 'Date'}</p>
                           <p className="font-medium text-gray-900 dark:text-white">
-                            {new Date(order.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                            {new Date(order.createdAt).toLocaleDateString(params.locale === 'km' ? 'km-KH' : 'en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                           </p>
                         </div>
                         <div>
@@ -743,7 +777,7 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
         </div>
       ) : activeTab === 'address' ? (
         <div className="space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 min-h-[44px]">
             <h2 className="text-xl font-bold text-gray-900 dark:text-white tracking-tight leading-snug">
               {params.locale === 'km' ? 'អាសយដ្ឋាន / Address' : 'Address'}
             </h2>
@@ -824,7 +858,7 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
         </div>
       ) : activeTab === 'favorites' ? (
         <div className="space-y-6">
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 min-h-[44px]">
             <h2 className="text-xl font-bold text-gray-900 dark:text-white tracking-tight leading-snug">
               {params.locale === 'km' ? 'សំណព្វ / Favorites' : 'Favorites'}
             </h2>
@@ -900,16 +934,16 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
         isKm={params.locale === 'km'}
       />
 
-      {isAddressModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 overflow-y-auto">
-          <div className={`w-full max-w-lg bg-white dark:bg-[#111111] my-8 ${themeStyle === 'neo-brutalism'
+      {isAddressModalOpen && typeof window !== 'undefined' && createPortal(
+        <div className={`fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 ${params.locale === 'km' ? 'font-khmer' : ''}`}>
+          <div className={`w-full max-w-lg bg-white dark:bg-[#111111] max-h-[90vh] flex flex-col ${themeStyle === 'neo-brutalism'
               ? 'border-[3px] border-black dark:border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)]'
               : 'rounded-3xl shadow-xl'
-            } overflow-visible relative`}>
+            } relative`}>
 
-            <div className="flex items-center justify-between p-6 border-b border-gray-100 dark:border-gray-800">
+            <div className="flex-shrink-0 flex items-center justify-between p-6 border-b border-gray-100 dark:border-gray-800">
               <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                {params.locale === 'km' ? 'អាសយដ្ឋានដឹកជញ្ជូន / Shipping Address' : 'Shipping Address'}
+                {params.locale === 'km' ? 'អាសយដ្ឋានដឹកជញ្ជូន' : 'Shipping Address'}
               </h2>
               <button
                 onClick={() => setIsAddressModalOpen(false)}
@@ -919,7 +953,7 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
               </button>
             </div>
 
-            <div className="p-6 space-y-5">
+            <div className="p-6 space-y-5 overflow-y-auto flex-1">
               <div>
                 <label className="block text-sm font-bold text-gray-900 dark:text-gray-300 mb-1.5">{params.locale === 'km' ? 'ឈ្មោះពេញ / Full Name' : 'Full Name'}</label>
                 <input
@@ -1021,7 +1055,8 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.getElementById('app-root') || document.body
       )}
     </div>
   );

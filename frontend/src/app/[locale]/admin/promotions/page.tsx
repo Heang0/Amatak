@@ -166,7 +166,7 @@ export default function AdminPromotionsPage({ params }: { params: { locale: stri
       <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 pb-2">
         <div>
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">{isKm ? 'លេខកូដបញ្ចុះតម្លៃ' : 'Promo Codes'}</h2>
-          <p className="text-sm text-gray-500 dark:text-white/40 mt-0.5">{isKm ? 'បង្កើតលេខកូដបញ្ចុះតម្លៃសម្រាប់អតិថិជនរបស់អ្នក។' : 'Create discount codes for your customers.'}</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400 /40 mt-0.5">{isKm ? 'បង្កើតលេខកូដបញ្ចុះតម្លៃសម្រាប់អតិថិជនរបស់អ្នក។' : 'Create discount codes for your customers.'}</p>
         </div>
         <button 
           onClick={() => { resetForm(); setShowModal(true); }}
@@ -179,47 +179,45 @@ export default function AdminPromotionsPage({ params }: { params: { locale: stri
       <div className="bg-white dark:bg-[#111111] rounded-xl border border-gray-200 dark:border-gray-800 overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="bg-gray-50 dark:bg-gray-900/50 border-b border-gray-200 dark:border-gray-800">
-              <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">{isKm ? 'លេខកូដ' : 'Code'}</th>
-              <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">{isKm ? 'បញ្ចុះតម្លៃ' : 'Discount'}</th>
-              <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">{isKm ? 'ស្ថានភាព' : 'Status'}</th>
-              <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">{isKm ? 'ចំនួនប្រើប្រាស់' : 'Usage'}</th>
-              <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">{isKm ? 'ផុតកំណត់' : 'Valid Until'}</th>
-              <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">{isKm ? 'សកម្មភាព' : 'Actions'}</th>
+            <tr className="bg-[#F4F7FE] dark:bg-[#080808] border-b border-gray-200 dark:border-gray-800">
+              <th className="p-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">{isKm ? 'លេខកូដ' : 'Code'}</th>
+              <th className="p-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">{isKm ? 'បញ្ចុះតម្លៃ' : 'Discount'}</th>
+              <th className="p-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">{isKm ? 'ស្ថានភាព' : 'Status'}</th>
+              <th className="p-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">{isKm ? 'ចំនួនប្រើប្រាស់' : 'Usage'}</th>
+              <th className="p-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">{isKm ? 'ផុតកំណត់' : 'Valid Until'}</th>
+              <th className="p-4 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider text-right">{isKm ? 'សកម្មភាព' : 'Actions'}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
             {promos.length === 0 ? (
               <tr>
-                <td colSpan={6} className="p-8 text-center text-gray-500">{isKm ? 'មិនមានលេខកូដបញ្ចុះតម្លៃទេ។ សូមបង្កើតមួយ!' : 'No promo codes found. Create one above!'}</td>
+                <td colSpan={6} className="p-8 text-center text-gray-600 dark:text-gray-400">{isKm ? 'មិនមានលេខកូដបញ្ចុះតម្លៃទេ។ សូមបង្កើតមួយ!' : 'No promo codes found. Create one above!'}</td>
               </tr>
             ) : promos.map((promo) => (
-              <tr key={promo._id} className="hover:bg-gray-50 dark:hover:bg-gray-900/20 transition-colors">
+              <tr key={promo._id} className="hover:bg-[#F4F7FE] dark:hover:bg-gray-900/20 transition-colors">
                 <td className="p-4">
                   <div className="flex items-center gap-2">
-                    <Tag size={16} className="text-gray-400" />
+                    <Tag size={16} className="text-gray-600 dark:text-gray-400" />
                     <span className="font-bold text-gray-900 dark:text-white tracking-widest">{promo.code}</span>
                   </div>
                 </td>
                 <td className="p-4 font-medium text-green-600 dark:text-green-400">
                   {promo.discountType === 'PERCENTAGE' ? `${promo.discountValue}% ${isKm ? 'បញ្ចុះ' : 'OFF'}` : `$${promo.discountValue} ${isKm ? 'បញ្ចុះ' : 'OFF'}`}
-                  {promo.minPurchase > 0 && <span className="block text-xs text-gray-400 mt-0.5">{isKm ? 'ចំណាយអប្បបរមា: $' : 'Min: $'}{promo.minPurchase}</span>}
+                  {promo.minPurchase > 0 && <span className="block text-xs text-gray-600 dark:text-gray-400 mt-0.5">{isKm ? 'ចំណាយអប្បបរមា: $' : 'Min: $'}{promo.minPurchase}</span>}
                 </td>
                 <td className="p-4">
                   <button 
                     onClick={() => togglePromo(promo._id)}
-                    className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold ${
-                      promo.isActive ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
-                    }`}
+                    className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold ${ promo.isActive ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:text-gray-400 dark:bg-gray-800 ' }`}
                   >
                     {promo.isActive ? <CheckCircle2 size={14} /> : <XCircle size={14} />}
                     {promo.isActive ? (isKm ? 'ដំណើរការ' : 'ACTIVE') : (isKm ? 'ផ្អាក' : 'INACTIVE')}
                   </button>
                 </td>
-                <td className="p-4 text-sm text-gray-500">
+                <td className="p-4 text-sm text-gray-600 dark:text-gray-400">
                   {promo.usedCount} {promo.usageLimit ? `/ ${promo.usageLimit}` : (isKm ? 'ដង' : 'uses')}
                 </td>
-                <td className="p-4 text-sm text-gray-500">
+                <td className="p-4 text-sm text-gray-600 dark:text-gray-400">
                   {promo.validUntil ? format(new Date(promo.validUntil), 'MMM dd, yyyy') : (isKm ? 'មិនផុតកំណត់' : 'No Expiry')}
                 </td>
                 <td className="p-4 text-right">
@@ -243,7 +241,7 @@ export default function AdminPromotionsPage({ params }: { params: { locale: stri
           <div className="bg-white dark:bg-[#111111] w-full max-w-md rounded-2xl shadow-xl max-h-[95vh] overflow-y-auto flex flex-col">
             <div className="p-6 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
               <h2 className="text-xl font-bold">{editingPromoId ? (isKm ? 'កែប្រែលេខកូដ' : 'Update Promo Code') : (isKm ? 'បង្កើតលេខកូដថ្មី' : 'Create Promo Code')}</h2>
-              <button onClick={() => { setShowModal(false); resetForm(); }} className="text-gray-400 hover:text-gray-900 dark:hover:text-white"><XCircle size={20} /></button>
+              <button onClick={() => { setShowModal(false); resetForm(); }} className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:text-white dark:hover:text-white"><XCircle size={20} /></button>
             </div>
             
             <form onSubmit={handleSubmit} className="p-6 space-y-4">

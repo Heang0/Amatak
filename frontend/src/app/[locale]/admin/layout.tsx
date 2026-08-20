@@ -37,7 +37,7 @@ export default function StoreAdminLayout({
 
   if (!isHydrated || !user || user.role !== 'store_admin') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-[#0a0a0a]">
+      <div className="min-h-screen flex items-center justify-center bg-[#F4F7FE] dark:bg-[#080808]">
         <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#E84C3D]"></div>
       </div>
     );

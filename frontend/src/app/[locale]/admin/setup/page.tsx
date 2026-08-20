@@ -109,21 +109,21 @@ export default function StoreSetup() {
           <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-gray-200 dark:bg-gray-800 rounded-full -z-10"></div>
           <div className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-[#E84C3D] rounded-full -z-10 transition-all duration-500 ease-in-out" style={{ width: step === 1 ? '0%' : step === 2 ? '50%' : '100%' }}></div>
           
-          <div className={`flex flex-col items-center gap-2 bg-gray-50 dark:bg-[#0a0a0a] px-2 transition-colors ${step >= 1 ? 'text-[#E84C3D]' : 'text-gray-400'}`}>
+          <div className={`flex flex-col items-center gap-2 bg-[#F4F7FE] dark:bg-[#080808] px-2 transition-colors ${step >= 1 ? 'text-[#E84C3D]' : 'text-gray-600 dark:text-gray-400'}`}>
             <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm border-2 transition-colors ${step >= 1 ? 'border-[#E84C3D] bg-[#E84C3D] text-white shadow-md' : 'border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900'}`}>
               <Store size={18} />
             </div>
             <span className="text-xs font-semibold uppercase tracking-wider">{t('store_info_tab')}</span>
           </div>
 
-          <div className={`flex flex-col items-center gap-2 bg-gray-50 dark:bg-[#0a0a0a] px-2 transition-colors ${step >= 2 ? 'text-[#E84C3D]' : 'text-gray-400'}`}>
+          <div className={`flex flex-col items-center gap-2 bg-[#F4F7FE] dark:bg-[#080808] px-2 transition-colors ${step >= 2 ? 'text-[#E84C3D]' : 'text-gray-600 dark:text-gray-400'}`}>
             <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm border-2 transition-colors ${step >= 2 ? 'border-[#E84C3D] bg-[#E84C3D] text-white shadow-md' : 'border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900'}`}>
               <CreditCard size={18} />
             </div>
             <span className="text-xs font-semibold uppercase tracking-wider">{t('payments_tab')}</span>
           </div>
 
-          <div className={`flex flex-col items-center gap-2 bg-gray-50 dark:bg-[#0a0a0a] px-2 transition-colors ${step >= 3 ? 'text-[#E84C3D]' : 'text-gray-400'}`}>
+          <div className={`flex flex-col items-center gap-2 bg-[#F4F7FE] dark:bg-[#080808] px-2 transition-colors ${step >= 3 ? 'text-[#E84C3D]' : 'text-gray-600 dark:text-gray-400'}`}>
             <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm border-2 transition-colors ${step >= 3 ? 'border-[#E84C3D] bg-[#E84C3D] text-white shadow-md' : 'border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900'}`}>
               <CheckCircle2 size={18} />
             </div>
@@ -132,14 +132,14 @@ export default function StoreSetup() {
         </div>
       </div>
 
-      <div className="w-full max-w-2xl bg-white dark:bg-[#111111] rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 overflow-hidden">
+      <div className="w-full max-w-2xl bg-white dark:bg-[#111111] rounded-2xl shadow-xl border-none overflow-hidden">
         
         {/* Header Area */}
-        <div className="px-8 py-6 border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/20 text-center">
+        <div className="px-8 py-6 border-b border-gray-100 dark:border-gray-800 bg-[#F4F7FE]/50 dark:bg-gray-900/20 text-center">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
             {step === 1 ? t('step1_title') : step === 2 ? t('step2_title') : t('step3_title')}
           </h2>
-          <p className="text-sm text-gray-500 mt-2">
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
             {step === 1 ? t('step1_desc') : step === 2 ? t('step2_desc') : t('step3_desc')}
           </p>
         </div>
@@ -163,7 +163,7 @@ export default function StoreSetup() {
                   required 
                   value={name} 
                   onChange={handleNameChange} 
-                  className="w-full px-5 py-3 text-lg bg-gray-50 dark:bg-gray-900/50 border border-gray-300 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-[#E84C3D] focus:border-[#E84C3D] dark:text-white transition-all outline-none" 
+                  className="w-full px-5 py-3 text-lg bg-[#F4F7FE] dark:bg-[#080808] border border-gray-300 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-[#E84C3D] focus:border-[#E84C3D] transition-all outline-none" 
                   placeholder="e.g. My Awesome Shop"
                 />
               </div>
@@ -175,13 +175,13 @@ export default function StoreSetup() {
                     type="text" 
                     readOnly
                     value={slug} 
-                    className="flex-1 min-w-0 w-full px-5 py-3 bg-gray-100 dark:bg-gray-800 border-y border-l border-gray-300 dark:border-gray-700 focus:outline-none dark:text-gray-400 cursor-not-allowed" 
+                    className="flex-1 min-w-0 w-full px-5 py-3 bg-gray-100 dark:bg-gray-800 border-y border-l border-gray-300 dark:border-gray-700 focus:outline-none cursor-not-allowed" 
                   />
-                  <span className="inline-flex items-center px-4 border-y border-r border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-semibold">
+                  <span className="inline-flex items-center px-4 border-y border-r border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 font-semibold">
                     {baseDomain}
                   </span>
                 </div>
-                <p className="mt-2 text-xs text-gray-500">{t('link_desc')}</p>
+                <p className="mt-2 text-xs text-gray-600 dark:text-gray-400">{t('link_desc')}</p>
               </div>
 
               <div>
@@ -189,7 +189,7 @@ export default function StoreSetup() {
                 <select 
                   value={category} 
                   onChange={e => setCategory(e.target.value)} 
-                  className="w-full px-5 py-3 bg-gray-50 dark:bg-gray-900/50 border border-gray-300 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-[#E84C3D] outline-none dark:text-white"
+                  className="w-full px-5 py-3 bg-[#F4F7FE] dark:bg-[#080808] border border-gray-300 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-[#E84C3D] outline-none"
                 >
                   <option value="Clothing">{t('cat_clothing')}</option>
                   <option value="Food & Beverage">{t('cat_food')}</option>
@@ -221,14 +221,14 @@ export default function StoreSetup() {
                   type="text" 
                   disabled
                   value={bakongId} 
-                  className="w-full px-5 py-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl dark:text-gray-400" 
+                  className="w-full px-5 py-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl" 
                   placeholder="example@bkrt (Pro feature)" 
                 />
               </div>
               
               <div className="opacity-60 pointer-events-none">
                 <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">{t('currency')}</label>
-                <select disabled value={currency} className="w-full px-5 py-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl dark:text-gray-400">
+                <select disabled value={currency} className="w-full px-5 py-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl">
                   <option value="USD">USD</option>
                   <option value="KHR">KHR</option>
                 </select>
@@ -243,7 +243,7 @@ export default function StoreSetup() {
                 <Rocket className="w-12 h-12 text-green-600 dark:text-green-400" />
               </div>
               <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-2">{t('store_created')}</h3>
-              <p className="text-gray-500 dark:text-gray-400">{t('preparing_dash')}</p>
+              <p className="text-gray-600 dark:text-gray-400">{t('preparing_dash')}</p>
             </div>
           )}
 
@@ -254,7 +254,7 @@ export default function StoreSetup() {
                 <button 
                   type="button" 
                   onClick={() => setStep(1)}
-                  className="px-6 py-3 text-gray-600 dark:text-gray-300 font-semibold hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors flex items-center gap-2"
+                  className="px-6 py-3 text-gray-600 dark:text-gray-400 font-semibold hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors flex items-center gap-2"
                 >
                   <ChevronLeft size={18} /> {t('back')}
                 </button>

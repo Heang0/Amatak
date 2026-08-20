@@ -44,9 +44,7 @@ interface Store {
 function AdminToast({ message, visible }: { message: string; visible: boolean }) {
   return (
     <div
-      className={`fixed top-4 left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 md:w-max md:max-w-sm z-[200] flex items-center gap-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-5 py-3 rounded-full shadow-xl text-sm font-medium transition-all duration-300 ${
-        visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-3 pointer-events-none'
-      }`}
+      className={`fixed top-4 left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 md:w-max md:max-w-sm z-[200] flex items-center gap-2 bg-gray-900 dark:bg-white text-white px-5 py-3 rounded-full shadow-xl text-sm font-medium transition-all duration-300 ${ visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-3 pointer-events-none' }`}
     >
       <Check size={16} strokeWidth={2.5} className="shrink-0" />
       <span className="truncate">{message}</span>
@@ -296,7 +294,7 @@ export default function AdminSettings() {
       <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 pb-2">
         <div>
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('settings')}</h2>
-          <p className="text-sm text-gray-500 dark:text-white/40 mt-0.5">{isKm ? 'គ្រប់គ្រងការកំណត់ហាង និងគណនីរបស់អ្នក' : 'Manage your store and profile settings'}</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400 /40 mt-0.5">{isKm ? 'គ្រប់គ្រងការកំណត់ហាង និងគណនីរបស់អ្នក' : 'Manage your store and profile settings'}</p>
         </div>
       </div>
 
@@ -304,47 +302,31 @@ export default function AdminSettings() {
       <div className="flex space-x-2 sm:space-x-4 border-b border-gray-200 dark:border-gray-800 overflow-x-auto no-scrollbar mb-6 pb-px">
         <button
           onClick={() => { setActiveTab('profile'); setSuccessMsg(''); }}
-          className={`pb-4 px-2 sm:px-4 font-medium transition-colors border-b-2 whitespace-nowrap shrink-0 text-sm sm:text-base ${
-            activeTab === 'profile' 
-              ? 'border-[#E84C3D] text-[#E84C3D]' 
-              : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
-          }`}
+          className={`pb-4 px-2 sm:px-4 font-medium transition-colors border-b-2 whitespace-nowrap shrink-0 text-sm sm:text-base ${ activeTab === 'profile' ? 'border-[#E84C3D] text-[#E84C3D]' : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-300' }`}
         >
           {t('personal_profile')}
         </button>
         <button
           onClick={() => { setActiveTab('store'); setSuccessMsg(''); }}
-          className={`pb-4 px-2 sm:px-4 font-medium transition-colors border-b-2 whitespace-nowrap shrink-0 text-sm sm:text-base ${
-            activeTab === 'store' 
-              ? 'border-[#E84C3D] text-[#E84C3D]' 
-              : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
-          }`}
+          className={`pb-4 px-2 sm:px-4 font-medium transition-colors border-b-2 whitespace-nowrap shrink-0 text-sm sm:text-base ${ activeTab === 'store' ? 'border-[#E84C3D] text-[#E84C3D]' : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-300' }`}
         >
           {t('store_settings')}
         </button>
         <button
           onClick={() => { setActiveTab('theme'); setSuccessMsg(''); }}
-          className={`pb-4 px-2 sm:px-4 font-medium transition-colors border-b-2 whitespace-nowrap shrink-0 text-sm sm:text-base ${
-            activeTab === 'theme' 
-              ? 'border-[#E84C3D] text-[#E84C3D]' 
-              : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
-          }`}
+          className={`pb-4 px-2 sm:px-4 font-medium transition-colors border-b-2 whitespace-nowrap shrink-0 text-sm sm:text-base ${ activeTab === 'theme' ? 'border-[#E84C3D] text-[#E84C3D]' : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-300' }`}
         >
           {isKm ? 'កែច្នៃការរចនា Theme' : 'Theme Settings'}
         </button>
         <button
           onClick={() => { setActiveTab('payment'); setSuccessMsg(''); }}
-          className={`pb-4 px-2 sm:px-4 font-medium transition-colors border-b-2 whitespace-nowrap shrink-0 text-sm sm:text-base ${
-            activeTab === 'payment' 
-              ? 'border-[#E84C3D] text-[#E84C3D]' 
-              : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
-          }`}
+          className={`pb-4 px-2 sm:px-4 font-medium transition-colors border-b-2 whitespace-nowrap shrink-0 text-sm sm:text-base ${ activeTab === 'payment' ? 'border-[#E84C3D] text-[#E84C3D]' : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-300' }`}
         >
           {t('payment_settings')}
         </button>
       </div>
 
-      <div className="bg-white dark:bg-[#111111] rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-8">
+      <div className="bg-white dark:bg-[#111111] rounded-2xl shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none border-none p-8">
         {/* Profile Tab */}
         {activeTab === 'profile' && (
           <form onSubmit={handleProfileSubmit} className="space-y-6">
@@ -354,7 +336,7 @@ export default function AdminSettings() {
                   {profileData.profilePic ? (
                     <img src={profileData.profilePic} alt="Profile" className="h-full w-full object-cover" />
                   ) : (
-                    <User className="w-10 h-10 text-gray-400" />
+                    <User className="w-10 h-10 text-gray-600 dark:text-gray-400" />
                   )}
                 </div>
               </div>
@@ -362,7 +344,7 @@ export default function AdminSettings() {
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('profile_picture')}</label>
                 <div className="flex flex-col space-y-2">
                   <div className="flex items-center space-x-4">
-                    <label className="cursor-pointer bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg font-medium transition-colors">
+                    <label className="cursor-pointer bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 hover:bg-[#F4F7FE] dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg font-medium transition-colors">
                       {uploading ? t('uploading') : t('upload_image')}
                       <input type="file" className="hidden" accept="image/*" onChange={(e) => handleFileUpload(e, 'profile')} disabled={uploading} />
                     </label>
@@ -381,7 +363,7 @@ export default function AdminSettings() {
                 required
                 value={profileData.name}
                 onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#E84C3D] outline-none"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-[#F4F7FE] dark:bg-[#080808] text-gray-900 dark:text-white focus:ring-2 focus:ring-[#E84C3D] outline-none"
               />
             </div>
 
@@ -392,7 +374,7 @@ export default function AdminSettings() {
                 placeholder={t('leave_blank')}
                 value={profileData.password}
                 onChange={(e) => setProfileData({ ...profileData, password: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#E84C3D] outline-none"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-[#F4F7FE] dark:bg-[#080808] text-gray-900 dark:text-white focus:ring-2 focus:ring-[#E84C3D] outline-none"
               />
             </div>
 
@@ -428,7 +410,7 @@ export default function AdminSettings() {
                           {isKm ? 'ផ្ញើសារខាងក្រោមនេះទៅក្នុង Group៖' : 'Send this exact message in the group chat:'}
                         </li>
                         <div className="flex items-center gap-2 mt-2 ml-0 sm:ml-4 overflow-hidden">
-                          <code className="bg-white dark:bg-black px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 font-mono text-gray-900 dark:text-gray-100 select-all break-all w-full text-xs sm:text-sm">
+                          <code className="bg-white dark:bg-black px-3 py-2 rounded-lg border-none font-mono text-gray-900 dark:text-white select-all break-all w-full text-xs sm:text-sm">
                             /link {storeData._id}
                           </code>
                         </div>
@@ -470,7 +452,7 @@ export default function AdminSettings() {
                     const newSlug = newName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
                     setStoreData({ ...storeData, name: newName, slug: newSlug });
                   }}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#E84C3D] outline-none"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-[#F4F7FE] dark:bg-[#080808] text-gray-900 dark:text-white focus:ring-2 focus:ring-[#E84C3D] outline-none"
                 />
               </div>
 
@@ -481,24 +463,24 @@ export default function AdminSettings() {
                     type="text"
                     readOnly
                     value={baseDomain.includes('vercel.app') ? `https://shoppingot.vercel.app/store/${storeData.slug}` : `http://${storeData.slug}${baseDomain}`}
-                    className="flex-1 px-4 py-3 border border-r-0 rounded-l-lg border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 outline-none cursor-not-allowed"
+                    className="flex-1 px-4 py-3 border border-r-0 rounded-l-lg border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 outline-none cursor-not-allowed"
                   />
                   <button 
                     type="button" 
                     onClick={handleCopyUrl}
-                    className="inline-flex items-center px-4 rounded-r-lg border border-l-0 border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                    className="inline-flex items-center px-4 rounded-r-lg border border-l-0 border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-[#F4F7FE] dark:hover:bg-gray-800 transition-colors"
                   >
                     {copied ? <Check size={18} className="text-green-500" /> : <Copy size={18} />}
                   </button>
                 </div>
-                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{t('url_warning')}</p>
+                <p className="mt-1 text-xs text-gray-600 dark:text-gray-400">{t('url_warning')}</p>
               </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     {isKm ? 'ឈ្មោះដែនផ្ទាល់ខ្លួន (Custom Domain)' : 'Custom Domain'}
                   </label>
-                  <div className="p-4 border border-gray-200 dark:border-gray-800 rounded-lg bg-gray-50 dark:bg-gray-900/50">
+                  <div className="p-4 border border-gray-200 dark:border-gray-800 rounded-lg bg-[#F4F7FE] dark:bg-[#080808]">
                     {storeData.customDomain ? (
                       <div>
                         <p className="text-sm text-gray-900 dark:text-white font-medium">
@@ -516,7 +498,7 @@ export default function AdminSettings() {
                             : <span>Want your own custom website URL (e.g., <strong>www.yourbrand.com</strong>)?</span>
                           }
                         </p>
-                        <p className="text-xs text-gray-500 mt-1">
+                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
                           {isKm 
                             ? 'សូមទំនាក់ទំនងអ្នកគ្រប់គ្រងប្រព័ន្ធដើម្បីទិញ និងភ្ជាប់ឈ្មោះដែនផ្ទាល់ខ្លួនទៅកាន់ហាងរបស់អ្នក!'
                             : 'Contact the platform administrator to purchase and connect a custom domain to your store!'}
@@ -531,7 +513,7 @@ export default function AdminSettings() {
                 <select 
                   value={storeData.category || 'General Retail'} 
                   onChange={(e) => setStoreData({ ...storeData, category: e.target.value })} 
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#E84C3D] outline-none"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-[#F4F7FE] dark:bg-[#080808] text-gray-900 dark:text-white focus:ring-2 focus:ring-[#E84C3D] outline-none"
                 >
                   <option value="Clothing">{t('cat_clothing')}</option>
                   <option value="Food & Beverage">{t('cat_food')}</option>
@@ -540,7 +522,7 @@ export default function AdminSettings() {
                   <option value="General Retail">{t('cat_general')}</option>
                   <option value="Other">{t('cat_other')}</option>
                 </select>
-                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{t('category_warning')}</p>
+                <p className="mt-1 text-xs text-gray-600 dark:text-gray-400">{t('category_warning')}</p>
               </div>
 
                 <div>
@@ -637,7 +619,7 @@ export default function AdminSettings() {
               </div>
             </form>
           ) : (
-            <p className="text-gray-500 dark:text-gray-400 py-8 text-center">{t('setup_store_first')}</p>
+            <p className="text-gray-600 dark:text-gray-400 py-8 text-center">{t('setup_store_first')}</p>
           )
         )}
 
@@ -653,18 +635,18 @@ export default function AdminSettings() {
                 {/* Logo Section */}
                 <div className="flex-1 space-y-4">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('store_logo')}</label>
-                  <div className="flex items-center space-x-6 bg-gray-50 dark:bg-gray-900/50 p-6 rounded-xl border border-gray-100 dark:border-gray-800">
+                  <div className="flex items-center space-x-6 bg-[#F4F7FE] dark:bg-[#080808] p-6 rounded-xl border-none">
                     <div className="shrink-0">
-                      <div className="h-20 w-20 rounded-lg bg-white dark:bg-gray-800 flex items-center justify-center overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm">
+                      <div className="h-20 w-20 rounded-lg bg-white dark:bg-gray-800 flex items-center justify-center overflow-hidden border-none shadow-sm">
                         {storeData.branding?.logoUrl ? (
                           <img src={storeData.branding.logoUrl} alt="Store Logo" className="h-full w-full object-cover" />
                         ) : (
-                          <StoreIcon className="w-8 h-8 text-gray-400" />
+                          <StoreIcon className="w-8 h-8 text-gray-600 dark:text-gray-400" />
                         )}
                       </div>
                     </div>
                     <div className="flex flex-col space-y-2">
-                      <label className="cursor-pointer bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm w-fit">
+                      <label className="cursor-pointer bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 hover:bg-[#F4F7FE] dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm w-fit">
                         {uploading ? t('uploading') : t('upload_logo')}
                         <input type="file" className="hidden" accept="image/*" onChange={(e) => handleFileUpload(e, 'storeLogo')} disabled={uploading} />
                       </label>
@@ -678,13 +660,13 @@ export default function AdminSettings() {
                 {/* Banner Section */}
                 <div className="flex-1 space-y-4">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('store_banner')}</label>
-                  <div className="bg-gray-50 dark:bg-gray-900/50 p-6 rounded-xl border border-gray-100 dark:border-gray-800 space-y-4">
+                  <div className="bg-[#F4F7FE] dark:bg-[#080808] p-6 rounded-xl border-none space-y-4">
                     {storeData.branding?.bannerUrl && (
-                      <div className="h-20 w-full rounded-lg bg-white dark:bg-gray-800 overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm">
+                      <div className="h-20 w-full rounded-lg bg-white dark:bg-gray-800 overflow-hidden border-none shadow-sm">
                         <img src={storeData.branding.bannerUrl} alt="Store Banner" className="h-full w-full object-cover" />
                       </div>
                     )}
-                    <label className="cursor-pointer bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm block w-fit">
+                    <label className="cursor-pointer bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 hover:bg-[#F4F7FE] dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm block w-fit">
                       {uploading ? t('uploading') : t('upload_banner')}
                       <input type="file" className="hidden" accept="image/*" onChange={(e) => handleFileUpload(e, 'banner')} disabled={uploading} />
                     </label>
@@ -696,9 +678,9 @@ export default function AdminSettings() {
                 <div className="bg-gradient-to-r from-gray-50 to-white dark:from-gray-900/50 dark:to-[#111111] border border-gray-200 dark:border-gray-800 rounded-xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shadow-sm">
                   <div>
                     <h4 className="font-bold text-gray-900 dark:text-white text-lg">{t('theme_customizer_title')}</h4>
-                    <p className="text-sm text-gray-500 mt-1">{t('theme_customizer_desc')}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{t('theme_customizer_desc')}</p>
                   </div>
-                  <Link href="/admin/settings/theme" className="w-full sm:w-auto text-center px-6 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-bold rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors whitespace-nowrap shadow-md">
+                  <Link href="/admin/settings/theme" className="w-full sm:w-auto text-center px-6 py-2.5 bg-gray-900 dark:bg-white text-white text-sm font-bold rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors whitespace-nowrap shadow-md">
                     {t('customize_theme_btn')}
                   </Link>
                 </div>
@@ -720,7 +702,7 @@ export default function AdminSettings() {
               </div>
             </form>
           ) : (
-            <p className="text-gray-500 dark:text-gray-400 py-8 text-center">{t('setup_store_first')}</p>
+            <p className="text-gray-600 dark:text-gray-400 py-8 text-center">{t('setup_store_first')}</p>
           )
         )}
 
@@ -730,7 +712,7 @@ export default function AdminSettings() {
             <form onSubmit={handleStoreSubmit} className="space-y-6">
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">{t('payment_settings')}</h3>
               
-              <div className="bg-gray-50 dark:bg-gray-900/50 p-6 rounded-xl border border-gray-100 dark:border-gray-800 space-y-6">
+              <div className="bg-[#F4F7FE] dark:bg-[#080808] p-6 rounded-xl border-none space-y-6">
                 {isFreePlan && (
                   <div className="bg-yellow-50 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-200 p-4 rounded-lg text-sm border border-yellow-200 dark:border-yellow-800/50 flex items-start gap-3">
                     <span className="text-xl">⚠️</span>
@@ -751,7 +733,7 @@ export default function AdminSettings() {
                     placeholder={t('eg_bakong')}
                     disabled={isFreePlan}
                   />
-                  <p className="mt-2 text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{t('bakong_warning')}</p>
+                  <p className="mt-2 text-xs text-gray-600 dark:text-gray-400 leading-relaxed">{t('bakong_warning')}</p>
                 </div>
 
                 <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
@@ -765,7 +747,7 @@ export default function AdminSettings() {
                     <option value="USD">{t('usd_label')}</option>
                     <option value="KHR">{t('khr_label')}</option>
                   </select>
-                  <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">{t('currency_desc')}</p>
+                  <p className="mt-2 text-xs text-gray-600 dark:text-gray-400">{t('currency_desc')}</p>
                 </div>
               </div>
 
@@ -785,7 +767,7 @@ export default function AdminSettings() {
               </div>
             </form>
           ) : (
-            <p className="text-gray-500 dark:text-gray-400">Loading payment settings...</p>
+            <p className="text-gray-600 dark:text-gray-400">Loading payment settings...</p>
           )
         )}
       </div>

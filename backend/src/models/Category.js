@@ -21,6 +21,11 @@ const categorySchema = new mongoose.Schema(
       ref: 'Store',
       required: true,
     },
+    parentCategory: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category',
+      default: null,
+    },
   },
   {
     timestamps: true,

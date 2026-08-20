@@ -40,17 +40,17 @@ export default function AdminDashboard() {
       <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 pb-2">
         <div>
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('overview_title')}</h2>
-          <p className="text-sm text-gray-500 dark:text-white/40 mt-0.5">
+          <p className="text-sm text-gray-600 dark:text-gray-400 /40 mt-0.5">
             {t('welcome_back', { name: user?.name || t('guest') })}
           </p>
         </div>
-        <Link href="/admin/settings" className="p-2 text-gray-400 dark:text-white/30 hover:text-gray-700 dark:hover:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-white/[0.06] transition-colors shrink-0">
+        <Link href="/admin/settings" className="p-2 text-gray-600 dark:text-gray-400 /30 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-white/[0.06] transition-colors shrink-0">
           <Settings size={18} />
         </Link>
       </div>
 
       {loading ? (
-        <p className="text-gray-500 dark:text-gray-400">{t('loading_analytics')}</p>
+        <p className="text-gray-600 dark:text-gray-400">{t('loading_analytics')}</p>
       ) : analytics ? (
         <>
           {/* Plan Status Warning Banners */}
@@ -92,7 +92,7 @@ export default function AdminDashboard() {
 
           {/* Metric Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white dark:bg-[#111111] rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-800 relative overflow-hidden group">
+            <div className="bg-white dark:bg-[#111111] rounded-2xl p-6 shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none border-none relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-32 h-32 bg-green-50 dark:bg-green-900/10 rounded-full blur-3xl -mr-10 -mt-10 transition-transform group-hover:scale-110" />
               <div className="relative">
                 <div className="flex justify-between items-start mb-4">
@@ -103,12 +103,12 @@ export default function AdminDashboard() {
                     <TrendingUp className="w-3 h-3" /> +12%
                   </div>
                 </div>
-                <h3 className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">{t('total_revenue')}</h3>
+                <h3 className="text-sm font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">{t('total_revenue')}</h3>
                 <p className="text-3xl font-black text-gray-900 dark:text-white">${(analytics.totalRevenue || 0).toFixed(2)}</p>
               </div>
             </div>
 
-            <div className="bg-white dark:bg-[#111111] rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-800 relative overflow-hidden group">
+            <div className="bg-white dark:bg-[#111111] rounded-2xl p-6 shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none border-none relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 dark:bg-blue-900/10 rounded-full blur-3xl -mr-10 -mt-10 transition-transform group-hover:scale-110" />
               <div className="relative">
                 <div className="flex justify-between items-start mb-4">
@@ -116,12 +116,12 @@ export default function AdminDashboard() {
                     <ShoppingCart className="w-5 h-5" />
                   </div>
                 </div>
-                <h3 className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">{t('total_orders')}</h3>
+                <h3 className="text-sm font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">{t('total_orders')}</h3>
                 <p className="text-3xl font-black text-gray-900 dark:text-white">{analytics.totalOrders || 0}</p>
               </div>
             </div>
 
-            <div className="bg-white dark:bg-[#111111] rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-800 relative overflow-hidden group">
+            <div className="bg-white dark:bg-[#111111] rounded-2xl p-6 shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none border-none relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-32 h-32 bg-orange-50 dark:bg-orange-900/10 rounded-full blur-3xl -mr-10 -mt-10 transition-transform group-hover:scale-110" />
               <div className="relative">
                 <div className="flex justify-between items-start mb-4">
@@ -129,12 +129,12 @@ export default function AdminDashboard() {
                     <Package className="w-5 h-5" />
                   </div>
                 </div>
-                <h3 className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">{t('total_products')}</h3>
+                <h3 className="text-sm font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">{t('total_products')}</h3>
                 <p className="text-3xl font-black text-gray-900 dark:text-white">{analytics.totalProducts || 0}</p>
               </div>
             </div>
 
-            <div className="bg-white dark:bg-[#111111] rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-800 relative overflow-hidden group">
+            <div className="bg-white dark:bg-[#111111] rounded-2xl p-6 shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none border-none relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-32 h-32 bg-purple-50 dark:bg-purple-900/10 rounded-full blur-3xl -mr-10 -mt-10 transition-transform group-hover:scale-110" />
               <div className="relative">
                 <div className="flex justify-between items-start mb-4">
@@ -144,14 +144,14 @@ export default function AdminDashboard() {
                     </svg>
                   </div>
                 </div>
-                <h3 className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Customers</h3>
+                <h3 className="text-sm font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">Customers</h3>
                 <p className="text-3xl font-black text-gray-900 dark:text-white">{analytics.totalCustomers || 0}</p>
               </div>
             </div>
           </div>
 
           {/* Revenue Chart */}
-          <div className="bg-white dark:bg-[#111111] rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-800">
+          <div className="bg-white dark:bg-[#111111] rounded-2xl p-6 shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none border-none">
             <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6">{t('revenue_overview') || 'Revenue Overview (Last 7 Days)'}</h3>
             <div className="h-[300px] w-full">
               {mounted && (
@@ -185,24 +185,24 @@ export default function AdminDashboard() {
           </div>
 
           {/* Recent Orders Table */}
-          <div className="bg-white dark:bg-[#111111] rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
+          <div className="bg-white dark:bg-[#111111] rounded-2xl shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none border-none overflow-hidden">
             <div className="px-6 py-5 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
               <h3 className="text-lg font-bold text-gray-900 dark:text-white">{t('recent_orders')}</h3>
               <Link href="/admin/orders" className="text-sm font-medium text-[#E84C3D] hover:text-red-600 transition-colors">{t('view_all')} &rarr;</Link>
             </div>
             <table className="min-w-full divide-y divide-gray-100 dark:divide-gray-800">
-              <thead className="bg-gray-50 dark:bg-gray-900/50">
+              <thead className="bg-[#F4F7FE] dark:bg-[#080808]">
                 <tr>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t('order_id')}</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t('customer')}</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t('amount')}</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t('payment')}</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t('fulfillment')}</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('order_id')}</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('customer')}</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('amount')}</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('payment')}</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">{t('fulfillment')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                 {analytics.recentOrders?.map((order: any) => (
-                  <tr key={order._id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                  <tr key={order._id} className="hover:bg-[#F4F7FE] dark:hover:bg-gray-800/50 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400 font-mono">{order._id.substring(0, 8)}...</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{order.customerId?.name || 'Guest'}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900 dark:text-white">${order.totalAmount.toFixed(2)}</td>
@@ -214,17 +214,7 @@ export default function AdminDashboard() {
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
-                       <span className={`px-3 py-1 inline-flex text-xs font-semibold rounded-full ${
-                          order.orderStatus === 'DELIVERED' 
-                            ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400'
-                            : order.orderStatus === 'SHIPPED'
-                            ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400'
-                            : order.orderStatus === 'PROCESSING'
-                            ? 'bg-purple-50 text-purple-700 dark:bg-purple-900/20 dark:text-purple-400'
-                            : order.orderStatus === 'CANCELLED'
-                            ? 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'
-                            : 'bg-yellow-50 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400'
-                        }`}>
+                       <span className={`px-3 py-1 inline-flex text-xs font-semibold rounded-full ${ order.orderStatus === 'DELIVERED' ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400' : order.orderStatus === 'SHIPPED' ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400' : order.orderStatus === 'PROCESSING' ? 'bg-purple-50 text-purple-700 dark:bg-purple-900/20 dark:text-purple-400' : order.orderStatus === 'CANCELLED' ? 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400' : 'bg-yellow-50 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400' }`}>
                           {order.orderStatus === 'DELIVERED' ? t('status_delivered') 
                             : order.orderStatus === 'SHIPPED' ? t('status_shipped')
                             : order.orderStatus === 'PROCESSING' ? t('status_processing')
@@ -236,7 +226,7 @@ export default function AdminDashboard() {
                 ))}
                 {(!analytics.recentOrders || analytics.recentOrders.length === 0) && (
                   <tr>
-                    <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
+                    <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-600 dark:text-gray-400">
                       {t('no_recent_orders')}
                     </td>
                   </tr>

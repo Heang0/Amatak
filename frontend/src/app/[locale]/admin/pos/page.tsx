@@ -241,7 +241,7 @@ export default function POSPage() {
   const getProductName = (p: Product) => locale === 'km' && p.titleKm ? p.titleKm : p.title;
 
   return (
-    <div className="flex h-[calc(100vh-100px)] -mt-6 -mx-6 bg-gray-100 dark:bg-[#0a0a0a]">
+    <div className="flex h-[calc(100vh-100px)] -mt-6 -mx-6 bg-gray-100 dark:bg-[#080808]">
       {/* LEFT PANEL - PRODUCTS */}
       <div className="flex-1 flex flex-col p-6 overflow-hidden">
         <div className="mb-4 flex gap-4 items-center">
@@ -250,9 +250,9 @@ export default function POSPage() {
             placeholder="Search products, SKU, or Barcode..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="flex-1 px-4 py-3 bg-white dark:bg-gray-900 border-none rounded-xl shadow-sm focus:ring-2 focus:ring-[#E84C3D] dark:text-white"
+            className="flex-1 px-4 py-3 bg-white dark:bg-gray-900 border-none rounded-xl shadow-sm focus:ring-2 focus:ring-[#E84C3D]"
           />
-          <div className="bg-white dark:bg-gray-900 px-4 py-3 rounded-xl shadow-sm text-sm font-medium text-gray-500 dark:text-gray-400">
+          <div className="bg-white dark:bg-gray-900 px-4 py-3 rounded-xl shadow-sm text-sm font-medium text-gray-600 dark:text-gray-400">
             Scanner Ready 🟢
           </div>
         </div>
@@ -272,7 +272,7 @@ export default function POSPage() {
                   <h3 className="font-semibold text-gray-900 dark:text-white text-sm line-clamp-2">{getProductName(product)}</h3>
                   <div className="mt-2 flex justify-between items-center">
                     <span className="text-[#E84C3D] font-bold">${product.price.toFixed(2)}</span>
-                    <span className="text-xs text-gray-500">{product.stock} in stock</span>
+                    <span className="text-xs text-gray-600 dark:text-gray-400">{product.stock} in stock</span>
                   </div>
                 </div>
               </div>
@@ -289,13 +289,13 @@ export default function POSPage() {
         
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {cart.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-gray-400">
+            <div className="h-full flex flex-col items-center justify-center text-gray-600 dark:text-gray-400">
               <span className="text-4xl mb-2">🛒</span>
               <p>Cart is empty</p>
             </div>
           ) : (
             cart.map(item => (
-              <div key={item._id} className="flex gap-3 bg-gray-50 dark:bg-gray-900 p-3 rounded-lg">
+              <div key={item._id} className="flex gap-3 bg-[#F4F7FE] dark:bg-gray-900 p-3 rounded-lg">
                 <div className="w-12 h-12 relative rounded overflow-hidden shrink-0">
                   <Image src={item.imageUrl} alt={item.title} fill className="object-cover" />
                 </div>
@@ -304,11 +304,11 @@ export default function POSPage() {
                   <div className="text-[#E84C3D] text-sm font-medium">${item.price.toFixed(2)}</div>
                 </div>
                 <div className="flex flex-col items-end justify-between">
-                  <button onClick={() => removeFromCart(item._id)} className="text-gray-400 hover:text-red-500">✕</button>
+                  <button onClick={() => removeFromCart(item._id)} className="text-gray-600 dark:text-gray-400 hover:text-red-500">✕</button>
                   <div className="flex items-center gap-2 bg-white dark:bg-gray-800 rounded px-1">
-                    <button onClick={() => updateQuantity(item._id, -1)} className="w-6 h-6 flex items-center justify-center text-gray-600 dark:text-gray-300">-</button>
-                    <span className="text-sm font-medium w-4 text-center dark:text-white">{item.quantity}</span>
-                    <button onClick={() => updateQuantity(item._id, 1)} className="w-6 h-6 flex items-center justify-center text-gray-600 dark:text-gray-300">+</button>
+                    <button onClick={() => updateQuantity(item._id, -1)} className="w-6 h-6 flex items-center justify-center text-gray-600 dark:text-gray-400">-</button>
+                    <span className="text-sm font-medium w-4 text-center">{item.quantity}</span>
+                    <button onClick={() => updateQuantity(item._id, 1)} className="w-6 h-6 flex items-center justify-center text-gray-600 dark:text-gray-400">+</button>
                   </div>
                 </div>
               </div>
@@ -316,7 +316,7 @@ export default function POSPage() {
           )}
         </div>
 
-        <div className="p-4 border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-[#111111]">
+        <div className="p-4 border-t border-gray-200 dark:border-gray-800 bg-[#F4F7FE] dark:bg-[#111111]">
           <div className="flex justify-between mb-4">
             <span className="text-gray-600 dark:text-gray-400 text-lg">Total</span>
             <span className="text-2xl font-bold text-gray-900 dark:text-white">${totalAmount.toFixed(2)}</span>
@@ -338,8 +338,8 @@ export default function POSPage() {
           </div>
 
           {paymentMethod === 'CASH' && (
-            <div className="mb-4 p-3 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
-              <label className="block text-xs font-medium text-gray-500 mb-1">Cash Received</label>
+            <div className="mb-4 p-3 bg-white dark:bg-gray-900 rounded-lg border-none">
+              <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Cash Received</label>
               <input 
                 type="number" 
                 value={cashReceived}
@@ -349,7 +349,7 @@ export default function POSPage() {
               />
               {Number(cashReceived) >= totalAmount && (
                 <div className="flex justify-between mt-2 pt-2 border-t border-gray-100 dark:border-gray-800">
-                  <span className="text-sm text-gray-500">Change</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Change</span>
                   <span className="text-sm font-bold text-green-600">${change.toFixed(2)}</span>
                 </div>
               )}
@@ -367,17 +367,18 @@ export default function POSPage() {
       </div>
 
       {/* KHQR MODAL */}
-      {qrData && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center">
+      {qrData && typeof window !== 'undefined' && createPortal(
+        <div className={`fixed inset-0 bg-black/60 z-50 flex items-center justify-center ${locale === 'km' ? 'font-khmer' : ''}`}>
           <div className="bg-white rounded-2xl p-8 max-w-sm w-full text-center">
             <h3 className="text-xl font-bold mb-4 text-black">Scan to Pay</h3>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={qrData.qrString} alt="KHQR" className="w-full h-auto mb-4 rounded-lg" />
             <p className="text-xl font-bold text-[#E84C3D] mb-4">${qrData.totalAmount.toFixed(2)}</p>
-            <p className="text-sm text-gray-500 mb-6">Awaiting payment confirmation...</p>
-            <button onClick={() => { setQrData(null); clearPolling(); }} className="text-gray-500 hover:text-gray-800">Cancel</button>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">Awaiting payment confirmation...</p>
+            <button onClick={() => { setQrData(null); clearPolling(); }} className="text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:text-gray-100">Cancel</button>
           </div>
-        </div>
+        </div>,
+        document.getElementById('app-root') || document.body
       )}
 
       {/* HIDDEN RECEIPT (For Printing) */}

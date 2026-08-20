@@ -140,6 +140,7 @@ export default function OrderTrackingPage() {
                 <span className="font-mono">{order.guestInfo?.phone || order.customerId?.phone}</span>
               </p>
               <p className="text-gray-600 dark:text-gray-300 leading-relaxed mt-1">
+                <span className="font-medium text-gray-900 dark:text-white">{isKm ? 'ទីតាំង: ' : 'Address: '}</span>
                 {order.guestInfo?.address || order.customerId?.address}
               </p>
             </div>
@@ -150,9 +151,17 @@ export default function OrderTrackingPage() {
               {isKm ? 'ការទូទាត់' : 'Payment & Method'}
             </h3>
             <div className="space-y-2 text-sm">
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-gray-600 dark:text-gray-300 flex items-center gap-1.5 mt-0.5">
                 <span className="font-medium text-gray-900 dark:text-white">{isKm ? 'វិធីទូទាត់: ' : 'Method: '}</span>
-                {order.paymentMethod === 'bakong_app' ? 'Bakong App' : order.paymentMethod === 'CASH' ? 'Cash' : 'Bakong KHQR'}
+                {order.paymentMethod === 'bakong_app' ? 'Bakong App' : 
+                 order.paymentMethod === 'CASH' ? 'Cash' : 
+                 <span className="flex items-center gap-2 text-gray-900 dark:text-white font-semibold text-sm">
+                   <span className="flex items-center justify-center bg-[#E1232E] w-8 h-[18px] rounded px-1 shadow-sm">
+                     {/* eslint-disable-next-line @next/next/no-img-element */}
+                     <img src="/logo/KHQR Logo.png" alt="KHQR" className="h-[10px] w-auto object-contain brightness-0 invert" />
+                   </span>
+                 </span>
+                }
               </p>
               <p className="text-gray-600 dark:text-gray-300 flex items-center gap-2">
                 <span className="font-medium text-gray-900 dark:text-white">{isKm ? 'ស្ថានភាព: ' : 'Status: '}</span>

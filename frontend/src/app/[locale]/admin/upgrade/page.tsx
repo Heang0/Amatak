@@ -256,20 +256,20 @@ export default function UpgradePlan() {
       <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 pb-2">
         <div>
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('title')}</h2>
-          <p className="text-sm text-gray-500 dark:text-white/40 mt-0.5">Manage your subscription plan</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400 /40 mt-0.5">Manage your subscription plan</p>
         </div>
         
         {/* Toggle Switch */}
         <div className="flex items-center bg-gray-100 dark:bg-white/[0.06] p-1 rounded-lg shrink-0">
           <button 
             onClick={() => setBillingCycle('monthly')}
-            className={`px-5 py-1.5 rounded-md text-sm font-semibold transition-all ${billingCycle === 'monthly' ? 'bg-white dark:bg-white/10 text-gray-900 dark:text-white shadow-sm' : 'text-gray-500 dark:text-white/40 hover:text-gray-900 dark:hover:text-white'}`}
+            className={`px-5 py-1.5 rounded-md text-sm font-semibold transition-all ${billingCycle === 'monthly' ? 'bg-white dark:bg-white/10 text-gray-900 dark:text-white shadow-sm' : 'text-gray-600 dark:text-gray-400 /40 hover:text-gray-900 dark:text-white dark:hover:text-white'}`}
           >
             {isKm ? 'ប្រចាំខែ' : 'Monthly'}
           </button>
           <button 
             onClick={() => setBillingCycle('annually')}
-            className={`px-5 py-1.5 rounded-md text-sm font-semibold transition-all flex items-center gap-2 ${billingCycle === 'annually' ? 'bg-white dark:bg-white/10 text-gray-900 dark:text-white shadow-sm' : 'text-gray-500 dark:text-white/40 hover:text-gray-900 dark:hover:text-white'}`}
+            className={`px-5 py-1.5 rounded-md text-sm font-semibold transition-all flex items-center gap-2 ${billingCycle === 'annually' ? 'bg-white dark:bg-white/10 text-gray-900 dark:text-white shadow-sm' : 'text-gray-600 dark:text-gray-400 /40 hover:text-gray-900 dark:text-white dark:hover:text-white'}`}
           >
             {isKm ? 'ប្រចាំឆ្នាំ' : 'Annually'}
             <span className="bg-[#E1232E]/10 text-[#E1232E] text-[10px] uppercase px-1.5 py-0.5 rounded font-black tracking-wider">Save 30%</span>
@@ -278,38 +278,34 @@ export default function UpgradePlan() {
       </div>
 
       {loading ? (
-        <p className="text-gray-500 dark:text-gray-400">{t('loading')}</p>
+        <p className="text-gray-600 dark:text-gray-400">{t('loading')}</p>
       ) : (
         <>
           {/* Current Subscription Overview */}
           {storeData && currentStorePlan && (
-            <div className="bg-white dark:bg-[#111111] border border-gray-100 dark:border-gray-800 rounded-2xl p-6 shadow-sm mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="bg-white dark:bg-[#111111] border-none rounded-2xl p-6 shadow-sm mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div>
-                <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">
+                <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">
                   {isKm ? 'គម្រោងបច្ចុប្បន្នរបស់អ្នក' : 'Your Current Plan'}
                 </h3>
                 <div className="flex items-center gap-3">
                   <span className="text-2xl font-bold text-gray-900 dark:text-white">
                     {currentStorePlan?.planId?.name || 'Free'}
                   </span>
-                  <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
-                    isExpired() 
-                      ? 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400' 
-                      : 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                  }`}>
+                  <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${ isExpired() ? 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400' : 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' }`}>
                     {isExpired() ? (isKm ? 'ហួសកំណត់' : 'Expired') : (isKm ? 'សកម្ម' : 'Active')}
                   </span>
                 </div>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
                   {currentStorePlan?.expiresAt 
                     ? `${isKm ? 'ផុតកំណត់: ' : 'Expires on: '} ${new Date(currentStorePlan.expiresAt).toLocaleDateString(isKm ? 'km-KH' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`
                     : (isKm ? 'គម្រោងឥតគិតថ្លៃ (មិនមានថ្ងៃផុតកំណត់)' : 'Free Plan (Never expires)')}
                 </p>
               </div>
               
-              <div className="flex items-center gap-4 bg-gray-50 dark:bg-gray-900/50 p-4 rounded-xl border border-gray-100 dark:border-gray-800">
+              <div className="flex items-center gap-4 bg-[#F4F7FE] dark:bg-[#080808] p-4 rounded-xl border-none">
                 {storeData.branding?.logoUrl ? (
-                  <div className="w-12 h-12 rounded-full overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex items-center justify-center shrink-0">
+                  <div className="w-12 h-12 rounded-full overflow-hidden border-none bg-white dark:bg-gray-800 flex items-center justify-center shrink-0">
                     <img src={storeData.branding.logoUrl} alt="Store Logo" className="w-full h-full object-cover p-0.5" />
                   </div>
                 ) : (
@@ -319,7 +315,7 @@ export default function UpgradePlan() {
                 )}
                 <div>
                   <p className="font-semibold text-gray-900 dark:text-white">{storeData.name}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{storeData.slug}</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">{storeData.slug}</p>
                 </div>
               </div>
             </div>
@@ -329,11 +325,7 @@ export default function UpgradePlan() {
           {plans.map((plan) => (
             <div 
               key={plan._id} 
-              className={`bg-white dark:bg-[#111111] p-8 rounded-xl shadow-sm border flex flex-col transition-all relative ${
-                currentPlanId === plan._id 
-                  ? (isExpired() ? 'border-orange-500 ring-1 ring-orange-500' : 'border-[#E84C3D] ring-1 ring-[#E84C3D] shadow-md scale-[1.02]') 
-                  : 'border-gray-100 dark:border-gray-800 hover:border-red-200 dark:hover:border-red-900/50 hover:scale-[1.01]'
-              }`}
+              className={`bg-white dark:bg-[#111111] p-8 rounded-xl shadow-sm border flex flex-col transition-all relative ${ currentPlanId === plan._id ? (isExpired() ? 'border-orange-500 ring-1 ring-orange-500' : 'border-[#E84C3D] ring-1 ring-[#E84C3D] shadow-md scale-[1.02]') : 'border-gray-100 dark:border-gray-800 hover:border-red-200 dark:hover:border-red-900/50 hover:scale-[1.01]' }`}
             >
               <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center justify-between">
                 {isKm && plan.nameKm ? plan.nameKm : plan.name}
@@ -348,12 +340,12 @@ export default function UpgradePlan() {
                   <span className="text-4xl font-extrabold text-gray-900 dark:text-white">
                     ${getDisplayPrice(plan)}
                   </span>
-                  <span className="text-sm font-medium text-gray-500">
+                  <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
                     /{billingCycle === 'annually' ? (isKm ? 'ឆ្នាំ' : 'yr') : (isKm ? 'ខែ' : 'mo')}
                   </span>
                 </div>
                 {getOriginalPrice(plan) && (
-                  <div className="text-sm font-medium text-gray-400 line-through mt-1">
+                  <div className="text-sm font-medium text-gray-600 dark:text-gray-400 line-through mt-1">
                     ${getOriginalPrice(plan)}/{isKm ? 'ឆ្នាំ' : 'yr'}
                   </div>
                 )}
@@ -374,11 +366,7 @@ export default function UpgradePlan() {
                   <button
                     onClick={() => handleUpgrade(plan._id)}
                     disabled={isDisabled}
-                    className={`mt-8 block w-full font-semibold py-3 px-4 rounded-lg text-center transition-colors shadow-sm ${
-                      isDisabled
-                        ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 cursor-not-allowed' 
-                        : 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-100'
-                    }`}
+                    className={`mt-8 block w-full font-semibold py-3 px-4 rounded-lg text-center transition-colors shadow-sm ${ isDisabled ? 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 cursor-not-allowed' : 'bg-gray-900 dark:bg-white text-white hover:bg-gray-800 dark:hover:bg-gray-100' }`}
                   >
                     {currentPlanId === plan._id 
                       ? (isExpired() ? (isKm ? 'បន្តគម្រោង' : 'Renew Plan') : (isKm ? 'បានដំណើរការ' : 'Active')) 
@@ -391,7 +379,7 @@ export default function UpgradePlan() {
               
               {/* Expiration Notice */}
               {currentPlanId === plan._id && currentStorePlan?.expiresAt && (
-                <div className={`mt-3 text-xs text-center font-medium ${isExpired() ? 'text-red-500' : 'text-gray-500'}`}>
+                <div className={`mt-3 text-xs text-center font-medium ${isExpired() ? 'text-red-500' : 'text-gray-600 dark:text-gray-400'}`}>
                   {isKm ? 'ផុតកំណត់: ' : 'Expires: '} 
                   {new Date(currentStorePlan.expiresAt).toLocaleDateString(isKm ? 'km-KH' : 'en-US')}
                 </div>
@@ -407,7 +395,7 @@ export default function UpgradePlan() {
         <div className="mt-12 max-w-2xl mx-auto border-t border-gray-100 dark:border-gray-800 pt-10">
           <div className="mb-6">
             <h3 className="text-xl font-bold text-gray-900 dark:text-white">{isKm ? 'វិធីសាស្ត្រទូទាត់' : 'Payment Method'}</h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{isKm ? 'វិធីសាស្ត្រដែលត្រូវបានទទួលយក' : 'Accepted payment methods'}</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{isKm ? 'វិធីសាស្ត្រដែលត្រូវបានទទួលយក' : 'Accepted payment methods'}</p>
           </div>
 
           <div className="bg-white dark:bg-[#111111] border border-gray-200 dark:border-gray-800 rounded-2xl p-4 md:p-5 shadow-sm transition-all cursor-pointer relative overflow-hidden flex items-center justify-between group hover:border-[#E1232E]/30 hover:shadow-md">
@@ -430,10 +418,10 @@ export default function UpgradePlan() {
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-xs font-bold text-[#E1232E] uppercase tracking-wider bg-[#E1232E]/10 px-2 py-0.5 rounded">KHQR</span>
-                  <span className="text-[10px] text-gray-400 font-medium hidden sm:inline-block">• {isKm ? 'អនុញ្ញាតភ្លាមៗ' : 'Instant Approval'}</span>
+                  <span className="text-[10px] text-gray-600 dark:text-gray-400 font-medium hidden sm:inline-block">• {isKm ? 'អនុញ្ញាតភ្លាមៗ' : 'Instant Approval'}</span>
                 </div>
                 <h4 className="text-base font-bold text-gray-900 dark:text-white uppercase">Bakong KHQR</h4>
-                <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">{isKm ? 'ការទូទាត់តាម Bakong' : 'Payment via Bakong KHQR'}</p>
+                <p className="text-xs text-gray-600 dark:text-gray-400 font-medium">{isKm ? 'ការទូទាត់តាម Bakong' : 'Payment via Bakong KHQR'}</p>
               </div>
             </div>
 

@@ -63,34 +63,34 @@ export default function OrderTracking() {
       <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 pb-2">
         <div>
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('title')}</h2>
-          <p className="text-sm text-gray-500 dark:text-white/40 mt-0.5">Track and manage customer orders</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400 /40 mt-0.5">Track and manage customer orders</p>
         </div>
       </div>
 
       {loading ? (
-        <div className="bg-white dark:bg-[#111111] rounded-2xl border border-gray-100 dark:border-gray-800 p-12 flex flex-col items-center gap-3">
+        <div className="bg-white dark:bg-[#111111] rounded-2xl border-none p-12 flex flex-col items-center gap-3">
           <div className="w-8 h-8 border-2 border-[#E84C3D]/30 border-t-[#E84C3D] rounded-full animate-spin" />
-          <p className="text-sm text-gray-400">{t('loading')}</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">{t('loading')}</p>
         </div>
       ) : (
-        <div className="bg-white dark:bg-[#111111] rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
+        <div className="bg-white dark:bg-[#111111] rounded-2xl shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none border-none overflow-hidden">
           <div className="overflow-x-auto">
           <table className="min-w-full">
             <thead>
-              <tr className="border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/30">
-                <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('order_id')}</th>
-                <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('customer')}</th>
-                <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('items')}</th>
-                <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('total_amount')}</th>
-                <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('payment')}</th>
-                <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('fulfillment')}</th>
-                <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('date')}</th>
-                <th className="px-6 py-4 text-right text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{locale === 'km' ? 'សកម្មភាព' : 'Action'}</th>
+              <tr className="border-b border-gray-100 dark:border-gray-800 bg-[#F4F7FE]/50 dark:bg-[#080808]">
+                <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">{t('order_id')}</th>
+                <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">{t('customer')}</th>
+                <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">{t('items')}</th>
+                <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">{t('total_amount')}</th>
+                <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">{t('payment')}</th>
+                <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">{t('fulfillment')}</th>
+                <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">{t('date')}</th>
+                <th className="px-6 py-4 text-right text-[11px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">{locale === 'km' ? 'សកម្មភាព' : 'Action'}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50 dark:divide-gray-800/50">
               {orders.map((order) => (
-                <tr key={order._id} className="hover:bg-gray-50/70 dark:hover:bg-gray-800/30 transition-colors duration-150 group">
+                <tr key={order._id} className="hover:bg-[#F4F7FE]/70 dark:hover:bg-gray-800/30 transition-colors duration-150 group">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="text-xs font-mono bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-2 py-1 rounded-md">
                       #{order._id.substring(0, 8)}
@@ -98,19 +98,19 @@ export default function OrderTracking() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center text-xs font-bold text-gray-600 dark:text-gray-300 shrink-0">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center text-xs font-bold text-gray-600 dark:text-gray-400 shrink-0">
                         {(order.isGuest ? order.guestInfo?.name : order.customerId?.name)?.charAt(0)?.toUpperCase() || '?'}
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-gray-900 dark:text-white">
                           {order.isGuest ? order.guestInfo?.name || t('guest') : order.customerId?.name || 'Unknown'}
                         </p>
-                        <p className="text-xs text-gray-400">{order.isGuest ? order.guestInfo?.phone : order.customerId?.email}</p>
+                        <p className="text-xs text-gray-600 dark:text-gray-400">{order.isGuest ? order.guestInfo?.phone : order.customerId?.email}</p>
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{order.items.length} <span className="text-gray-400">{t('items')}</span></span>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{order.items.length} <span className="text-gray-600 dark:text-gray-400">{t('items')}</span></span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="text-sm font-black text-gray-900 dark:text-white">${order.totalAmount.toFixed(2)}</span>
@@ -132,17 +132,7 @@ export default function OrderTracking() {
                     <select
                       value={order.orderStatus || 'PENDING'}
                       onChange={(e) => handleStatusChange(order._id, e.target.value)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-bold border-0 ring-1 focus:outline-none focus:ring-2 focus:ring-[#E84C3D]/50 transition-colors cursor-pointer ${
-                        order.orderStatus === 'DELIVERED' 
-                          ? 'bg-emerald-50 text-emerald-700 ring-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400 dark:ring-emerald-800/50'
-                          : order.orderStatus === 'SHIPPED'
-                          ? 'bg-blue-50 text-blue-700 ring-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:ring-blue-800/50'
-                          : order.orderStatus === 'PROCESSING'
-                          ? 'bg-purple-50 text-purple-700 ring-purple-200 dark:bg-purple-900/20 dark:text-purple-400 dark:ring-purple-800/50'
-                          : order.orderStatus === 'CANCELLED'
-                          ? 'bg-red-50 text-red-700 ring-red-200 dark:bg-red-900/20 dark:text-red-400 dark:ring-red-800/50'
-                          : 'bg-amber-50 text-amber-700 ring-amber-200 dark:bg-amber-900/20 dark:text-amber-400 dark:ring-amber-800/50'
-                      }`}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold border-0 ring-1 focus:outline-none focus:ring-2 focus:ring-[#E84C3D]/50 transition-colors cursor-pointer ${ order.orderStatus === 'DELIVERED' ? 'bg-emerald-50 text-emerald-700 ring-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400 dark:ring-emerald-800/50' : order.orderStatus === 'SHIPPED' ? 'bg-blue-50 text-blue-700 ring-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:ring-blue-800/50' : order.orderStatus === 'PROCESSING' ? 'bg-purple-50 text-purple-700 ring-purple-200 dark:bg-purple-900/20 dark:text-purple-400 dark:ring-purple-800/50' : order.orderStatus === 'CANCELLED' ? 'bg-red-50 text-red-700 ring-red-200 dark:bg-red-900/20 dark:text-red-400 dark:ring-red-800/50' : 'bg-amber-50 text-amber-700 ring-amber-200 dark:bg-amber-900/20 dark:text-amber-400 dark:ring-amber-800/50' }`}
                     >
                       <option value="PENDING">{t('status_pending')}</option>
                       <option value="PROCESSING">{t('status_processing')}</option>
@@ -151,13 +141,13 @@ export default function OrderTracking() {
                       <option value="CANCELLED">{t('status_cancelled')}</option>
                     </select>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
                     {new Date(order.createdAt).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right">
                     <button 
                       onClick={() => setSelectedOrder(order)} 
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:text-white dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                         <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
@@ -172,10 +162,10 @@ export default function OrderTracking() {
                 <tr>
                   <td colSpan={8} className="px-6 py-16 text-center">
                     <div className="flex flex-col items-center gap-3">
-                      <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center text-gray-400">
+                      <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-400">
                         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
                       </div>
-                      <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('no_orders')}</p>
+                      <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{t('no_orders')}</p>
                     </div>
                   </td>
                 </tr>
@@ -186,11 +176,11 @@ export default function OrderTracking() {
 
           
           {totalPages > 1 && (
-            <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between bg-gray-50 dark:bg-[#111111]">
+            <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between bg-[#F4F7FE] dark:bg-[#111111]">
               <button
                 onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                 disabled={currentPage === 1}
-                className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 transition-colors"
+                className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-[#F4F7FE] dark:hover:bg-gray-700 disabled:opacity-50 transition-colors"
               >
                 {t('previous')}
               </button>
@@ -200,7 +190,7 @@ export default function OrderTracking() {
               <button
                 onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                 disabled={currentPage === totalPages}
-                className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 transition-colors"
+                className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-[#F4F7FE] dark:hover:bg-gray-700 disabled:opacity-50 transition-colors"
               >
                 {t('next')}
               </button>
@@ -210,8 +200,8 @@ export default function OrderTracking() {
       )}
 
       {/* Order Details Modal */}
-      {selectedOrder && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+      {selectedOrder && typeof window !== 'undefined' && createPortal(
+        <div className={`fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 ${locale === 'km' ? 'font-khmer' : ''}`}>
           <div className="bg-white dark:bg-[#111111] rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative animate-in fade-in zoom-in-95 duration-200">
             <div className="sticky top-0 bg-white/90 dark:bg-[#111111]/90 backdrop-blur-md px-4 sm:px-6 py-4 border-b border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 z-10 pr-14 sm:pr-16 relative">
               <h3 className="text-lg font-bold text-gray-900 dark:text-white">{t('order_details')}</h3>
@@ -240,7 +230,7 @@ export default function OrderTracking() {
                   Share Link
                 </button>
               </div>
-              <button onClick={() => setSelectedOrder(null)} className="absolute top-4 right-4 sm:right-6 text-gray-500 hover:text-black dark:hover:text-white transition-colors bg-gray-100 dark:bg-gray-800 rounded-full p-2">
+              <button onClick={() => setSelectedOrder(null)} className="absolute top-4 right-4 sm:right-6 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors bg-gray-100 dark:bg-gray-800 rounded-full p-2">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             </div>
@@ -248,7 +238,7 @@ export default function OrderTracking() {
               {/* Info Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <h4 className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">{t('customer_info')}</h4>
+                  <h4 className="text-xs font-semibold uppercase tracking-widest text-gray-600 dark:text-gray-400 mb-2">{t('customer_info')}</h4>
                   {selectedOrder.isGuest ? (
                     <div className="text-sm space-y-1">
                       <p className="font-semibold text-gray-900 dark:text-white">{selectedOrder.guestInfo?.name}</p>
@@ -260,15 +250,15 @@ export default function OrderTracking() {
                       {selectedOrder.guestInfo?.phone && selectedOrder.guestInfo?.phone !== selectedOrder.customerId?.email && (
                         <p className="text-gray-600 dark:text-gray-400 font-mono">{selectedOrder.guestInfo?.phone}</p>
                       )}
-                      <p className="text-gray-500 dark:text-gray-500 text-xs">{selectedOrder.customerId?.email}</p>
+                      <p className="text-gray-600 dark:text-gray-400 text-xs">{selectedOrder.customerId?.email}</p>
                     </div>
                   )}
                 </div>
                 <div>
-                  <h4 className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">{t('delivery')}</h4>
+                  <h4 className="text-xs font-semibold uppercase tracking-widest text-gray-600 dark:text-gray-400 mb-2">{t('delivery')}</h4>
                   <div className="text-sm space-y-1">
                     <p className="font-semibold text-gray-900 dark:text-white">{selectedOrder.deliveryPartner || 'J&T Express'}</p>
-                    <p className="text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-900 p-2 rounded-lg mt-2 leading-relaxed">
+                    <p className="text-gray-600 dark:text-gray-400 bg-[#F4F7FE] dark:bg-gray-900 p-2 rounded-lg mt-2 leading-relaxed">
                       {selectedOrder.guestInfo?.address || 'No address provided'}
                     </p>
                   </div>
@@ -277,13 +267,13 @@ export default function OrderTracking() {
 
               {/* Items List */}
               <div>
-                <h4 className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-3">{t('order_items')}</h4>
+                <h4 className="text-xs font-semibold uppercase tracking-widest text-gray-600 dark:text-gray-400 mb-3">{t('order_items')}</h4>
                 <div className="space-y-3">
                   {selectedOrder.items.map((item: any) => (
-                    <div key={item._id} className="flex justify-between items-start p-3 bg-gray-50 dark:bg-gray-900/50 rounded-xl border border-gray-100 dark:border-gray-800">
+                    <div key={item._id} className="flex justify-between items-start p-3 bg-[#F4F7FE] dark:bg-[#080808] rounded-xl border-none">
                       <div className="flex gap-3">
                         {item.productId?.imageUrl && (
-                          <div className="w-12 h-12 shrink-0 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+                          <div className="w-12 h-12 shrink-0 bg-white dark:bg-gray-800 rounded-lg border-none overflow-hidden">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img 
                               src={item.productId.imageUrl.replace('/upload/', '/upload/w_300,c_limit,q_auto/')} 
@@ -318,12 +308,13 @@ export default function OrderTracking() {
 
               {/* Total & Status */}
               <div className="flex justify-between items-center pt-4 border-t border-gray-100 dark:border-gray-800">
-                <span className="font-semibold text-gray-500">{t('total_paid_khqr')}</span>
+                <span className="font-semibold text-gray-600 dark:text-gray-400">{t('total_paid_khqr')}</span>
                 <span className="text-xl font-bold text-gray-900 dark:text-white">${selectedOrder.totalAmount.toFixed(2)}</span>
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.getElementById('app-root') || document.body
       )}
 
       {/* Hidden Print Layout (Shipping Label - 4x6 / 100x150mm) */}
@@ -350,7 +341,7 @@ export default function OrderTracking() {
                   {selectedOrder.deliveryPartner || 'STANDARD'}
                 </div>
                 {selectedOrder.storeId && (
-                  <div className="text-[10px] mt-1 text-gray-700 font-medium">
+                  <div className="text-[10px] mt-1 text-gray-700 dark:text-gray-300 font-medium">
                     SENDER: {selectedOrder.storeId.name}
                     {selectedOrder.storeId.contact?.phone && <><br/>TEL: {selectedOrder.storeId.contact.phone}</>}
                   </div>
@@ -378,7 +369,7 @@ export default function OrderTracking() {
                 <div>
                   <div className="font-bold text-xl leading-tight">{selectedOrder.customerId?.name}</div>
                   <div className="text-sm mt-1">{selectedOrder.customerId?.email}</div>
-                  <div className="text-sm mt-1 italic text-gray-700">See system for address</div>
+                  <div className="text-sm mt-1 italic text-gray-700 dark:text-gray-300">See system for address</div>
                 </div>
               )}
             </div>
@@ -404,7 +395,7 @@ export default function OrderTracking() {
                       <td className="py-1 pl-2">
                         {item.productId?.title || 'Unknown Item'}
                         {item.selectedVariants && Object.keys(item.selectedVariants).length > 0 && (
-                          <span className="text-[10px] text-gray-600 ml-1">
+                          <span className="text-[10px] text-gray-600 dark:text-gray-400 ml-1">
                             ({Object.values(item.selectedVariants).join(', ')})
                           </span>
                         )}
@@ -420,7 +411,7 @@ export default function OrderTracking() {
               <div className="text-xs font-bold tracking-widest uppercase">
                 Thank you for shopping with us!
               </div>
-              <div className="text-[10px] text-gray-600 mt-1">
+              <div className="text-[10px] text-gray-600 dark:text-gray-400 mt-1">
                 Please include this label clearly on the package.
               </div>
             </div>

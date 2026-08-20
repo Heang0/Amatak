@@ -14,7 +14,7 @@ export function DashboardLayout({ children, sidebarItems, title }: DashboardLayo
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="h-screen bg-[#f9f9f9] dark:bg-[#080808] flex overflow-hidden">
+    <div className="h-screen bg-[#F4F7FE] dark:bg-[#080808] flex overflow-hidden">
       {/* Sidebar */}
       <Sidebar 
         items={sidebarItems} 

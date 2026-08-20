@@ -362,7 +362,7 @@ export default function ManageProducts() {
       <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 pb-2">
         <div>
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('title')}</h2>
-          <p className="text-sm text-gray-500 dark:text-white/40 mt-0.5">Manage your store products</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400 /40 mt-0.5">Manage your store products</p>
         </div>
         <button
           onClick={handleToggleForm}
@@ -373,7 +373,7 @@ export default function ManageProducts() {
       </div>
 
       {showForm && (
-        <form onSubmit={handleCreateOrUpdateProduct} className="bg-white dark:bg-[#111111] p-8 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 space-y-6">
+        <form onSubmit={handleCreateOrUpdateProduct} className="bg-white dark:bg-[#111111] p-8 rounded-xl shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none border-none space-y-6">
           <div className="flex items-center gap-3 mb-2">
             <h3 className="text-xl font-bold text-gray-900 dark:text-white">{editingProduct ? t('edit_product') : t('create_product')}</h3>
           </div>
@@ -392,7 +392,7 @@ export default function ManageProducts() {
                   </button>
                 )}
               </div>
-              <input type="text" required value={title} onChange={e => setTitle(e.target.value)} onBlur={handleTitleBlur} className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#E84C3D] focus:border-[#E84C3D] dark:text-white transition-colors" />
+              <input type="text" required value={title} onChange={e => setTitle(e.target.value)} onBlur={handleTitleBlur} className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#E84C3D] focus:border-[#E84C3D] transition-colors" />
             </div>
             <div>
               <div className="flex justify-between items-center mb-1">
@@ -408,19 +408,19 @@ export default function ManageProducts() {
                   </button>
                 )}
               </div>
-              <input type="text" value={titleKm} onChange={e => setTitleKm(e.target.value)} onBlur={handleTitleKmBlur} className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#E84C3D] focus:border-[#E84C3D] dark:text-white transition-colors" />
+              <input type="text" value={titleKm} onChange={e => setTitleKm(e.target.value)} onBlur={handleTitleKmBlur} className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#E84C3D] focus:border-[#E84C3D] transition-colors" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('price')}</label>
-              <input type="number" step="0.01" required value={price} onChange={e => setPrice(e.target.value)} className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#E84C3D] focus:border-[#E84C3D] dark:text-white transition-colors" />
+              <input type="number" step="0.01" required value={price} onChange={e => setPrice(e.target.value)} className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#E84C3D] focus:border-[#E84C3D] transition-colors" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('stock')}</label>
-              <input type="number" required value={stock} onChange={e => setStock(e.target.value)} className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#E84C3D] focus:border-[#E84C3D] dark:text-white transition-colors" />
+              <input type="number" required value={stock} onChange={e => setStock(e.target.value)} className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#E84C3D] focus:border-[#E84C3D] transition-colors" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('custom_category')}</label>
-              <select value={categoryId} onChange={e => setCategoryId(e.target.value)} className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#E84C3D] focus:border-[#E84C3D] dark:text-white transition-colors">
+              <select value={categoryId} onChange={e => setCategoryId(e.target.value)} className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#E84C3D] focus:border-[#E84C3D] transition-colors">
                 <option value="">{t('no_category')}</option>
                 {categories.map(cat => (
                   <option key={cat._id} value={cat._id}>{getCategoryName(cat)}</option>
@@ -430,9 +430,9 @@ export default function ManageProducts() {
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('image_upload')} (Main)</label>
               <div className="flex gap-4 items-center">
-                <input type="file" accept="image/*" onChange={handleUpload} className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg text-sm dark:text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100 dark:file:bg-red-900/20 dark:file:text-red-400" />
+                <input type="file" accept="image/*" onChange={handleUpload} className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100 dark:file:bg-red-900/20 dark:file:text-red-400" />
                 {imageUrl && (
-                  <div className="w-12 h-12 shrink-0 rounded overflow-hidden border border-gray-200 dark:border-gray-700 relative group">
+                  <div className="w-12 h-12 shrink-0 rounded overflow-hidden border-none relative group">
                     <img src={imageUrl} alt="Preview" className="w-full h-full object-cover" />
                     <button type="button" onClick={() => setImageUrl('')} className="absolute top-0 right-0 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">✕</button>
                   </div>
@@ -442,11 +442,11 @@ export default function ManageProducts() {
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('gallery_images')}</label>
               <div className="flex flex-col gap-2">
-                <input type="file" multiple accept="image/*" onChange={handleExtraUpload} disabled={images.length >= 3} className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg text-sm dark:text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-blue-900/20 dark:file:text-blue-400 disabled:opacity-50" />
+                <input type="file" multiple accept="image/*" onChange={handleExtraUpload} disabled={images.length >= 3} className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-blue-900/20 dark:file:text-blue-400 disabled:opacity-50" />
                 {images.length > 0 && (
                   <div className="flex gap-2">
                     {images.map((img, i) => (
-                      <div key={i} className="w-12 h-12 shrink-0 rounded overflow-hidden border border-gray-200 dark:border-gray-700 relative group">
+                      <div key={i} className="w-12 h-12 shrink-0 rounded overflow-hidden border-none relative group">
                         <img src={img} alt="Gallery" className="w-full h-full object-cover" />
                         <button type="button" onClick={() => setImages(images.filter((_, idx) => idx !== i))} className="absolute top-0 right-0 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">✕</button>
                       </div>
@@ -479,7 +479,7 @@ export default function ManageProducts() {
                   </button>
                 )}
               </div>
-              <textarea rows={3} value={description} onChange={e => setDescription(e.target.value)} onBlur={handleDescriptionBlur} className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#E84C3D] focus:border-[#E84C3D] dark:text-white transition-colors"></textarea>
+              <textarea rows={3} value={description} onChange={e => setDescription(e.target.value)} onBlur={handleDescriptionBlur} className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#E84C3D] focus:border-[#E84C3D] transition-colors"></textarea>
             </div>
             <div className="col-span-1 md:col-span-2">
               <div className="flex justify-between items-center mb-1">
@@ -495,7 +495,7 @@ export default function ManageProducts() {
                   </button>
                 )}
               </div>
-              <textarea rows={3} value={descriptionKm} onChange={e => setDescriptionKm(e.target.value)} onBlur={handleDescriptionKmBlur} className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#E84C3D] focus:border-[#E84C3D] dark:text-white transition-colors"></textarea>
+              <textarea rows={3} value={descriptionKm} onChange={e => setDescriptionKm(e.target.value)} onBlur={handleDescriptionKmBlur} className="w-full px-4 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#E84C3D] focus:border-[#E84C3D] transition-colors"></textarea>
             </div>
 
             <div className="col-span-1 md:col-span-2 border-t border-gray-100 dark:border-gray-800 pt-6 mt-2">
@@ -537,24 +537,24 @@ export default function ManageProducts() {
                   const currentOptionsList = variant.options.split(',').map(s => s.trim()).filter(Boolean);
 
                   return (
-                    <div key={index} className="flex flex-col gap-3 bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg border border-gray-100 dark:border-gray-700">
+                    <div key={index} className="flex flex-col gap-3 bg-[#F4F7FE] dark:bg-gray-800/50 p-4 rounded-lg border border-gray-100 dark:border-gray-700">
                       <div className="flex gap-4 items-start">
                         <div className="flex-1">
-                          <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{t('variant_name')}</label>
-                          <input type="text" value={variant.name} onChange={e => { const newV = [...variants]; newV[index].name = e.target.value; setVariants(newV); }} className="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-[#E84C3D] text-sm dark:text-white" />
+                          <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">{t('variant_name')}</label>
+                          <input type="text" value={variant.name} onChange={e => { const newV = [...variants]; newV[index].name = e.target.value; setVariants(newV); }} className="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-[#E84C3D] text-sm" />
                         </div>
                         <div className="flex-[2]">
-                          <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{t('variant_options')}</label>
-                          <input type="text" value={variant.options} onChange={e => { const newV = [...variants]; newV[index].options = e.target.value; setVariants(newV); }} placeholder="e.g. S, M, L or custom" className="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-[#E84C3D] text-sm dark:text-white" />
+                          <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">{t('variant_options')}</label>
+                          <input type="text" value={variant.options} onChange={e => { const newV = [...variants]; newV[index].options = e.target.value; setVariants(newV); }} placeholder="e.g. S, M, L or custom" className="w-full px-3 py-2 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-[#E84C3D] text-sm" />
                         </div>
-                        <button type="button" onClick={() => { const newV = variants.filter((_, i) => i !== index); setVariants(newV); }} className="mt-6 text-gray-400 hover:text-red-500 p-2">
+                        <button type="button" onClick={() => { const newV = variants.filter((_, i) => i !== index); setVariants(newV); }} className="mt-6 text-gray-600 dark:text-gray-400 hover:text-red-500 p-2">
                           ✕
                         </button>
                       </div>
 
                       {(predefinedMatch || currentOptionsList.length > 0) && (
                         <div className="flex flex-wrap gap-3 pl-1 pt-1 border-t border-gray-200 dark:border-gray-700">
-                          <span className="text-[11px] uppercase font-bold text-gray-400 dark:text-gray-500 mt-0.5">Quick Tick:</span>
+                          <span className="text-[11px] uppercase font-bold text-gray-600 dark:text-gray-400 mt-0.5">Quick Tick:</span>
                           {Array.from(new Set([
                             ...(predefinedMatch ? predefinedMatch.options.map(o => o.trim()) : []),
                             ...currentOptionsList
@@ -579,7 +579,7 @@ export default function ManageProducts() {
                                   }}
                                   className="w-3.5 h-3.5 rounded border-gray-300 text-[#E84C3D] focus:ring-[#E84C3D]"
                                 />
-                                <span className="text-xs font-medium text-gray-600 dark:text-gray-300">{opt}</span>
+                                <span className="text-xs font-medium text-gray-600 dark:text-gray-400">{opt}</span>
                               </label>
                             );
                           })}
@@ -589,21 +589,21 @@ export default function ManageProducts() {
                   );
                 })}
                 {variants.length === 0 && (
-                  <p className="text-sm text-gray-500 dark:text-gray-400 italic">{t('no_variants')}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 italic">{t('no_variants')}</p>
                 )}
               </div>
             </div>
           </div>
-          <button type="submit" className="bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-6 py-2.5 rounded-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors">
+          <button type="submit" className="bg-gray-900 dark:bg-white text-white px-6 py-2.5 rounded-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors">
             {t('save_product')}
           </button>
         </form>
       )}
 
       {/* Search and Category Filter Bar */}
-      <div className="bg-white dark:bg-[#111111] p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col md:flex-row gap-4 items-center justify-between">
+      <div className="bg-white dark:bg-[#111111] p-4 rounded-xl shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none border-none flex flex-col md:flex-row gap-4 items-center justify-between">
         <div className="relative w-full md:max-w-md">
-          <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+          <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-600 dark:text-gray-400">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           </span>
           <input
@@ -614,7 +614,7 @@ export default function ManageProducts() {
               setSearchQuery(e.target.value);
               setCurrentPage(1); // reset page on search
             }}
-            className="w-full pl-10 pr-10 py-2.5 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-[#E84C3D] focus:border-[#E84C3D] outline-none transition-colors"
+            className="w-full pl-10 pr-10 py-2.5 bg-[#F4F7FE] dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-[#E84C3D] focus:border-[#E84C3D] outline-none transition-colors"
           />
           {searchQuery && (
             <button
@@ -623,7 +623,7 @@ export default function ManageProducts() {
                 setSearchQuery('');
                 setCurrentPage(1);
               }}
-              className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+              className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
               title={locale === 'km' ? 'សម្អាត' : 'Clear search'}
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
@@ -632,7 +632,7 @@ export default function ManageProducts() {
         </div>
 
         <div className="w-full md:w-auto flex items-center gap-2">
-          <label className="text-sm font-medium text-gray-500 dark:text-gray-400 shrink-0">
+          <label className="text-sm font-medium text-gray-600 dark:text-gray-400 shrink-0">
             {locale === 'km' ? 'តម្រងតាមប្រភេទ៖' : 'Filter by Category:'}
           </label>
           <select
@@ -641,7 +641,7 @@ export default function ManageProducts() {
               setFilterCategoryId(e.target.value);
               setCurrentPage(1); // reset page on filter
             }}
-            className="w-full md:w-48 px-3 py-2.5 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-[#E84C3D] focus:border-[#E84C3D] outline-none transition-colors"
+            className="w-full md:w-48 px-3 py-2.5 bg-[#F4F7FE] dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-[#E84C3D] focus:border-[#E84C3D] outline-none transition-colors"
           >
             <option value="">{locale === 'km' ? 'ទាំងអស់' : 'All Categories'}</option>
             {categories.map((cat) => (
@@ -653,24 +653,24 @@ export default function ManageProducts() {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-[#111111] rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
+      <div className="bg-white dark:bg-[#111111] rounded-2xl shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none border-none overflow-hidden">
         <div className="overflow-x-auto">
         <table className="min-w-full">
           <thead>
-            <tr className="border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/30">
-              <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('product')}</th>
-              <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('custom_category')}</th>
-              <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('price')}</th>
-              <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('stock')}</th>
-              <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{locale === 'km' ? 'លក់ដាច់បំផុត' : 'Best Seller'}</th>
-              <th className="px-6 py-4 text-right text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{t('actions')}</th>
+            <tr className="border-b border-gray-100 dark:border-gray-800 bg-[#F4F7FE]/50 dark:bg-[#080808]">
+              <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">{t('product')}</th>
+              <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">{t('custom_category')}</th>
+              <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">{t('price')}</th>
+              <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">{t('stock')}</th>
+              <th className="px-6 py-4 text-left text-[11px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">{locale === 'km' ? 'លក់ដាច់បំផុត' : 'Best Seller'}</th>
+              <th className="px-6 py-4 text-right text-[11px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">{t('actions')}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-50 dark:divide-gray-800/50">
             {products.map((product) => {
               const productCategoryObj = categories.find(c => c._id === (typeof product.category === 'object' ? product.category?._id : product.category));
               return (
-              <tr key={product._id} className="hover:bg-gray-50/70 dark:hover:bg-gray-800/30 transition-colors duration-150 group">
+              <tr key={product._id} className="hover:bg-[#F4F7FE]/70 dark:hover:bg-gray-800/30 transition-colors duration-150 group">
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center gap-3">
                     <div className="flex-shrink-0 h-11 w-11 rounded-xl overflow-hidden border border-gray-100 dark:border-gray-700 shadow-sm">
@@ -684,24 +684,18 @@ export default function ManageProducts() {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {productCategoryObj ? (
-                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold bg-gray-100 text-gray-600 dark:text-gray-400 dark:bg-gray-800">
                       {getCategoryName(productCategoryObj)}
                     </span>
                   ) : (
-                    <span className="text-gray-300 dark:text-gray-600 text-xs">—</span>
+                    <span className="text-gray-300 text-xs">—</span>
                   )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span className="text-sm font-black text-gray-900 dark:text-white">${product.price.toFixed(2)}</span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold ${
-                    product.stock > 10 
-                      ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400' 
-                      : product.stock > 0 
-                      ? 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400' 
-                      : 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'
-                  }`}>
+                  <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold ${ product.stock > 10 ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400' : product.stock > 0 ? 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400' : 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400' }`}>
                     <span className={`w-1.5 h-1.5 rounded-full inline-block ${product.stock > 10 ? 'bg-emerald-500' : product.stock > 0 ? 'bg-amber-400' : 'bg-red-500'}`} />
                     {product.stock}
                   </span>
@@ -709,11 +703,7 @@ export default function ManageProducts() {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <button
                     onClick={() => handleToggleFlag(product._id, 'isBestSeller', product.isBestSeller || false)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                      product.isBestSeller
-                        ? 'bg-yellow-100 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800'
-                        : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700'
-                    }`}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${ product.isBestSeller ? 'bg-yellow-100 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-none' }`}
                   >
                     {product.isBestSeller ? (locale === 'km' ? 'បាទ/ចាស' : 'Yes') : (locale === 'km' ? 'ទេ' : 'No')}
                   </button>
@@ -729,7 +719,7 @@ export default function ManageProducts() {
             })}
             {products.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
+                <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-600 dark:text-gray-400">
                   {t('no_products')}
                 </td>
               </tr>
@@ -738,7 +728,7 @@ export default function ManageProducts() {
         </table>
         </div>
         {totalPages > 1 && (
-          <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between bg-gray-50 dark:bg-[#111111]">
+          <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between bg-[#F4F7FE] dark:bg-[#111111]">
             <button
               onClick={() => {
                 const newPage = Math.max(1, currentPage - 1);
@@ -746,7 +736,7 @@ export default function ManageProducts() {
                 if (storeId) fetchProducts(storeId, newPage);
               }}
               disabled={currentPage === 1}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 transition-colors"
+              className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-[#F4F7FE] dark:hover:bg-gray-700 disabled:opacity-50 transition-colors"
             >
               {t('previous')}
             </button>
@@ -760,7 +750,7 @@ export default function ManageProducts() {
                 if (storeId) fetchProducts(storeId, newPage);
               }}
               disabled={currentPage === totalPages}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 transition-colors"
+              className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-[#F4F7FE] dark:hover:bg-gray-700 disabled:opacity-50 transition-colors"
             >
               {t('next')}
             </button>

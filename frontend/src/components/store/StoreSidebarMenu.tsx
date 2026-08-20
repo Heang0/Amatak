@@ -12,6 +12,7 @@ interface Category {
   name: string;
   slug: string;
   nameKm?: string;
+  parentCategory?: string | null;
 }
 
 export default function StoreSidebarMenu({
@@ -40,6 +41,7 @@ export default function StoreSidebarMenu({
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
 
   useEffect(() => { setMounted(true); }, []);
 
@@ -178,18 +180,53 @@ export default function StoreSidebarMenu({
                   >
                     {locale === 'km' ? 'មើលទាំងអស់' : 'View All Categories'}
                   </Link>
-                  {categories.map(cat => {
-                    const isCatActive = pathname?.includes(`/category/${cat.slug}`);
+                  {categories.filter(c => !c.parentCategory).map(mainCat => {
+                    const isMainCatActive = pathname?.includes(`/category/${mainCat.slug}`);
+                    const subCats = categories.filter(c => c.parentCategory === mainCat._id);
+                    const isExpanded = expandedCategory === mainCat._id;
+                    
                     return (
-                      <Link
-                        key={cat._id}
-                        href={appendParams(`${basePath}/category/${cat.slug}`)}
-                        onClick={onClose}
-                        className={`py-2 text-[15px] text-gray-900 dark:text-white transition-colors break-words ${isCatActive ? 'font-semibold' : 'font-medium'}`}
-                        style={getActiveStyle(isCatActive)}
-                      >
-                        {locale === 'km' && cat.nameKm ? cat.nameKm : cat.name}
-                      </Link>
+                      <div key={mainCat._id} className="flex flex-col">
+                        <div className="flex items-center justify-between">
+                          <Link
+                            href={appendParams(`${basePath}/category/${mainCat.slug}`)}
+                            onClick={onClose}
+                            className={`flex-1 py-2 text-[15px] text-gray-900 dark:text-white transition-colors break-words ${isMainCatActive ? 'font-semibold' : 'font-medium'}`}
+                            style={getActiveStyle(isMainCatActive)}
+                          >
+                            {locale === 'km' && mainCat.nameKm ? mainCat.nameKm : mainCat.name}
+                          </Link>
+                          {subCats.length > 0 && (
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setExpandedCategory(isExpanded ? null : mainCat._id);
+                              }}
+                              className="p-1 -mr-1 text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                            >
+                              <ChevronDown size={16} className={`transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
+                            </button>
+                          )}
+                        </div>
+                        {subCats.length > 0 && (
+                          <div className={`flex flex-col pl-3 border-l-2 border-gray-100 dark:border-gray-800/60 ml-2 gap-1 overflow-hidden transition-all duration-300 ease-in-out ${isExpanded ? 'max-h-[500px] opacity-100 mt-1 mb-2' : 'max-h-0 opacity-0 m-0'}`}>
+                            {subCats.map(subCat => {
+                              const isSubCatActive = pathname?.includes(`/category/${subCat.slug}`);
+                              return (
+                                <Link
+                                  key={subCat._id}
+                                  href={appendParams(`${basePath}/category/${subCat.slug}`)}
+                                  onClick={onClose}
+                                  className={`py-1.5 text-[14px] text-gray-700 dark:text-gray-300 transition-colors break-words ${isSubCatActive ? 'font-semibold text-gray-900 dark:text-white' : ''}`}
+                                  style={getActiveStyle(isSubCatActive)}
+                                >
+                                  {locale === 'km' && subCat.nameKm ? subCat.nameKm : subCat.name}
+                                </Link>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
                     );
                   })}
                 </div>

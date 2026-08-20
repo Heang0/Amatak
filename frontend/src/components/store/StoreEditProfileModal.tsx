@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Camera, Loader2 } from 'lucide-react';
 import { useCustomerAuthStore } from '@/lib/store/useCustomerAuthStore';
 
@@ -75,8 +76,10 @@ export default function StoreEditProfileModal({ isOpen, onClose, primaryColor, t
       : 'rounded-xl text-white hover:opacity-90 active:scale-[0.98]'
   }`;
 
-  return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50">
+  if (typeof window === 'undefined') return null;
+
+  return createPortal(
+    <div className={`fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 ${isKm ? 'font-khmer' : ''}`}>
       <div className={`w-full max-w-md bg-white dark:bg-[#111111] ${
         themeStyle === 'neo-brutalism' 
           ? 'border-[3px] border-black dark:border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] rounded-none' 
@@ -138,6 +141,7 @@ export default function StoreEditProfileModal({ isOpen, onClose, primaryColor, t
           </button>
         </form>
       </div>
-    </div>
+    </div>,
+    document.getElementById('app-root') || document.body
   );
 }

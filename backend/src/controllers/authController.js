@@ -123,7 +123,18 @@ const telegramLogin = async (req, res) => {
       });
     }
 
-    // 4. Return token
+    // 4. Send Telegram Notification
+    try {
+      const { sendTelegramNotification } = await import('../services/telegramBot.js');
+      await sendTelegramNotification(
+        data.id.toString(),
+        `✅ *Login Successful!*\n\nYou have successfully logged in to *ShoppingOT*.\n\n_If this wasn't you, please secure your account immediately._`
+      );
+    } catch (err) {
+      console.error('Failed to send telegram login notification:', err);
+    }
+
+    // 5. Return token
     res.json({
       _id: user._id,
       name: user.name,

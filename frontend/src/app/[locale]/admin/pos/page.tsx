@@ -38,7 +38,7 @@ export default function POSPage() {
   const [cashReceived, setCashReceived] = useState<string>('');
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [lastOrder, setLastOrder] = useState<any>(null);
-  const [qrData, setQrData] = useState<{ qrString: string; md5: string; orderId: string } | null>(null);
+  const [qrData, setQrData] = useState<{ qrString: string; md5: string; orderId: string; totalAmount: number } | null>(null);
 
   // Barcode scanner buffer
   const barcodeBuffer = useRef('');

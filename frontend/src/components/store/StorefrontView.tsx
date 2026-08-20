@@ -154,8 +154,19 @@ export default function StorefrontView({
     if (activeCategorySlug !== 'All') {
       const cat = categories.find(c => c.slug === activeCategorySlug);
       if (!cat) return false;
+      
       const pCat = p.category?._id ?? p.category;
-      if (String(pCat) !== String(cat._id)) return false;
+      let matches = String(pCat) === String(cat._id);
+      
+      // If the active category is a Main Category, also allow products in its subcategories
+      if (!matches && !cat.parentCategory) {
+        const subCatIds = categories.filter(c => c.parentCategory === cat._id).map(c => String(c._id));
+        if (subCatIds.includes(String(pCat))) {
+          matches = true;
+        }
+      }
+      
+      if (!matches) return false;
     }
 
     if (searchQuery.trim()) {
@@ -263,62 +274,116 @@ export default function StorefrontView({
         )}
 
         {categories.length > 0 && (viewMode === 'home' || viewMode === 'catalog' || viewMode === 'categories') && (
-          <div className="mb-6 md:mb-10 overflow-x-auto pb-4 scrollbar-hide scroll-smooth -mx-4 px-4 sm:-mx-0 sm:px-0 border-b border-gray-200 dark:border-gray-800" ref={categoryTabsRef}>
-            <div className="flex gap-3 min-w-max">
-              <Link
-                href={getAppendParams(`/${params.locale}/store/${params.slug}/products`)}
-                className={getCategoryPillClass(activeCategorySlug === 'All')}
-                data-category-active={activeCategorySlug === 'All' ? 'true' : 'false'}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setActiveCategorySlug('All');
-                }}
-              >
-                <Grid size={16} className="shrink-0" />
-                {isKm ? 'ទាំង​អស់' : 'All'}
-              </Link>
-              {categories
-                .filter(cat => products.some(p => {
-                  const pCat = p.category?._id ?? p.category;
-                  return String(pCat) === String(cat._id);
-                }))
-                .map(cat => {
-                  const count = products.filter(p => {
-                    const pCat = p.category?._id ?? p.category;
-                    return String(pCat) === String(cat._id);
-                  }).length;
+          <div className="mb-6 md:mb-10 flex flex-col gap-3" ref={categoryTabsRef}>
+            {/* ROW 1: Main Categories */}
+            <div className="overflow-x-auto pb-3 scrollbar-hide scroll-smooth -mx-4 px-4 sm:-mx-0 sm:px-0 border-b border-gray-200 dark:border-gray-800">
+              <div className="flex gap-3 min-w-max">
+                <Link
+                  href={getAppendParams(`/${params.locale}/store/${params.slug}/products`)}
+                  className={getCategoryPillClass(activeCategorySlug === 'All')}
+                  data-category-active={activeCategorySlug === 'All' ? 'true' : 'false'}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setActiveCategorySlug('All');
+                  }}
+                >
+                  <Grid size={16} className="shrink-0" />
+                  {isKm ? 'ទាំង​អស់' : 'All'}
+                </Link>
+                {categories
+                  .filter(cat => !cat.parentCategory) // Only show main categories
+                  .filter(cat => {
+                    // Only show if it or its subcategories have products
+                    const subCatIds = categories.filter(c => c.parentCategory === cat._id).map(c => String(c._id));
+                    return products.some(p => {
+                      const pCat = String(p.category?._id ?? p.category);
+                      return pCat === String(cat._id) || subCatIds.includes(pCat);
+                    });
+                  })
+                  .map(cat => {
+                    // Check if active category is this category OR one of its subcategories
+                    const subCatIds = categories.filter(c => c.parentCategory === cat._id).map(c => c.slug);
+                    const isActive = activeCategorySlug === cat.slug || subCatIds.includes(activeCategorySlug);
+                    
+                    if (viewMode === 'categories') {
+                      const href = getAppendParams(`/${params.locale}/store/${params.slug}/category/${cat.slug}`);
+                      return (
+                        <Link
+                          key={cat._id}
+                          href={href}
+                          className={getCategoryPillClass(isActive)}
+                          data-category-active={isActive ? 'true' : 'false'}
+                        >
+                          {params.locale === 'km' && cat.nameKm ? cat.nameKm : cat.name}
+                        </Link>
+                      );
+                    }
 
-                  // On home/catalog, tabs should set the active category client-side and navigate to the products root (no query param).
-                  if (viewMode === 'categories') {
-                    const href = getAppendParams(`/${params.locale}/store/${params.slug}/category/${cat.slug}`);
                     return (
-                      <Link
+                      <a
                         key={cat._id}
-                        href={href}
-                        className={getCategoryPillClass(activeCategorySlug === cat.slug)}
-                        data-category-active={activeCategorySlug === cat.slug ? 'true' : 'false'}
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setActiveCategorySlug(cat.slug);
+                        }}
+                        className={getCategoryPillClass(isActive)}
+                        data-category-active={isActive ? 'true' : 'false'}
                       >
                         {params.locale === 'km' && cat.nameKm ? cat.nameKm : cat.name}
-                      </Link>
+                      </a>
                     );
-                  }
-
-                  return (
-                    <a
-                      key={cat._id}
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setActiveCategorySlug(cat.slug);
-                      }}
-                      className={getCategoryPillClass(activeCategorySlug === cat.slug)}
-                      data-category-active={activeCategorySlug === cat.slug ? 'true' : 'false'}
-                    >
-                      {params.locale === 'km' && cat.nameKm ? cat.nameKm : cat.name}
-                    </a>
-                  );
-                })}
+                  })}
+              </div>
             </div>
+
+            {/* ROW 2: Subcategories */}
+            {activeCategorySlug !== 'All' && (() => {
+               let activeMainCat = categories.find(c => c.slug === activeCategorySlug);
+               if (activeMainCat && activeMainCat.parentCategory) {
+                 activeMainCat = categories.find(c => c._id === activeMainCat.parentCategory);
+               }
+               
+               if (!activeMainCat) return null;
+               
+               const subCategories = categories.filter(c => c.parentCategory === activeMainCat._id && products.some(p => String(p.category?._id ?? p.category) === String(c._id)));
+               
+               if (subCategories.length === 0) return null;
+
+               return (
+                 <div className="overflow-x-auto pb-2 scrollbar-hide scroll-smooth -mx-4 px-4 sm:-mx-0 sm:px-0">
+                   <div className="flex gap-2 min-w-max">
+                     <Link
+                        href={getAppendParams(`/${params.locale}/store/${params.slug}/category/${activeMainCat.slug}`)}
+                        className={`text-xs px-3 py-1.5 rounded-full border transition-all ${activeCategorySlug === activeMainCat.slug ? 'bg-gray-900 text-white border-gray-900 dark:bg-white dark:text-black dark:border-white font-medium' : 'bg-transparent text-gray-600 border-gray-200 dark:border-gray-800 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900'}`}
+                        onClick={(e) => {
+                          if (viewMode !== 'categories') {
+                            e.preventDefault();
+                            setActiveCategorySlug(activeMainCat?.slug || '');
+                          }
+                        }}
+                      >
+                        {isKm ? 'ទាំងអស់ ' : 'All in '} {isKm ? (activeMainCat.nameKm || activeMainCat.name) : activeMainCat.name}
+                      </Link>
+                     {subCategories.map(subCat => (
+                        <Link
+                          key={subCat._id}
+                          href={getAppendParams(`/${params.locale}/store/${params.slug}/category/${subCat.slug}`)}
+                          className={`text-xs px-3 py-1.5 rounded-full border transition-all ${activeCategorySlug === subCat.slug ? 'bg-gray-900 text-white border-gray-900 dark:bg-white dark:text-black dark:border-white font-medium' : 'bg-transparent text-gray-600 border-gray-200 dark:border-gray-800 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900'}`}
+                          onClick={(e) => {
+                            if (viewMode !== 'categories') {
+                              e.preventDefault();
+                              setActiveCategorySlug(subCat.slug);
+                            }
+                          }}
+                        >
+                          {params.locale === 'km' && subCat.nameKm ? subCat.nameKm : subCat.name}
+                        </Link>
+                     ))}
+                   </div>
+                 </div>
+               );
+            })()}
           </div>
         )}
 
@@ -335,10 +400,11 @@ export default function StorefrontView({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {categories.map(cat => {
+              {categories.filter(cat => !cat.parentCategory).map(cat => {
+                const subCatIds = categories.filter(c => c.parentCategory === cat._id).map(c => String(c._id));
                 const count = products.filter(p => {
-                  const pCat = p.category?._id ?? p.category;
-                  return String(pCat) === String(cat._id);
+                  const pCat = String(p.category?._id ?? p.category);
+                  return pCat === String(cat._id) || subCatIds.includes(pCat);
                 }).length;
                 return (
                   <Link 

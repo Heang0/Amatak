@@ -1,5 +1,6 @@
 'use client';
 
+import { createPortal } from 'react-dom';
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '@/lib/store/useAuthStore';
 import { useTranslations, useLocale } from 'next-intl';

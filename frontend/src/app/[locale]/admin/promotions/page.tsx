@@ -282,7 +282,7 @@ export default function AdminPromotionsPage({ params }: { params: { locale: stri
                 <input type="date" value={validUntil} onChange={e => setValidUntil(e.target.value)} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:bg-gray-900" />
               </div>
 
-              <button type="submit" className="w-full py-2.5 bg-black dark:bg-white text-white dark:text-black rounded-lg font-bold hover:opacity-90 mt-4">
+              <button type="submit" className="w-full py-2.5 bg-black dark:bg-white text-white dark:text-black rounded-none font-bold hover:opacity-90 mt-4">
                 {editingPromoId ? (isKm ? 'រក្សាទុក' : 'Save Changes') : (isKm ? 'បង្កើតលេខកូដ' : 'Create Code')}
               </button>
             </form>

@@ -92,7 +92,7 @@ export default function ThemeCustomizer() {
 
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-3 md:gap-4">
-          <Link href="/admin/settings" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:text-white dark:hover:text-white transition-colors bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 px-3 py-2 md:px-4 md:py-2 rounded-xl">
+          <Link href="/admin/settings" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:text-white dark:hover:text-white transition-colors bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 px-3 py-2 md:px-4 md:py-2 rounded-none">
             <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
             <span className="hidden sm:inline">{t('back_settings')}</span>
           </Link>
@@ -104,7 +104,7 @@ export default function ThemeCustomizer() {
         <button
           onClick={handleSave}
           disabled={saving}
-          className="px-6 py-2.5 bg-[#E84C3D] hover:bg-red-600 text-white font-bold rounded-lg transition-colors flex items-center gap-2 shadow-sm"
+          className="px-6 py-2.5 bg-[#E84C3D] hover:bg-red-600 text-white font-bold rounded-none transition-colors flex items-center gap-2 shadow-sm"
         >
           <Save size={18} />
           {saving ? t('saving_btn') : t('save_btn')}

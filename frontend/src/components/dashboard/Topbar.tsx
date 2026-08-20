@@ -103,7 +103,7 @@ export function Topbar({ onMenuClick, pageTitle }: TopbarProps) {
         <div className="flex items-center gap-3 flex-1 relative">
           <button
             onClick={onMenuClick}
-            className="lg:hidden p-2 rounded-lg text-gray-600 dark:text-gray-400 /40 hover:bg-gray-100 dark:hover:bg-white/[0.06] transition-colors"
+            className="lg:hidden p-2 rounded-none text-gray-600 dark:text-gray-400 /40 hover:bg-gray-100 dark:hover:bg-white/[0.06] transition-colors"
           >
             <Menu size={20} />
           </button>
@@ -201,7 +201,7 @@ export function Topbar({ onMenuClick, pageTitle }: TopbarProps) {
           {/* Language toggle */}
           <a
             href={toggleLanguage()}
-            className="flex items-center justify-center w-9 h-9 rounded-lg hover:bg-gray-100 dark:hover:bg-white/[0.06] transition-colors"
+            className="flex items-center justify-center w-9 h-9 rounded-none hover:bg-gray-100 dark:hover:bg-white/[0.06] transition-colors"
             title="Toggle Language"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}

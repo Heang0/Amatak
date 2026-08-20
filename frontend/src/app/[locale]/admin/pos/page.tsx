@@ -1,5 +1,6 @@
 'use client';
 
+import { createPortal } from 'react-dom';
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useAuthStore } from '@/lib/store/useAuthStore';
 import { useLocale, useTranslations } from 'next-intl';
@@ -359,7 +360,7 @@ export default function POSPage() {
           <button 
             onClick={handleCheckout}
             disabled={cart.length === 0 || isCheckingOut || (paymentMethod === 'CASH' && Number(cashReceived) < totalAmount)}
-            className="w-full py-4 bg-[#E84C3D] text-white rounded-xl font-bold text-lg hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+            className="w-full py-4 bg-[#E84C3D] text-white rounded-none font-bold text-lg hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
           >
             {isCheckingOut ? 'Processing...' : `Pay $${totalAmount.toFixed(2)}`}
           </button>

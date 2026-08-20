@@ -44,7 +44,7 @@ export default function AdminDashboard() {
             {t('welcome_back', { name: user?.name || t('guest') })}
           </p>
         </div>
-        <Link href="/admin/settings" className="p-2 text-gray-600 dark:text-gray-400 /30 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-white/[0.06] transition-colors shrink-0">
+        <Link href="/admin/settings" className="p-2 text-gray-600 dark:text-gray-400 /30 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white rounded-none hover:bg-gray-100 dark:hover:bg-white/[0.06] transition-colors shrink-0">
           <Settings size={18} />
         </Link>
       </div>
@@ -60,7 +60,7 @@ export default function AdminDashboard() {
                 <h4 className="text-red-800 dark:text-red-400 font-bold">Store Suspended</h4>
                 <p className="text-sm text-red-600 dark:text-red-300 mt-1">Your store is currently suspended by the superadmin. Customers cannot access your storefront.</p>
               </div>
-              <Link href="/admin/upgrade" className="px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-lg hover:bg-red-700 transition-colors shadow-sm whitespace-nowrap ml-4">
+              <Link href="/admin/upgrade" className="px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-none hover:bg-red-700 transition-colors shadow-sm whitespace-nowrap ml-4">
                 Upgrade Plan
               </Link>
             </div>
@@ -72,7 +72,7 @@ export default function AdminDashboard() {
                 <h4 className="text-yellow-800 dark:text-yellow-400 font-bold">Plan Expired</h4>
                 <p className="text-sm text-yellow-600 dark:text-yellow-300 mt-1">Your subscription plan has expired. Please renew your plan to prevent your store from being suspended.</p>
               </div>
-              <Link href="/admin/upgrade" className="px-4 py-2 bg-yellow-600 text-white text-sm font-semibold rounded-lg hover:bg-yellow-700 transition-colors shadow-sm whitespace-nowrap ml-4">
+              <Link href="/admin/upgrade" className="px-4 py-2 bg-yellow-600 text-white text-sm font-semibold rounded-none hover:bg-yellow-700 transition-colors shadow-sm whitespace-nowrap ml-4">
                 Renew Now
               </Link>
             </div>
@@ -84,7 +84,7 @@ export default function AdminDashboard() {
                 <h4 className="text-blue-800 dark:text-blue-400 font-bold">Plan Expiring Soon</h4>
                 <p className="text-sm text-blue-600 dark:text-blue-300 mt-1">Your subscription plan expires on {new Date(analytics.plan.expiresAt).toLocaleDateString()}. Renew early to avoid interruption.</p>
               </div>
-              <Link href="/admin/upgrade" className="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm whitespace-nowrap ml-4">
+              <Link href="/admin/upgrade" className="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-none hover:bg-blue-700 transition-colors shadow-sm whitespace-nowrap ml-4">
                 Renew Now
               </Link>
             </div>

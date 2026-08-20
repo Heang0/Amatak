@@ -83,7 +83,7 @@ export function Sidebar({ items, title, isOpen, onClose }: SidebarProps) {
               <p className="text-[10px] text-gray-600 dark:text-gray-400 font-bold uppercase tracking-widest leading-tight">Dashboard</p>
             </div>
           </div>
-          <button onClick={onClose} className="lg:hidden p-1.5 text-white/40 hover:text-white rounded-md transition-colors">
+          <button onClick={onClose} className="lg:hidden p-1.5 text-white/40 hover:text-white rounded-none transition-colors">
             <X size={18} />
           </button>
         </div>
@@ -101,7 +101,7 @@ export function Sidebar({ items, title, isOpen, onClose }: SidebarProps) {
                 key={item.href}
                 href={item.href}
                 onClick={onClose}
-                className={`flex items-center gap-4 px-5 py-4 rounded-xl text-[15px] font-bold transition-all duration-150 group relative ${isActive ? "bg-[#F4F7FE] dark:bg-white/5 text-gray-900 dark:text-white " : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:text-white dark:hover:text-white hover:bg-[#F4F7FE] dark:hover:bg-white/5"}`}
+                className={`flex items-center gap-4 px-5 py-4 rounded-none text-[15px] font-bold transition-all duration-150 group relative ${isActive ? "bg-[#F4F7FE] dark:bg-white/5 text-gray-900 dark:text-white " : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:text-white dark:hover:text-white hover:bg-[#F4F7FE] dark:hover:bg-white/5"}`}
               >
                 <span className={`shrink-0 transition-colors ${isActive ? 'text-[#E84C3D]' : 'text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:text-white dark:group-hover:text-white'}`}>
                   {item.icon}
@@ -132,7 +132,7 @@ export function Sidebar({ items, title, isOpen, onClose }: SidebarProps) {
             <button
               onClick={handleLogout}
               title="Log out"
-              className="p-1.5 text-gray-400 /40 hover:text-red-500 dark:hover:text-red-400 rounded-md transition-colors lg:opacity-0 group-hover:opacity-100"
+              className="p-1.5 text-gray-400 /40 hover:text-red-500 dark:hover:text-red-400 rounded-none transition-colors lg:opacity-0 group-hover:opacity-100"
             >
               <LogOut size={16} />
             </button>

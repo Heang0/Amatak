@@ -265,7 +265,7 @@ export default function StoreSetup() {
               <button 
                 type="submit" 
                 disabled={isSubmitting}
-                className="bg-[#E84C3D] text-white px-8 py-3 rounded-xl font-bold shadow-md shadow-red-500/20 hover:bg-red-600 hover:shadow-lg transition-all flex items-center gap-2 disabled:opacity-70"
+                className="bg-[#E84C3D] text-white px-8 py-3 rounded-none font-bold shadow-md shadow-red-500/20 hover:bg-red-600 hover:shadow-lg transition-all flex items-center gap-2 disabled:opacity-70"
               >
                 {step === 1 ? (
                   <>{t('continue')} <ChevronRight size={18} /></>

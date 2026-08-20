@@ -366,7 +366,7 @@ export default function ManageProducts() {
         </div>
         <button
           onClick={handleToggleForm}
-          className="bg-[#E84C3D] text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-sm hover:bg-red-600 transition-colors whitespace-nowrap shrink-0"
+          className="bg-[#E84C3D] text-white px-4 py-2 rounded-none text-sm font-semibold shadow-sm hover:bg-red-600 transition-colors whitespace-nowrap shrink-0"
         >
           {showForm ? t('cancel') : t('add_product')}
         </button>
@@ -594,7 +594,7 @@ export default function ManageProducts() {
               </div>
             </div>
           </div>
-          <button type="submit" className="bg-gray-900 dark:bg-white text-white px-6 py-2.5 rounded-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors">
+          <button type="submit" className="bg-gray-900 dark:bg-white text-white px-6 py-2.5 rounded-none font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors">
             {t('save_product')}
           </button>
         </form>

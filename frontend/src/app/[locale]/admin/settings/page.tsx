@@ -429,7 +429,7 @@ export default function AdminSettings() {
               <button
                 type="submit"
                 disabled={loading || uploading}
-                className="bg-[#E84C3D] text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-600 transition-colors shadow-sm disabled:opacity-50"
+                className="bg-[#E84C3D] text-white px-6 py-3 rounded-none font-semibold hover:bg-red-600 transition-colors shadow-sm disabled:opacity-50"
               >
                 {loading ? t('saving') : t('save_profile')}
               </button>
@@ -612,7 +612,7 @@ export default function AdminSettings() {
                 <button
                   type="submit"
                   disabled={loading || uploading}
-                  className="bg-[#E84C3D] text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-600 transition-colors shadow-sm disabled:opacity-50"
+                  className="bg-[#E84C3D] text-white px-6 py-3 rounded-none font-semibold hover:bg-red-600 transition-colors shadow-sm disabled:opacity-50"
                 >
                   {loading ? t('saving') : t('save_store')}
                 </button>
@@ -680,7 +680,7 @@ export default function AdminSettings() {
                     <h4 className="font-bold text-gray-900 dark:text-white text-lg">{t('theme_customizer_title')}</h4>
                     <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{t('theme_customizer_desc')}</p>
                   </div>
-                  <Link href="/admin/settings/theme" className="w-full sm:w-auto text-center px-6 py-2.5 bg-gray-900 dark:bg-white text-white text-sm font-bold rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors whitespace-nowrap shadow-md">
+                  <Link href="/admin/settings/theme" className="w-full sm:w-auto text-center px-6 py-2.5 bg-gray-900 dark:bg-white text-white text-sm font-bold rounded-none hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors whitespace-nowrap shadow-md">
                     {t('customize_theme_btn')}
                   </Link>
                 </div>
@@ -690,7 +690,7 @@ export default function AdminSettings() {
                 <button
                   type="submit"
                   disabled={loading || uploading}
-                  className="bg-[#E84C3D] text-white px-6 py-2.5 rounded-lg font-medium hover:bg-red-600 transition-colors shadow-sm disabled:opacity-50 flex items-center gap-2"
+                  className="bg-[#E84C3D] text-white px-6 py-2.5 rounded-none font-medium hover:bg-red-600 transition-colors shadow-sm disabled:opacity-50 flex items-center gap-2"
                 >
                   {loading ? (
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -755,7 +755,7 @@ export default function AdminSettings() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="bg-[#E84C3D] text-white px-6 py-2.5 rounded-lg font-medium hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#E84C3D] transition-colors disabled:opacity-50 flex items-center gap-2"
+                  className="bg-[#E84C3D] text-white px-6 py-2.5 rounded-none font-medium hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#E84C3D] transition-colors disabled:opacity-50 flex items-center gap-2"
                 >
                   {loading ? (
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

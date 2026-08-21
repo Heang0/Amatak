@@ -1,7 +1,6 @@
 "use client";
 
-import { Link } from "@/navigation";
-import { usePathname } from "next/navigation";
+import { Link, usePathname } from "@/navigation";
 import { useTheme } from "next-themes";
 import { useTranslations, useLocale } from "next-intl";
 import { Moon, Sun, Globe } from "lucide-react";
@@ -17,22 +16,6 @@ export function Navbar() {
   useEffect(() => setMounted(true), []);
 
   const locale = useLocale();
-
-  const toggleLanguage = () => {
-    if (!pathname) return "/en";
-    const newLocale = locale === "en" ? "km" : "en";
-
-    let currentPath = pathname;
-    if (currentPath.startsWith(`/${locale}`)) {
-      currentPath = currentPath.replace(`/${locale}`, "");
-    }
-
-    if (!currentPath.startsWith('/')) {
-      currentPath = '/' + currentPath;
-    }
-
-    return `/${newLocale}${currentPath}`;
-  };
 
   return (
     <>
@@ -68,7 +51,8 @@ export function Navbar() {
               )}
 
               <Link
-                href={toggleLanguage()}
+                href={pathname}
+                locale={locale === 'en' ? 'km' : 'en'}
                 className="p-1 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors flex items-center gap-2 border border-transparent hover:border-gray-300 dark:hover:border-gray-600 shadow-sm"
                 title="Toggle Language"
               >

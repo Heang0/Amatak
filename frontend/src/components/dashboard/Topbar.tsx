@@ -3,8 +3,7 @@
 import { useTheme } from 'next-themes';
 import { Menu, Moon, Sun, User as UserIcon, LogOut, Settings as SettingsIcon, ChevronDown, Search, Bell, Package, Tag, ShoppingCart, Loader2 } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
-import { usePathname } from 'next/navigation';
-import { Link, useRouter } from '@/navigation';
+import { Link, usePathname, useRouter } from '@/navigation';
 import { useAuthStore } from '@/lib/store/useAuthStore';
 import { useLocale } from 'next-intl';
 import { useDebounce } from '@/hooks/useDebounce';
@@ -78,16 +77,6 @@ export function Topbar({ onMenuClick, pageTitle }: TopbarProps) {
     fetchSearchResults();
   }, [debouncedSearchQuery]);
 
-  const toggleLanguage = () => {
-    if (!pathname) return "/en";
-    const newLocale = locale === "en" ? "km" : "en";
-    let currentPath = pathname;
-    if (currentPath.startsWith(`/${locale}`)) {
-      currentPath = currentPath.replace(`/${locale}`, "");
-    }
-    if (!currentPath.startsWith('/')) currentPath = '/' + currentPath;
-    return `/${newLocale}${currentPath}`;
-  };
 
   const handleSearchResultClick = (path: string) => {
     setShowSearchResults(false);
@@ -199,8 +188,9 @@ export function Topbar({ onMenuClick, pageTitle }: TopbarProps) {
           )}
 
           {/* Language toggle */}
-          <a
-            href={toggleLanguage()}
+          <Link
+            href={pathname}
+            locale={locale === 'en' ? 'km' : 'en'}
             className="flex items-center justify-center w-9 h-9 rounded-none hover:bg-gray-100 dark:hover:bg-white/[0.06] transition-colors"
             title="Toggle Language"
           >
@@ -210,7 +200,7 @@ export function Topbar({ onMenuClick, pageTitle }: TopbarProps) {
               alt={locale} 
               className="w-5 h-auto rounded-sm" 
             />
-          </a>
+          </Link>
 
           {/* Divider */}
           <div className="w-px h-5 bg-gray-200 dark:bg-white/10 mx-1" />

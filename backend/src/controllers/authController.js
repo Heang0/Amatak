@@ -7,9 +7,15 @@ import crypto from 'crypto';
 // @access  Public
 const authUser = async (req, res) => {
   const { email, password } = req.body;
+  console.log('Login attempt:', email, password);
 
   try {
     const user = await User.findOne({ email });
+    console.log('User found:', user ? user.email : 'No');
+    
+    if (user) {
+      console.log('Password match:', await user.matchPassword(password));
+    }
 
     if (user && (await user.matchPassword(password))) {
       res.json({
@@ -128,7 +134,7 @@ const telegramLogin = async (req, res) => {
       const { sendTelegramNotification } = await import('../services/telegramBot.js');
       await sendTelegramNotification(
         data.id.toString(),
-        `✅ *Login Successful!*\n\nYou have successfully logged in to *ShoppingOT*.\n\n_If this wasn't you, please secure your account immediately._`
+        `✅ *Login Successful!*\n\nYou have successfully logged in to *Amatak*.\n\n_If this wasn't you, please secure your account immediately._`
       );
     } catch (err) {
       console.error('Failed to send telegram login notification:', err);

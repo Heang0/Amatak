@@ -69,7 +69,7 @@ export default function ContactForm({ isKm }: { isKm: boolean }) {
       </div>
       
       {/* Required for Web3Forms to know where to send replies to */}
-      <input type="hidden" name="from_name" value="ShoppingOT Contact Form" />
+      <input type="hidden" name="from_name" value="Amatak Contact Form" />
       <input type="checkbox" name="botcheck" className="hidden" style={{ display: 'none' }} />
 
       <button 

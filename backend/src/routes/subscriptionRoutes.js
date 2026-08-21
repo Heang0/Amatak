@@ -11,7 +11,12 @@ const router = express.Router();
 
 router.post('/generate-qr', protect, generateSubscriptionQR);
 router.post('/verify', protect, verifySubscriptionPayment);
-router.post('/simulate-pay', simulateSubscriptionPayment);
+
+// Disable simulate payment endpoint in production
+if (process.env.NODE_ENV !== 'production') {
+  router.post('/simulate-pay', simulateSubscriptionPayment);
+}
+
 router.post('/free-plan', protect, activateFreePlan);
 
 export default router;

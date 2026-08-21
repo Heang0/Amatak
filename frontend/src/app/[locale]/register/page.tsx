@@ -54,13 +54,13 @@ export default function RegisterPage() {
           <Link href="/">
             <img 
               src="/logo/logo-website.png" 
-              alt="ShoppingOT Logo" 
+              alt="Amatak Logo" 
               className="h-14 w-auto object-contain" 
             />
           </Link>
         </div>
         <h2 className="mt-2 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-          {isKm ? "បង្កើតគណនី ShoppingOT របស់អ្នក" : "Create your ShoppingOT account"}
+          {isKm ? "បង្កើតគណនី Amatak របស់អ្នក" : "Create your Amatak account"}
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
           {isKm ? "ចាប់ផ្តើមលក់ជាមួយការទូទាត់តាមរយៈ KHQR ថ្ងៃនេះ" : "Start selling with KHQR payments today"}
@@ -128,8 +128,8 @@ export default function RegisterPage() {
 
           <p className="text-xs text-center text-gray-500 dark:text-gray-400 mt-6 mb-6">
             {isKm 
-              ? <>តាមរយៈការចុះឈ្មោះ អ្នកយល់ព្រមនឹង <Link href="#" className="text-[#E84C3D] hover:underline">លក្ខខណ្ឌសេវាកម្ម</Link> និង <Link href="#" className="text-[#E84C3D] hover:underline">គោលការណ៍ឯកជនភាព</Link> របស់ ShoppingOT។</>
-              : <>By registering, you agree to ShoppingOT's <Link href="#" className="text-[#E84C3D] hover:underline">Terms of Service</Link> and <Link href="#" className="text-[#E84C3D] hover:underline">Privacy Policy</Link>.</>
+              ? <>តាមរយៈការចុះឈ្មោះ អ្នកយល់ព្រមនឹង <Link href="#" className="text-[#E84C3D] hover:underline">លក្ខខណ្ឌសេវាកម្ម</Link> និង <Link href="#" className="text-[#E84C3D] hover:underline">គោលការណ៍ឯកជនភាព</Link> របស់ Amatak។</>
+              : <>By registering, you agree to Amatak's <Link href="#" className="text-[#E84C3D] hover:underline">Terms of Service</Link> and <Link href="#" className="text-[#E84C3D] hover:underline">Privacy Policy</Link>.</>
             }
           </p>
 

@@ -43,7 +43,7 @@ export function Navbar() {
               <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
                 <img
                   src="/logo/logo-website.png"
-                  alt="ShoppingOT Logo"
+                  alt="Amatak Logo"
                   className="h-10 sm:h-12 w-auto object-contain"
                 />
               </Link>
@@ -112,7 +112,7 @@ export function Navbar() {
           <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2 hover:opacity-90 transition-opacity">
             <img
               src="/logo/logo-website.png"
-              alt="ShoppingOT Logo"
+              alt="Amatak Logo"
               className="h-8 w-auto object-contain"
             />
           </Link>

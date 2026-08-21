@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 export function useBaseDomain() {
-  const [baseDomain, setBaseDomain] = useState('.shoppingot.com'); // Default fallback for SSR
+  const [baseDomain, setBaseDomain] = useState('.amatak.com'); // Default fallback for SSR
 
   useEffect(() => {
     const host = window.location.host;
@@ -14,10 +14,10 @@ export function useBaseDomain() {
       // Production
       const parts = host.split('.');
       if (parts.length > 2) {
-        // e.g., app.shoppingot.com -> .shoppingot.com
+        // e.g., app.amatak.com -> .amatak.com
         setBaseDomain(`.${parts.slice(-2).join('.')}`);
       } else {
-        // e.g., shoppingot.com -> .shoppingot.com
+        // e.g., amatak.com -> .amatak.com
         setBaseDomain(`.${host}`);
       }
     }

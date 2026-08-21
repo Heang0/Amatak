@@ -50,7 +50,7 @@ const generateSubscriptionQR = async (req, res) => {
       amount,
       'USD',
       payment._id.toString(),
-      'ShoppingOT Subscriptions'
+      'Amatak Subscriptions'
     );
 
     payment.md5Hash = md5;

@@ -15,7 +15,12 @@ const router = express.Router();
 
 router.post('/', protect, createOrderAndGenerateQR);
 router.post('/guest', createOrderAndGenerateQR);
-router.post('/:id/simulate-pay', simulateOrderPayment);
+
+// Disable simulate payment endpoint in production
+if (process.env.NODE_ENV !== 'production') {
+  router.post('/:id/simulate-pay', simulateOrderPayment);
+}
+
 router.post('/:id/verify', verifyOrderPayment);
 router.get('/store', protect, getOrdersForStore);
 router.get('/customer', protect, getCustomerOrders);

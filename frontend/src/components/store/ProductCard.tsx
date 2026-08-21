@@ -28,7 +28,7 @@ export default function ProductCard({
   const setCustomerInfo = useCustomerAuthStore(state => state.setCustomerInfo);
   const logout = useCustomerAuthStore(state => state.logout);
 
-  // Check if we are testing on the main domain (e.g. shoppingot.vercel.app/store/slug)
+  // Check if we are testing on the main domain (e.g. amatak.vercel.app/store/slug)
   const isPathRouting = pathname?.includes('/store/');
   const basePath = isPathRouting && params.slug ? `/${params.locale}/store/${params.slug}` : `/${params.locale}`;
 

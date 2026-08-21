@@ -614,7 +614,7 @@ export default function CheckoutPage({ params }: { params: { slug: string, local
           qrString={qrData.qrString}
           amount={qrData.totalAmount}
           currency={qrData.currency}
-          merchantName={store?.name || "ShoppingOT Merchant"}
+          merchantName={store?.name || "Amatak Merchant"}
           isPaid={paymentStatus === 'PAID'}
           locale={params.locale}
           onClose={() => { clearPolling(); setQrData(null); sessionStorage.removeItem('pendingCartQR'); }}

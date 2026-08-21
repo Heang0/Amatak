@@ -2,6 +2,8 @@ import Order from '../models/Order.js';
 import Store from '../models/Store.js';
 import Product from '../models/Product.js';
 import PromoCode from '../models/PromoCode.js';
+import User from '../models/User.js';
+import jwt from 'jsonwebtoken';
 import { generateKHQR, verifyKHQRTransaction } from '../services/bakongService.js';
 
 // @desc    Create Order & Generate QR
@@ -26,23 +28,43 @@ const createOrderAndGenerateQR = async (req, res) => {
 
     const isPOS = orderSource === 'POS';
 
-    // Validate and Apply Promo Code
+    // SERVER-SIDE PRICE VERIFICATION: 
+    // Do not trust the totalAmount or subtotal or item prices sent by the client.
+    let verifiedSubtotal = 0;
+    const verifiedItems = [];
+
+    for (const item of items) {
+      const product = await Product.findById(item.productId);
+      if (!product) {
+        return res.status(404).json({ message: `Product not found: ${item.productId}` });
+      }
+      
+      const genuinePrice = product.price;
+      verifiedSubtotal += genuinePrice * item.quantity;
+      
+      verifiedItems.push({
+        ...item,
+        price: genuinePrice // override whatever the user sent with genuine price
+      });
+    }
+
+    // Validate and Apply Promo Code based on verified subtotal
     let discountApplied = 0;
-    let finalTotalAmount = totalAmount;
+    let finalTotalAmount = verifiedSubtotal;
     let appliedPromoCode = undefined;
 
     if (promoCode) {
       const promo = await PromoCode.findOne({ storeId, code: promoCode.toUpperCase() });
       if (promo && promo.isActive && (!promo.validUntil || new Date() <= promo.validUntil) && (!promo.usageLimit || promo.usedCount < promo.usageLimit)) {
-        if (subtotal >= promo.minPurchase) {
+        if (verifiedSubtotal >= promo.minPurchase) {
           if (promo.discountType === 'FIXED') {
             discountApplied = promo.discountValue;
           } else if (promo.discountType === 'PERCENTAGE') {
-            discountApplied = (subtotal * promo.discountValue) / 100;
+            discountApplied = (verifiedSubtotal * promo.discountValue) / 100;
           }
-          if (discountApplied > subtotal) discountApplied = subtotal;
+          if (discountApplied > verifiedSubtotal) discountApplied = verifiedSubtotal;
 
-          finalTotalAmount = subtotal - discountApplied + (deliveryFee || 0);
+          finalTotalAmount = verifiedSubtotal - discountApplied;
           appliedPromoCode = promo.code;
 
           // Increment usage count
@@ -52,14 +74,18 @@ const createOrderAndGenerateQR = async (req, res) => {
       }
     }
 
+    // Add delivery fee safely
+    const verifiedDeliveryFee = deliveryFee ? Number(deliveryFee) : 0;
+    finalTotalAmount += verifiedDeliveryFee;
+
     const order = new Order({
       storeId,
       customerId,
       isGuest,
       guestInfo,
-      items,
+      items: verifiedItems,
       totalAmount: finalTotalAmount,
-      subtotal: subtotal || totalAmount,
+      subtotal: verifiedSubtotal,
       deliveryPartner,
       deliveryFee: deliveryFee || 0,
       deliveryNote,
@@ -84,7 +110,7 @@ const createOrderAndGenerateQR = async (req, res) => {
     if (order.paymentMethod === 'CASH') {
       return res.status(201).json({
         orderId: order._id,
-        totalAmount,
+        totalAmount: finalTotalAmount,
         currency: store.paymentSettings.currency,
         status: 'PAID'
       });
@@ -93,7 +119,7 @@ const createOrderAndGenerateQR = async (req, res) => {
     // Generate KHQR using Store's Bakong ID
     const { md5, qrString } = await generateKHQR(
       store.paymentSettings.bakongId,
-      totalAmount,
+      finalTotalAmount,
       store.paymentSettings.currency,
       order._id.toString(),
       store.name
@@ -285,15 +311,58 @@ const getCustomerOrders = async (req, res) => {
 // @access  Public
 const getOrderById = async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id)
+    let order = await Order.findById(req.params.id)
       .populate('items.productId', 'title imageUrl price')
-      .populate('storeId', 'name branding');
+      .populate('storeId', 'name branding ownerId');
       
     if (!order) {
       return res.status(404).json({ message: 'Order not found' });
     }
 
-    res.json(order);
+    let isOwnerOrAdmin = false;
+
+    // Check authorization manually since this is a public route
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+      try {
+        const token = req.headers.authorization.split(' ')[1];
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.userId).select('role');
+        
+        if (user) {
+          if (
+            (order.customerId && order.customerId.toString() === user._id.toString()) ||
+            (order.storeId.ownerId && order.storeId.ownerId.toString() === user._id.toString()) ||
+            user.role === 'superadmin'
+          ) {
+            isOwnerOrAdmin = true;
+          }
+        }
+      } catch (err) {
+        // Token verification failed, treat as public/guest
+      }
+    }
+
+    const orderData = order.toObject();
+
+    // Redact sensitive info if not authorized
+    if (!isOwnerOrAdmin) {
+      if (orderData.guestInfo) {
+        if (orderData.guestInfo.name) {
+          orderData.guestInfo.name = orderData.guestInfo.name.substring(0, 1) + '*** ' + (orderData.guestInfo.name.split(' ')[1]?.[0] || '') + '***';
+        }
+        if (orderData.guestInfo.phone) {
+          orderData.guestInfo.phone = '+855 *** *** ' + orderData.guestInfo.phone.slice(-2);
+        }
+        if (orderData.guestInfo.address) {
+          orderData.guestInfo.address = '[HIDDEN FOR PRIVACY]';
+        }
+      }
+      
+      // Remove customerId reference
+      delete orderData.customerId;
+    }
+
+    res.json(orderData);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -1,6 +1,6 @@
 {
   "Index": {
-    "title": "ShoppingOT",
+    "title": "Amatak",
     "description": "Your ultimate multi-vendor e-commerce platform.",
     "login": "Login",
     "register": "Register",
@@ -9,8 +9,8 @@
     "nav_about": "About Us",
     "nav_services": "Services",
     "nav_contact": "Contact",
-    "about_title": "About ShoppingOT",
-    "about_desc": "ShoppingOT is a cutting-edge SaaS platform designed to empower merchants to launch, manage, and scale their own digital storefronts seamlessly.",
+    "about_title": "About Amatak",
+    "about_desc": "Amatak is a cutting-edge SaaS platform designed to empower merchants to launch, manage, and scale their own digital storefronts seamlessly.",
     "services_title": "Our Services",
     "service_1_title": "Multi-Tenant Architecture",
     "service_1_desc": "Instantly deploy dedicated storefronts for each merchant with isolated data.",

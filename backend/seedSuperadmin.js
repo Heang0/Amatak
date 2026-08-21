@@ -10,8 +10,8 @@ const seedSuperadmin = async () => {
     await mongoose.connect(process.env.MONGODB_URI);
     console.log('Connected to DB');
 
-    const email = 'superadmin@shoppingot.com';
-    const password = 'password123';
+    const email = 'hakchhaiheang@amatak.com';
+    const password = 'Amatak!Secure2026';
 
     // Check if exists
     let superadmin = await User.findOne({ email });

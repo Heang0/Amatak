@@ -13,7 +13,7 @@ const authLimiter = rateLimit({
 
 router.post('/register', authLimiter, registerUser);
 router.post('/login', authLimiter, authUser);
-router.post('/telegram', telegramLogin);
+router.post('/telegram', authLimiter, telegramLogin);
 router.put('/telegram/link', protect, linkTelegramAccount);
 
 export default router;

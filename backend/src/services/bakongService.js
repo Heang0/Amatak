@@ -10,7 +10,7 @@ export const generateKHQR = async (bakongId, amount, currency, orderId, merchant
     // Create IndividualInfo
     const info = new IndividualInfo(
       bakongId || process.env.BAKONG_ACCOUNT_ID,
-      merchantName || process.env.BAKONG_MERCHANT_NAME || 'ShoppingOT', 
+      merchantName || process.env.BAKONG_MERCHANT_NAME || 'Amatak', 
       process.env.BAKONG_MERCHANT_CITY || 'Phnom Penh',
       {
         amount: Number(amount),
@@ -55,9 +55,9 @@ export const generateBakongDeepLink = async (qrString) => {
       body: JSON.stringify({
         qr: qrString,
         sourceInfo: {
-          appIconUrl: 'https://shoppingot.com/logo.png', // Fallback URL
-          appName: 'ShoppingOT',
-          appDeepLinkCallback: 'https://shoppingot.com/callback' // Fallback URL
+          appIconUrl: 'https://amatak.com/logo.png', // Fallback URL
+          appName: 'Amatak',
+          appDeepLinkCallback: 'https://amatak.com/callback' // Fallback URL
         }
       })
     });

@@ -60,13 +60,13 @@ export default function LoginPage() {
           <Link href="/">
             <img 
               src="/logo/logo-website.png" 
-              alt="ShoppingOT Logo" 
+              alt="Amatak Logo" 
               className="h-14 w-auto object-contain" 
             />
           </Link>
         </div>
         <h2 className="mt-2 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-          {t('login')} to ShoppingOT
+          {t('login')} to Amatak
         </h2>
       </div>
 
@@ -119,8 +119,8 @@ export default function LoginPage() {
             
           <p className="text-xs text-center text-gray-500 dark:text-gray-400 mt-6 mb-6">
             {isKm 
-              ? <>តាមរយៈការចូលប្រើ អ្នកយល់ព្រមនឹង <Link href="#" className="text-[#E84C3D] hover:underline">លក្ខខណ្ឌសេវាកម្ម</Link> និង <Link href="#" className="text-[#E84C3D] hover:underline">គោលការណ៍ឯកជនភាព</Link> របស់ ShoppingOT។</>
-              : <>By logging in, you agree to ShoppingOT's <Link href="#" className="text-[#E84C3D] hover:underline">Terms of Service</Link> and <Link href="#" className="text-[#E84C3D] hover:underline">Privacy Policy</Link>.</>
+              ? <>តាមរយៈការចូលប្រើ អ្នកយល់ព្រមនឹង <Link href="#" className="text-[#E84C3D] hover:underline">លក្ខខណ្ឌសេវាកម្ម</Link> និង <Link href="#" className="text-[#E84C3D] hover:underline">គោលការណ៍ឯកជនភាព</Link> របស់ Amatak។</>
+              : <>By logging in, you agree to Amatak's <Link href="#" className="text-[#E84C3D] hover:underline">Terms of Service</Link> and <Link href="#" className="text-[#E84C3D] hover:underline">Privacy Policy</Link>.</>
             }
           </p>
 

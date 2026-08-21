@@ -2,10 +2,9 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import helmet from 'helmet';
-import mongoSanitize from 'express-mongo-sanitize';
-import xss from 'xss-clean';
 import hpp from 'hpp';
 import rateLimit from 'express-rate-limit';
+import { mongoSanitize, xssSanitize } from './middleware/securityMiddleware.js';
 import connectDB from './config/db.js';
 
 dotenv.config();
@@ -48,7 +47,7 @@ app.use(cors({
     if (
       origin.match(/^http:\/\/(?:[a-zA-Z0-9-]+\.)?(localhost|192\.168\.1\.7|192\.168\.1\.7\.nip\.io)(:\d+)?$/) ||
       origin.endsWith('.vercel.app') ||
-      origin === 'https://shoppingot.vercel.app'
+      origin === 'https://amatak.vercel.app'
     ) {
       return callback(null, true);
     }
@@ -70,12 +69,10 @@ app.use('/api', limiter);
 app.use(express.json({ limit: '10kb' }));
 
 // Data Sanitization against NoSQL query injection
-// Disabled due to Express 5 req.query getter compatibility issue. Mongoose schema casting provides baseline protection.
-// app.use(mongoSanitize());
+app.use(mongoSanitize);
 
 // Data Sanitization against XSS
-// Disabled due to Express 5 compatibility issues
-// app.use(xss());
+app.use(xssSanitize);
 
 // Prevent HTTP Parameter Pollution
 // Disabled due to Express 5 compatibility issues
@@ -102,7 +99,7 @@ app.use('/api/translate', translateRoutes);
 app.use('/api/search', searchRoutes);
 
 app.get('/', (req, res) => {
-  res.send('ShoppingOT API is running...');
+  res.send('Amatak API is running...');
 });
 
 const PORT = process.env.PORT || 5000;

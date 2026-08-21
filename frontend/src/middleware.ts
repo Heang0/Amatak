@@ -16,7 +16,7 @@ export default async function middleware(req: NextRequest) {
   // 2. Check if we are on a subdomain or a custom domain
   const hostname = req.headers.get('host') || '';
   const isLocalhost = hostname.includes('localhost');
-  const isShoppingot = hostname.includes('shoppingot.com');
+  const isShoppingot = hostname.includes('amatak.com');
   const hostParts = hostname.replace(/:\d+$/, '').split('.');
 
   let subdomain = null;
@@ -45,7 +45,7 @@ export default async function middleware(req: NextRequest) {
   }
 
   // 3. Rewrite requests for subdomains or custom domains to the /store/[slug] route
-  if ((subdomain && subdomain !== 'www' && subdomain !== 'app' && subdomain !== 'admin' && subdomain !== 'shoppingot') || customDomainSlug) {
+  if ((subdomain && subdomain !== 'www' && subdomain !== 'app' && subdomain !== 'admin' && subdomain !== 'amatak') || customDomainSlug) {
     // Only rewrite if it's not a redirect from next-intl (status 307/308)
     if (response.status === 200) {
       // next-intl might have rewritten the request internally, check x-middleware-rewrite

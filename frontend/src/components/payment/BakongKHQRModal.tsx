@@ -22,7 +22,7 @@ export default function BakongKHQRModal({
   qrString,
   amount,
   currency,
-  merchantName = 'ShoppingOT Merchant',
+  merchantName = 'Amatak Merchant',
   isPaid,
   locale = 'en',
   mode = 'order',

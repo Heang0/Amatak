@@ -3,6 +3,7 @@ import multer from 'multer';
 import { v2 as cloudinary } from 'cloudinary';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import dotenv from 'dotenv';
+import { protect } from '../middlewares/authMiddleware.js';
 dotenv.config();
 
 const router = express.Router();
@@ -31,7 +32,7 @@ const storage = new CloudinaryStorage({
     }
 
     return {
-      folder: 'shoppingot',
+      folder: 'amatak',
       allowed_formats: ['jpg', 'png', 'jpeg', 'webp'],
       transformation: transformation,
     };
@@ -42,8 +43,8 @@ const upload = multer({ storage: storage });
 
 // @desc    Upload image to Cloudinary
 // @route   POST /api/upload
-// @access  Public
-router.post('/', upload.single('image'), (req, res) => {
+// @access  Private
+router.post('/', protect, upload.single('image'), (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ message: 'No file uploaded' });

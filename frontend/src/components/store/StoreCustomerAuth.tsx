@@ -160,7 +160,7 @@ export default function StoreCustomerAuth({ primaryColor, themeStyle, isKm }: { 
         <div className="flex justify-center w-full">
           <TelegramLoginButton 
             dataOnauth={handleTelegramResponse} 
-            botName={process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || "shoppingot_bot"} 
+            botName={process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || "amatak_bot"} 
             buttonSize="large" 
             cornerRadius={12}
             usePic={true}

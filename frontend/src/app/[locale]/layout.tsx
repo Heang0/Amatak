@@ -12,7 +12,7 @@ const kantumruy = Kantumruy_Pro({
 import { Viewport } from 'next';
 
 export const metadata = {
-  title: 'ShoppingOT',
+  title: 'Amatak',
   description: 'Multi-vendor SaaS e-commerce platform',
 };
 

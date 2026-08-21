@@ -76,7 +76,7 @@ export default function Index() {
 
             <div className="relative z-10 text-center">
               <div className="w-20 h-20 bg-gray-800/80 backdrop-blur-md rounded-2xl mx-auto mb-6 flex items-center justify-center border border-gray-700/50 group-hover:scale-110 transition-transform duration-500 shadow-[0_0_30px_rgba(232,76,61,0.2)]">
-                <img src="/logo/logo-website.png" alt="ShoppingOT" className="w-12 h-12 object-contain" />
+                <img src="/logo/logo-website.png" alt="Amatak" className="w-12 h-12 object-contain" />
               </div>
             </div>
 
@@ -234,8 +234,8 @@ export default function Index() {
               </h2>
               <p className="text-xl text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
                 {isKm 
-                  ? "ShoppingOT ត្រូវបានបង្កើតឡើងក្នុងគោលបំណងដោះស្រាយបញ្ហាស្មុគស្មាញរបស់អ្នកលក់អនឡាញនៅកម្ពុជា។ យើងផ្តោតសំខាន់លើការបង្កើតបច្ចេកវិទ្យាដែលងាយស្រួលប្រើ ប៉ុន្តែមានប្រសិទ្ធភាពខ្ពស់ ក្នុងការគ្រប់គ្រងអាជីវកម្មទាំងមូលក្នុងប្រព័ន្ធតែមួយ។" 
-                  : "ShoppingOT was built to solve the complex challenges faced by online sellers. We focus on building technology that is extremely easy to use, yet incredibly powerful for managing your entire business ecosystem in one place."}
+                  ? "Amatak ត្រូវបានបង្កើតឡើងក្នុងគោលបំណងដោះស្រាយបញ្ហាស្មុគស្មាញរបស់អ្នកលក់អនឡាញនៅកម្ពុជា។ យើងផ្តោតសំខាន់លើការបង្កើតបច្ចេកវិទ្យាដែលងាយស្រួលប្រើ ប៉ុន្តែមានប្រសិទ្ធភាពខ្ពស់ ក្នុងការគ្រប់គ្រងអាជីវកម្មទាំងមូលក្នុងប្រព័ន្ធតែមួយ។" 
+                  : "Amatak was built to solve the complex challenges faced by online sellers. We focus on building technology that is extremely easy to use, yet incredibly powerful for managing your entire business ecosystem in one place."}
               </p>
               
               <div className="grid grid-cols-2 gap-8 mt-12 pt-12 border-t border-gray-100 dark:border-gray-800">
@@ -282,7 +282,7 @@ export default function Index() {
                   </div>
                   <div>
                     <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-1">{isKm ? "អ៊ីមែល" : "Email"}</h4>
-                    <p className="text-gray-600 dark:text-gray-400">support@shoppingot.com</p>
+                    <p className="text-gray-600 dark:text-gray-400">support@amatak.com</p>
                   </div>
                 </div>
 
@@ -339,7 +339,7 @@ export default function Index() {
               <Link href="/" className="inline-block mb-6 hover:opacity-90 transition-opacity">
                 <img 
                   src="/logo/logo-website.png" 
-                  alt="ShoppingOT Logo" 
+                  alt="Amatak Logo" 
                   className="h-10 sm:h-12 w-auto object-contain" 
                 />
               </Link>
@@ -388,7 +388,7 @@ export default function Index() {
           
           <div className="pt-8 border-t border-gray-100 dark:border-gray-900 flex items-center justify-center">
             <p className="text-gray-400 text-sm text-center">
-              &copy; {new Date().getFullYear()} ShoppingOT. {isKm ? "រក្សាសិទ្ធិគ្រប់យ៉ាង" : "All rights reserved."}
+              &copy; {new Date().getFullYear()} Amatak. {isKm ? "រក្សាសិទ្ធិគ្រប់យ៉ាង" : "All rights reserved."}
             </p>
           </div>
         </div>

@@ -219,33 +219,51 @@ const googleClient = new OAuth2Client();
 // @route   POST /api/auth/google
 // @access  Public
 const googleLogin = async (req, res) => {
-  const { credential, role } = req.body;
+  const { credential, accessToken, role } = req.body;
 
-  if (!credential) {
-    return res.status(400).json({ message: 'Google credential is required' });
+  if (!credential && !accessToken) {
+    return res.status(400).json({ message: 'Google credential or accessToken is required' });
   }
 
   try {
-    let payload;
-    try {
-      const clientId = process.env.GOOGLE_CLIENT_ID || process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-      const verifyOptions = { idToken: credential };
-      if (clientId) {
-        verifyOptions.audience = clientId;
+    let email, name, picture, googleId;
+
+    if (accessToken) {
+      // Verify & fetch user info using access token
+      const googleRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      if (!googleRes.ok) {
+        return res.status(401).json({ message: 'Failed to verify Google access token' });
       }
-      
-      const ticket = await googleClient.verifyIdToken(verifyOptions);
-      payload = ticket.getPayload();
-    } catch (verifyErr) {
-      console.error('Google token verification error:', verifyErr);
-      return res.status(401).json({ message: 'Invalid or expired Google token' });
+      const data = await googleRes.json();
+      email = data.email;
+      name = data.name;
+      picture = data.picture;
+      googleId = data.sub;
+    } else {
+      try {
+        const clientId = process.env.GOOGLE_CLIENT_ID || process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+        const verifyOptions = { idToken: credential };
+        if (clientId) {
+          verifyOptions.audience = clientId;
+        }
+        
+        const ticket = await googleClient.verifyIdToken(verifyOptions);
+        const payload = ticket.getPayload();
+        email = payload.email;
+        name = payload.name;
+        picture = payload.picture;
+        googleId = payload.sub;
+      } catch (verifyErr) {
+        console.error('Google token verification error:', verifyErr);
+        return res.status(401).json({ message: 'Invalid or expired Google token' });
+      }
     }
 
-    if (!payload || !payload.email) {
+    if (!email) {
       return res.status(400).json({ message: 'Google account does not contain a valid email' });
     }
-
-    const { email, name, picture, sub: googleId } = payload;
 
     // 1. Check if user exists by googleId OR email
     let user = await User.findOne({

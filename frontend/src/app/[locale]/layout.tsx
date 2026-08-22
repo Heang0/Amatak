@@ -12,8 +12,12 @@ const kantumruy = Kantumruy_Pro({
 import { Viewport } from 'next';
 
 export const metadata = {
-  title: 'Amatak',
-  description: 'Multi-vendor SaaS e-commerce platform',
+  title: 'Amatak | អមតៈ - Your Ultimate Online Shopping Platform',
+  description: 'Amatak is the ultimate multi-vendor e-commerce platform in Cambodia. Manage sales, inventory, and customers with seamless KHQR and Telegram integration.',
+  icons: {
+    icon: '/logo/favicon.ico',
+    apple: '/logo/logo-website.png',
+  },
 };
 
 export const viewport: Viewport = {

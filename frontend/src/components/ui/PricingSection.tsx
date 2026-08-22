@@ -66,7 +66,7 @@ export default function PricingSection({ isKm }: { isKm: boolean }) {
             <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-4">
               {isKm ? "ជ្រើសរើសគម្រោងដ៏ល្អរបស់អ្នក" : "Choose your perfect plan"}
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               {isKm ? "អនុញ្ញាតឱ្យតម្លើងកម្រិត និងបន្ថែមម៉ូឌុលទៅតាមទំហំអាជីវកម្មរបស់អ្នក" : "Allows upgrading and adding modules according to your business size"}
             </p>
           </div>
@@ -76,13 +76,13 @@ export default function PricingSection({ isKm }: { isKm: boolean }) {
             <div className="flex items-center bg-gray-200/50 dark:bg-[#111111] p-1.5 rounded-full shadow-inner border border-gray-200 dark:border-gray-800 relative w-full max-w-sm sm:max-w-none sm:w-auto">
               <button 
                 onClick={() => setBillingCycle('monthly')}
-                className={`flex-1 sm:flex-none px-2 sm:px-8 py-3 rounded-full text-sm sm:text-base font-bold transition-all duration-300 ${billingCycle === 'monthly' ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-md transform sm:scale-105' : 'text-gray-500 hover:text-gray-900 dark:hover:text-white'}`}
+                className={`flex-1 sm:flex-none px-2 sm:px-8 py-3 rounded-full text-sm sm:text-base font-bold transition-all duration-300 ${billingCycle === 'monthly' ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-md transform sm:scale-105' : 'text-gray-600 hover:text-gray-900 dark:hover:text-white'}`}
               >
                 {isKm ? 'ប្រចាំខែ' : 'Monthly'}
               </button>
               <button 
                 onClick={() => setBillingCycle('annually')}
-                className={`flex-1 sm:flex-none relative px-2 sm:px-8 py-3 rounded-full text-sm sm:text-base font-bold transition-all duration-300 flex items-center justify-center gap-2 ${billingCycle === 'annually' ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-md transform sm:scale-105' : 'text-gray-500 hover:text-gray-900 dark:hover:text-white'}`}
+                className={`flex-1 sm:flex-none relative px-2 sm:px-8 py-3 rounded-full text-sm sm:text-base font-bold transition-all duration-300 flex items-center justify-center gap-2 ${billingCycle === 'annually' ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-md transform sm:scale-105' : 'text-gray-600 hover:text-gray-900 dark:hover:text-white'}`}
               >
                 {isKm ? 'ប្រចាំឆ្នាំ' : 'Annually'}
                 
@@ -126,7 +126,7 @@ export default function PricingSection({ isKm }: { isKm: boolean }) {
                       <span className={`text-5xl font-black ${isPopular ? 'text-white' : 'text-gray-900 dark:text-white'}`}>
                         ${finalDisplayPrice}
                       </span>
-                      <span className={`font-medium ${isPopular ? 'text-gray-400' : 'text-gray-500'}`}>
+                      <span className={`font-medium ${isPopular ? 'text-gray-400' : 'text-gray-600'}`}>
                         / {billingCycle === 'monthly' ? (isKm ? 'ខែ' : 'mo') : (isKm ? 'ឆ្នាំ' : 'yr')}
                       </span>
                     </div>
@@ -134,14 +134,14 @@ export default function PricingSection({ isKm }: { isKm: boolean }) {
                     {/* Show original price crossed out if it's annual to show savings */}
                     <div className="h-6 mt-1">
                       {originalPrice && (
-                        <span className="text-gray-500 line-through font-medium text-lg decoration-red-500/50 decoration-2">
+                        <span className="text-gray-600 line-through font-medium text-lg decoration-red-500/50 decoration-2">
                           ${originalPrice}
                         </span>
                       )}
                     </div>
                   </div>
 
-                  <ul className={`space-y-4 mb-8 flex-1 font-medium ${isPopular ? 'text-gray-300' : 'text-gray-600 dark:text-gray-400'}`}>
+                  <ul className={`space-y-4 mb-8 flex-1 font-medium ${isPopular ? 'text-gray-300' : 'text-gray-600 dark:text-gray-300'}`}>
                     {plan.benefits.map((benefit, i) => (
                       <li key={i} className="flex items-center gap-3">
                         <span className="text-[#E84C3D] text-lg">✓</span> 
@@ -150,7 +150,7 @@ export default function PricingSection({ isKm }: { isKm: boolean }) {
                     ))}
                   </ul>
 
-                  <Link href="/register" className={`block w-full py-4 px-6 rounded-xl font-bold text-center transition-all duration-300
+                  <Link href="/register" className={`block w-full py-2 px-6 rounded-xl font-bold text-center transition-all duration-300
                     ${isPopular 
                       ? 'bg-[#E84C3D] text-white hover:bg-red-600 shadow-lg shadow-red-500/20' 
                       : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-[#E84C3D] hover:text-white'
@@ -180,7 +180,7 @@ export default function PricingSection({ isKm }: { isKm: boolean }) {
                     <th className="py-4 px-6 font-bold text-center text-gray-900 dark:text-white w-1/5">{isKm ? "កម្រិត Premium" : "Premium"}</th>
                   </tr>
                 </thead>
-                <tbody className="text-gray-600 dark:text-gray-400 font-medium">
+                <tbody className="text-gray-600 dark:text-gray-300 font-medium">
                   <tr className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-[#111111] transition-colors">
                     <td className="py-4 px-6">{isKm ? "ចំនួនទំនិញអតិបរមា" : "Maximum Products"}</td>
                     <td className="py-4 px-6 text-center font-semibold">20</td>
@@ -194,7 +194,7 @@ export default function PricingSection({ isKm }: { isKm: boolean }) {
                     <td className="py-4 px-6 text-center font-semibold text-gray-900 dark:text-white">{isKm ? "មិនកំណត់" : "Unlimited"}</td>
                   </tr>
                   <tr className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-[#111111] transition-colors bg-gray-50/50 dark:bg-[#111111]/50">
-                    <td colSpan={4} className="py-3 px-6 font-bold text-sm text-gray-500 uppercase tracking-wider">{isKm ? "មុខងារស្នូល" : "Core Features"}</td>
+                    <td colSpan={4} className="py-3 px-6 font-bold text-sm text-gray-600 uppercase tracking-wider">{isKm ? "មុខងារស្នូល" : "Core Features"}</td>
                   </tr>
                   <tr className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-[#111111] transition-colors">
                     <td className="py-4 px-6 flex items-center gap-2">{isKm ? "គេហទំព័រលក់ទំនិញផ្ទាល់ខ្លួន" : "Personal Storefront URL"}</td>
@@ -215,7 +215,7 @@ export default function PricingSection({ isKm }: { isKm: boolean }) {
                     <td className="py-4 px-6 text-center text-gray-900 dark:text-gray-100">✓</td>
                   </tr>
                   <tr className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-[#111111] transition-colors bg-gray-50/50 dark:bg-[#111111]/50">
-                    <td colSpan={4} className="py-3 px-6 font-bold text-sm text-gray-500 uppercase tracking-wider">{isKm ? "ការទូទាត់ & បច្ចេកវិទ្យា" : "Payments & Tech"}</td>
+                    <td colSpan={4} className="py-3 px-6 font-bold text-sm text-gray-600 uppercase tracking-wider">{isKm ? "ការទូទាត់ & បច្ចេកវិទ្យា" : "Payments & Tech"}</td>
                   </tr>
                   <tr className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-[#111111] transition-colors">
                     <td className="py-4 px-6">{isKm ? "ស្កេនទូទាត់តាមធនាគារ (KHQR)" : "KHQR Payment Integration"}</td>
@@ -230,7 +230,7 @@ export default function PricingSection({ isKm }: { isKm: boolean }) {
                     <td className="py-4 px-6 text-center text-gray-900 dark:text-gray-100">✓</td>
                   </tr>
                   <tr className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-[#111111] transition-colors bg-gray-50/50 dark:bg-[#111111]/50">
-                    <td colSpan={4} className="py-3 px-6 font-bold text-sm text-gray-500 uppercase tracking-wider">{isKm ? "អាជីវកម្ម & របាយការណ៍" : "Business & Analytics"}</td>
+                    <td colSpan={4} className="py-3 px-6 font-bold text-sm text-gray-600 uppercase tracking-wider">{isKm ? "អាជីវកម្ម & របាយការណ៍" : "Business & Analytics"}</td>
                   </tr>
                   <tr className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-[#111111] transition-colors">
                     <td className="py-4 px-6">{isKm ? "របាយការណ៍វិភាគ (Analytics)" : "Analytics Dashboard"}</td>

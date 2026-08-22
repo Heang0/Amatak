@@ -75,7 +75,7 @@ export default function ContactForm({ isKm }: { isKm: boolean }) {
       <button 
         type="submit" 
         disabled={status === 'submitting'}
-        className="w-full py-4 bg-[#E84C3D] hover:bg-red-600 disabled:opacity-50 text-white font-bold rounded-xl transition-all shadow-md"
+        className="w-full py-2 bg-[#E84C3D] hover:bg-red-600 disabled:opacity-50 text-white font-bold rounded-xl transition-all shadow-md"
       >
         {status === 'submitting' 
           ? (isKm ? "កំពុងផ្ញើសារ..." : "Sending Message...") 

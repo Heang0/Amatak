@@ -1,6 +1,7 @@
 import User from '../models/User.js';
 import generateToken from '../utils/generateToken.js';
 import crypto from 'crypto';
+import { OAuth2Client } from 'google-auth-library';
 
 // @desc    Auth user & get token
 // @route   POST /api/auth/login
@@ -212,4 +213,87 @@ const linkTelegramAccount = async (req, res) => {
   }
 };
 
-export { authUser, registerUser, telegramLogin, linkTelegramAccount };
+const googleClient = new OAuth2Client();
+
+// @desc    Authenticate with Google
+// @route   POST /api/auth/google
+// @access  Public
+const googleLogin = async (req, res) => {
+  const { credential, role } = req.body;
+
+  if (!credential) {
+    return res.status(400).json({ message: 'Google credential is required' });
+  }
+
+  try {
+    let payload;
+    try {
+      const clientId = process.env.GOOGLE_CLIENT_ID || process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+      const verifyOptions = { idToken: credential };
+      if (clientId) {
+        verifyOptions.audience = clientId;
+      }
+      
+      const ticket = await googleClient.verifyIdToken(verifyOptions);
+      payload = ticket.getPayload();
+    } catch (verifyErr) {
+      console.error('Google token verification error:', verifyErr);
+      return res.status(401).json({ message: 'Invalid or expired Google token' });
+    }
+
+    if (!payload || !payload.email) {
+      return res.status(400).json({ message: 'Google account does not contain a valid email' });
+    }
+
+    const { email, name, picture, sub: googleId } = payload;
+
+    // 1. Check if user exists by googleId OR email
+    let user = await User.findOne({
+      $or: [{ googleId }, { email: email.toLowerCase() }]
+    });
+
+    if (user) {
+      // Link googleId and sync profilePic if needed
+      let changed = false;
+      if (!user.googleId) {
+        user.googleId = googleId;
+        changed = true;
+      }
+      if (!user.profilePic && picture) {
+        user.profilePic = picture;
+        changed = true;
+      }
+      if (changed) {
+        await user.save();
+      }
+    } else {
+      // 2. Create new user
+      const userRole = role === 'superadmin' ? 'customer' : (role || 'store_admin');
+      user = await User.create({
+        name: name || 'Google User',
+        email: email.toLowerCase(),
+        googleId,
+        profilePic: picture || '',
+        role: userRole,
+      });
+    }
+
+    // 3. Return user profile and JWT
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      profilePic: user.profilePic,
+      phone: user.phone,
+      address: user.address,
+      addresses: user.addresses,
+      token: generateToken(user._id),
+    });
+  } catch (error) {
+    console.error('Error in googleLogin:', error);
+    res.status(500).json({ message: error.message || 'Server error during Google authentication' });
+  }
+};
+
+export { authUser, registerUser, telegramLogin, linkTelegramAccount, googleLogin };

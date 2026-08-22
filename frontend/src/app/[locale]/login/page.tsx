@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { useAuthStore } from '@/lib/store/useAuthStore';
 import { Link, useRouter } from '@/navigation';
+import GoogleAuthButton from '@/components/ui/GoogleAuthButton';
 
 export default function LoginPage() {
   const t = useTranslations('Index');
@@ -116,16 +117,33 @@ export default function LoginPage() {
               </button>
             </div>
           </form>
+
+          <div className="mt-5 mb-5">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-200 dark:border-gray-800" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="px-3 bg-white dark:bg-[#111111] text-gray-400 dark:text-gray-500 font-bold">
+                  {isKm ? 'ឬ' : 'or'}
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-5">
+              <GoogleAuthButton isKm={isKm} role="store_admin" onError={(err) => setError(err)} />
+            </div>
+          </div>
             
-          <p className="text-xs text-center text-gray-500 dark:text-gray-400 mt-6 mb-6">
+          <p className="text-xs text-center text-gray-500 dark:text-gray-400 mt-4 mb-4">
             {isKm 
               ? <>តាមរយៈការចូលប្រើ អ្នកយល់ព្រមនឹង <Link href="#" className="text-[#E84C3D] hover:underline">លក្ខខណ្ឌសេវាកម្ម</Link> និង <Link href="#" className="text-[#E84C3D] hover:underline">គោលការណ៍ឯកជនភាព</Link> របស់ Amatak។</>
               : <>By logging in, you agree to Amatak's <Link href="#" className="text-[#E84C3D] hover:underline">Terms of Service</Link> and <Link href="#" className="text-[#E84C3D] hover:underline">Privacy Policy</Link>.</>
             }
           </p>
 
-          <div className="w-full border-t border-gray-100 dark:border-gray-800 pt-6">
-            <Link href="/register" className="w-full flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-[#050505] hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
+          <div className="w-full border-t border-gray-100 dark:border-gray-800 pt-4">
+            <Link href="/register" className="w-full flex justify-center py-2.5 px-4 border border-gray-300 dark:border-gray-700 rounded-xl shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-[#050505] hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
               {t('register')}
             </Link>
           </div>

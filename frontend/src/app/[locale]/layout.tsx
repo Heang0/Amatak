@@ -27,6 +27,8 @@ export const viewport: Viewport = {
   userScalable: false,
 };
  
+import GoogleAuthProvider from '@/components/providers/GoogleAuthProvider';
+
 export default async function LocaleLayout({
   children,
   params: {locale}
@@ -42,7 +44,9 @@ export default async function LocaleLayout({
   return (
     <div id="app-root" className={fontClass}>
       <NextIntlClientProvider messages={messages}>
-        {children}
+        <GoogleAuthProvider>
+          {children}
+        </GoogleAuthProvider>
       </NextIntlClientProvider>
     </div>
   );

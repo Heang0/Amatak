@@ -1,9 +1,9 @@
 'use client';
 
-import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
+import { useState, useEffect } from 'react';
+import { GoogleOAuthProvider, GoogleLogin, CredentialResponse } from '@react-oauth/google';
 import { useAuthStore } from '@/lib/store/useAuthStore';
 import { useRouter } from '@/navigation';
-import { useState } from 'react';
 
 interface GoogleAuthButtonProps {
   isKm?: boolean;
@@ -12,17 +12,15 @@ interface GoogleAuthButtonProps {
   onError?: (msg: string) => void;
 }
 
-export default function GoogleAuthButton({
-  isKm = false,
-  role = 'store_admin',
+function GoogleLoginInner({
+  isKm,
+  role,
   redirectPath,
   onError,
 }: GoogleAuthButtonProps) {
   const router = useRouter();
   const setUser = useAuthStore((state) => state.setUser);
   const [loading, setLoading] = useState(false);
-
-  const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 
   const handleGoogleSuccess = async (credentialResponse: CredentialResponse) => {
     if (!credentialResponse.credential) {
@@ -72,13 +70,43 @@ export default function GoogleAuthButton({
     }
   };
 
-  if (!clientId) {
+  if (loading) {
+    return (
+      <div className="py-2.5 flex items-center justify-center gap-2 text-sm text-gray-500">
+        <span className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></span>
+        <span>{isKm ? 'កំពុងផ្ទៀងផ្ទាត់...' : 'Authenticating...'}</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full flex justify-center [&>div]:!w-full [&>div>iframe]:!w-full">
+      <GoogleLogin
+        onSuccess={handleGoogleSuccess}
+        onError={handleGoogleError}
+        useOneTap={false}
+        shape="rectangular"
+        theme="outline"
+        size="large"
+        width="100%"
+        text={role === 'store_admin' ? 'continue_with' : 'signin_with'}
+      />
+    </div>
+  );
+}
+
+export default function GoogleAuthButton(props: GoogleAuthButtonProps) {
+  const [mounted, setMounted] = useState(false);
+  const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '';
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted || !clientId) {
     return (
       <button
         type="button"
-        onClick={() => {
-          if (onError) onError(isKm ? 'សូមកំណត់ NEXT_PUBLIC_GOOGLE_CLIENT_ID ក្នុង .env' : 'Please configure NEXT_PUBLIC_GOOGLE_CLIENT_ID in your environment variables');
-        }}
         className="w-full flex items-center justify-center gap-3 py-2.5 px-4 border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm text-sm font-bold text-gray-700 dark:text-gray-300 bg-white dark:bg-[#050505] hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
       >
         <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -99,32 +127,14 @@ export default function GoogleAuthButton({
             d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
           />
         </svg>
-        <span>{isKm ? 'បន្តជាមួយ Google' : 'Continue with Google'}</span>
+        <span>{props.isKm ? 'បន្តជាមួយ Google' : 'Continue with Google'}</span>
       </button>
     );
   }
 
   return (
-    <div className="w-full flex justify-center">
-      {loading ? (
-        <div className="py-2.5 flex items-center justify-center gap-2 text-sm text-gray-500">
-          <span className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></span>
-          <span>{isKm ? 'កំពុងផ្ទៀងផ្ទាត់...' : 'Authenticating...'}</span>
-        </div>
-      ) : (
-        <div className="w-full flex justify-center [&>div]:!w-full [&>div>iframe]:!w-full">
-          <GoogleLogin
-            onSuccess={handleGoogleSuccess}
-            onError={handleGoogleError}
-            useOneTap={false}
-            shape="rectangular"
-            theme="outline"
-            size="large"
-            width="100%"
-            text={role === 'store_admin' ? 'continue_with' : 'signin_with'}
-          />
-        </div>
-      )}
-    </div>
+    <GoogleOAuthProvider clientId={clientId}>
+      <GoogleLoginInner {...props} />
+    </GoogleOAuthProvider>
   );
 }

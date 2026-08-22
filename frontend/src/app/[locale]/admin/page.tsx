@@ -3,11 +3,12 @@
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '@/lib/store/useAuthStore';
 import { Package, ShoppingCart, DollarSign, TrendingUp, Settings } from 'lucide-react';
-import { Link } from '@/navigation';
+import { Link, useRouter } from '@/navigation';
 import { useTranslations } from 'next-intl';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 export default function AdminDashboard() {
+ const router = useRouter();
  const user = useAuthStore((state) => state.user);
  const t = useTranslations('AdminDashboard');
  const [analytics, setAnalytics] = useState<any>(null);
@@ -24,6 +25,8 @@ export default function AdminDashboard() {
   if (res.ok) {
    const data = await res.json();
    setAnalytics(data);
+  } else if (res.status === 404) {
+   router.push('/admin/setup');
   }
   } catch (err) {
   console.error('Failed to fetch analytics', err);

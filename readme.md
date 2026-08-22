@@ -1,44 +1,36 @@
-BAKONG_STORE_LABEL=SITE-E
-BAKONG_TERMINAL_LABEL=WEB-E
-BAKONG_ACCOUNT_ID=
-BAKONG_ENV=production
-BAKONG_MOCNT_CITY=""
-BAKONG_MERCHAK=false
-BAKONG_MERCHANT_NAME=
-BAKONG_TOKEN=
-BAKONG_RELAY_TOKEN=
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Getting Started
 
-why i slect categoreis but why when i save Custom Category it is still empty 
+First, run the development server:
 
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-git add .
-git commit -m "New Update"
-git push
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-# 1. Initialize Git in the folder
-git init
+## Learn More
 
-# 2. Add all your new files
-git add .
+To learn more about Next.js, take a look at the following resources:
 
-# 3. Create your very first commit
-git commit -m "first commit"
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-# 4. Set your main branch name
-git branch -M main
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-# 5. Connect it to your GitHub repository (Replace the URL with your custom SSH URL!)
-git remote add origin git@github-heang0:Heang0/YOUR-NEW-PROJECT-NAME.git
+## Deploy on Vercel
 
-# 6. Upload the code for the first time
-git push -u origin main
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-
-
-
-git add .
-git commit -m "Configure frontend for production deployment"
-git push
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

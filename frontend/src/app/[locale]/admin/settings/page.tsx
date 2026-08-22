@@ -117,17 +117,26 @@ export default function AdminSettings() {
  }
  };
 
- const handleCopyUrl = () => {
- if (!storeData) return;
- const isVercel = baseDomain.includes('vercel.app');
- const url = isVercel 
-  ? `https://amatak.vercel.app/store/${storeData.slug}` 
-  : `http://${storeData.slug}${baseDomain}`;
-  
- navigator.clipboard.writeText(url);
- setCopied(true);
- setTimeout(() => setCopied(false), 2000);
- };
+  const getStoreUrl = () => {
+    if (!storeData) return '';
+    if (typeof window !== 'undefined') {
+      const origin = window.location.origin;
+      if (origin.includes('vercel.app')) {
+        return `${origin}/store/${storeData.slug}`;
+      }
+    }
+    return baseDomain.includes('vercel.app')
+      ? `https://amatak-kh.vercel.app/store/${storeData.slug}`
+      : `http://${storeData.slug}${baseDomain}`;
+  };
+
+  const handleCopyUrl = () => {
+    if (!storeData) return;
+    const url = getStoreUrl();
+    navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
  useEffect(() => {
  const fetchStore = async () => {
@@ -462,7 +471,7 @@ export default function AdminSettings() {
      <input
      type="text"
      readOnly
-     value={baseDomain.includes('vercel.app') ? `https://amatak.vercel.app/store/${storeData.slug}` : `http://${storeData.slug}${baseDomain}`}
+     value={getStoreUrl()}
      className="flex-1 px-4 py-3 border border-r-0 rounded-l-lg border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] outline-none cursor-not-allowed"
      />
      <button 

@@ -121,7 +121,7 @@ export default function StoresManagement() {
          <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa]">
           {store.name}
           <div className="text-xs text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] font-normal">
-           {baseDomain.includes('vercel.app') ? `https://amatak.vercel.app/store/${store.slug}` : `http://${store.slug}${baseDomain}`}
+           {baseDomain.includes('vercel.app') ? `https://amatak-kh.vercel.app/store/${store.slug}` : `http://${store.slug}${baseDomain}`}
           </div>
          </td>
          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-[#a1a1aa] dark:text-[#d4d4d8] font-medium">

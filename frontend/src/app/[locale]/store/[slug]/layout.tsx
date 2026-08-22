@@ -25,12 +25,25 @@ export async function generateMetadata({
     ? `ទិញទំនិញអនឡាញនៅហាង ${store.name}។ ស្វែងរកទំនិញដែលមានគុណភាពជាច្រើនប្រភេទ។`
     : `Shop online at ${store.name}. Discover a wide collection of quality products.`;
 
+  const storeLogo = store.branding?.logoUrl || store.logo || '/logo/logo-website.png';
+  const favicon = store.branding?.logoUrl || store.logo || '/logo/favicon.ico';
+
   return {
     title: {
       default: store.name,
       template: `%s | ${store.name}`,
     },
     description: description,
+    icons: {
+      icon: favicon,
+      apple: storeLogo,
+      shortcut: favicon,
+    },
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: 'default',
+      title: store.name,
+    },
     openGraph: {
       title: store.name,
       description: description,

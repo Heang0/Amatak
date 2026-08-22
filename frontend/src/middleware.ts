@@ -15,8 +15,8 @@ export default async function middleware(req: NextRequest) {
 
   // 2. Check if we are on a subdomain or a custom domain
   const hostname = req.headers.get('host') || '';
-  const isLocalhost = hostname.includes('localhost');
-  const isShoppingot = hostname.includes('amatak.com');
+  const isLocalhost = hostname.includes('localhost') || hostname.includes('127.0.0.1');
+  const isMainDomain = hostname.includes('amatak.com') || hostname.includes('vercel.app') || isLocalhost;
   const hostParts = hostname.replace(/:\d+$/, '').split('.');
 
   let subdomain = null;
@@ -25,12 +25,12 @@ export default async function middleware(req: NextRequest) {
 
   if (isLocalhost && hostParts.length > 1) {
     subdomain = hostParts[0];
-  } else if (!isLocalhost && !isIpAddress && hostParts.length > 2 && isShoppingot) {
+  } else if (!isLocalhost && !isIpAddress && hostParts.length > 2 && hostname.includes('amatak.com')) {
     subdomain = hostParts[0];
   }
 
-  // Check for custom domains
-  if (!isLocalhost && !isShoppingot && !isIpAddress) {
+  // Check for custom domains (only if not on main amatak.com or vercel.app domains)
+  if (!isMainDomain && !isIpAddress) {
     try {
       const cleanHostname = hostname.replace(/:\d+$/, '');
       const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';

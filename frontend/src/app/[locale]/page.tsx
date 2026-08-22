@@ -169,7 +169,7 @@ export default function Index() {
                   {isKm ? "លែងបារម្ភរឿងផ្ទៀងផ្ទាត់វិក្កយបត្រ! ប្រព័ន្ធរបស់យើងភ្ជាប់ជាមួយ Bakong KHQR ដោយផ្ទាល់ អតិថិជនស្កេនទូទាត់ភ្លាម វិក្កយបត្រនឹងបញ្ជាក់ដោយស្វ័យប្រវត្តិ។" : "Stop manually verifying receipts! Our system integrates directly with Bakong KHQR. Customers scan, pay, and the order is instantly verified."}
                 </p>
               </div>
-              <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=800&q=80" alt="Payment" className="absolute -right-20 -bottom-20 w-[400px] h-[400px] object-cover rounded-full opacity-10 group-hover:opacity-20 transition-opacity duration-700" />
+              <img loading="lazy" src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=600&q=70" alt="Payment" className="absolute -right-20 -bottom-20 w-[400px] h-[400px] object-cover rounded-full opacity-10 group-hover:opacity-20 transition-opacity duration-700 pointer-events-none" />
             </FadeIn>
 
             {/* Small Bento Box 1 */}
@@ -212,7 +212,7 @@ export default function Index() {
                   {isKm ? "តាមដានរាល់ការបញ្ជាទិញ និងកាត់ស្តុកដោយស្វ័យប្រវត្តិ។ អ្វីគ្រប់យ៉ាងដំណើរការស៊ីសង្វាក់គ្នានៅក្នុងប្រព័ន្ធតែមួយ ដើម្បីជួយឱ្យអ្នកលក់បានកាន់តែច្រើន។" : "Track all your orders and sync your inventory automatically. Everything works seamlessly in one platform to help you sell more."}
                 </p>
               </div>
-              <img src="https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=800&q=80" alt="POS System" className="absolute -right-20 -top-20 w-[450px] h-[450px] object-cover rounded-full opacity-10 group-hover:opacity-20 transition-opacity duration-700" />
+              <img loading="lazy" src="https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=600&q=70" alt="POS System" className="absolute -right-20 -top-20 w-[450px] h-[450px] object-cover rounded-full opacity-10 group-hover:opacity-20 transition-opacity duration-700 pointer-events-none" />
             </FadeIn>
           </div>
         </div>
@@ -226,8 +226,8 @@ export default function Index() {
             {/* Images Grid */}
             <FadeIn delay={0.2} className="relative" zoom={true}>
               <div className="grid grid-cols-2 gap-4">
-                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="Team" className="rounded-[2rem] w-full h-[320px] object-cover mt-12 shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-gray-100 dark:border-gray-800" />
-                <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=800&q=80" alt="Office" className="rounded-[2rem] w-full h-[320px] object-cover shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-gray-100 dark:border-gray-800" />
+                <img loading="lazy" src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=70" alt="Team" className="rounded-[2rem] w-full h-[320px] object-cover mt-12 shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-gray-100 dark:border-gray-800" />
+                <img loading="lazy" src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=600&q=70" alt="Office" className="rounded-[2rem] w-full h-[320px] object-cover shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-gray-100 dark:border-gray-800" />
               </div>
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-[#E84C3D]/5 blur-[120px] rounded-full pointer-events-none -z-10"></div>
             </FadeIn>

@@ -277,7 +277,7 @@ const googleLogin = async (req, res) => {
         user.googleId = googleId;
         changed = true;
       }
-      if (!user.profilePic && picture) {
+      if (picture && (!user.profilePic || user.profilePic.includes('googleusercontent.com'))) {
         user.profilePic = picture;
         changed = true;
       }

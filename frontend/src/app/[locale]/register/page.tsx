@@ -49,7 +49,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="h-[100dvh] overflow-hidden bg-gray-50 dark:bg-[#050505] flex flex-col justify-center px-4 sm:px-6 lg:px-8 transition-colors duration-300">
+    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-[#050505] flex flex-col justify-center transition-colors duration-300 overflow-y-auto">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center mb-6">
           <Link href="/">

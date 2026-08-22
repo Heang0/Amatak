@@ -328,7 +328,7 @@ export default function AdminCategories() {
     </div>
     <button
      onClick={() => setIsAddModalOpen(true)}
-     className="bg-[#2B3674] dark:bg-white text-white dark:text-[#0B1437] px-4 py-2.5 text-sm font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity rounded-none"
+     className="bg-[#E84C3D] hover:bg-red-600 text-white px-5 py-2.5 text-sm font-bold flex items-center justify-center gap-2 transition-all rounded-xl shadow-sm shadow-red-500/20"
     >
      <Plus size={18} />
      {t('create_new')}
@@ -336,26 +336,26 @@ export default function AdminCategories() {
    </div>
 
    {loading ? (
-    <div className="bg-white dark:bg-[#121212] dark:border dark:border-white/10 rounded-2xl border-none p-12 flex flex-col items-center gap-3 shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none dark:shadow-none">
-     <div className="w-8 h-8 border-2 border-[#2B3674] dark:border-white border-t-transparent rounded-full animate-spin" />
+    <div className="bg-white dark:bg-[#111111] rounded-2xl p-12 flex flex-col items-center gap-3 border border-gray-100 dark:border-gray-800">
+     <div className="w-8 h-8 border-2 border-[#E84C3D] border-t-transparent rounded-full animate-spin" />
     </div>
    ) : categories.length === 0 ? (
-    <div className="bg-white dark:bg-[#121212] dark:border dark:border-white/10 rounded-2xl border-none p-16 text-center shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none dark:shadow-none">
-     <div className="w-16 h-16 bg-[#F4F7FE] dark:bg-[#000000] rounded-full flex items-center justify-center mx-auto mb-4">
-      <Tag className="w-8 h-8 text-gray-900 dark:text-[#fafafa] dark:text-gray-600 dark:text-[#a1a1aa]" />
+    <div className="bg-white dark:bg-[#111111] rounded-2xl p-16 text-center border border-gray-100 dark:border-gray-800">
+     <div className="w-16 h-16 bg-red-50 dark:bg-red-950/30 rounded-full flex items-center justify-center mx-auto mb-4 text-[#E84C3D]">
+      <Tag className="w-8 h-8" />
      </div>
-     <h3 className="text-lg font-bold text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa] mb-2">{t('no_categories')}</h3>
-     <p className="text-gray-600 dark:text-[#a1a1aa] text-sm mb-6 max-w-sm mx-auto">{t('no_categories_desc')}</p>
+     <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{t('no_categories')}</h3>
+     <p className="text-gray-500 dark:text-gray-400 text-sm mb-6 max-w-sm mx-auto">{t('no_categories_desc')}</p>
      <button
       onClick={() => setIsAddModalOpen(true)}
-      className="bg-[#2B3674] dark:bg-white text-white dark:text-[#0B1437] px-6 py-2.5 text-sm font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity mx-auto rounded-none"
+      className="bg-[#E84C3D] hover:bg-red-600 text-white px-6 py-2.5 text-sm font-bold flex items-center justify-center gap-2 transition-all mx-auto rounded-xl shadow-sm shadow-red-500/20"
      >
       <Plus size={18} />
       {t('create_new')}
      </button>
     </div>
    ) : (
-    <div className="bg-white dark:bg-[#121212] dark:border dark:border-white/10 rounded-2xl shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none dark:shadow-none border-none overflow-hidden">
+    <div className="bg-white dark:bg-[#111111] rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden">
      <div className="overflow-x-auto">
       <table className="min-w-full">
        <thead>
@@ -461,55 +461,55 @@ export default function AdminCategories() {
         )}
        </div>
 
-       <div className="mt-8 flex gap-3">
-        <button
-         type="button"
-         onClick={() => setIsAddModalOpen(false)}
-         className="flex-1 py-3 text-sm font-bold text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa] bg-[#F4F7FE] dark:bg-[#000000] rounded-none transition-colors hover:bg-gray-200 dark:hover:bg-gray-800"
-        >
-         {t('cancel')}
-        </button>
-        <button
-         type="submit"
-         disabled={submitting || !newCategoryName.trim() || (categoryType === 'sub' && !newCategoryParent)}
-         className="flex-1 py-3 text-sm font-bold text-white bg-[#2B3674] dark:bg-white dark:text-[#0B1437] hover:opacity-90 rounded-none transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
-        >
-         {submitting ? (
-          <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></span>
-         ) : (
-          t('add')
-         )}
-        </button>
-       </div>
-      </form>
-     </div>
-    </div>,
-    document.getElementById('app-root') || document.body
-   )}
+        <div className="mt-8 flex gap-3">
+         <button
+          type="button"
+          onClick={() => setIsAddModalOpen(false)}
+          className="flex-1 py-3 text-sm font-bold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded-xl transition-colors hover:bg-gray-200 dark:hover:bg-gray-700"
+         >
+          {t('cancel')}
+         </button>
+         <button
+          type="submit"
+          disabled={submitting || !newCategoryName.trim() || (categoryType === 'sub' && !newCategoryParent)}
+          className="flex-1 py-3 text-sm font-bold text-white bg-[#E84C3D] hover:bg-red-600 rounded-xl transition-all shadow-sm shadow-red-500/20 disabled:opacity-50 flex items-center justify-center gap-2"
+         >
+          {submitting ? (
+           <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></span>
+          ) : (
+           t('add')
+          )}
+         </button>
+        </div>
+       </form>
+      </div>
+     </div>,
+     document.getElementById('app-root') || document.body
+    )}
 
    {/* Delete Modal */}
    {deleteModal.isOpen && typeof window !== 'undefined' && createPortal(
     <div className={`fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 ${locale === 'km' ? 'font-khmer' : ''}`}>
-     <div className="bg-white dark:bg-[#121212] dark:border dark:border-white/10 border-none rounded-2xl max-w-md w-full shadow-2xl p-6 relative overflow-hidden">
+     <div className="bg-white dark:bg-[#111111] border border-gray-100 dark:border-gray-800 rounded-3xl max-w-md w-full shadow-2xl p-6 relative overflow-hidden">
       {deleteModal.hasProductsError ? (
        <div className="text-center">
-        <div className="w-14 h-14 rounded-full bg-amber-50 dark:bg-amber-900/20 text-amber-500 flex items-center justify-center mx-auto mb-4">
+        <div className="w-14 h-14 rounded-full bg-amber-50 dark:bg-amber-950/30 text-amber-500 flex items-center justify-center mx-auto mb-4">
          <AlertTriangle size={28} />
         </div>
-        <h3 className="text-lg font-bold text-gray-900 dark:text-[#fafafa] mb-2">Cannot Delete Category</h3>
-        <p className="text-sm text-gray-500 mb-6">{deleteModal.hasProductsError}</p>
-        <button onClick={() => setDeleteModal(prev => ({ ...prev, isOpen: false }))} className="w-full py-2.5 bg-gray-900 dark:bg-white text-white dark:text-black rounded-none font-bold text-sm">Okay</button>
+        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Cannot Delete Category</h3>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">{deleteModal.hasProductsError}</p>
+        <button onClick={() => setDeleteModal(prev => ({ ...prev, isOpen: false }))} className="w-full py-3 bg-gray-900 dark:bg-white text-white dark:text-black rounded-xl font-bold text-sm">Okay</button>
        </div>
       ) : (
        <div className="text-center">
-        <div className="w-14 h-14 rounded-full bg-red-50 dark:bg-red-900/20 text-red-500 flex items-center justify-center mx-auto mb-4">
+        <div className="w-14 h-14 rounded-full bg-red-50 dark:bg-red-950/30 text-red-500 flex items-center justify-center mx-auto mb-4">
          <Trash2 size={28} />
         </div>
-        <h3 className="text-lg font-bold text-gray-900 dark:text-[#fafafa] mb-2">Delete Category</h3>
-        <p className="text-sm text-gray-500 mb-6">Are you sure you want to delete "{deleteModal.categoryName}"?</p>
+        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Delete Category</h3>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">Are you sure you want to delete "{deleteModal.categoryName}"?</p>
         <div className="flex gap-3">
-         <button onClick={() => setDeleteModal(prev => ({ ...prev, isOpen: false }))} className="flex-1 py-2.5 bg-gray-100 dark:bg-[#000000] text-gray-700 dark:text-[#fafafa] rounded-none font-bold text-sm">Cancel</button>
-         <button onClick={confirmDeleteCategory} className="flex-1 py-2.5 bg-red-600 text-white rounded-none font-bold text-sm flex justify-center">
+         <button onClick={() => setDeleteModal(prev => ({ ...prev, isOpen: false }))} className="flex-1 py-3 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-xl font-bold text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">Cancel</button>
+         <button onClick={confirmDeleteCategory} className="flex-1 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold text-sm flex justify-center items-center shadow-md shadow-red-500/20 transition-all">
           {deleteModal.loading ? <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></span> : 'Delete'}
          </button>
         </div>

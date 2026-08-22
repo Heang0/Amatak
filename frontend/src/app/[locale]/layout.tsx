@@ -1,6 +1,7 @@
 import {NextIntlClientProvider} from 'next-intl';
 import {getMessages} from 'next-intl/server';
 import { Outfit, Kantumruy_Pro } from "next/font/google";
+import '../globals.css';
 
 const outfit = Outfit({ subsets: ["latin"], display: 'swap' });
 const kantumruy = Kantumruy_Pro({ 

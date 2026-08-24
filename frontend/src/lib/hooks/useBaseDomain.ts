@@ -10,8 +10,11 @@ export function useBaseDomain() {
       // Local development
       const port = host.split(':')[1] || '3000';
       setBaseDomain(`.localhost:${port}`);
+    } else if (host.includes('vercel.app')) {
+      // Vercel deployment (use the full project host)
+      setBaseDomain(`.${host}`);
     } else {
-      // Production
+      // Production custom domain
       const parts = host.split('.');
       if (parts.length > 2) {
         // e.g., app.amatak.com -> .amatak.com

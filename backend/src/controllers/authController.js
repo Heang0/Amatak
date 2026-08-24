@@ -312,6 +312,8 @@ const googleLogin = async (req, res) => {
     console.error('Error in googleLogin:', error);
     res.status(500).json({ message: error.message || 'Server error during Google authentication' });
   }
+};
+
 // @desc    Create a new Telegram direct bot auth session
 // @route   POST /api/auth/telegram/session
 // @access  Public

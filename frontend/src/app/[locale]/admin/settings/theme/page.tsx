@@ -85,6 +85,41 @@ export default function ThemeCustomizer() {
  }
  };
 
+  const getPreviewDisplayUrl = () => {
+    if (!storeSlug) return '';
+    if (typeof window !== 'undefined') {
+      const host = window.location.host;
+      const protocol = window.location.protocol;
+      if (host.includes('vercel.app')) {
+        return `${protocol}//${host}/store/${storeSlug}`;
+      }
+      if (host.includes('localhost')) {
+        const port = host.split(':')[1] || '3000';
+        return `http://${storeSlug}.localhost:${port}`;
+      }
+      return `${protocol}//${storeSlug}${baseDomain}`;
+    }
+    return `https://${storeSlug}.amatak.com`;
+  };
+
+  const getPreviewIframeUrl = () => {
+    if (!storeSlug) return '';
+    const params = `theme=${themeStyle}&color=${encodeURIComponent(primaryColor)}`;
+    if (typeof window !== 'undefined') {
+      const host = window.location.host;
+      const protocol = window.location.protocol;
+      if (host.includes('vercel.app')) {
+        return `${protocol}//${host}/store/${storeSlug}?${params}`;
+      }
+      if (host.includes('localhost')) {
+        const port = host.split(':')[1] || '3000';
+        return `http://${storeSlug}.localhost:${port}/?${params}`;
+      }
+      return `${protocol}//${storeSlug}${baseDomain}/?${params}`;
+    }
+    return `https://${storeSlug}.amatak.com/?${params}`;
+  };
+
  return (
  <>
   <AdminToast message={t('toast_success')} visible={toastVisible} />
@@ -187,7 +222,7 @@ export default function ThemeCustomizer() {
    <div className="flex-1 bg-gray-100 dark:bg-gray-800 rounded flex items-center px-3 py-1.5 gap-2">
     <Lock size={12} className="text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa]" />
     <span className="text-xs text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] font-medium truncate">
-    http://{storeSlug}{baseDomain}
+    {getPreviewDisplayUrl()}
     </span>
    </div>
    </div>
@@ -196,7 +231,7 @@ export default function ThemeCustomizer() {
    <div className="w-full flex-1 rounded-b-lg border border-none border-none overflow-hidden shadow-inner bg-white relative">
     <iframe 
     key={`${themeStyle}-${primaryColor}`}
-    src={`http://${storeSlug}${baseDomain}/?theme=${themeStyle}&color=${encodeURIComponent(primaryColor)}`}
+    src={getPreviewIframeUrl()}
     className="w-full h-full border-0"
     title="Store Preview"
     />

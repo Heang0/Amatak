@@ -312,6 +312,42 @@ const googleLogin = async (req, res) => {
     console.error('Error in googleLogin:', error);
     res.status(500).json({ message: error.message || 'Server error during Google authentication' });
   }
+// @desc    Create a new Telegram direct bot auth session
+// @route   POST /api/auth/telegram/session
+// @access  Public
+const createTelegramSession = async (req, res) => {
+  try {
+    const { createAuthSession } = await import('../services/telegramBot.js');
+    const sessionId = createAuthSession();
+    const botUsername = process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || 'amatakshop_bot';
+    const deepLink = `https://t.me/${botUsername}?start=login_${sessionId}`;
+    res.json({ sessionId, deepLink, botUsername });
+  } catch (error) {
+    res.status(500).json({ message: error.message || 'Failed to create Telegram session' });
+  }
 };
 
-export { authUser, registerUser, telegramLogin, linkTelegramAccount, googleLogin };
+// @desc    Check status of a Telegram direct bot auth session
+// @route   GET /api/auth/telegram/session/:sessionId
+// @access  Public
+const checkTelegramSession = async (req, res) => {
+  try {
+    const { sessionId } = req.params;
+    const { getAuthSession } = await import('../services/telegramBot.js');
+    const session = getAuthSession(sessionId);
+
+    if (!session) {
+      return res.status(404).json({ status: 'expired', message: 'Session not found or expired' });
+    }
+
+    if (session.status === 'authenticated' && session.user) {
+      return res.json({ status: 'authenticated', user: session.user });
+    }
+
+    res.json({ status: 'pending' });
+  } catch (error) {
+    res.status(500).json({ message: error.message || 'Failed to check session' });
+  }
+};
+
+export { authUser, registerUser, telegramLogin, linkTelegramAccount, googleLogin, createTelegramSession, checkTelegramSession };

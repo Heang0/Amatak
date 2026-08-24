@@ -1,5 +1,7 @@
-import express from 'express';
 import dotenv from 'dotenv';
+dotenv.config();
+
+import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import hpp from 'hpp';
@@ -7,12 +9,11 @@ import rateLimit from 'express-rate-limit';
 import { mongoSanitize, xssSanitize } from './middleware/securityMiddleware.js';
 import connectDB from './config/db.js';
 
-dotenv.config();
-
 // Connect to database
 connectDB();
 
-import './services/telegramBot.js';
+// Init telegram bot AFTER env vars are loaded (dynamic import ensures this)
+await import('./services/telegramBot.js');
 
 import authRoutes from './routes/authRoutes.js';
 import planRoutes from './routes/planRoutes.js';

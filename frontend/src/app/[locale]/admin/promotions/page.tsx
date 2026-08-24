@@ -170,9 +170,9 @@ export default function AdminPromotionsPage({ params }: { params: { locale: stri
   </div>
   <button 
    onClick={() => { resetForm(); setShowModal(true); }}
-   className="bg-[#E84C3D] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-red-600 flex items-center gap-2 whitespace-nowrap shrink-0"
+   className="h-10 px-5 bg-[#E84C3D] hover:bg-red-600 text-white text-sm font-bold rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm shadow-red-500/20 whitespace-nowrap shrink-0"
   >
-   <Plus size={15} /> {isKm ? 'បង្កើតលេខកូដថ្មី' : 'New Promo Code'}
+   <Plus size={18} /> {isKm ? 'បង្កើតលេខកូដថ្មី' : 'New Promo Code'}
   </button>
   </div>
 
@@ -282,7 +282,7 @@ export default function AdminPromotionsPage({ params }: { params: { locale: stri
     <input type="date" value={validUntil} onChange={e => setValidUntil(e.target.value)} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:bg-gray-900" />
     </div>
 
-    <button type="submit" className="w-full py-2.5 bg-black dark:bg-white text-white dark:text-black rounded-none font-bold hover:opacity-90 mt-4">
+    <button type="submit" className="w-full py-2.5 bg-[#E84C3D] hover:bg-red-600 text-white rounded-xl font-bold transition-all shadow-md shadow-red-500/20 mt-4">
     {editingPromoId ? (isKm ? 'រក្សាទុក' : 'Save Changes') : (isKm ? 'បង្កើតលេខកូដ' : 'Create Code')}
     </button>
    </form>

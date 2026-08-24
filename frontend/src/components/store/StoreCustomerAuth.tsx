@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useCustomerAuthStore } from '@/lib/store/useCustomerAuthStore';
-// @ts-ignore
-import TelegramLoginButton from 'react-telegram-login';
+import TelegramLoginWidget from '@/components/ui/TelegramLoginWidget';
+import GoogleAuthButton from '@/components/ui/GoogleAuthButton';
 
 export default function StoreCustomerAuth({ primaryColor, themeStyle, isKm }: { primaryColor: string, themeStyle: string, isKm: boolean }) {
   const [isLogin, setIsLogin] = useState(true);
@@ -157,13 +157,18 @@ export default function StoreCustomerAuth({ primaryColor, themeStyle, isKm }: { 
       </div>
 
       <div className="space-y-6">
-        <div className="flex justify-center w-full">
-          <TelegramLoginButton 
-            dataOnauth={handleTelegramResponse} 
-            botName={process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || "amatak_bot"} 
-            buttonSize="large" 
-            cornerRadius={12}
-            usePic={true}
+        {/* Social Login Buttons */}
+        <div className="space-y-3">
+          <TelegramLoginWidget
+            botUsername={process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || ''}
+            onAuth={handleTelegramResponse}
+            isKm={isKm}
+          />
+
+          <GoogleAuthButton
+            isKm={isKm}
+            role="customer"
+            onError={(err) => setError(err)}
           />
         </div>
 

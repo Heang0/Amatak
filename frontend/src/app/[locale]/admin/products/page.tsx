@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '@/lib/store/useAuthStore';
 import { useLocale, useTranslations } from 'next-intl';
+import { Plus, X, Trash2, Edit2, ChevronDown, ChevronUp } from 'lucide-react';
 
 interface Product {
  _id: string;
@@ -364,13 +365,14 @@ export default function ManageProducts() {
    <h2 className="text-xl font-bold text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa]">{t('title')}</h2>
    <p className="text-sm text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] /40 mt-0.5">Manage your store products</p>
   </div>
-  <button
-   onClick={handleToggleForm}
-   className="bg-[#E84C3D] text-white px-4 py-2 rounded-none text-sm font-semibold shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none hover:bg-red-600 transition-colors whitespace-nowrap shrink-0"
-  >
-   {showForm ? t('cancel') : t('add_product')}
-  </button>
-  </div>
+   <button
+    onClick={handleToggleForm}
+    className="h-10 px-5 bg-[#E84C3D] hover:bg-red-600 text-white text-sm font-bold rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm shadow-red-500/20 whitespace-nowrap shrink-0"
+   >
+    {showForm ? <X size={18} /> : <Plus size={18} />}
+    {showForm ? t('cancel') : t('add_product')}
+   </button>
+   </div>
 
   {showForm && (
   <form onSubmit={handleCreateOrUpdateProduct} className="bg-white dark:bg-[#121212] dark:border dark:border-white/10 p-8 rounded-[20px] shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none dark:shadow-none border-none space-y-6">
@@ -594,7 +596,7 @@ export default function ManageProducts() {
     </div>
    </div>
    </div>
-   <button type="submit" className="bg-gray-900 dark:bg-white text-white px-6 py-2.5 rounded-none font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors">
+   <button type="submit" className="bg-[#E84C3D] hover:bg-red-600 text-white px-6 py-2.5 rounded-xl font-bold transition-all shadow-md shadow-red-500/20">
    {t('save_product')}
    </button>
   </form>

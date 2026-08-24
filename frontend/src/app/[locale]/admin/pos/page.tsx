@@ -360,7 +360,7 @@ export default function POSPage() {
    <button 
    onClick={handleCheckout}
    disabled={cart.length === 0 || isCheckingOut || (paymentMethod === 'CASH' && Number(cashReceived) < totalAmount)}
-   className="w-full py-4 bg-[#E84C3D] text-white rounded-none font-bold text-lg hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+   className="w-full py-4 bg-[#E84C3D] text-white rounded-xl font-bold text-lg hover:bg-red-600 transition-all shadow-md shadow-red-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
    >
    {isCheckingOut ? 'Processing...' : `Pay $${totalAmount.toFixed(2)}`}
    </button>

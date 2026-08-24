@@ -99,36 +99,29 @@ export function Sidebar({ items, title, isOpen, onClose }: SidebarProps) {
             {locale === 'km' ? 'ម៉ឺនុយ' : 'Menu'}
           </p>
           {items.map((item) => {
-            const isActive = pathname === item.href;
+            const isActive = pathname === item.href || (item.href !== '/admin' && item.href !== '/superadmin' && pathname?.startsWith(item.href));
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={onClose}
-                className={`flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-bold transition-all group relative ${isActive ? "bg-red-50 dark:bg-red-950/30 text-[#E84C3D]" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5"}`}
+                className={`flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-bold transition-all duration-200 group relative ${
+                  isActive
+                    ? "bg-[#E84C3D] text-white shadow-[0_4px_14px_rgba(232,76,61,0.25)]"
+                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100/80 dark:hover:bg-white/[0.06]"
+                }`}
               >
-                <span className={`shrink-0 transition-colors ${isActive ? 'text-[#E84C3D]' : 'text-gray-400 dark:text-gray-500 group-hover:text-gray-900 dark:group-hover:text-white'}`}>
+                <span className={`shrink-0 transition-colors ${isActive ? 'text-white' : 'text-gray-400 dark:text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-200'}`}>
                   {item.icon}
                 </span>
                 <span className="flex-1 truncate">{item.label}</span>
                 {isActive && (
-                  <span className="w-1.5 h-1.5 bg-[#E84C3D] rounded-full shrink-0" />
+                  <ChevronRight size={16} className="text-white/80 shrink-0" />
                 )}
               </Link>
             );
           })}
         </nav>
-
-        {/* Live Store Exit Button */}
-        <div className="px-4 py-2">
-          <Link
-            href="/"
-            onClick={onClose}
-            className="flex items-center justify-center gap-2 w-full py-2.5 px-3 bg-gray-50 dark:bg-white/5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 rounded-xl text-xs font-bold transition-all border border-gray-200 dark:border-gray-800"
-          >
-            <span>{locale === 'km' ? 'ត្រឡប់ទៅទំព័រដើម' : 'Exit to Homepage'}</span>
-          </Link>
-        </div>
 
         {/* User footer */}
         <div className="p-3 border-t border-gray-100 dark:border-white/[0.05]">

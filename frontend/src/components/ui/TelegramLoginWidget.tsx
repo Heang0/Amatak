@@ -45,7 +45,7 @@ export default function TelegramLoginWidget({ botUsername, onAuth, isKm }: Teleg
     script.setAttribute('data-radius', '12');
     script.setAttribute('data-request-access', 'write');
     script.setAttribute('data-userpic', 'true');
-    script.setAttribute('data-lang', isKm ? 'km' : 'en');
+    script.setAttribute('data-lang', 'en');
     script.setAttribute('data-onauth', 'TelegramLoginWidget.dataOnauth(user)');
     script.async = true;
 

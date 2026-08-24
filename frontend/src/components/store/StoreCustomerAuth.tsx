@@ -160,7 +160,7 @@ export default function StoreCustomerAuth({ primaryColor, themeStyle, isKm }: { 
         {/* Social Login Buttons */}
         <div className="space-y-3">
           <TelegramLoginWidget
-            botUsername={process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || ''}
+            botUsername={process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || 'amatakshop_bot'}
             onAuth={handleTelegramResponse}
             isKm={isKm}
           />

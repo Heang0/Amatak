@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 interface TelegramWidgetProps {
-  botUsername: string;
+  botUsername?: string;
   onAuth: (user: any) => void;
   isKm?: boolean;
 }
@@ -14,12 +14,14 @@ export default function TelegramLoginWidget({ botUsername, onAuth, isKm }: Teleg
   const [widgetError, setWidgetError] = useState(false);
   const [loadAttempts, setLoadAttempts] = useState(0);
 
+  const activeBotUsername = botUsername || process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || 'amatakshop_bot';
+
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
-    if (!mounted || !botUsername || !containerRef.current) return;
+    if (!mounted || !activeBotUsername || !containerRef.current) return;
 
     setWidgetError(false);
 
@@ -38,7 +40,7 @@ export default function TelegramLoginWidget({ botUsername, onAuth, isKm }: Teleg
     const script = document.createElement('script');
     script.id = 'telegram-widget-script';
     script.src = 'https://telegram.org/js/telegram-widget.js?22';
-    script.setAttribute('data-telegram-login', botUsername);
+    script.setAttribute('data-telegram-login', activeBotUsername);
     script.setAttribute('data-size', 'large');
     script.setAttribute('data-radius', '12');
     script.setAttribute('data-request-access', 'write');
@@ -63,11 +65,11 @@ export default function TelegramLoginWidget({ botUsername, onAuth, isKm }: Teleg
         delete (window as any).TelegramLoginWidget;
       }
     };
-  }, [mounted, botUsername, onAuth, isKm, loadAttempts]);
+  }, [mounted, activeBotUsername, onAuth, isKm, loadAttempts]);
 
   if (!mounted) return null;
 
-  if (!botUsername) {
+  if (!activeBotUsername) {
     return (
       <div className="w-full py-3 px-4 border border-dashed border-gray-300 dark:border-gray-700 rounded-xl text-sm text-gray-400 text-center">
         {isKm ? 'Telegram Bot មិនត្រូវបានកំណត់' : 'Telegram Bot not configured'}

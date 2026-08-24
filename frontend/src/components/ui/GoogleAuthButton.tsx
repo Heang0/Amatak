@@ -10,6 +10,7 @@ interface GoogleAuthButtonProps {
   role?: 'store_admin' | 'customer';
   redirectPath?: string;
   onError?: (msg: string) => void;
+  onSuccess?: (data: any) => void; // custom handler — bypasses default store + redirect
 }
 
 function CustomGoogleButton({
@@ -17,6 +18,7 @@ function CustomGoogleButton({
   role,
   redirectPath,
   onError,
+  onSuccess,
 }: GoogleAuthButtonProps) {
   const router = useRouter();
   const setUser = useAuthStore((state) => state.setUser);
@@ -41,16 +43,21 @@ function CustomGoogleButton({
           throw new Error(data.message || (isKm ? 'ការចូលដោយប្រើ Google បានបរាជ័យ' : 'Google authentication failed'));
         }
 
-        setUser(data);
-
-        if (redirectPath) {
-          router.push(redirectPath);
-        } else if (data.role === 'superadmin') {
-          router.push('/superadmin');
-        } else if (data.role === 'store_admin') {
-          router.push('/admin');
+        if (onSuccess) {
+          // Custom handler (e.g. store profile — uses customer auth store)
+          onSuccess(data);
         } else {
-          router.push('/');
+          // Default: save to admin store + redirect
+          setUser(data);
+          if (redirectPath) {
+            router.push(redirectPath);
+          } else if (data.role === 'superadmin') {
+            router.push('/superadmin');
+          } else if (data.role === 'store_admin') {
+            router.push('/admin');
+          } else {
+            router.push('/');
+          }
         }
       } catch (err: any) {
         console.error('Google Auth error:', err);

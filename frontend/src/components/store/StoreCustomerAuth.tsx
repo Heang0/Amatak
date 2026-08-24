@@ -169,6 +169,19 @@ export default function StoreCustomerAuth({ primaryColor, themeStyle, isKm }: { 
             isKm={isKm}
             role="customer"
             onError={(err) => setError(err)}
+            onSuccess={(data) => {
+              setSuccess(true);
+              setTimeout(() => {
+                setCustomerInfo({
+                  _id: data._id,
+                  name: data.name,
+                  email: data.email,
+                  role: data.role,
+                  token: data.token,
+                  profilePic: data.profilePic,
+                });
+              }, 1000);
+            }}
           />
         </div>
 

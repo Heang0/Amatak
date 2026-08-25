@@ -2,245 +2,277 @@
 
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '@/lib/store/useAuthStore';
-import { Package, ShoppingCart, DollarSign, TrendingUp, Settings } from 'lucide-react';
+import { Package, ShoppingCart, DollarSign, TrendingUp, Users, ArrowUpRight, ChevronRight, ShieldAlert } from 'lucide-react';
 import { Link, useRouter } from '@/navigation';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 export default function AdminDashboard() {
- const router = useRouter();
- const user = useAuthStore((state) => state.user);
- const t = useTranslations('AdminDashboard');
- const [analytics, setAnalytics] = useState<any>(null);
- const [loading, setLoading] = useState(true);
- const [mounted, setMounted] = useState(false);
+  const router = useRouter();
+  const user = useAuthStore((state) => state.user);
+  const t = useTranslations('AdminDashboard');
+  const locale = useLocale();
+  const isKm = locale === 'km';
+  const [analytics, setAnalytics] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
- useEffect(() => {
- setMounted(true);
- const fetchAnalytics = async () => {
-  try {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/analytics`, {
-   headers: { Authorization: `Bearer ${user?.token}` }
-  });
-  if (res.ok) {
-   const data = await res.json();
-   setAnalytics(data);
-  } else if (res.status === 404) {
-   router.push('/admin/setup');
-  }
-  } catch (err) {
-  console.error('Failed to fetch analytics', err);
-  } finally {
-  setLoading(false);
-  }
- };
+  useEffect(() => {
+    setMounted(true);
+    const fetchAnalytics = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/analytics`, {
+          headers: { Authorization: `Bearer ${user?.token}` }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setAnalytics(data);
+        } else if (res.status === 404) {
+          router.push('/admin/setup');
+        }
+      } catch (err) {
+        console.error('Failed to fetch analytics', err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
- if (user?.token) fetchAnalytics();
- }, [user]);
+    if (user?.token) fetchAnalytics();
+  }, [user]);
 
- return (
- <div className="space-y-6">
-  <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 pb-2">
-  <div>
-   <h2 className="text-xl font-bold text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa]">{t('overview_title')}</h2>
-   <p className="text-sm text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] /40 mt-0.5">
-   {t('welcome_back', { name: user?.name || t('guest') })}
-   </p>
-  </div>
-  <Link href="/admin/settings" className="p-2 text-gray-600 dark:text-[#a1a1aa] hover:text-gray-900 dark:hover:text-white rounded-xl hover:bg-gray-100 dark:hover:bg-white/[0.06] transition-colors shrink-0">
-   <Settings size={18} />
-  </Link>
-  </div>
+  return (
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+            {isKm ? 'ផ្ទាំងគ្រប់គ្រងទូទៅ' : 'Dashboard'}
+          </h1>
+          <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mt-1">
+            {t('welcome_back', { name: user?.name || (isKm ? 'អ្នកគ្រប់គ្រង' : 'Merchant') })}
+          </p>
+        </div>
+      </div>
 
-  {loading ? (
-  <p className="text-gray-600 dark:text-[#a1a1aa]">{t('loading_analytics')}</p>
-  ) : analytics ? (
-  <>
-   {/* Plan Status Warning Banners */}
-   {!analytics.isActive && (
-   <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/50 p-4 rounded-[20px] flex items-center justify-between mb-6 shadow-sm">
-    <div>
-    <h4 className="text-red-800 dark:text-red-400 font-bold">Store Suspended</h4>
-    <p className="text-sm text-red-600 dark:text-red-300 mt-1">Your store is currently suspended by the superadmin. Customers cannot access your storefront.</p>
-    </div>
-    <Link href="/admin/upgrade" className="px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-xl hover:bg-red-700 transition-all shadow-sm shadow-red-500/20 whitespace-nowrap ml-4">
-    Upgrade Plan
-    </Link>
-   </div>
-   )}
-   
-   {analytics.isActive && analytics.plan?.expiresAt && new Date(analytics.plan.expiresAt) < new Date() && (
-   <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800/50 p-4 rounded-[20px] flex items-center justify-between mb-6 shadow-sm">
-    <div>
-    <h4 className="text-yellow-800 dark:text-yellow-400 font-bold">Plan Expired</h4>
-    <p className="text-sm text-yellow-600 dark:text-yellow-300 mt-1">Your subscription plan has expired. Please renew your plan to prevent your store from being suspended.</p>
-    </div>
-    <Link href="/admin/upgrade" className="px-4 py-2 bg-yellow-600 text-white text-sm font-semibold rounded-xl hover:bg-yellow-700 transition-all shadow-sm shadow-yellow-500/20 whitespace-nowrap ml-4">
-    Renew Now
-    </Link>
-   </div>
-   )}
+      {loading ? (
+        <div className="p-16 flex flex-col items-center justify-center gap-3 bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-3xl">
+          <div className="w-8 h-8 border-3 border-red-500/20 border-t-[#E84C3D] rounded-full animate-spin" />
+          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('loading_analytics')}</p>
+        </div>
+      ) : analytics ? (
+        <>
+          {/* Plan Status Warning Banners */}
+          {!analytics.isActive && (
+            <div className="bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 p-5 rounded-3xl flex items-center justify-between shadow-xs">
+              <div className="flex items-center gap-3">
+                <ShieldAlert className="w-6 h-6 text-red-600 shrink-0" />
+                <div>
+                  <h4 className="text-red-900 dark:text-red-300 font-bold text-sm">Store Suspended</h4>
+                  <p className="text-xs text-red-700 dark:text-red-400 mt-0.5">Your store is currently suspended. Upgrade your plan to restore storefront access.</p>
+                </div>
+              </div>
+              <Link href="/admin/upgrade" className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl transition-all shadow-sm shadow-red-500/20 whitespace-nowrap ml-4">
+                Upgrade Plan
+              </Link>
+            </div>
+          )}
 
-   {analytics.isActive && analytics.plan?.expiresAt && new Date(analytics.plan.expiresAt) > new Date() && new Date(analytics.plan.expiresAt) < new Date(Date.now() + 3 * 24 * 60 * 60 * 1000) && (
-   <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/50 p-4 rounded-[20px] flex items-center justify-between mb-6 shadow-sm">
-    <div>
-    <h4 className="text-blue-800 dark:text-blue-400 font-bold">Plan Expiring Soon</h4>
-    <p className="text-sm text-blue-600 dark:text-blue-300 mt-1">Your subscription plan expires on {new Date(analytics.plan.expiresAt).toLocaleDateString()}. Renew early to avoid interruption.</p>
-    </div>
-    <Link href="/admin/upgrade" className="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 transition-all shadow-sm shadow-blue-500/20 whitespace-nowrap ml-4">
-    Renew Now
-    </Link>
-   </div>
-   )}
+          {/* Metric KPI Cards (Modern Clean Style with Pastel Accents) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            
+            {/* Revenue Card */}
+            <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-3xl p-6 shadow-sm hover:shadow-md transition-all">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                  <DollarSign className="w-6 h-6" />
+                </div>
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 rounded-full">
+                  <TrendingUp className="w-3 h-3" /> +14.2%
+                </span>
+              </div>
+              <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">{t('total_revenue')}</p>
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white mt-1">
+                ${(analytics.totalRevenue || 0).toFixed(2)}
+              </h3>
+            </div>
 
-   {/* Metric Cards */}
-   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-   <div className="bg-white dark:bg-[#121212] dark:border dark:border-white/10 rounded-[20px] p-6 shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none dark:shadow-none border-none relative overflow-hidden group">
-    <div className="absolute top-0 right-0 w-32 h-32 bg-green-50 dark:bg-green-900/10 rounded-full blur-3xl -mr-10 -mt-10 transition-transform group-hover:scale-110" />
-    <div className="relative">
-    <div className="flex justify-between items-start mb-4">
-     <div className="p-3 bg-green-50 dark:bg-green-900/20 text-green-500 rounded-[20px] shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none border border-green-100 dark:border-green-900/30">
-     <DollarSign className="w-5 h-5" />
-     </div>
-     <div className="flex items-center gap-1 text-green-600 bg-green-50 dark:bg-green-900/30 px-2 py-1 rounded-md text-xs font-bold">
-     <TrendingUp className="w-3 h-3" /> +12%
-     </div>
-    </div>
-    <h3 className="text-sm font-bold text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] uppercase tracking-wider mb-1">{t('total_revenue')}</h3>
-    <p className="text-3xl font-black text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa]">${(analytics.totalRevenue || 0).toFixed(2)}</p>
-    </div>
-   </div>
+            {/* Orders Card */}
+            <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-3xl p-6 shadow-sm hover:shadow-md transition-all">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                  <ShoppingCart className="w-6 h-6" />
+                </div>
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40 px-2.5 py-1 rounded-full">
+                  <ArrowUpRight className="w-3 h-3" /> +8.1%
+                </span>
+              </div>
+              <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">{t('total_orders')}</p>
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white mt-1">
+                {analytics.totalOrders || 0}
+              </h3>
+            </div>
 
-   <div className="bg-white dark:bg-[#121212] dark:border dark:border-white/10 rounded-[20px] p-6 shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none dark:shadow-none border-none relative overflow-hidden group">
-    <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 dark:bg-blue-900/10 rounded-full blur-3xl -mr-10 -mt-10 transition-transform group-hover:scale-110" />
-    <div className="relative">
-    <div className="flex justify-between items-start mb-4">
-     <div className="p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-500 rounded-[20px] shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none border border-blue-100 dark:border-blue-900/30">
-     <ShoppingCart className="w-5 h-5" />
-     </div>
-    </div>
-    <h3 className="text-sm font-bold text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] uppercase tracking-wider mb-1">{t('total_orders')}</h3>
-    <p className="text-3xl font-black text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa]">{analytics.totalOrders || 0}</p>
-    </div>
-   </div>
+            {/* Products Card */}
+            <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-3xl p-6 shadow-sm hover:shadow-md transition-all">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-100 dark:border-amber-900/30 flex items-center justify-center text-amber-600 dark:text-amber-400">
+                  <Package className="w-6 h-6" />
+                </div>
+              </div>
+              <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">{t('total_products')}</p>
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white mt-1">
+                {analytics.totalProducts || 0}
+              </h3>
+            </div>
 
-   <div className="bg-white dark:bg-[#121212] dark:border dark:border-white/10 rounded-[20px] p-6 shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none dark:shadow-none border-none relative overflow-hidden group">
-    <div className="absolute top-0 right-0 w-32 h-32 bg-orange-50 dark:bg-orange-900/10 rounded-full blur-3xl -mr-10 -mt-10 transition-transform group-hover:scale-110" />
-    <div className="relative">
-    <div className="flex justify-between items-start mb-4">
-     <div className="p-3 bg-orange-50 dark:bg-orange-900/20 text-orange-500 rounded-[20px] shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none border border-orange-100 dark:border-orange-900/30">
-     <Package className="w-5 h-5" />
-     </div>
-    </div>
-    <h3 className="text-sm font-bold text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] uppercase tracking-wider mb-1">{t('total_products')}</h3>
-    <p className="text-3xl font-black text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa]">{analytics.totalProducts || 0}</p>
-    </div>
-   </div>
+            {/* Customers Card */}
+            <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-3xl p-6 shadow-sm hover:shadow-md transition-all">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 rounded-2xl bg-purple-50 dark:bg-purple-950/40 border border-purple-100 dark:border-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400">
+                  <Users className="w-6 h-6" />
+                </div>
+              </div>
+              <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+                {isKm ? 'អតិថិជនសរុប' : 'Customers'}
+              </p>
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white mt-1">
+                {analytics.totalCustomers || 0}
+              </h3>
+            </div>
 
-   <div className="bg-white dark:bg-[#121212] dark:border dark:border-white/10 rounded-[20px] p-6 shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none dark:shadow-none border-none relative overflow-hidden group">
-    <div className="absolute top-0 right-0 w-32 h-32 bg-purple-50 dark:bg-purple-900/10 rounded-full blur-3xl -mr-10 -mt-10 transition-transform group-hover:scale-110" />
-    <div className="relative">
-    <div className="flex justify-between items-start mb-4">
-     <div className="p-3 bg-purple-50 dark:bg-purple-900/20 text-purple-500 rounded-[20px] shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none border border-purple-100 dark:border-purple-900/30">
-     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-     </svg>
-     </div>
-    </div>
-    <h3 className="text-sm font-bold text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] uppercase tracking-wider mb-1">Customers</h3>
-    <p className="text-3xl font-black text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa]">{analytics.totalCustomers || 0}</p>
-    </div>
-   </div>
-   </div>
+          </div>
 
-   {/* Revenue Chart */}
-   <div className="bg-white dark:bg-[#121212] dark:border dark:border-white/10 rounded-[20px] p-6 shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none dark:shadow-none border-none">
-   <h3 className="text-lg font-bold text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa] mb-6">{t('revenue_overview') || 'Revenue Overview (Last 7 Days)'}</h3>
-   <div className="h-[300px] w-full">
-    {mounted && (
-    <ResponsiveContainer width="100%" height="100%">
-     <AreaChart data={analytics.chartData || []} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-     <defs>
-      <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="5%" stopColor="#E84C3D" stopOpacity={0.3}/>
-      <stop offset="95%" stopColor="#E84C3D" stopOpacity={0}/>
-      </linearGradient>
-     </defs>
-     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-     <XAxis dataKey="shortDate" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#6b7280' }} dy={10} />
-     <YAxis 
-      axisLine={false} 
-      tickLine={false} 
-      tick={{ fontSize: 12, fill: '#6b7280' }}
-      tickFormatter={(value: number) => `$${value}`}
-     />
-     <Tooltip 
-      contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-      itemStyle={{ color: '#E84C3D', fontWeight: 'bold' }}
-      labelStyle={{ color: '#374151', fontWeight: '500', marginBottom: '4px' }}
-      formatter={(value: any) => [`$${(Number(value) || 0).toFixed(2)}`, 'Revenue']}
-     />
-     <Area type="monotone" dataKey="revenue" stroke="#E84C3D" strokeWidth={3} fillOpacity={1} fill="url(#colorRevenue)" />
-     </AreaChart>
-    </ResponsiveContainer>
-    )}
-   </div>
-   </div>
+          {/* Revenue Chart Section */}
+          <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-3xl p-6 sm:p-8 shadow-sm">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                  {t('revenue_overview') || 'Revenue Overview'}
+                </h3>
+                <p className="text-xs text-gray-400 mt-0.5">Last 7 days performance</p>
+              </div>
+            </div>
 
-   {/* Recent Orders Table */}
-   <div className="bg-white dark:bg-[#121212] dark:border dark:border-white/10 rounded-[20px] shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none dark:shadow-none border-none overflow-hidden">
-   <div className="px-6 py-5 border-b border-none border-none flex justify-between items-center">
-    <h3 className="text-lg font-bold text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa]">{t('recent_orders')}</h3>
-    <Link href="/admin/orders" className="text-sm font-medium text-[#E84C3D] hover:text-red-600 transition-colors">{t('view_all')} &rarr;</Link>
-   </div>
-   <table className="min-w-full divide-y divide-gray-100 dark:divide-white/10">
-    <thead className="bg-[#F4F7FE] dark:bg-[#080808]">
-    <tr>
-     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] uppercase tracking-wider">{t('order_id')}</th>
-     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] uppercase tracking-wider">{t('customer')}</th>
-     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] uppercase tracking-wider">{t('amount')}</th>
-     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] uppercase tracking-wider">{t('payment')}</th>
-     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] uppercase tracking-wider">{t('fulfillment')}</th>
-    </tr>
-    </thead>
-    <tbody className="divide-y divide-gray-100 dark:divide-white/10">
-    {analytics.recentOrders?.map((order: any) => (
-     <tr key={order._id} className="hover:bg-[#F4F7FE] dark:hover:bg-gray-800/50 transition-colors">
-     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] font-mono">{order._id.substring(0, 8)}...</td>
-     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa]">{order.customerId?.name || 'Guest'}</td>
-     <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa]">${order.totalAmount.toFixed(2)}</td>
-     <td className="px-6 py-4 whitespace-nowrap text-sm">
-      {order.paymentStatus === 'PAID' ? (
-      <span className="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400">{t('status_paid')}</span>
+            <div className="h-[280px] w-full">
+              {mounted && (
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={analytics.chartData || []} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#E84C3D" stopOpacity={0.25}/>
+                        <stop offset="95%" stopColor="#E84C3D" stopOpacity={0}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(150, 150, 150, 0.1)" />
+                    <XAxis 
+                      dataKey="shortDate" 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tick={{ fontSize: 12, fill: '#9CA3AF' }} 
+                      dy={10} 
+                    />
+                    <YAxis 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tick={{ fontSize: 12, fill: '#9CA3AF' }}
+                      tickFormatter={(val: number) => `$${val}`}
+                    />
+                    <Tooltip 
+                      contentStyle={{ 
+                        borderRadius: '16px', 
+                        border: '1px solid rgba(255,255,255,0.1)', 
+                        backgroundColor: '#111622', 
+                        color: '#fff',
+                        boxShadow: '0 10px 25px -5px rgba(0,0,0,0.3)' 
+                      }}
+                      itemStyle={{ color: '#E84C3D', fontWeight: 'bold' }}
+                      formatter={(value: any) => [`$${(Number(value) || 0).toFixed(2)}`, 'Revenue']}
+                    />
+                    <Area type="monotone" dataKey="revenue" stroke="#E84C3D" strokeWidth={3} fillOpacity={1} fill="url(#colorRev)" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              )}
+            </div>
+          </div>
+
+          {/* Recent Orders Section */}
+          <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-3xl shadow-sm overflow-hidden">
+            <div className="px-6 py-5 border-b border-gray-100 dark:border-white/[0.06] flex justify-between items-center">
+              <div>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white">{t('recent_orders')}</h3>
+                <p className="text-xs text-gray-400 mt-0.5">Latest transactions from your storefront</p>
+              </div>
+              <Link 
+                href="/admin/orders" 
+                className="inline-flex items-center gap-1 text-xs font-bold text-[#E84C3D] hover:text-red-600 transition-colors"
+              >
+                <span>{t('view_all')}</span>
+                <ChevronRight size={14} />
+              </Link>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead>
+                  <tr className="border-b border-gray-100 dark:border-white/[0.06] text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">
+                    <th className="py-4 px-6">{t('order_id')}</th>
+                    <th className="py-4 px-4">{t('customer')}</th>
+                    <th className="py-4 px-4">{t('amount')}</th>
+                    <th className="py-4 px-4">{t('payment')}</th>
+                    <th className="py-4 px-6">{t('fulfillment')}</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-50 dark:divide-white/[0.03] text-sm font-medium">
+                  {analytics.recentOrders?.map((order: any) => (
+                    <tr key={order._id} className="hover:bg-gray-50/70 dark:hover:bg-white/[0.02] transition-colors">
+                      <td className="py-4 px-6 font-mono font-bold text-xs text-gray-800 dark:text-gray-200">
+                        #{order._id.substring(order._id.length - 6).toUpperCase()}
+                      </td>
+                      <td className="py-4 px-4 font-semibold text-gray-900 dark:text-white">
+                        {order.customerId?.name || order.guestInfo?.name || 'Guest Customer'}
+                      </td>
+                      <td className="py-4 px-4 font-extrabold text-gray-900 dark:text-white">
+                        ${order.totalAmount?.toFixed(2)}
+                      </td>
+                      <td className="py-4 px-4">
+                        {order.paymentStatus === 'PAID' ? (
+                          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-[#FEF3C7] dark:bg-amber-950/40 text-[#B45309] dark:text-amber-300">
+                            {isKm ? 'បានបង់ប្រាក់' : 'Paid'}
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                            {isKm ? 'រង់ចាំ' : 'Pending'}
+                          </span>
+                        )}
+                      </td>
+                      <td className="py-4 px-6">
+                        <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${
+                          order.orderStatus === 'DELIVERED' || order.orderStatus === 'COMPLETED'
+                            ? 'bg-[#D1FAE5] dark:bg-emerald-950/40 text-[#047857] dark:text-emerald-300'
+                            : order.orderStatus === 'PROCESSING'
+                            ? 'bg-[#FFEDD5] dark:bg-orange-950/40 text-[#C2410C] dark:text-orange-300'
+                            : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
+                        }`}>
+                          {order.orderStatus || 'PENDING'}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                  {(!analytics.recentOrders || analytics.recentOrders.length === 0) && (
+                    <tr>
+                      <td colSpan={5} className="py-12 text-center text-gray-400 dark:text-gray-500 font-medium">
+                        {t('no_recent_orders')}
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </>
       ) : (
-      <span className="px-3 py-1 inline-flex text-xs font-semibold rounded-full bg-yellow-50 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400">{t('status_pending')}</span>
+        <p className="text-red-500 font-medium">{t('failed_analytics')}</p>
       )}
-     </td>
-     <td className="px-6 py-4 whitespace-nowrap text-sm">
-      <span className={`px-3 py-1 inline-flex text-xs font-semibold rounded-full ${ order.orderStatus === 'DELIVERED' ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400' : order.orderStatus === 'SHIPPED' ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400' : order.orderStatus === 'PROCESSING' ? 'bg-purple-50 text-purple-700 dark:bg-purple-900/20 dark:text-purple-400' : order.orderStatus === 'CANCELLED' ? 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400' : 'bg-yellow-50 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400' }`}>
-       {order.orderStatus === 'DELIVERED' ? t('status_delivered') 
-       : order.orderStatus === 'SHIPPED' ? t('status_shipped')
-       : order.orderStatus === 'PROCESSING' ? t('status_processing')
-       : order.orderStatus === 'CANCELLED' ? t('status_cancelled')
-       : t('status_pending')}
-      </span>
-     </td>
-     </tr>
-    ))}
-    {(!analytics.recentOrders || analytics.recentOrders.length === 0) && (
-     <tr>
-     <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa]">
-      {t('no_recent_orders')}
-     </td>
-     </tr>
-    )}
-    </tbody>
-   </table>
-   </div>
-  </>
-  ) : (
-  <p className="text-red-500">{t('failed_analytics')}</p>
-  )}
- </div>
- );
+    </div>
+  );
 }

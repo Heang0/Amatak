@@ -291,39 +291,39 @@ export default function UpgradePlan() {
         <>
           {/* Current Subscription Overview */}
           {storeData && currentStorePlan && (
-            <div className="bg-white dark:bg-[#121212] border border-gray-100 dark:border-white/10 rounded-[20px] p-6 shadow-sm mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-3xl p-6 sm:p-7 shadow-sm mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div>
-                <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">
                   {isKm ? 'គម្រោងបច្ចុប្បន្នរបស់អ្នក' : 'Your Current Plan'}
                 </h3>
                 <div className="flex items-center gap-3">
-                  <span className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <span className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white">
                     {currentStorePlan?.planId?.name || 'Free'}
                   </span>
-                  <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${ isExpired() ? 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400' : 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' }`}>
+                  <span className={`px-3 py-1 rounded-full text-xs font-bold ${ isExpired() ? 'bg-rose-100 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300' }`}>
                     {isExpired() ? (isKm ? 'ហួសកំណត់' : 'Expired') : (isKm ? 'សកម្ម' : 'Active')}
                   </span>
                 </div>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mt-2">
                   {currentStorePlan?.expiresAt 
                     ? `${isKm ? 'ផុតកំណត់: ' : 'Expires on: '} ${new Date(currentStorePlan.expiresAt).toLocaleDateString(isKm ? 'km-KH' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`
                     : (isKm ? 'គម្រោងឥតគិតថ្លៃ (មិនមានថ្ងៃផុតកំណត់)' : 'Free Plan (Never expires)')}
                 </p>
               </div>
               
-              <div className="flex items-center gap-4 bg-gray-50 dark:bg-[#1A1A1A] p-4 rounded-xl border border-gray-100 dark:border-white/10">
+              <div className="flex items-center gap-4 bg-gray-50 dark:bg-[#171B26] p-3.5 sm:p-4 rounded-2xl border border-gray-100 dark:border-white/[0.04] shadow-xs">
                 {storeData.branding?.logoUrl ? (
-                  <div className="w-12 h-12 rounded-full overflow-hidden bg-white dark:bg-gray-800 flex items-center justify-center shrink-0 border border-gray-200 dark:border-gray-700">
-                    <img src={storeData.branding.logoUrl} alt="Store Logo" className="w-full h-full object-cover p-0.5" />
+                  <div className="w-14 h-14 rounded-full overflow-hidden bg-white dark:bg-gray-800 flex items-center justify-center shrink-0 ring-2 ring-gray-200 dark:ring-white/10 shadow-xs">
+                    <img src={storeData.branding.logoUrl} alt="Store Logo" className="w-full h-full object-cover rounded-full aspect-square" />
                   </div>
                 ) : (
-                  <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 text-[#E84C3D] rounded-full flex items-center justify-center font-bold text-lg shrink-0">
+                  <div className="w-14 h-14 bg-gradient-to-tr from-[#E84C3D] to-red-400 text-white rounded-full flex items-center justify-center font-extrabold text-xl shrink-0 shadow-md shadow-red-500/20 ring-2 ring-white/20">
                     {storeData.name.charAt(0).toUpperCase()}
                   </div>
                 )}
-                <div>
-                  <p className="font-bold text-gray-900 dark:text-white">{storeData.name}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{storeData.slug}</p>
+                <div className="min-w-0">
+                  <p className="font-bold text-gray-900 dark:text-white truncate max-w-[160px] text-sm">{storeData.name}</p>
+                  <p className="text-xs text-gray-400 truncate max-w-[160px]">{storeData.slug}</p>
                 </div>
               </div>
             </div>

@@ -102,67 +102,49 @@ export default function StoreBottomNav({ locale, primaryColor, slug, initialThem
     },
   ];
 
-  let navClass = "fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-[#111111] md:hidden ";
-  if (themeStyle === 'neo-brutalism') {
-    navClass += "border-t-[3px] border-black dark:border-white shadow-[0px_-4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[0px_-4px_0px_0px_rgba(255,255,255,1)] pb-safe";
-  } else if (themeStyle === 'minimalist') {
-    navClass += "border-t border-gray-200 dark:border-gray-800 pb-safe";
-  } else {
-    navClass += "border-t border-gray-100 dark:border-gray-800 pb-safe shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.05)] dark:shadow-none";
-  }
+  let navClass = "fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#111318]/95 backdrop-blur-md md:hidden border-t border-gray-200 dark:border-white/[0.08] pb-safe";
 
   return (
     <>
       <nav className={navClass}>
-        <div className="flex h-16 px-2 items-center">
+        <div className="flex h-14 px-2 items-center">
           {navItems.map((item) => {
-            let itemClass = "flex flex-1 flex-col items-center justify-center gap-0.5 relative h-full transition-all ";
-            let activeStyle: any = { color: item.isActive ? primaryColor : '#6B7280' };
-
-            if (themeStyle === 'neo-brutalism' && item.isActive) {
-              itemClass += " border-2 border-black dark:border-white bg-[#f0f0f0] dark:bg-gray-800 my-1 mx-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] translate-y-[-2px] ";
-              activeStyle = { color: 'black' }; // Neo-brutalism usually prefers harsh contrast over primary color for nav items, but we can keep it black/white
-            }
+            const isItemActive = item.isActive;
+            const itemClass = `flex flex-1 flex-col items-center justify-center gap-0.5 relative h-full transition-all ${
+              isItemActive ? 'text-black dark:text-white font-bold' : 'text-gray-400 dark:text-gray-500 hover:text-black dark:hover:text-white'
+            }`;
 
             return item.onClick ? (
               <button
                 key={item.label}
                 onClick={item.onClick}
                 className={itemClass}
-                style={activeStyle}
               >
                 <div className="relative">
-                  <item.icon size={22} strokeWidth={item.isActive ? 2.5 : 1.8} className={themeStyle === 'neo-brutalism' && item.isActive ? 'text-black dark:text-white' : ''} />
+                  <item.icon size={18} strokeWidth={isItemActive ? 2.2 : 1.5} />
                   {mounted && (item.badge ?? 0) > 0 && (
-                    <span
-                      className={`absolute -top-1.5 -right-2.5 min-w-[16px] h-4 px-1 text-[9px] font-bold text-white flex items-center justify-center shadow-sm ${themeStyle === 'neo-brutalism' ? 'rounded-none border border-black shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] bg-black' : 'rounded-full'}`}
-                      style={themeStyle !== 'neo-brutalism' ? { backgroundColor: primaryColor || '#000' } : undefined}
-                    >
+                    <span className="absolute -top-1.5 -right-2.5 min-w-[14px] h-3.5 px-0.5 text-[8px] font-bold bg-black text-white dark:bg-white dark:text-black flex items-center justify-center rounded-none shadow-xs">
                       {item.badge}
                     </span>
                   )}
                 </div>
-                <span className={`text-[10px] font-medium ${themeStyle === 'neo-brutalism' && item.isActive ? 'text-black dark:text-white font-bold uppercase' : ''}`}>{item.label}</span>
+                <span className={`text-[9px] ${locale === 'km' ? 'tracking-normal' : 'uppercase tracking-wider'}`}>{item.label}</span>
               </button>
             ) : (
               <Link
                 key={item.label}
                 href={item.href!}
                 className={itemClass}
-                style={activeStyle}
               >
                 <div className="relative">
-                  <item.icon size={22} strokeWidth={item.isActive ? 2.5 : 1.8} className={themeStyle === 'neo-brutalism' && item.isActive ? 'text-black dark:text-white' : ''} />
+                  <item.icon size={18} strokeWidth={isItemActive ? 2.2 : 1.5} />
                   {mounted && (item.badge ?? 0) > 0 && (
-                    <span
-                      className={`absolute -top-1.5 -right-2.5 min-w-[16px] h-4 px-1 text-[9px] font-bold text-white flex items-center justify-center shadow-sm ${themeStyle === 'neo-brutalism' ? 'rounded-none border border-black shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] bg-black' : 'rounded-full'}`}
-                      style={themeStyle !== 'neo-brutalism' ? { backgroundColor: primaryColor || '#000' } : undefined}
-                    >
+                    <span className="absolute -top-1.5 -right-2.5 min-w-[14px] h-3.5 px-0.5 text-[8px] font-bold bg-black text-white dark:bg-white dark:text-black flex items-center justify-center rounded-none shadow-xs">
                       {item.badge}
                     </span>
                   )}
                 </div>
-                <span className={`text-[10px] font-medium ${themeStyle === 'neo-brutalism' && item.isActive ? 'text-black dark:text-white font-bold uppercase' : ''}`}>{item.label}</span>
+                <span className={`text-[9px] ${locale === 'km' ? 'tracking-normal' : 'uppercase tracking-wider'}`}>{item.label}</span>
               </Link>
             )
           })}

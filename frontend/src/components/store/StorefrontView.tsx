@@ -11,7 +11,7 @@ import ProductCard from '@/components/store/ProductCard';
 function AddToCartToast({ message, visible }: { message: string; visible: boolean }) {
   return (
     <div
-      className={`fixed top-4 left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 md:w-max md:max-w-sm z-[200] flex items-center gap-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-5 py-3 rounded-full shadow-xl text-sm font-medium transition-all duration-300 ${
+      className={`fixed top-4 left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 md:w-max md:max-w-sm z-[200] flex items-center gap-2 bg-black dark:bg-white text-white dark:text-black px-4 py-2.5 rounded-none shadow-2xl text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
         visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-3 pointer-events-none'
       }`}
     >
@@ -66,6 +66,16 @@ export default function StorefrontView({
   useEffect(() => {
     setActiveCategorySlug(categorySlug || 'All');
   }, [categorySlug]);
+
+  // Auto-scroll active category tab to the center
+  useEffect(() => {
+    if (categoryTabsRef.current) {
+      const activeEl = categoryTabsRef.current.querySelector('[data-category-active="true"]') as HTMLElement;
+      if (activeEl) {
+        activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    }
+  }, [activeCategorySlug]);
 
   useEffect(() => {
     if (initialProducts && initialCategories && initialStore && !storeCache[cacheKey]) {
@@ -233,11 +243,43 @@ export default function StorefrontView({
   };
 
   const getCategoryPillClass = (isActive: boolean) => {
-    if (themeStyle === 'neo-brutalism') {
-      return `flex items-center whitespace-nowrap rounded-md border px-4 py-2 text-sm font-black uppercase tracking-[0.18em] transition ${isActive ? 'bg-black text-white border-black dark:bg-white dark:text-black dark:border-white' : 'bg-white text-black dark:bg-black dark:text-white border-black dark:border-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-0.5 hover:shadow-none'}`;
+    if (themeStyle === 'fashion-editorial' || themeStyle === 'minimalist') {
+      return `flex items-center gap-1.5 whitespace-nowrap text-xs ${isKm ? 'tracking-normal' : 'uppercase tracking-[0.12em]'} font-bold py-2 px-4 rounded-none transition-all ${
+        isActive 
+          ? 'bg-black text-white dark:bg-white dark:text-black border border-black dark:border-white shadow-xs' 
+          : 'bg-white dark:bg-[#111] text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-white/10 hover:border-black dark:hover:border-white hover:text-black dark:hover:text-white'
+      }`;
     }
 
-    return `flex items-center whitespace-nowrap rounded-md border px-4 py-2 text-sm font-medium transition ${isActive ? 'bg-gray-900 text-white border-gray-900 dark:bg-white dark:text-black dark:border-white' : 'bg-gray-100 text-gray-700 border-transparent hover:bg-gray-200 dark:bg-[#111111] dark:text-gray-300 dark:hover:bg-[#1f1f1f]'}`;
+    if (themeStyle === 'skincare-clean') {
+      return `flex items-center gap-1.5 whitespace-nowrap rounded-none px-4 py-2 text-xs font-semibold transition-all ${
+        isActive 
+          ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-900 shadow-xs' 
+          : 'bg-stone-100 dark:bg-stone-800/80 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
+      }`;
+    }
+
+    if (themeStyle === 'minimal-tech') {
+      return `flex items-center gap-1.5 whitespace-nowrap rounded-none px-4 py-2 font-mono text-xs font-bold transition-all ${
+        isActive 
+          ? 'bg-cyan-500 text-black border border-cyan-400 shadow-md shadow-cyan-500/20' 
+          : 'bg-[#151922] text-cyan-400/80 border border-white/10 hover:border-cyan-500/50'
+      }`;
+    }
+
+    if (themeStyle === 'neo-brutalism') {
+      return `flex items-center gap-1.5 whitespace-nowrap border-[2.5px] border-black dark:border-white px-4 py-2 text-xs font-black uppercase tracking-wider transition ${
+        isActive 
+          ? 'bg-black text-white dark:bg-white dark:text-black shadow-none' 
+          : 'bg-white text-black dark:bg-[#111] dark:text-white shadow-[3px_3px_0px_#000] dark:shadow-[3px_3px_0px_#fff] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none'
+      }`;
+    }
+
+    return `flex items-center gap-1.5 whitespace-nowrap rounded-none border px-3.5 py-1.5 text-xs font-semibold transition ${
+      isActive 
+        ? 'bg-gray-900 text-white border-gray-900 dark:bg-white dark:text-black dark:border-white shadow-2xs' 
+        : 'bg-gray-100 text-gray-700 border-transparent hover:bg-gray-200 dark:bg-[#151515] dark:text-gray-300 dark:hover:bg-[#202020]'
+    }`;
   };
 
   const getAppendParams = (href: string) => {
@@ -254,7 +296,7 @@ export default function StorefrontView({
 
       {viewMode === 'home' && !categorySlug && bannerUrl ? (
         <div className={bannerContainerClass}>
-          <div className={`relative w-full overflow-hidden h-[140px] sm:h-[180px] md:h-[240px] lg:h-[300px] max-h-[55vh] ${themeStyle === 'default' ? 'rounded-2xl md:rounded-3xl' : ''}`}>
+          <div className="relative w-full overflow-hidden h-[140px] sm:h-[180px] md:h-[240px] lg:h-[300px] max-h-[55vh] rounded-none">
             <img
               src={bannerUrl}
               alt="Store Banner"
@@ -265,19 +307,13 @@ export default function StorefrontView({
         </div>
       ) : null}
 
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-8 sm:space-y-10">
-        {!bannerUrl && (
-          <div className="pt-2">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white tracking-tight mb-2">{isKm ? 'ស្វែងយល់' : 'Discover'}</h2>
-            <p className="text-gray-500 dark:text-gray-400 text-sm sm:text-base font-medium">{isKm ? 'កម្រងផលិតផលថ្មីៗបំផុត។' : 'The latest collection.'}</p>
-          </div>
-        )}
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-4 space-y-6 sm:space-y-8">
 
         {categories.length > 0 && (viewMode === 'home' || viewMode === 'catalog' || viewMode === 'categories') && (
           <div className="mb-6 md:mb-10 flex flex-col gap-3" ref={categoryTabsRef}>
             {/* ROW 1: Main Categories */}
-            <div className="overflow-x-auto pb-3 scrollbar-hide scroll-smooth -mx-4 px-4 sm:-mx-0 sm:px-0 border-b border-gray-200 dark:border-gray-800">
-              <div className="flex gap-3 min-w-max">
+            <div className="overflow-x-auto pb-1 scrollbar-hide scroll-smooth -mx-4 px-4 sm:-mx-0 sm:px-0">
+              <div className="flex gap-2.5 min-w-max py-1">
                 <Link
                   href={getAppendParams(`/${params.locale}/store/${params.slug}/products`)}
                   className={getCategoryPillClass(activeCategorySlug === 'All')}
@@ -285,6 +321,7 @@ export default function StorefrontView({
                   onClick={(e) => {
                     e.preventDefault();
                     setActiveCategorySlug('All');
+                    (e.currentTarget as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
                   }}
                 >
                   <Grid size={16} className="shrink-0" />
@@ -326,6 +363,7 @@ export default function StorefrontView({
                         onClick={(e) => {
                           e.preventDefault();
                           setActiveCategorySlug(cat.slug);
+                          (e.currentTarget as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
                         }}
                         className={getCategoryPillClass(isActive)}
                         data-category-active={isActive ? 'true' : 'false'}
@@ -355,7 +393,7 @@ export default function StorefrontView({
                    <div className="flex gap-2 min-w-max">
                      <Link
                         href={getAppendParams(`/${params.locale}/store/${params.slug}/category/${activeMainCat.slug}`)}
-                        className={`text-xs px-3 py-1.5 rounded-full border transition-all ${activeCategorySlug === activeMainCat.slug ? 'bg-gray-900 text-white border-gray-900 dark:bg-white dark:text-black dark:border-white font-medium' : 'bg-transparent text-gray-600 border-gray-200 dark:border-gray-800 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900'}`}
+                        className={`text-xs px-3 py-1.5 rounded-none border transition-all ${activeCategorySlug === activeMainCat.slug ? 'bg-black text-white border-black dark:bg-white dark:text-black dark:border-white font-bold' : 'bg-transparent text-gray-600 border-gray-200 dark:border-gray-800 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900'}`}
                         onClick={(e) => {
                           if (viewMode !== 'categories') {
                             e.preventDefault();
@@ -369,7 +407,7 @@ export default function StorefrontView({
                         <Link
                           key={subCat._id}
                           href={getAppendParams(`/${params.locale}/store/${params.slug}/category/${subCat.slug}`)}
-                          className={`text-xs px-3 py-1.5 rounded-full border transition-all ${activeCategorySlug === subCat.slug ? 'bg-gray-900 text-white border-gray-900 dark:bg-white dark:text-black dark:border-white font-medium' : 'bg-transparent text-gray-600 border-gray-200 dark:border-gray-800 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900'}`}
+                          className={`text-xs px-3 py-1.5 rounded-none border transition-all ${activeCategorySlug === subCat.slug ? 'bg-black text-white border-black dark:bg-white dark:text-black dark:border-white font-bold' : 'bg-transparent text-gray-600 border-gray-200 dark:border-gray-800 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900'}`}
                           onClick={(e) => {
                             if (viewMode !== 'categories') {
                               e.preventDefault();
@@ -391,10 +429,10 @@ export default function StorefrontView({
         {viewMode === 'categories' && (
           <div className="pt-2 pb-10">
             <div className="mb-8 md:mb-12">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white tracking-tight mb-4">
-                {isKm ? 'ប្រភេទផលិតផល' : 'Categories'}
+              <h2 className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white uppercase tracking-tight mb-2">
+                {isKm ? 'ប្រភេទផលិតផល' : 'COLLECTIONS'}
               </h2>
-              <p className="text-gray-500 dark:text-gray-400 text-base sm:text-lg max-w-2xl">
+              <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm max-w-2xl">
                 {isKm ? 'ស្វែងរកប្រភេទផលិតផលដែលយើងបានរៀបចំសម្រាប់អ្នក។' : 'Browse curated category collections to find what you need faster.'}
               </p>
             </div>
@@ -410,30 +448,20 @@ export default function StorefrontView({
                   <Link 
                     key={cat._id}
                     href={getAppendParams(`/${params.locale}/store/${params.slug}/category/${cat.slug}`)}
-                    className={`group relative overflow-hidden p-6 transition-all duration-300 flex flex-col justify-between min-h-[160px] ${
-                      themeStyle === 'neo-brutalism' 
-                        ? 'bg-white dark:bg-[#111111] border-[3px] border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] hover:-translate-y-1 hover:translate-x-[-1px] rounded-none' 
-                        : themeStyle === 'minimalist'
-                        ? 'bg-gray-50 dark:bg-[#1a1a1a] rounded-sm hover:bg-gray-100 dark:hover:bg-[#222]'
-                        : 'bg-white dark:bg-[#151515] rounded-3xl border border-gray-100 dark:border-gray-800 hover:-translate-y-1 hover:shadow-[0_12px_24px_-10px_rgba(0,0,0,0.05)]'
-                    }`}
+                    className="group relative overflow-hidden p-6 transition-all duration-300 flex flex-col justify-between min-h-[160px] bg-white dark:bg-[#13161F] border border-gray-200 dark:border-white/[0.08] shadow-2xs hover:border-black dark:hover:border-white rounded-none"
                   >
                     <div className="flex items-start justify-between gap-3 mb-4">
-                      <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white leading-tight break-words pr-2">
+                      <h3 className={`text-base sm:text-lg font-bold text-gray-900 dark:text-white leading-tight break-words pr-2 ${isKm ? 'tracking-normal' : 'uppercase tracking-wider'}`}>
                         {isKm && cat.nameKm ? cat.nameKm : cat.name}
                       </h3>
-                      <span className={`shrink-0 inline-flex items-center justify-center rounded-full px-3 py-1 text-sm font-semibold ${
-                        themeStyle === 'neo-brutalism' ? 'border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
-                      }`}>
+                      <span className="shrink-0 inline-flex items-center justify-center rounded-none px-2.5 py-1 text-xs font-bold bg-stone-100 dark:bg-stone-900 text-gray-900 dark:text-white border border-gray-200 dark:border-white/10 uppercase tracking-wider">
                         {count} {isKm ? 'ផលិតផល' : 'items'}
                       </span>
                     </div>
                     
-                    <div className="flex items-center text-sm font-bold transition-colors mt-auto" style={{ color: primaryColor && primaryColor !== '#000000' && primaryColor !== '#000' ? primaryColor : undefined }}>
-                      <span className={`${!primaryColor || primaryColor === '#000000' || primaryColor === '#000' ? 'text-gray-900 dark:text-white' : ''}`}>
-                        {isKm ? 'មើលផលិតផល' : 'View products'}
-                      </span>
-                      <svg className={`w-4 h-4 ml-1.5 transition-transform duration-300 group-hover:translate-x-1 ${!primaryColor || primaryColor === '#000000' || primaryColor === '#000' ? 'text-gray-900 dark:text-white' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                    <div className="flex items-center text-xs font-bold uppercase tracking-wider transition-colors mt-auto text-black dark:text-white">
+                      <span>{isKm ? 'មើលផលិតផល' : 'VIEW COLLECTION'}</span>
+                      <svg className="w-3.5 h-3.5 ml-1.5 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                     </div>
                   </Link>
                 );
@@ -557,16 +585,16 @@ export default function StorefrontView({
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-3 gap-y-8 sm:gap-x-5 sm:gap-y-10">
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => (
                   <div key={i} className="animate-pulse flex flex-col">
-                    <div className="aspect-square bg-gray-100 dark:bg-[#1a1a1a] rounded-2xl mb-4 w-full" />
-                    <div className="h-4 bg-gray-100 dark:bg-[#1a1a1a] rounded w-3/4 mb-2" />
-                    <div className="h-3 bg-gray-100 dark:bg-[#1a1a1a] rounded w-1/2 mb-4" />
-                    <div className="mt-auto h-8 bg-gray-100 dark:bg-[#1a1a1a] rounded w-full" />
+                    <div className="aspect-square bg-gray-100 dark:bg-[#1a1a1a] rounded-none mb-4 w-full" />
+                    <div className="h-4 bg-gray-100 dark:bg-[#1a1a1a] rounded-none w-3/4 mb-2" />
+                    <div className="h-3 bg-gray-100 dark:bg-[#1a1a1a] rounded-none w-1/2 mb-4" />
+                    <div className="mt-auto h-8 bg-gray-100 dark:bg-[#1a1a1a] rounded-none w-full" />
                   </div>
                 ))}
               </div>
             ) : productList.length === 0 ? (
-              <div className="text-center py-24 bg-gray-50 dark:bg-[#111111] rounded-3xl border border-gray-100 dark:border-gray-800/50">
-                <p className="text-gray-500 dark:text-gray-400 font-medium">{isKm ? 'មិនមានផលិតផលទេ។' : 'No products found.'}</p>
+              <div className="text-center py-20 bg-white dark:bg-[#13161F] rounded-none border border-gray-200 dark:border-white/[0.08] shadow-2xs">
+                <p className="text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wider">{isKm ? 'មិនមានផលិតផលទេ។' : 'No products found.'}</p>
               </div>
             ) : (
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-3 gap-y-8 sm:gap-x-5 sm:gap-y-10">

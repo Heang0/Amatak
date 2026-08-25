@@ -14,7 +14,7 @@ export function DashboardLayout({ children, sidebarItems, title }: DashboardLayo
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="h-screen bg-[#F4F7FE] dark:bg-[#080808] flex overflow-hidden">
+    <div className="h-screen bg-[#F8F9FA] dark:bg-[#0E1117] flex overflow-hidden font-sans">
       {/* Sidebar */}
       <Sidebar 
         items={sidebarItems} 
@@ -31,7 +31,7 @@ export function DashboardLayout({ children, sidebarItems, title }: DashboardLayo
         />
         
         <main className="flex-1 overflow-y-auto">
-          <div className="w-full px-5 sm:px-6 py-6">
+          <div className="w-full px-6 sm:px-8 py-8">
             {children}
           </div>
         </main>

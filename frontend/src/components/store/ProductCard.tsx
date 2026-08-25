@@ -2,14 +2,14 @@
 
 import { useCartStore } from '@/lib/store/useCartStore';
 import { useCustomerAuthStore } from '@/lib/store/useCustomerAuthStore';
-import { ShoppingCart, Heart } from 'lucide-react';
+import { Heart, Bookmark, ShoppingBag } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useParams, useRouter } from 'next/navigation';
 
 export default function ProductCard({ 
   product, 
   primaryColor, 
-  themeStyle = 'default', 
+  themeStyle = 'fashion-editorial', 
   onAddToCart,
   isBestSeller = false
 }: {
@@ -23,14 +23,12 @@ export default function ProductCard({
   const router = useRouter();
   const pathname = usePathname();
   const addItem = useCartStore(state => state.addItem);
-  const setDrawerOpen = useCartStore(state => state.setDrawerOpen);
   const user = useCustomerAuthStore(state => state.customerInfo);
   const setCustomerInfo = useCustomerAuthStore(state => state.setCustomerInfo);
-  const logout = useCustomerAuthStore(state => state.logout);
 
-  // Check if we are testing on the main domain (e.g. amatak.vercel.app/store/slug)
   const isPathRouting = pathname?.includes('/store/');
   const basePath = isPathRouting && params.slug ? `/${params.locale}/store/${params.slug}` : `/${params.locale}`;
+  const isKm = params?.locale === 'km';
 
   const isFavorite = user?.favorites?.some(f => 
     typeof f === 'string' ? f === product._id : f?._id === product._id
@@ -40,7 +38,6 @@ export default function ProductCard({
     e.preventDefault();
     e.stopPropagation();
 
-    // If product has variants, force user to go to product details page to select them
     if (product.variants && product.variants.length > 0) {
       router.push(`${basePath}/product/${product.slug || product._id}`);
       return;
@@ -59,129 +56,277 @@ export default function ProductCard({
   const handleWishlist = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
     if (!user) {
-      alert("Please login to save favorites.");
+      router.push(`${basePath}/profile`);
       return;
     }
 
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/users/favorites/${product._id}`, {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${user.token}`
-        }
+        headers: { 'Authorization': `Bearer ${user.token}` }
       });
-      if (res.status === 401) {
-        // Token expired — clear session and redirect to login
-        logout();
-        router.push(`${basePath}/login?session=expired`);
-        return;
-      }
       if (res.ok) {
-        const updatedFavorites = await res.json();
-        setCustomerInfo({ ...user, favorites: updatedFavorites });
+        const data = await res.json();
+        setCustomerInfo({ ...user, favorites: data.favorites });
       }
     } catch (err) {
       console.error(err);
     }
   };
 
-  let cardBaseClass = "flex flex-col group h-full transition-all relative";
-  let imageContainerClass = "aspect-square w-full relative shrink-0 ";
-  let priceClass = "text-sm font-bold text-gray-900 dark:text-white";
+  // Real inventory / status badge helper
+  const getProductBadge = () => {
+    if (product.stock === 0) {
+      return { text: params.locale === 'km' ? 'អស់ពីស្តុក' : 'Out of Stock', bg: 'bg-red-500 text-white' };
+    }
+    if (product.stock !== undefined && product.stock > 0 && product.stock <= 3) {
+      return { text: params.locale === 'km' ? `នៅសល់ ${product.stock}` : `Only ${product.stock} left`, bg: 'bg-amber-500 text-white' };
+    }
+    if (isBestSeller || product.isBestSeller) {
+      return { text: params.locale === 'km' ? 'ពេញនិយម' : 'Popular', bg: 'bg-black text-white dark:bg-white dark:text-black' };
+    }
+    return null;
+  };
 
-  if (themeStyle === 'minimalist') {
-    cardBaseClass += " p-0 bg-transparent";
-    imageContainerClass += "bg-gray-50 dark:bg-[#1a1a1a] overflow-hidden rounded-sm mb-4";
-    priceClass = "text-sm font-medium text-gray-900 dark:text-white tracking-wide";
-  } else if (themeStyle === 'neo-brutalism') {
-    cardBaseClass += " p-3 border-[3px] border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] rounded-none bg-white dark:bg-black";
-    imageContainerClass += "border-2 border-black dark:border-white bg-[#f0f0f0] dark:bg-[#222] overflow-hidden mb-4";
-    priceClass = "text-[15px] font-black text-black dark:text-white bg-green-200 dark:bg-green-800 px-1 border-2 border-black dark:border-white";
-  } else {
-    // Premium Default
-    cardBaseClass += " p-3 sm:p-4 rounded-2xl bg-white dark:bg-[#111111] border border-gray-100 dark:border-gray-800/60 shadow-sm transition-all duration-300 hover:shadow-xl hover:border-gray-200 dark:hover:border-gray-700 hover:-translate-y-1";
-    imageContainerClass += "bg-[#F8F9FA] dark:bg-[#1a1a1a] rounded-xl mb-4 overflow-hidden";
+  const badge = getProductBadge();
+  const productTitle = params.locale === 'km' && product.titleKm ? product.titleKm : product.title;
+
+  // 1. 👗 FASHION EDITORIAL THEME (Minimalist Luxury / Zara & COS Aesthetic)
+  if (themeStyle === 'fashion-editorial' || themeStyle === 'minimalist') {
+    return (
+      <Link href={`${basePath}/product/${product.slug || product._id}`} className="group flex flex-col">
+        {/* Square Image (Sharp Corners) */}
+        <div className="relative aspect-square w-full bg-stone-100 dark:bg-stone-900 rounded-none overflow-hidden mb-2.5">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img 
+            src={product.imageUrl?.replace('/upload/', '/upload/w_600,c_limit,q_auto/')} 
+            alt={productTitle} 
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+            loading="lazy"
+          />
+
+          {/* Clean Bookmark Badge */}
+          <button
+            onClick={handleWishlist}
+            className="absolute top-2.5 right-2.5 p-1.5 rounded-none bg-white/90 dark:bg-black/80 backdrop-blur-xs text-gray-900 dark:text-white hover:scale-110 active:scale-95 transition-all shadow-xs"
+            title="Save"
+          >
+            <Bookmark size={13} className={isFavorite ? 'fill-current text-black dark:text-white' : 'text-gray-600 dark:text-gray-300'} />
+          </button>
+
+          {badge && (
+            <span className={`absolute top-2 left-2 text-[9px] font-bold px-2 py-0.5 ${params.locale === 'km' ? 'tracking-normal' : 'uppercase tracking-widest'} rounded-none ${badge.bg}`}>
+              {badge.text}
+            </span>
+          )}
+        </div>
+
+        {/* Product Info */}
+        <div className="flex flex-col flex-1">
+          <h3 className={`text-xs sm:text-sm font-bold ${params.locale === 'km' ? 'tracking-normal' : 'uppercase tracking-wider'} text-gray-900 dark:text-white line-clamp-1 mb-1`}>
+            {productTitle}
+          </h3>
+          <p className="text-xs font-extrabold text-gray-900 dark:text-white mb-2">
+            ${product.price.toFixed(2)}
+          </p>
+
+          {/* Clean Monochromatic Button (Sharp Corners) */}
+          <button
+            onClick={handleAdd}
+            className={`w-full mt-auto py-2 px-3 border border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-gray-900 text-[10px] sm:text-xs font-bold ${params.locale === 'km' ? 'tracking-normal' : 'uppercase tracking-widest'} transition-all flex items-center justify-center gap-1.5 active:scale-98 rounded-none`}
+          >
+            <ShoppingBag size={12} />
+            <span>{params.locale === 'km' ? 'ដាក់កន្ត្រក' : 'ADD TO BAG'}</span>
+          </button>
+        </div>
+      </Link>
+    );
   }
 
+  // 2. 🧴 CLEAN SKINCARE & BEAUTY THEME (Clinical & Apothecary Clean Box)
+  if (themeStyle === 'skincare-clean') {
+    return (
+      <Link href={`${basePath}/product/${product.slug || product._id}`} className="group flex flex-col p-3 rounded-none bg-white dark:bg-[#131518] border border-stone-200 dark:border-white/[0.08] hover:border-stone-800 dark:hover:border-white transition-all shadow-2xs">
+        {/* Clinical Clean Product Frame */}
+        <div className="relative aspect-square w-full bg-[#F8F6F2] dark:bg-[#1A1C20] rounded-none mb-3 overflow-hidden p-3.5 flex items-center justify-center border border-stone-200/60 dark:border-white/[0.04]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img 
+            src={product.imageUrl?.replace('/upload/', '/upload/w_600,c_limit,q_auto/')} 
+            alt={productTitle} 
+            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 rounded-none" 
+            loading="lazy"
+          />
+
+          {badge && (
+            <span className="absolute top-2 left-2 text-[8px] font-bold tracking-widest px-2 py-0.5 rounded-none bg-stone-900 text-white dark:bg-white dark:text-black uppercase shadow-2xs">
+              {badge.text}
+            </span>
+          )}
+
+          <button
+            onClick={handleWishlist}
+            className="absolute top-2 right-2 p-1.5 rounded-none bg-white/95 dark:bg-black/80 backdrop-blur-xs text-stone-700 dark:text-stone-300 hover:scale-110 active:scale-95 transition-all shadow-2xs border border-stone-200/60 dark:border-white/10"
+            title="Save"
+          >
+            <Bookmark size={13} className={isFavorite ? 'fill-stone-900 text-stone-900 dark:fill-white dark:text-white' : 'text-stone-400'} />
+          </button>
+        </div>
+
+        {/* Product Details */}
+        <div className="flex flex-col flex-1 px-0.5">
+          <p className="text-[10px] text-stone-400 dark:text-stone-500 font-mono uppercase tracking-wider mb-0.5 truncate">
+            {product.category?.name || 'FORMULA'}
+          </p>
+
+          <h3 className={`text-xs sm:text-sm font-bold text-stone-900 dark:text-stone-100 line-clamp-1 mb-2 ${isKm ? 'tracking-normal' : 'tracking-tight'}`}>
+            {productTitle}
+          </h3>
+
+          <div className="mt-auto pt-2 flex items-center justify-between border-t border-stone-100 dark:border-white/[0.06]">
+            <span className="text-xs sm:text-sm font-black text-stone-900 dark:text-white font-mono">
+              ${product.price.toFixed(2)}
+            </span>
+
+            {/* Quick Add Button */}
+            <button
+              onClick={handleAdd}
+              className="w-7 h-7 rounded-none bg-stone-900 hover:bg-black dark:bg-white dark:hover:bg-stone-200 text-white dark:text-black flex items-center justify-center transition-all active:scale-95 shadow-2xs"
+              title="Add to bag"
+            >
+              <ShoppingBag size={13} />
+            </button>
+          </div>
+        </div>
+      </Link>
+    );
+  }
+
+  // 3. 💻 MODERN TECH & MINIMALIST GADGETS
+  if (themeStyle === 'minimal-tech') {
+    return (
+      <Link href={`${basePath}/product/${product.slug || product._id}`} className="group flex flex-col p-3 rounded-none bg-[#0D0F14] border border-white/[0.08] hover:border-cyan-500/40 transition-all shadow-2xs">
+        <div className="relative aspect-square w-full bg-[#151922] rounded-none mb-2.5 overflow-hidden p-2.5 flex items-center justify-center border border-white/[0.04]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img 
+            src={product.imageUrl?.replace('/upload/', '/upload/w_600,c_limit,q_auto/')} 
+            alt={productTitle} 
+            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 rounded-none" 
+            loading="lazy"
+          />
+
+          {badge && (
+            <span className="absolute top-2 left-2 text-[8px] font-mono font-bold text-cyan-400 bg-cyan-950/90 border border-cyan-500/30 px-1.5 py-0.5 rounded-none uppercase tracking-widest">
+              {badge.text}
+            </span>
+          )}
+        </div>
+
+        <div className="flex flex-col flex-1 px-0.5">
+          <h3 className={`text-xs sm:text-sm font-mono font-medium text-white mb-1 line-clamp-1 ${isKm ? 'tracking-normal' : 'tracking-tight'}`}>
+            {productTitle}
+          </h3>
+
+          <div className="mt-auto pt-2 flex items-center justify-between border-t border-white/[0.06]">
+            <span className="text-xs sm:text-sm font-mono font-bold text-cyan-300">
+              ${product.price.toFixed(2)}
+            </span>
+
+            <button
+              onClick={handleAdd}
+              className="w-7 h-7 rounded-none bg-cyan-500 hover:bg-cyan-400 text-black flex items-center justify-center transition-all active:scale-95 shadow-xs"
+              title="Add to cart"
+            >
+              <ShoppingBag size={13} />
+            </button>
+          </div>
+        </div>
+      </Link>
+    );
+  }
+
+  // 4. ⚡ NEO-BRUTALISM & STREETWEAR
+  if (themeStyle === 'neo-brutalism') {
+    return (
+      <Link href={`${basePath}/product/${product.slug || product._id}`} className="group flex flex-col p-2.5 border-2 border-black bg-white dark:bg-[#111] shadow-[3px_3px_0px_#000] dark:shadow-[3px_3px_0px_#fff] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all">
+        <div className="relative aspect-square w-full bg-[#f4f4f4] dark:bg-[#222] border border-black overflow-hidden mb-2 p-2">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img 
+            src={product.imageUrl?.replace('/upload/', '/upload/w_600,c_limit,q_auto/')} 
+            alt={productTitle} 
+            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" 
+            loading="lazy"
+          />
+          {badge && (
+            <span className="absolute top-1.5 left-1.5 bg-black text-white text-[9px] font-black uppercase px-1.5 py-0.5">
+              {badge.text}
+            </span>
+          )}
+        </div>
+
+        <h3 className="text-xs sm:text-sm font-black uppercase text-black dark:text-white line-clamp-1 mb-1">
+          {productTitle}
+        </h3>
+
+        <div className="mt-auto pt-1.5 flex items-center justify-between border-t border-black dark:border-white">
+          <span className="text-xs sm:text-sm font-black bg-amber-300 text-black px-1 border border-black">
+            ${product.price.toFixed(2)}
+          </span>
+
+          <button
+            onClick={handleAdd}
+            className="w-7 h-7 bg-black hover:bg-neutral-800 text-white flex items-center justify-center border border-black active:scale-95 transition-all"
+            title="Add to cart"
+          >
+            <ShoppingBag size={13} />
+          </button>
+        </div>
+      </Link>
+    );
+  }
+
+  // 5. 🛍️ DEFAULT MODERN RETAIL (Editorial Fashion)
   return (
-    <Link href={`${basePath}/product/${product.slug || product._id}`} className={cardBaseClass}>
-      <div className={imageContainerClass}>
+    <Link href={`${basePath}/product/${product.slug || product._id}`} className="group flex flex-col p-3 rounded-none bg-white dark:bg-[#13161F] border border-gray-200 dark:border-white/[0.08] shadow-2xs hover:border-black dark:hover:border-white transition-all">
+      <div className="relative aspect-square w-full bg-stone-100 dark:bg-stone-900 rounded-none mb-2.5 overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img 
           src={product.imageUrl?.replace('/upload/', '/upload/w_600,c_limit,q_auto/')} 
-          alt={product.title} 
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-xl" 
+          alt={productTitle} 
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-none" 
           loading="lazy"
-          decoding="async"
         />
         
-        {/* Badge - rendered after image so it appears on top */}
-        {isBestSeller && (
-          <div className="absolute top-2.5 left-2.5 z-50">
-            <span 
-              className="inline-flex items-center text-white text-[9px] sm:text-[10px] font-bold px-2.5 py-1.5 rounded-full uppercase tracking-widest whitespace-nowrap shadow-md"
-              style={{ backgroundColor: primaryColor || '#000' }}
-            >
-              <svg className="w-2.5 h-2.5 mr-1" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              Best Seller
-            </span>
-          </div>
+        {badge && (
+          <span 
+            className="absolute top-2 left-2 text-white text-[9px] font-bold px-2 py-0.5 rounded-none uppercase tracking-wider shadow-2xs"
+            style={{ backgroundColor: primaryColor || '#E84C3D' }}
+          >
+            {badge.text}
+          </span>
         )}
       </div>
 
-      <div className="flex flex-col flex-1">
-        <h3 className={`line-clamp-2 ${themeStyle === 'minimalist' ? 'text-[15px] font-bold text-gray-900 dark:text-white mb-1' : themeStyle === 'neo-brutalism' ? 'text-base font-black uppercase text-black dark:text-white mb-1 leading-tight' : 'text-[15px] sm:text-base font-bold text-gray-900 dark:text-white mb-1 tracking-tight leading-snug'}`}>
-          {params.locale === 'km' && product.titleKm ? product.titleKm : product.title}
+      <div className="flex flex-col flex-1 px-0.5">
+        <h3 className={`text-xs sm:text-sm font-bold text-gray-900 dark:text-white mb-1 line-clamp-1 ${isKm ? 'tracking-normal' : 'uppercase tracking-wider'}`}>
+          {productTitle}
         </h3>
-        <p className={`line-clamp-2 mt-0.5 ${themeStyle === 'minimalist' ? 'text-xs text-gray-500' : 'text-xs text-gray-500 dark:text-gray-400'}`}>
-          {params.locale === 'km' && product.descriptionKm ? product.descriptionKm : product.description}
-        </p>
         
-        <div className={`mt-auto pt-4 flex items-end justify-between`}>
+        <div className="mt-auto pt-1 flex items-center justify-between">
           <span 
-            className={`${priceClass} text-[#E84C3D] dark:text-[#ff5c4d]`} 
-            style={{ color: primaryColor && primaryColor !== '#000000' && primaryColor !== '#000' ? primaryColor : undefined }}
+            className="text-xs sm:text-sm font-black text-gray-900 dark:text-white font-mono"
+            style={{ color: primaryColor && primaryColor !== '#000000' && primaryColor !== '#111111' ? primaryColor : undefined }}
           >
             ${product.price.toFixed(2)}
           </span>
           
-          {/* Action buttons */}
-          <div className="flex gap-2">
-            <button
-              onClick={handleAdd}
-              className={`flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 text-xs font-bold transition-all active:scale-95 ${
-                themeStyle === 'neo-brutalism' 
-                  ? 'border-2 border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none rounded-none text-white bg-black' 
-                  : themeStyle === 'minimalist' 
-                    ? 'rounded-md text-white hover:opacity-90' 
-                    : 'rounded-full text-white shadow-md hover:shadow-lg hover:-translate-y-0.5'
-              }`}
-              style={themeStyle !== 'neo-brutalism' ? { backgroundColor: primaryColor || '#000' } : undefined}
-              title="Add to cart"
-            >
-              <ShoppingCart size={15} strokeWidth={2.5} className="text-white" />
-            </button>
-            <button
-              onClick={handleWishlist}
-              className={`flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 text-xs font-medium transition-all active:scale-95 ${
-                themeStyle === 'neo-brutalism'
-                  ? 'border-2 border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none rounded-none text-white bg-black'
-                  : themeStyle === 'minimalist'
-                    ? 'rounded-md text-white hover:opacity-90'
-                    : 'rounded-full text-white shadow-md hover:shadow-lg hover:-translate-y-0.5'
-              }`}
-              style={themeStyle !== 'neo-brutalism' ? { backgroundColor: primaryColor || '#000' } : undefined}
-              title="Add to wishlist"
-            >
-              <Heart 
-                size={15} 
-                strokeWidth={2.5}
-                className={`transition-all ${isFavorite ? 'fill-white text-white scale-110' : 'fill-transparent text-white hover:scale-110'}`}
-              />
-            </button>
-          </div>
+          <button
+            onClick={handleAdd}
+            className="w-7 h-7 rounded-none flex items-center justify-center text-white shadow-2xs hover:scale-105 active:scale-95 transition-all bg-black hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-gray-100"
+            title="Add to cart"
+          >
+            <ShoppingBag size={13} />
+          </button>
         </div>
       </div>
     </Link>

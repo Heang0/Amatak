@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
-import { X, Camera, Loader2 } from 'lucide-react';
+import { X, Loader2 } from 'lucide-react';
 import { useCustomerAuthStore } from '@/lib/store/useCustomerAuthStore';
 
 interface StoreEditProfileModalProps {
@@ -13,7 +13,7 @@ interface StoreEditProfileModalProps {
   isKm: boolean;
 }
 
-export default function StoreEditProfileModal({ isOpen, onClose, primaryColor, themeStyle, isKm }: StoreEditProfileModalProps) {
+export default function StoreEditProfileModal({ isOpen, onClose, isKm }: StoreEditProfileModalProps) {
   const user = useCustomerAuthStore(state => state.customerInfo);
   const setCustomerInfo = useCustomerAuthStore(state => state.setCustomerInfo);
   
@@ -56,7 +56,7 @@ export default function StoreEditProfileModal({ isOpen, onClose, primaryColor, t
       setTimeout(() => {
         setSuccess('');
         onClose();
-      }, 2000);
+      }, 1500);
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -64,51 +64,39 @@ export default function StoreEditProfileModal({ isOpen, onClose, primaryColor, t
     }
   };
 
-  const inputClass = `w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border focus:outline-none transition-colors ${
-    themeStyle === 'neo-brutalism' 
-      ? 'border-2 border-black dark:border-white rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] focus:shadow-none focus:translate-x-[4px] focus:translate-y-[4px]' 
-      : 'border-gray-200 dark:border-gray-800 focus:border-gray-400 dark:focus:border-gray-600'
-  }`;
+  const inputClass = "w-full px-4 py-2.5 text-xs sm:text-sm font-medium bg-white dark:bg-[#111318] text-gray-900 dark:text-white border border-gray-300 dark:border-white/15 focus:border-black dark:focus:border-white rounded-none outline-none transition-all";
 
-  const buttonClass = `w-full py-3.5 px-4 font-bold text-center transition-all ${
-    themeStyle === 'neo-brutalism'
-      ? 'border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] text-black bg-[#f0f0f0]'
-      : 'rounded-xl text-white hover:opacity-90 active:scale-[0.98]'
-  }`;
+  const buttonClass = `w-full py-3.5 px-4 text-xs font-bold ${isKm ? 'tracking-normal' : 'uppercase tracking-widest'} text-center transition-all bg-black hover:bg-neutral-800 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-black rounded-none shadow-xs`;
 
   if (typeof window === 'undefined') return null;
 
   return createPortal(
-    <div className={`fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 ${isKm ? 'font-khmer' : ''}`}>
-      <div className={`w-full max-w-md bg-white dark:bg-[#111111] ${
-        themeStyle === 'neo-brutalism' 
-          ? 'border-[3px] border-black dark:border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] rounded-none' 
-          : 'rounded-3xl shadow-xl'
-      } overflow-hidden`}>
+    <div className={`fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-2xs ${isKm ? 'font-khmer' : ''}`}>
+      <div className="w-full max-w-md bg-white dark:bg-[#111318] rounded-none border border-gray-200 dark:border-white/10 shadow-2xl overflow-hidden space-y-5">
         
-        <div className="flex items-center justify-between p-6 border-b border-gray-100 dark:border-gray-800">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-            {isKm ? 'កែប្រែគណនី' : 'Edit Profile'}
+        <div className="flex items-center justify-between p-5 border-b border-gray-100 dark:border-white/[0.06]">
+          <h2 className={`text-xs font-black ${isKm ? 'tracking-normal' : 'uppercase tracking-widest'} text-gray-900 dark:text-white`}>
+            {isKm ? 'កែប្រែគណនី' : 'EDIT PROFILE'}
           </h2>
-          <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
-            <X size={20} />
+          <button onClick={onClose} className="p-1 -mr-1 text-gray-400 hover:text-black dark:hover:text-white transition-colors">
+            <X size={18} />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-5">
+        <form onSubmit={handleSubmit} className="p-5 space-y-4 pt-0">
           {error && (
-            <div className="p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-xl text-sm font-medium border border-red-200 dark:border-red-900/30">
+            <div className="p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-none text-xs font-medium border border-red-200 dark:border-red-900/30">
               {error}
             </div>
           )}
           {success && (
-            <div className="p-3 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-xl text-sm font-medium border border-green-200 dark:border-green-900/30">
+            <div className="p-3 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-none text-xs font-medium border border-green-200 dark:border-green-900/30">
               {success}
             </div>
           )}
 
           <div>
-            <label className="block text-sm font-bold text-gray-900 dark:text-gray-300 mb-1.5">{isKm ? 'ឈ្មោះ' : 'Name'}</label>
+            <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1.5">{isKm ? 'ឈ្មោះ' : 'Name'}</label>
             <input 
               type="text" 
               value={name}
@@ -119,7 +107,7 @@ export default function StoreEditProfileModal({ isOpen, onClose, primaryColor, t
           </div>
 
           <div>
-            <label className="block text-sm font-bold text-gray-900 dark:text-gray-300 mb-1.5">{isKm ? 'លេខសម្ងាត់ថ្មី (ស្រេចចិត្ត)' : 'New Password (Optional)'}</label>
+            <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1.5">{isKm ? 'លេខសម្ងាត់ថ្មី (ស្រេចចិត្ត)' : 'New Password (Optional)'}</label>
             <input 
               type="password" 
               value={password}
@@ -128,17 +116,18 @@ export default function StoreEditProfileModal({ isOpen, onClose, primaryColor, t
               placeholder="••••••••"
               minLength={6}
             />
-            <p className="text-xs text-gray-500 mt-1">{isKm ? 'ទុកវាទទេប្រសិនបើអ្នកមិនចង់ផ្លាស់ប្តូរ' : 'Leave blank to keep current password'}</p>
+            <p className="text-[11px] text-gray-400 mt-1">{isKm ? 'ទុកវាទទេប្រសិនបើអ្នកមិនចង់ផ្លាស់ប្តូរ' : 'Leave blank to keep current password'}</p>
           </div>
 
-          <button 
-            type="submit" 
-            disabled={loading}
-            className={buttonClass}
-            style={themeStyle !== 'neo-brutalism' ? { backgroundColor: primaryColor || '#000' } : undefined}
-          >
-            {loading ? <Loader2 className="w-5 h-5 mx-auto animate-spin" /> : (isKm ? 'រក្សាទុក' : 'Save Changes')}
-          </button>
+          <div className="pt-2">
+            <button 
+              type="submit" 
+              disabled={loading}
+              className={buttonClass}
+            >
+              {loading ? <Loader2 className="w-4 h-4 mx-auto animate-spin" /> : (isKm ? 'រក្សាទុកការផ្លាស់ប្តូរ' : 'SAVE CHANGES')}
+            </button>
+          </div>
         </form>
       </div>
     </div>,

@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useTheme } from 'next-themes';
-import { ChevronLeft, Moon, Sun, Menu, ShoppingCart, Search, Heart, ChevronDown, User } from 'lucide-react';
+import { ChevronLeft, Moon, Sun, Menu, ShoppingCart, ShoppingBag, Search, Bookmark, ChevronDown, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import StoreSidebarMenu from './StoreSidebarMenu';
@@ -119,98 +119,124 @@ export default function StoreTopNav({ storeName, storeLogo, primaryColor, slug, 
       <div className="h-14 md:h-16 flex items-center px-4 md:px-8">
 
         {/* MOBILE Left: logo + store name */}
-        <Link href={homeHref} className="flex-1 flex justify-start items-center gap-2 md:hidden overflow-hidden">
-          {logoUrl && (
+        <Link href={homeHref} className="flex-1 flex justify-start items-center gap-2.5 md:hidden overflow-hidden py-1">
+          {logoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={logoUrl.replace('/upload/', '/upload/w_200,c_limit,q_auto/')} alt={storeName} className="h-8 md:h-9 w-auto object-contain shrink-0" />
+            <img src={logoUrl.replace('/upload/', '/upload/w_200,c_limit,q_auto/')} alt={storeName} className="h-7 sm:h-8 w-auto object-contain shrink-0" />
+          ) : (
+            <span className="text-base font-extrabold uppercase tracking-wider text-gray-900 dark:text-white truncate">
+              {storeName}
+            </span>
           )}
-          <span className="text-base font-bold text-gray-900 dark:text-white tracking-tight truncate">
-            {storeName}
-          </span>
         </Link>
 
-        {/* MOBILE Right: cart badge + hamburger */}
-        <div className="flex md:hidden shrink-0 items-center justify-end gap-1">
-          <button onClick={() => setDrawerOpen(true)} className="relative p-2 text-gray-900 dark:text-white active:opacity-50">
-            <ShoppingCart size={22} strokeWidth={1.5} />
+        {/* MOBILE Right: search + cart + hamburger */}
+        <div className="flex md:hidden shrink-0 items-center justify-end gap-1.5">
+          <button 
+            onClick={() => setIsSearchOpen(true)} 
+            className="p-2 text-gray-800 dark:text-white hover:opacity-60 transition-opacity"
+            title="Search"
+          >
+            <Search size={19} strokeWidth={1.5} />
+          </button>
+          
+          <button 
+            onClick={() => setDrawerOpen(true)} 
+            className="relative p-2 text-gray-800 dark:text-white hover:opacity-60 transition-opacity"
+            title="Cart"
+          >
+            <ShoppingBag size={19} strokeWidth={1.5} />
             {mounted && totalItems > 0 && (
               <span 
-                className="absolute top-0.5 right-0.5 min-w-[16px] h-4 px-[3px] text-[9px] font-bold text-white rounded-full flex items-center justify-center leading-none shadow-sm"
-                style={{ backgroundColor: primaryColor || '#000' }}
+                className="absolute top-0.5 right-0.5 min-w-[15px] h-[15px] px-1 text-[8px] font-bold text-white bg-black dark:bg-white dark:text-black rounded-none flex items-center justify-center leading-none"
               >
                 {totalItems > 99 ? '99+' : totalItems}
               </span>
             )}
           </button>
+
           <button
             onClick={() => setIsSidebarOpen(true)}
-            className="p-3 -mr-1 rounded-full border border-gray-200 bg-white text-gray-900 shadow-sm transition-all duration-200 hover:border-gray-300 hover:shadow-md dark:border-gray-700 dark:bg-[#111111] dark:text-white active:scale-95"
-            aria-label="Open Mobile Menu"
+            className="p-2 -mr-1 text-gray-800 dark:text-white hover:opacity-60 transition-opacity active:scale-95"
+            aria-label="Open Menu"
           >
-            <Menu size={20} strokeWidth={1.75} />
+            <Menu size={21} strokeWidth={1.5} />
           </button>
         </div>
 
         {/* DESKTOP Left: logo */}
-        <Link href={homeHref} className="hidden md:flex items-center gap-2 shrink-0 mr-8">
-          {logoUrl && (
+        <Link href={homeHref} className="hidden md:flex items-center gap-2.5 shrink-0 mr-8">
+          {logoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={logoUrl.replace('/upload/', '/upload/w_200,c_limit,q_auto/')} alt={storeName} className="h-8 md:h-9 w-auto object-contain shrink-0" />
+            <img src={logoUrl.replace('/upload/', '/upload/w_200,c_limit,q_auto/')} alt={storeName} className="h-7 sm:h-8 w-auto object-contain shrink-0" />
+          ) : (
+            <span className="text-lg font-extrabold uppercase tracking-wider text-gray-900 dark:text-white whitespace-nowrap">
+              {storeName}
+            </span>
           )}
-          <span className="text-xl font-bold text-gray-900 dark:text-white tracking-tight whitespace-nowrap">
-            {storeName}
-          </span>
         </Link>
 
         {/* DESKTOP Center: main nav */}
-        <nav className="hidden md:flex items-center gap-6 flex-1 justify-center">
+        {/* DESKTOP Center: main nav */}
+        <nav className="hidden md:flex items-center gap-8 flex-1 justify-center">
           <Link
             href={homeHref}
-            className={`text-sm font-semibold uppercase tracking-wider transition-colors text-gray-900 dark:text-white`}
-            style={isHome && primaryColor && primaryColor !== '#000000' && primaryColor !== '#000' ? { color: primaryColor } : undefined}
+            className={`text-xs font-bold ${locale === 'km' ? 'tracking-normal' : 'uppercase tracking-widest'} transition-colors ${
+              isHome ? 'text-black dark:text-white font-extrabold' : 'text-gray-500 hover:text-black dark:hover:text-white'
+            }`}
           >
             {locale === 'km' ? 'ទំព័រដើម' : 'Home'}
           </Link>
           <Link
             href={appendParams(`${basePath}/products`)}
-            className={`text-sm font-semibold uppercase tracking-wider transition-colors text-gray-900 dark:text-white`}
-            style={(pathname?.endsWith('/products') || pathname?.endsWith('/products/') || pathname?.includes('/product/')) && primaryColor && primaryColor !== '#000000' && primaryColor !== '#000' ? { color: primaryColor } : undefined}
+            className={`text-xs font-bold ${locale === 'km' ? 'tracking-normal' : 'uppercase tracking-widest'} transition-colors ${
+              pathname?.endsWith('/products') || pathname?.endsWith('/products/') || pathname?.includes('/product/') 
+                ? 'text-black dark:text-white font-extrabold' 
+                : 'text-gray-500 hover:text-black dark:hover:text-white'
+            }`}
           >
-            {locale === 'km' ? 'ផលិតផល' : 'Products'}
+            {locale === 'km' ? 'ផលិតផល' : 'Collection'}
           </Link>
           <Link
             href={appendParams(`${basePath}/promotions`)}
-            className={`text-sm font-semibold uppercase tracking-wider transition-colors text-gray-900 dark:text-white`}
-            style={(pathname?.endsWith('/promotions') || pathname?.endsWith('/promotions/')) && primaryColor && primaryColor !== '#000000' && primaryColor !== '#000' ? { color: primaryColor } : undefined}
+            className={`text-xs font-bold ${locale === 'km' ? 'tracking-normal' : 'uppercase tracking-widest'} transition-colors ${
+              pathname?.endsWith('/promotions') || pathname?.endsWith('/promotions/')
+                ? 'text-black dark:text-white font-extrabold'
+                : 'text-gray-500 hover:text-black dark:hover:text-white'
+            }`}
           >
-            {locale === 'km' ? 'ប្រូម៉ូសិន' : 'Promotions'}
+            {locale === 'km' ? 'ប្រូម៉ូសិន' : 'Offers'}
           </Link>
 
           {/* Categories Dropdown */}
           <div className="relative group">
             <Link
               href={appendParams(`${basePath}/categories`)}
-              className={`flex items-center gap-1 text-sm font-semibold uppercase tracking-wider transition-colors py-2 text-gray-900 dark:text-white`}
-              style={pathname?.endsWith('/categories') || pathname?.endsWith('/categories/') || pathname?.includes('/category/') ? { color: primaryColor || '#000' } : undefined}
+              className={`flex items-center gap-1 text-xs font-bold ${locale === 'km' ? 'tracking-normal' : 'uppercase tracking-widest'} transition-colors py-2 ${
+                pathname?.endsWith('/categories') || pathname?.endsWith('/categories/') || pathname?.includes('/category/')
+                  ? 'text-black dark:text-white font-extrabold'
+                  : 'text-gray-500 hover:text-black dark:hover:text-white'
+              }`}
             >
-              {locale === 'km' ? 'ប្រភេទ' : 'Categories'}
-              <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-200" />
+              <span>{locale === 'km' ? 'ប្រភេទ' : 'Categories'}</span>
+              <ChevronDown size={13} className="group-hover:rotate-180 transition-transform duration-200" />
             </Link>
             
             {/* Dropdown Menu */}
             {categories.length > 0 && (
-              <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                <div className="bg-white dark:bg-[#1a1a1a] border border-gray-100 dark:border-gray-800 rounded-xl shadow-xl py-2 min-w-[200px] flex flex-col">
+              <div className="absolute top-full left-0 pt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <div className="bg-white dark:bg-[#13161F] border border-gray-200 dark:border-white/[0.08] rounded-none shadow-2xl py-2 min-w-[220px] flex flex-col">
                   {categories.map((cat: any) => {
                     const isCatActive = pathname?.includes(`/category/${cat.slug}`);
                     return (
                       <Link
                         key={cat._id}
                         href={appendParams(`${basePath}/category/${cat.slug}`)}
-                        className={`px-4 py-2.5 text-sm font-semibold transition-colors ${
-                          isCatActive ? 'bg-gray-50 dark:bg-gray-800/50' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'
+                        className={`px-4 py-2 text-xs font-medium transition-colors ${
+                          isCatActive 
+                            ? 'bg-stone-100 dark:bg-white/[0.06] text-black dark:text-white font-bold' 
+                            : 'text-gray-600 dark:text-gray-300 hover:bg-stone-50 dark:hover:bg-white/[0.04] hover:text-black dark:hover:text-white'
                         }`}
-                        style={isCatActive ? { color: primaryColor || '#000' } : undefined}
                       >
                         {locale === 'km' && cat.nameKm ? cat.nameKm : cat.name}
                       </Link>
@@ -223,48 +249,51 @@ export default function StoreTopNav({ storeName, storeLogo, primaryColor, slug, 
         </nav>
 
         {/* DESKTOP Right: search + favorites + cart + account + theme + language */}
-        <div className="hidden md:flex items-center gap-2 ml-4 shrink-0">
-          <button onClick={() => setIsSearchOpen(true)} className="p-2 text-gray-900 dark:text-white hover:opacity-60 transition-opacity">
-            <Search size={20} strokeWidth={1.5} />
+        <div className="hidden md:flex items-center gap-1.5 ml-4 shrink-0">
+          <button onClick={() => setIsSearchOpen(true)} className="p-2 text-gray-800 dark:text-white hover:opacity-60 transition-opacity" title="Search">
+            <Search size={18} strokeWidth={1.5} />
           </button>
-          <Link href={favoritesHref} className="relative p-2 text-gray-900 dark:text-white hover:opacity-60 transition-opacity">
-            <Heart size={20} strokeWidth={1.5} />
+          
+          <Link href={favoritesHref} className="relative p-2 text-gray-800 dark:text-white hover:opacity-60 transition-opacity" title="Saved Items">
+            <Bookmark size={18} strokeWidth={1.5} />
             {mounted && totalFavorites > 0 && (
-              <span className="absolute top-0.5 right-0.5 min-w-[16px] h-4 px-[3px] text-[9px] font-bold text-white bg-red-500 rounded-full flex items-center justify-center leading-none">
+              <span className="absolute top-0.5 right-0.5 min-w-[15px] h-[15px] px-1 text-[8px] font-bold text-white bg-black dark:bg-white dark:text-black rounded-none flex items-center justify-center leading-none">
                 {totalFavorites > 99 ? '99+' : totalFavorites}
               </span>
             )}
           </Link>
-          <button onClick={() => setDrawerOpen(true)} className="relative p-2 text-gray-900 dark:text-white hover:opacity-60 transition-opacity">
-            <ShoppingCart size={20} strokeWidth={1.5} />
+          
+          <button onClick={() => setDrawerOpen(true)} className="relative p-2 text-gray-800 dark:text-white hover:opacity-60 transition-opacity" title="Shopping Bag">
+            <ShoppingBag size={18} strokeWidth={1.5} />
             {mounted && totalItems > 0 && (
               <span 
-                className="absolute top-0.5 right-0.5 min-w-[16px] h-4 px-[3px] text-[9px] font-bold text-white rounded-full flex items-center justify-center leading-none shadow-sm"
-                style={{ backgroundColor: primaryColor || '#000' }}
+                className="absolute top-0.5 right-0.5 min-w-[15px] h-[15px] px-1 text-[8px] font-bold text-white bg-black dark:bg-white dark:text-black rounded-none flex items-center justify-center leading-none shadow-xs"
               >
                 {totalItems > 99 ? '99+' : totalItems}
               </span>
             )}
           </button>
-          <Link href={profileHref} className="relative p-2 text-gray-900 dark:text-white hover:opacity-60 transition-opacity">
-            <User size={20} strokeWidth={1.5} />
+
+          <Link href={profileHref} className="relative p-2 text-gray-800 dark:text-white hover:opacity-60 transition-opacity" title="Account">
+            <User size={18} strokeWidth={1.5} />
           </Link>
 
-          <div className="flex items-center gap-2 pl-3 ml-1 border-l border-gray-200 dark:border-gray-700">
+          <div className="flex items-center gap-2 pl-3 ml-1 border-l border-gray-200 dark:border-white/10">
             {mounted && (
               <button
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-900 dark:text-white"
+                className="p-1.5 text-gray-800 dark:text-white hover:opacity-60 transition-opacity"
+                title="Theme Toggle"
               >
-                {theme === 'dark' ? <Sun size={18} strokeWidth={1.5} /> : <Moon size={18} strokeWidth={1.5} />}
+                {theme === 'dark' ? <Sun size={17} strokeWidth={1.5} /> : <Moon size={17} strokeWidth={1.5} />}
               </button>
             )}
-            <a href={langHref} className="hover:opacity-60 transition-opacity">
+            <a href={langHref} className="hover:opacity-60 transition-opacity p-1" title="Language Toggle">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={locale === 'en' ? 'https://flagcdn.com/w40/us.png' : 'https://flagcdn.com/w40/kh.png'}
+                src={locale === 'en' ? 'https://flagcdn.com/w40/kh.png' : 'https://flagcdn.com/w40/us.png'}
                 alt={locale}
-                className="w-6 h-auto rounded-sm shadow-sm"
+                className="w-5 h-auto rounded-none shadow-2xs"
               />
             </a>
           </div>

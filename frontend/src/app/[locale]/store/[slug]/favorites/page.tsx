@@ -2,32 +2,36 @@
 
 import { useState, useEffect } from 'react';
 import { useFavoritesStore } from '@/lib/store/useFavoritesStore';
-import { Heart, ArrowLeft } from 'lucide-react';
+import { Bookmark, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import ProductCard from '@/components/store/ProductCard';
-import { CheckCircle } from 'lucide-react';
 
 function AddToCartToast({ message, visible }: { message: string; visible: boolean }) {
   return (
     <div
-      className={`fixed top-4 left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 md:w-max md:max-w-sm z-[200] flex items-center gap-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-5 py-3 rounded-full shadow-xl text-sm font-medium transition-all duration-300 ${
+      className={`fixed top-4 left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 md:w-max md:max-w-sm z-[200] flex items-center gap-2 bg-black dark:bg-white text-white dark:text-black px-4 py-2.5 rounded-none shadow-xl text-xs font-bold ${message.includes('បាន') ? 'tracking-normal' : 'uppercase tracking-wider'} transition-all duration-300 ${
         visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-3 pointer-events-none'
       }`}
     >
-      <CheckCircle size={16} strokeWidth={2.5} className="shrink-0" />
+      <CheckCircle size={14} className="shrink-0" />
       <span className="truncate">{message}</span>
     </div>
   );
 }
 
 export default function FavoritesPage({ params }: { params: { locale: string; slug: string } }) {
+  const pathname = usePathname();
   const { favorites } = useFavoritesStore();
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState<any[]>([]);
   const [primaryColor, setPrimaryColor] = useState('#000000');
-  const [themeStyle, setThemeStyle] = useState('default');
+  const [themeStyle, setThemeStyle] = useState('fashion-editorial');
   const [toast, setToast] = useState<{ message: string; visible: boolean }>({ message: '', visible: false });
   const isKm = params.locale === 'km';
+
+  const isPathRouting = pathname?.includes('/store/');
+  const storeHomeHref = isPathRouting ? `/${params.locale}/store/${params.slug}` : `/${params.locale}`;
 
   useEffect(() => {
     const loadStoreAndProducts = async () => {
@@ -37,12 +41,11 @@ export default function FavoritesPage({ params }: { params: { locale: string; sl
         const store = await storeRes.json();
         
         setPrimaryColor(store.branding?.primaryColor || '#000000');
-        setThemeStyle(store.branding?.themeStyle || 'default');
+        setThemeStyle(store.branding?.themeStyle || 'fashion-editorial');
 
         const prodRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/products/store/${store._id}`);
         const prods = await prodRes.json();
         
-        // Filter products that are in the favorites store
         const storeProducts = prods.products || [];
         const favoriteProducts = storeProducts.filter((p: any) => 
           favorites.some(f => f.productId === p._id)
@@ -56,7 +59,6 @@ export default function FavoritesPage({ params }: { params: { locale: string; sl
       }
     };
     
-    // Only load if there are favorites
     if (favorites.length > 0) {
       loadStoreAndProducts();
     } else {
@@ -64,82 +66,71 @@ export default function FavoritesPage({ params }: { params: { locale: string; sl
     }
   }, [params.slug, favorites]);
 
-  // Remove products from local state immediately if un-favorited while on this page
   const displayProducts = products.filter(p => favorites.some(f => f.productId === p._id));
 
   const showToast = () => {
-    const isKm = params.locale === 'km';
-    setToast({ message: isKm ? 'បានបញ្ចូលទៅកន្ត្រក!' : 'Added to cart!', visible: true });
+    setToast({ message: isKm ? 'បានបញ្ចូលទៅកន្ត្រក!' : 'Added to bag!', visible: true });
     setTimeout(() => setToast(t => ({ ...t, visible: false })), 1500);
   };
 
   return (
-    <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-4 pb-24 sm:pt-8 space-y-6 sm:space-y-8 min-h-[70vh]">
+    <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-2 sm:pt-4 pb-20 min-h-[70vh]">
       <AddToCartToast message={toast.message} visible={toast.visible} />
       
-      <div className="flex items-center gap-3 sm:gap-4">
-        <Link 
-          href={`/${params.locale}`}
-          className="p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors shrink-0"
+      {/* Sleek Minimalist Editorial Sub-Bar */}
+      <div className="flex items-center justify-between py-3 border-b border-gray-100 dark:border-white/[0.08] mb-6">
+        <h1 className={`text-xs sm:text-sm font-black ${isKm ? 'tracking-normal' : 'uppercase tracking-widest'} text-gray-900 dark:text-white flex items-center gap-2`}>
+          <span>{isKm ? 'ចំណូលចិត្ត' : 'SAVED ITEMS'}</span>
+          <span className="text-gray-400 font-normal">| {displayProducts.length} |</span>
+        </h1>
+
+        <Link
+          href={storeHomeHref}
+          className={`text-[11px] font-bold ${isKm ? 'tracking-normal' : 'uppercase tracking-wider'} text-gray-400 hover:text-black dark:hover:text-white transition-colors`}
         >
-          <ArrowLeft size={24} className="text-gray-900 dark:text-white" />
+          {isKm ? 'បន្តការទិញទំនិញ' : 'CONTINUE SHOPPING'}
         </Link>
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
-            {isKm ? 'ចំណូលចិត្ត' : 'Wishlist'}
-          </h1>
-          <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
-            {isKm ? 'ទំនិញដែលអ្នកបានរក្សាទុក' : 'Items you have saved for later'}
-          </p>
-        </div>
       </div>
 
+      {/* Loading Skeleton */}
       {loading ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-3 gap-y-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
           {[1, 2, 3, 4].map(i => (
-            <div key={i} className="animate-pulse flex flex-col">
-              <div className="aspect-square bg-gray-100 dark:bg-[#1a1a1a] rounded-2xl mb-4 w-full" />
-              <div className="h-4 bg-gray-100 dark:bg-[#1a1a1a] rounded w-3/4 mb-2" />
-              <div className="h-3 bg-gray-100 dark:bg-[#1a1a1a] rounded w-1/2 mb-4" />
-              <div className="mt-auto h-8 bg-gray-100 dark:bg-[#1a1a1a] rounded w-full" />
+            <div key={i} className="animate-pulse flex flex-col space-y-3">
+              <div className="aspect-square bg-stone-100 dark:bg-stone-900 rounded-none w-full border border-gray-200 dark:border-white/[0.06]" />
+              <div className="h-3 bg-stone-100 dark:bg-stone-900 rounded-none w-3/4" />
+              <div className="h-3 bg-stone-100 dark:bg-stone-900 rounded-none w-1/3" />
             </div>
           ))}
         </div>
       ) : displayProducts.length === 0 ? (
-        <div className={`flex flex-col items-center justify-center py-16 px-4 text-center mt-8 ${
-          themeStyle === 'neo-brutalism' 
-            ? 'bg-white dark:bg-[#111111] border-[3px] border-black dark:border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] max-w-2xl mx-auto' 
-            : 'bg-gray-50 dark:bg-gray-900/50 rounded-3xl border border-gray-100 dark:border-gray-900 max-w-2xl mx-auto'
-        }`}>
-          <div className={`w-20 h-20 flex items-center justify-center mb-6 ${
-            themeStyle === 'neo-brutalism' 
-              ? 'bg-white dark:bg-black border-[3px] border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]' 
-              : 'bg-white dark:bg-[#111111] rounded-full shadow-sm border border-gray-100 dark:border-gray-800'
-          }`}>
-            <Heart size={32} className="text-gray-300 dark:text-gray-600" />
+        /* Minimalist Editorial Empty State */
+        <div className="max-w-md mx-auto py-16 px-6 text-center border border-gray-200 dark:border-white/[0.08] bg-stone-50/40 dark:bg-stone-900/20 rounded-none space-y-4 my-6">
+          <div className="w-10 h-10 bg-white dark:bg-stone-900 border border-gray-200 dark:border-white/10 rounded-none flex items-center justify-center mx-auto">
+            <Bookmark size={18} className="text-gray-400 dark:text-gray-500" />
           </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">
-            {isKm ? 'មិនមានចំណូលចិត្តទេ' : 'Your wishlist is empty'}
-          </h2>
-          <p className="text-gray-500 dark:text-gray-400 mb-8 max-w-sm">
-            {isKm ? 'អ្នកមិនទាន់មានទំនិញក្នុងចំណូលចិត្តនៅឡើយទេ។' : 'You haven\'t added any items to your wishlist yet.'}
-          </p>
-          <Link 
-            href={`/${params.locale}`} 
-            className={`inline-block font-bold px-8 py-3.5 transition-all ${
-              themeStyle === 'neo-brutalism'
-                ? 'border-[2px] border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none text-black bg-white dark:bg-black dark:text-white uppercase tracking-wider text-sm'
-                : themeStyle === 'minimalist'
-                ? 'border border-gray-200 dark:border-gray-800 rounded-full hover:border-gray-900 dark:hover:border-white text-gray-900 dark:text-white'
-                : 'text-white rounded-full hover:scale-105 shadow-md'
-            }`}
-            style={themeStyle === 'default' ? { backgroundColor: primaryColor || '#000' } : undefined}
-          >
-            {isKm ? 'ត្រលប់ទៅទិញទំនិញវិញ' : 'Return to Shopping'}
-          </Link>
+          
+          <div className="space-y-1">
+            <h2 className={`text-xs font-black ${isKm ? 'tracking-normal' : 'uppercase tracking-widest'} text-gray-900 dark:text-white`}>
+              {isKm ? 'មិនទាន់មានទំនិញក្នុងចំណូលចិត្តទេ' : 'NO SAVED ITEMS'}
+            </h2>
+            <p className="text-[11px] text-gray-400 max-w-xs mx-auto">
+              {isKm ? 'អ្នកអាចរក្សាទុកទំនិញដែលពេញចិត្តនៅទីនេះ។' : 'Items you bookmark will appear here for easy access.'}
+            </p>
+          </div>
+
+          <div className="pt-2">
+            <Link 
+              href={storeHomeHref} 
+              className={`inline-block px-6 py-2.5 bg-black hover:bg-neutral-800 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-black text-xs font-bold ${isKm ? 'tracking-normal' : 'uppercase tracking-widest'} transition-all rounded-none shadow-xs`}
+            >
+              {isKm ? 'រុករកទំនិញ' : 'DISCOVER COLLECTION'}
+            </Link>
+          </div>
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-3 gap-y-8">
+        /* Saved Products Grid */
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
           {displayProducts.map((product) => (
             <ProductCard 
               key={product._id} 

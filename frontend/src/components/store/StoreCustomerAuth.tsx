@@ -98,22 +98,22 @@ export default function StoreCustomerAuth({ primaryColor, themeStyle, isKm }: { 
     }
   };
 
-  const inputClass = `w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border focus:outline-none transition-colors ${
+  const inputClass = `w-full px-4 py-3 rounded-none bg-white dark:bg-[#111318] border text-xs sm:text-sm font-medium focus:outline-none transition-colors ${
     themeStyle === 'neo-brutalism' 
-      ? 'border-2 border-black dark:border-white rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] focus:shadow-none focus:translate-x-[4px] focus:translate-y-[4px]' 
-      : 'border-gray-200 dark:border-gray-800 focus:border-gray-400 dark:focus:border-gray-600'
+      ? 'border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] focus:shadow-none focus:translate-x-[4px] focus:translate-y-[4px]' 
+      : 'border-gray-200 dark:border-white/10 focus:border-black dark:focus:border-white'
   }`;
 
-  const buttonClass = `w-full py-3.5 px-4 font-bold text-center transition-all ${
+  const buttonClass = `w-full py-3.5 px-4 text-xs font-bold uppercase tracking-widest text-center transition-all rounded-none ${
     themeStyle === 'neo-brutalism'
       ? 'border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] text-black bg-[#f0f0f0]'
-      : 'rounded-xl text-white hover:opacity-90 active:scale-[0.98]'
+      : 'bg-black text-white dark:bg-white dark:text-black hover:opacity-90 active:scale-[0.98]'
   }`;
 
-  const googleButtonClass = `w-full py-3.5 px-4 font-bold text-center transition-all flex items-center justify-center gap-3 bg-white dark:bg-black text-gray-900 dark:text-white ${
+  const googleButtonClass = `w-full py-3.5 px-4 text-xs font-bold uppercase tracking-widest text-center transition-all flex items-center justify-center gap-3 bg-white dark:bg-black text-gray-900 dark:text-white rounded-none ${
     themeStyle === 'neo-brutalism'
       ? 'border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] active:shadow-none active:translate-x-[4px] active:translate-y-[4px]'
-      : 'border border-gray-200 dark:border-gray-800 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-900 active:scale-[0.98]'
+      : 'border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-white/5 active:scale-[0.98]'
   }`;
 
   if (success) {

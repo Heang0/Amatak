@@ -336,17 +336,15 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
   }
 
   const cardClass = themeStyle === 'neo-brutalism'
-    ? 'bg-white dark:bg-[#111111] border-[3px] border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] p-5'
-    : 'bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800/50 hover:border-gray-200 dark:hover:border-gray-700 shadow-sm p-5 rounded-2xl transition-colors';
+    ? 'bg-white dark:bg-[#111111] border-[3px] border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] p-5 rounded-none'
+    : 'bg-white dark:bg-[#13161F] border border-gray-200 dark:border-white/[0.08] hover:border-gray-300 dark:hover:border-white/20 shadow-2xs p-5 rounded-none transition-colors';
 
-  const avatarClass = themeStyle === 'neo-brutalism'
-    ? 'w-20 h-20 bg-gray-100 dark:bg-[#1a1a1a] flex items-center justify-center text-2xl font-black text-gray-900 dark:text-white shrink-0 overflow-hidden border-[3px] border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] relative group cursor-pointer'
-    : 'w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center text-2xl font-bold text-gray-900 dark:text-white shrink-0 overflow-hidden border-4 border-white dark:border-[#111111] shadow-md relative group cursor-pointer';
+  const avatarClass = 'w-20 h-20 bg-stone-100 dark:bg-stone-900 rounded-none flex items-center justify-center text-2xl font-bold text-gray-900 dark:text-white shrink-0 overflow-hidden border border-gray-200 dark:border-white/[0.08] relative group cursor-pointer';
 
   return (
     <div className="w-full mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 py-6 sm:py-10 space-y-8 pb-32">
       {/* Profile Header */}
-      <div className={`flex flex-col md:flex-row md:items-center md:justify-between gap-6 pb-8 border-b ${themeStyle === 'neo-brutalism' ? 'border-black dark:border-white border-b-[3px]' : 'border-gray-100 dark:border-gray-900'}`}>
+      <div className={`flex flex-col md:flex-row md:items-center md:justify-between gap-6 pb-8 border-b ${themeStyle === 'neo-brutalism' ? 'border-black dark:border-white border-b-[3px]' : 'border-gray-200 dark:border-white/[0.08]'}`}>
         <div className="flex items-center gap-5">
           <label className="relative cursor-pointer group block w-fit">
             <div className={avatarClass}>
@@ -360,33 +358,27 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
               {/* Loading Overlay */}
               {uploadingAvatar && (
                 <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-10">
-                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
+                  <div className="animate-spin rounded-none h-5 w-5 border-2 border-white border-t-transparent"></div>
                 </div>
               )}
             </div>
 
             {/* Persistent Camera Badge */}
-            <div className={`absolute bottom-0 right-0 w-7 h-7 rounded-full flex items-center justify-center ${themeStyle === 'neo-brutalism' ? 'bg-white border-2 border-black' : 'bg-white shadow-md border border-gray-100'} z-20 transition-transform group-hover:scale-110`}>
-              <Camera className="w-3.5 h-3.5 text-gray-700" />
+            <div className="absolute bottom-0 right-0 w-6 h-6 rounded-none flex items-center justify-center bg-white dark:bg-black shadow-xs border border-gray-200 dark:border-white/20 z-20 transition-transform group-hover:scale-110">
+              <Camera className="w-3.5 h-3.5 text-gray-700 dark:text-gray-300" />
             </div>
 
             <input type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} disabled={uploadingAvatar} />
           </label>
 
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">{user.name}</h1>
-            <p className="text-gray-500 dark:text-gray-400 mb-2">{user.email}</p>
+            <h1 className="text-xl sm:text-2xl font-extrabold uppercase tracking-wider text-gray-900 dark:text-white">{user.name}</h1>
+            <p className="text-gray-500 dark:text-gray-400 text-xs mt-0.5 mb-2">{user.email}</p>
             <button
               onClick={() => setIsEditModalOpen(true)}
-              className={`mt-2 flex items-center gap-1.5 text-sm font-bold w-fit px-4 py-1.5 transition-all ${themeStyle === 'neo-brutalism'
-                  ? 'border-[2px] border-black dark:border-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] active:shadow-none active:translate-x-[2px] active:translate-y-[2px] text-black bg-white dark:bg-black dark:text-white uppercase tracking-wider text-xs'
-                  : themeStyle === 'minimalist'
-                    ? 'border border-gray-200 dark:border-gray-800 rounded-full hover:border-gray-900 dark:hover:border-white text-gray-900 dark:text-white'
-                    : 'rounded-full text-white shadow-sm hover:opacity-90'
-                }`}
-              style={themeStyle === 'default' ? { backgroundColor: primaryColor || '#000' } : undefined}
+              className="mt-1 flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest w-fit px-3.5 py-1.5 border border-black dark:border-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all rounded-none"
             >
-              <Edit2 size={14} strokeWidth={themeStyle === 'neo-brutalism' ? 2.5 : 2} />
+              <Edit2 size={13} />
               {params.locale === 'km' ? 'កែប្រែគណនី' : 'Edit Profile'}
             </button>
           </div>
@@ -394,41 +386,38 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
 
         <button
           onClick={handleLogout}
-          className={`flex items-center gap-2 px-5 py-2.5 text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-900/10 dark:hover:bg-red-900/20 font-bold transition-all w-full md:w-auto justify-center ${themeStyle === 'neo-brutalism'
-              ? 'border-[2px] border-red-600 shadow-[3px_3px_0px_0px_rgba(220,38,38,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none'
-              : 'rounded-full border border-red-100 dark:border-red-900/30'
-            }`}
+          className="flex items-center gap-2 px-4 py-2 text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-900/10 dark:hover:bg-red-900/20 text-xs font-bold uppercase tracking-widest transition-all w-full md:w-auto justify-center rounded-none border border-red-200 dark:border-red-900/30"
         >
-          <LogOut size={18} strokeWidth={2.5} />
+          <LogOut size={16} />
           {params.locale === 'km' ? 'ចាកចេញ' : 'Sign Out'}
         </button>
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-6 border-b border-gray-200 dark:border-gray-800 mb-8">
+      <div className={`flex items-center gap-6 border-b border-gray-200 dark:border-white/[0.08] mb-8 text-xs font-bold ${params.locale === 'km' ? 'tracking-normal' : 'uppercase tracking-widest'}`}>
         <button
           onClick={() => setActiveTab('orders')}
-          className={`pb-3 font-bold text-lg transition-colors border-b-2 ${activeTab === 'orders'
-              ? 'border-black dark:border-white text-black dark:text-white'
-              : 'border-transparent text-gray-500 hover:text-gray-900 dark:hover:text-gray-300'
+          className={`pb-3 transition-colors border-b-2 ${activeTab === 'orders'
+              ? 'border-black dark:border-white text-black dark:text-white font-extrabold'
+              : 'border-transparent text-gray-400 hover:text-black dark:hover:text-white'
             }`}
         >
           {params.locale === 'km' ? 'ប្រវត្តិការបញ្ជាទិញ' : 'Order History'}
         </button>
         <button
           onClick={() => setActiveTab('address')}
-          className={`pb-3 font-bold text-lg transition-colors border-b-2 ${activeTab === 'address'
-              ? 'border-black dark:border-white text-black dark:text-white'
-              : 'border-transparent text-gray-500 hover:text-gray-900 dark:hover:text-gray-300'
+          className={`pb-3 transition-colors border-b-2 ${activeTab === 'address'
+              ? 'border-black dark:border-white text-black dark:text-white font-extrabold'
+              : 'border-transparent text-gray-400 hover:text-black dark:hover:text-white'
             }`}
         >
           {params.locale === 'km' ? 'អាសយដ្ឋាន' : 'Address'}
         </button>
         <button
           onClick={() => setActiveTab('favorites')}
-          className={`pb-3 font-bold text-lg transition-colors border-b-2 ${activeTab === 'favorites'
-              ? 'border-black dark:border-white text-black dark:text-white'
-              : 'border-transparent text-gray-500 hover:text-gray-900 dark:hover:text-gray-300'
+          className={`pb-3 transition-colors border-b-2 ${activeTab === 'favorites'
+              ? 'border-black dark:border-white text-black dark:text-white font-extrabold'
+              : 'border-transparent text-gray-400 hover:text-black dark:hover:text-white'
             }`}
         >
           {params.locale === 'km' ? 'សំណព្វ' : 'Favorites'}
@@ -596,7 +585,7 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
                         <tr key={idx} className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
                           <td className="py-4 px-4 text-sm text-gray-900 dark:text-white">{idx + 1}</td>
                           <td className="py-4 px-4">
-                            <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+                            <div className="w-12 h-12 bg-stone-100 dark:bg-stone-900 rounded-none overflow-hidden border border-gray-200 dark:border-white/[0.08]">
                               {item.productId?.imageUrl ? (
                                 // eslint-disable-next-line @next/next/no-img-element
                                 <img src={item.productId.imageUrl} alt="Product" className="w-full h-full object-cover" />
@@ -635,8 +624,8 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
                     else acc[id].quantity += item.quantity;
                     return acc;
                   }, {})).map((item: any, idx: number) => (
-                    <div key={idx} className="flex gap-4 p-4 border border-gray-100 dark:border-gray-800 rounded-xl bg-gray-50 dark:bg-gray-900/30">
-                      <div className="w-16 h-16 shrink-0 bg-white dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+                    <div key={idx} className="flex gap-4 p-4 border border-gray-200 dark:border-white/[0.08] rounded-none bg-white dark:bg-[#13161F]">
+                      <div className="w-16 h-16 shrink-0 bg-stone-100 dark:bg-stone-900 rounded-none overflow-hidden border border-gray-200 dark:border-white/[0.08]">
                         {item.productId?.imageUrl ? (
                           // eslint-disable-next-line @next/next/no-img-element
                           <img src={item.productId.imageUrl} alt="Product" className="w-full h-full object-cover" />
@@ -653,7 +642,7 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
                       </div>
                     </div>
                   ))}
-                  <div className="flex items-center justify-between p-4 bg-gray-100 dark:bg-gray-800 rounded-xl mt-4">
+                  <div className="flex items-center justify-between p-4 bg-gray-100 dark:bg-[#1A1D27] rounded-none mt-4">
                     <span className="font-bold text-gray-900 dark:text-white">{params.locale === 'km' ? 'តម្លៃសរុប' : 'Total'}</span>
                     <span className="font-bold text-lg text-gray-900 dark:text-white">${selectedOrder.subtotal?.toFixed(2) || (selectedOrder.totalAmount - (selectedOrder.deliveryFee || 0)).toFixed(2)}</span>
                   </div>
@@ -662,7 +651,7 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
             ) : (
               <div className={`overflow-x-auto ${themeStyle === 'neo-brutalism'
                   ? 'bg-white dark:bg-[#111111] border-[3px] border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]'
-                  : 'bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800'
+                  : 'bg-white dark:bg-[#13161F] rounded-none shadow-2xs border border-gray-200 dark:border-white/[0.08]'
                 }`}>
                 {/* Desktop Table View */}
                 <div className="hidden lg:block overflow-x-auto">
@@ -761,9 +750,9 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
 
                       <button
                         onClick={() => handleSelectOrder(order)}
-                        className={`w-full py-2.5 text-sm font-bold text-center transition-colors rounded-lg ${themeStyle === 'neo-brutalism'
+                        className={`w-full py-2.5 text-xs font-bold uppercase tracking-wider text-center transition-colors rounded-none ${themeStyle === 'neo-brutalism'
                             ? 'border-[2px] border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-[2px] active:translate-y-[2px] bg-gray-50 dark:bg-black text-black dark:text-white'
-                            : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-900 dark:text-white'
+                            : 'bg-stone-100 hover:bg-stone-200 dark:bg-stone-900 dark:hover:bg-stone-800 text-gray-900 dark:text-white'
                           }`}
                       >
                         {params.locale === 'km' ? 'មើលព័ត៌មានលម្អិត' : 'View Details'}
@@ -778,8 +767,8 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
       ) : activeTab === 'address' ? (
         <div className="space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 min-h-[44px]">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white tracking-tight leading-snug">
-              {params.locale === 'km' ? 'អាសយដ្ឋាន / Address' : 'Address'}
+            <h2 className="text-base sm:text-lg font-bold uppercase tracking-wider text-gray-900 dark:text-white leading-snug">
+              {params.locale === 'km' ? 'អាសយដ្ឋាន' : 'SAVED ADDRESSES'}
             </h2>
             <button
               onClick={() => {
@@ -792,54 +781,47 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
                 setTempStreet('');
                 setIsAddressModalOpen(true);
               }}
-              className={`flex items-center justify-center gap-2 w-full sm:w-auto px-4 py-2.5 sm:py-2 text-sm font-bold transition-all ${themeStyle === 'neo-brutalism'
-                  ? 'border-[2px] border-black dark:border-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none text-black bg-white'
-                  : 'rounded-xl text-white shadow-md hover:scale-[1.02] active:scale-[0.98]'
-                }`}
-              style={themeStyle !== 'neo-brutalism' ? { backgroundColor: primaryColor || '#000' } : undefined}
+              className="flex items-center justify-center gap-2 w-full sm:w-auto px-4 py-2.5 sm:py-2 text-xs font-bold uppercase tracking-widest transition-all rounded-none bg-black text-white dark:bg-white dark:text-black hover:opacity-85 shadow-xs"
             >
-              <Plus size={16} />
+              <Plus size={14} />
               {params.locale === 'km' ? 'បន្ថែមអាសយដ្ឋាន' : 'Add Address'}
             </button>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
             {user?.addresses && user.addresses.length > 0 ? user.addresses.map((addr: any, idx: number) => (
-              <div key={`${addr._id}-${idx}`} className={`p-5 relative ${themeStyle === 'neo-brutalism'
-                  ? `border-[3px] border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white dark:bg-[#111111] ${addr.isDefault ? 'border-blue-500 shadow-[4px_4px_0px_0px_rgba(59,130,246,1)]' : ''}`
-                  : `rounded-2xl border ${addr.isDefault ? 'border-blue-500 bg-blue-50/30 dark:bg-blue-900/10' : 'border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900'}`
-                }`}>
+              <div key={`${addr._id}-${idx}`} className={`p-5 relative rounded-none border border-gray-200 dark:border-white/[0.08] bg-white dark:bg-[#13161F] shadow-2xs ${addr.isDefault ? 'ring-1 ring-black dark:ring-white' : ''}`}>
                 
                 {addr.isDefault && (
-                  <div className="absolute top-4 right-4 text-blue-500">
-                    <Star size={20} fill="currentColor" />
+                  <div className="absolute top-4 right-4 text-black dark:text-white">
+                    <Star size={16} fill="currentColor" />
                   </div>
                 )}
 
-                <p className="font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                <p className="font-bold text-gray-900 dark:text-white text-sm flex items-center gap-2 uppercase tracking-wide">
                   {addr.recipientName}
-                  {addr.isDefault && <span className="text-[10px] bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 px-2 py-0.5 rounded-full uppercase tracking-wider">Default</span>}
+                  {addr.isDefault && <span className="text-[9px] bg-black text-white dark:bg-white dark:text-black px-1.5 py-0.5 rounded-none uppercase tracking-wider font-bold">Default</span>}
                 </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400 font-mono mt-1">{addr.phoneNumber}</p>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-3 leading-relaxed">{addr.addressString}</p>
+                <p className="text-xs text-gray-500 font-mono mt-1">{addr.phoneNumber}</p>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-3 leading-relaxed">{addr.addressString}</p>
 
-                <div className="flex gap-4 mt-5 pt-4 border-t border-gray-100 dark:border-gray-800">
+                <div className="flex gap-4 mt-5 pt-4 border-t border-gray-100 dark:border-white/[0.06] text-xs font-bold uppercase tracking-wider">
                   <button 
                     onClick={() => handleEditAddress(addr)} 
-                    className="text-gray-500 text-sm font-bold hover:underline transition-all"
+                    className="text-gray-500 hover:text-black dark:hover:text-white transition-colors"
                   >
                     {params.locale === 'km' ? 'កែប្រែ' : 'Edit'}
                   </button>
                   <button 
                     onClick={() => handleDeleteAddress(addr._id)} 
-                    className="text-red-500 text-sm font-bold hover:underline transition-all"
+                    className="text-red-500 hover:text-red-700 transition-colors"
                   >
                     {params.locale === 'km' ? 'លុប' : 'Delete'}
                   </button>
                   {!addr.isDefault && (
                     <button 
                       onClick={() => handleSetDefaultAddress(addr._id)} 
-                      className="text-blue-600 dark:text-blue-400 text-sm font-bold hover:underline transition-all"
+                      className="text-black dark:text-white hover:underline transition-all"
                     >
                       {params.locale === 'km' ? 'កំណត់ជាលំនាំដើម' : 'Set as Default'}
                     </button>
@@ -847,9 +829,9 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
                 </div>
               </div>
             )) : (
-              <div className="col-span-2 text-center py-10 bg-gray-50 dark:bg-gray-900/50 rounded-2xl border border-gray-100 dark:border-gray-800">
-                <MapPin className="w-10 h-10 mx-auto text-gray-300 dark:text-gray-600 mb-3" />
-                <p className="text-gray-500 dark:text-gray-400 font-medium">
+              <div className="col-span-2 text-center py-12 bg-white dark:bg-[#13161F] rounded-none border border-gray-200 dark:border-white/[0.08]">
+                <MapPin className="w-8 h-8 mx-auto text-gray-300 dark:text-gray-600 mb-3" />
+                <p className="text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wider">
                   {params.locale === 'km' ? 'អ្នកមិនទាន់មានអាសយដ្ឋានណាមួយនៅឡើយទេ។' : 'You do not have any saved addresses yet.'}
                 </p>
               </div>
@@ -865,20 +847,16 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
           </div>
 
           {!user?.favorites || user.favorites.length === 0 ? (
-            <div className={`text-center py-16 ${themeStyle === 'neo-brutalism'
-                ? 'bg-white dark:bg-[#111111] border-[3px] border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)]'
-                : 'bg-gray-50 dark:bg-gray-900/50 rounded-3xl border border-gray-100 dark:border-gray-900'
-              }`}>
-              <Heart className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+            <div className="text-center py-16 border border-gray-200 dark:border-white/[0.08] bg-white dark:bg-[#13161F] rounded-none">
+              <Bookmark className="w-10 h-10 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
               <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">{params.locale === 'km' ? 'មិនមានសំណព្វនៅឡើយទេ' : 'No Favorites Yet'}</h3>
               <p className="text-gray-500 dark:text-gray-400 mb-6 text-sm">{params.locale === 'km' ? 'អ្នកមិនទាន់បានរក្សាទុកផលិតផលណាមួយជាសំណព្វទេ' : "You haven't saved any products to your favorites yet."}</p>
               <Link
                 href={`/${params.locale}/store/${params.slug}`}
-                className={`inline-block font-bold px-8 py-3 transition-all ${themeStyle === 'neo-brutalism'
+                className={`inline-block font-bold px-6 py-2.5 text-xs uppercase tracking-widest transition-all rounded-none ${themeStyle === 'neo-brutalism'
                     ? 'border-[2px] border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none text-black bg-white dark:bg-black dark:text-white'
-                    : 'text-white rounded-full hover:scale-105 shadow-md'
+                    : 'text-white bg-black dark:bg-white dark:text-black hover:opacity-80 shadow-xs'
                   }`}
-                style={themeStyle !== 'neo-brutalism' ? { backgroundColor: primaryColor || '#000' } : undefined}
               >
                 {params.locale === 'km' ? 'ស្វែងរកផលិតផល' : 'Browse Products'}
               </Link>
@@ -895,8 +873,8 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
 
                 return (
                   <div key={`${product._id}-${idx}`} className="relative group">
-                    <Link href={isCurrentStore ? `/${params.locale}/product/${product.slug || product._id}` : `/${params.locale}/store/${storeSlug}/product/${product.slug || product._id}`} className={`block bg-white dark:bg-[#161616] rounded-2xl overflow-hidden transition-all ${themeStyle === 'neo-brutalism' ? 'border-[3px] border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]' : 'shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-md hover:-translate-y-1'}`}>
-                      <div className="aspect-square bg-gray-100 dark:bg-gray-800 relative">
+                    <Link href={isCurrentStore ? `/${params.locale}/product/${product.slug || product._id}` : `/${params.locale}/store/${storeSlug}/product/${product.slug || product._id}`} className="block bg-white dark:bg-[#13161F] rounded-none overflow-hidden transition-all border border-gray-200 dark:border-white/[0.08] shadow-2xs">
+                      <div className="aspect-square bg-stone-100 dark:bg-stone-900 rounded-none relative">
                         {product.imageUrl ? (
                           // eslint-disable-next-line @next/next/no-img-element
                           <img src={product.imageUrl} alt={product.title} className="w-full h-full object-cover" />
@@ -906,16 +884,16 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
                           </div>
                         )}
                         {!isCurrentStore && (
-                          <div className="absolute top-2 left-2 bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-1 rounded">
+                          <div className="absolute top-2 left-2 bg-black/80 backdrop-blur-xs text-white text-[9px] font-bold px-2 py-0.5 uppercase tracking-widest rounded-none">
                             {typeof product.storeId === 'object' ? product.storeId.name : 'Other Store'}
                           </div>
                         )}
                       </div>
                       <div className="p-3 sm:p-4">
-                        <h3 className="font-bold text-gray-900 dark:text-white text-sm sm:text-base line-clamp-1 mb-1">
+                        <h3 className={`font-bold text-gray-900 dark:text-white text-xs sm:text-sm line-clamp-1 mb-1 ${params.locale === 'km' ? 'tracking-normal' : 'uppercase tracking-wider'}`}>
                           {product.title}
                         </h3>
-                        <p className="font-bold text-gray-900 dark:text-white text-sm" style={{ color: isCurrentStore ? primaryColor : undefined }}>
+                        <p className="font-extrabold text-gray-900 dark:text-white text-xs sm:text-sm">
                           ${product.price?.toFixed(2) || '0.00'}
                         </p>
                       </div>
@@ -935,11 +913,8 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
       />
 
       {isAddressModalOpen && typeof window !== 'undefined' && createPortal(
-        <div className={`fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 ${params.locale === 'km' ? 'font-khmer' : ''}`}>
-          <div className={`w-full max-w-lg bg-white dark:bg-[#111111] max-h-[90vh] flex flex-col ${themeStyle === 'neo-brutalism'
-              ? 'border-[3px] border-black dark:border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)]'
-              : 'rounded-3xl shadow-xl'
-            } relative`}>
+        <div className={`fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-2xs ${params.locale === 'km' ? 'font-khmer' : ''}`}>
+          <div className="w-full max-w-lg bg-white dark:bg-[#111318] max-h-[90vh] flex flex-col rounded-none border border-gray-200 dark:border-white/[0.1] shadow-2xl relative">
 
             <div className="flex-shrink-0 flex items-center justify-between p-6 border-b border-gray-100 dark:border-gray-800">
               <h2 className="text-xl font-bold text-gray-900 dark:text-white">

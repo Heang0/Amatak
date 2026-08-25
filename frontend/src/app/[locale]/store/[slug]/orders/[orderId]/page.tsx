@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Package, Truck, CheckCircle2, XCircle, ArrowLeft, Store } from 'lucide-react';
+import { Package, Truck, CheckCircle2, XCircle, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 
@@ -57,28 +57,28 @@ export default function OrderTrackingPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-[#0a0a0a] flex items-center justify-center p-4">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
+      <div className="min-h-[60vh] flex items-center justify-center p-4">
+        <div className="animate-spin rounded-none h-7 w-7 border-2 border-black dark:border-white border-t-transparent"></div>
       </div>
     );
   }
 
   if (error || !order) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-[#0a0a0a] flex flex-col items-center justify-center p-4">
-        <div className="bg-white dark:bg-[#111111] p-8 rounded-2xl shadow-sm text-center max-w-md w-full border border-gray-200 dark:border-gray-800">
-          <XCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-            {isKm ? 'រកមិនឃើញការបញ្ជាទិញទេ' : 'Order Not Found'}
+      <div className="min-h-[60vh] flex flex-col items-center justify-center p-4">
+        <div className="bg-white dark:bg-[#13161F] p-8 rounded-none shadow-2xs text-center max-w-md w-full border border-gray-200 dark:border-white/[0.08] space-y-4">
+          <XCircle className="w-10 h-10 text-red-500 mx-auto" />
+          <h2 className={`text-base font-extrabold ${isKm ? 'tracking-normal' : 'uppercase tracking-wider'} text-gray-900 dark:text-white`}>
+            {isKm ? 'រកមិនឃើញការបញ្ជាទិញទេ' : 'ORDER NOT FOUND'}
           </h2>
-          <p className="text-gray-500 dark:text-gray-400 mb-6">
+          <p className="text-gray-500 dark:text-gray-400 text-xs">
             {isKm ? 'សូមពិនិត្យមើលលេខកូដបញ្ជាទិញរបស់អ្នកម្ដងទៀត។' : 'Please check your order ID and try again.'}
           </p>
           <Link
             href={`/${params.locale}/store/${params.slug}`}
-            className="inline-block bg-black dark:bg-white text-white dark:text-black font-semibold px-6 py-3 rounded-full hover:opacity-90 transition-opacity"
+            className="inline-block bg-black dark:bg-white text-white dark:text-black text-xs font-bold uppercase tracking-widest px-6 py-2.5 rounded-none hover:opacity-85 transition-opacity shadow-xs"
           >
-            {isKm ? 'ត្រឡប់ទៅហាងវិញ' : 'Return to Store'}
+            {isKm ? 'ត្រឡប់ទៅហាងវិញ' : 'RETURN TO STORE'}
           </Link>
         </div>
       </div>
@@ -88,35 +88,34 @@ export default function OrderTrackingPage() {
   const shortId = order._id.substring(0, 10).toUpperCase();
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-[#0a0a0a] pb-12">
-      {/* Header */}
-      <div className="bg-white dark:bg-[#111111] border-b border-gray-200 dark:border-gray-800 sticky top-0 z-30">
-        <div className="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link 
-            href={`/${params.locale}/store/${params.slug}`}
-            className="p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5 text-gray-900 dark:text-white" />
-          </Link>
-          <span className="font-bold text-gray-900 dark:text-white text-lg truncate flex-1 text-center mr-6">
-            {isKm ? 'តាមដានការបញ្ជាទិញ' : 'Order Tracking'}
-          </span>
-        </div>
+    <div className="w-full mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 pt-2 sm:pt-4 pb-20 space-y-6 min-h-[70vh]">
+      {/* Top Sub-Bar */}
+      <div className="flex items-center justify-between py-3 border-b border-gray-100 dark:border-white/[0.08] mb-4">
+        <Link 
+          href={`/${params.locale}/store/${params.slug}`}
+          className={`inline-flex items-center gap-1.5 text-[11px] font-bold ${isKm ? 'tracking-normal' : 'uppercase tracking-wider'} text-gray-400 hover:text-black dark:hover:text-white transition-colors`}
+        >
+          <ArrowLeft size={14} />
+          <span>{isKm ? 'ត្រឡប់ទៅហាងវិញ' : 'BACK TO STORE'}</span>
+        </Link>
+        <span className={`text-xs font-black ${isKm ? 'tracking-normal' : 'uppercase tracking-widest'} text-gray-900 dark:text-white`}>
+          {isKm ? 'តាមដានការបញ្ជាទិញ' : 'ORDER TRACKING'}
+        </span>
       </div>
 
-      <div className="max-w-3xl mx-auto px-4 py-6 md:py-8 space-y-6">
+      <div className="space-y-6">
         {/* Status Banner */}
-        <div className="bg-white dark:bg-[#111111] border border-gray-200 dark:border-gray-800 rounded-2xl p-6 shadow-sm flex flex-col items-center text-center">
-          <div className="w-16 h-16 bg-gray-50 dark:bg-gray-800/50 rounded-full flex items-center justify-center mb-4">
+        <div className="bg-white dark:bg-[#13161F] border border-gray-200 dark:border-white/[0.08] rounded-none p-6 shadow-2xs flex flex-col items-center text-center space-y-2">
+          <div className="w-12 h-12 bg-stone-100 dark:bg-stone-900 rounded-none flex items-center justify-center border border-gray-200 dark:border-white/10 mb-1">
             {getStatusIcon(order.orderStatus)}
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+          <h1 className={`text-lg font-black ${isKm ? 'tracking-normal' : 'uppercase tracking-wider'} text-gray-900 dark:text-white`}>
             {getStatusText(order.orderStatus)}
           </h1>
-          <p className="text-gray-500 dark:text-gray-400 font-mono text-sm">
+          <p className="text-gray-500 dark:text-gray-400 font-mono text-xs">
             ID: {shortId}
           </p>
-          <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
+          <p className="text-gray-400 text-[11px]">
             {new Date(order.createdAt).toLocaleString(params.locale === 'km' ? 'km-KH' : 'en-US', {
               dateStyle: 'medium',
               timeStyle: 'short'
@@ -126,46 +125,46 @@ export default function OrderTrackingPage() {
 
         {/* Customer & Delivery Info */}
         <div className="grid md:grid-cols-2 gap-4">
-          <div className="bg-white dark:bg-[#111111] border border-gray-200 dark:border-gray-800 rounded-2xl p-5 shadow-sm">
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
-              {isKm ? 'ព័ត៌មានអ្នកទទួល' : 'Delivery Information'}
+          <div className="bg-white dark:bg-[#13161F] border border-gray-200 dark:border-white/[0.08] rounded-none p-5 shadow-2xs space-y-3">
+            <h3 className={`text-xs font-black ${isKm ? 'tracking-normal' : 'uppercase tracking-widest'} text-gray-900 dark:text-white pb-2 border-b border-gray-100 dark:border-white/[0.06]`}>
+              {isKm ? 'ព័ត៌មានអ្នកទទួល' : 'DELIVERY INFORMATION'}
             </h3>
-            <div className="space-y-2 text-sm">
+            <div className="space-y-1.5 text-xs">
               <p className="text-gray-600 dark:text-gray-300">
-                <span className="font-medium text-gray-900 dark:text-white">{isKm ? 'ឈ្មោះ: ' : 'Name: '}</span>
-                {order.guestInfo?.name || order.customerId?.name}
+                <span className="text-gray-400">{isKm ? 'ឈ្មោះ: ' : 'Name: '}</span>
+                <span className="font-bold text-gray-900 dark:text-white">{order.guestInfo?.name || order.customerId?.name}</span>
               </p>
               <p className="text-gray-600 dark:text-gray-300">
-                <span className="font-medium text-gray-900 dark:text-white">{isKm ? 'ទូរស័ព្ទ: ' : 'Phone: '}</span>
-                <span className="font-mono">{order.guestInfo?.phone || order.customerId?.phone}</span>
+                <span className="text-gray-400">{isKm ? 'ទូរស័ព្ទ: ' : 'Phone: '}</span>
+                <span className="font-mono text-gray-900 dark:text-white">{order.guestInfo?.phone || order.customerId?.phone}</span>
               </p>
               <p className="text-gray-600 dark:text-gray-300 leading-relaxed mt-1">
-                <span className="font-medium text-gray-900 dark:text-white">{isKm ? 'ទីតាំង: ' : 'Address: '}</span>
-                {order.guestInfo?.address || order.customerId?.address}
+                <span className="text-gray-400">{isKm ? 'ទីតាំង: ' : 'Address: '}</span>
+                <span className="text-gray-900 dark:text-white font-medium">{order.guestInfo?.address || order.customerId?.address}</span>
               </p>
             </div>
           </div>
           
-          <div className="bg-white dark:bg-[#111111] border border-gray-200 dark:border-gray-800 rounded-2xl p-5 shadow-sm">
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
-              {isKm ? 'ការទូទាត់' : 'Payment & Method'}
+          <div className="bg-white dark:bg-[#13161F] border border-gray-200 dark:border-white/[0.08] rounded-none p-5 shadow-2xs space-y-3">
+            <h3 className={`text-xs font-black ${isKm ? 'tracking-normal' : 'uppercase tracking-widest'} text-gray-900 dark:text-white pb-2 border-b border-gray-100 dark:border-white/[0.06]`}>
+              {isKm ? 'ការទូទាត់' : 'PAYMENT DETAILS'}
             </h3>
-            <div className="space-y-2 text-sm">
-              <p className="text-gray-600 dark:text-gray-300 flex items-center gap-1.5 mt-0.5">
-                <span className="font-medium text-gray-900 dark:text-white">{isKm ? 'វិធីទូទាត់: ' : 'Method: '}</span>
+            <div className="space-y-1.5 text-xs">
+              <p className="text-gray-600 dark:text-gray-300 flex items-center gap-1.5">
+                <span className="text-gray-400">{isKm ? 'វិធីទូទាត់: ' : 'Method: '}</span>
                 {order.paymentMethod === 'bakong_app' ? 'Bakong App' : 
                  order.paymentMethod === 'CASH' ? 'Cash' : 
-                 <span className="flex items-center gap-2 text-gray-900 dark:text-white font-semibold text-sm">
-                   <span className="flex items-center justify-center bg-[#E1232E] w-8 h-[18px] rounded px-1 shadow-sm">
+                 <span className="flex items-center gap-2 text-gray-900 dark:text-white font-bold">
+                   <span className="flex items-center justify-center bg-[#E1232E] w-7 h-4 rounded-none px-1">
                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                     <img src="/logo/KHQR Logo.png" alt="KHQR" className="h-[10px] w-auto object-contain brightness-0 invert" />
+                     <img src="/logo/KHQR Logo.png" alt="KHQR" className="h-[9px] w-auto object-contain brightness-0 invert" />
                    </span>
                  </span>
                 }
               </p>
               <p className="text-gray-600 dark:text-gray-300 flex items-center gap-2">
-                <span className="font-medium text-gray-900 dark:text-white">{isKm ? 'ស្ថានភាព: ' : 'Status: '}</span>
-                <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-bold ${
+                <span className="text-gray-400">{isKm ? 'ស្ថានភាព: ' : 'Status: '}</span>
+                <span className={`inline-flex items-center px-1.5 py-0.5 rounded-none text-[9px] font-bold uppercase tracking-wider ${
                   order.paymentStatus === 'PAID' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' :
                   order.paymentStatus === 'FAILED' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' :
                   'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
@@ -178,14 +177,14 @@ export default function OrderTrackingPage() {
         </div>
 
         {/* Order Items */}
-        <div className="bg-white dark:bg-[#111111] border border-gray-200 dark:border-gray-800 rounded-2xl p-5 shadow-sm">
-          <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">
-            {isKm ? 'ទំនិញរបស់អ្នក' : 'Order Items'}
+        <div className="bg-white dark:bg-[#13161F] border border-gray-200 dark:border-white/[0.08] rounded-none p-5 shadow-2xs space-y-4">
+          <h3 className={`text-xs font-black ${isKm ? 'tracking-normal' : 'uppercase tracking-widest'} text-gray-900 dark:text-white pb-2 border-b border-gray-100 dark:border-white/[0.06]`}>
+            {isKm ? 'ទំនិញរបស់អ្នក' : 'ORDER ITEMS'}
           </h3>
-          <div className="space-y-4">
+          <div className="space-y-3 divide-y divide-gray-100 dark:divide-white/[0.04]">
             {order.items.map((item: any, idx: number) => (
-              <div key={idx} className="flex gap-4">
-                <div className="w-16 h-16 rounded-xl bg-gray-100 dark:bg-gray-800 flex-shrink-0 overflow-hidden border border-gray-200 dark:border-gray-700">
+              <div key={idx} className="flex gap-4 pt-3 first:pt-0 items-center">
+                <div className="w-16 h-16 rounded-none bg-stone-100 dark:bg-stone-900 flex-shrink-0 overflow-hidden border border-gray-200 dark:border-white/[0.08]">
                   {item.productId?.imageUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={item.productId.imageUrl} alt={item.productId.title} className="w-full h-full object-cover" />
@@ -196,38 +195,25 @@ export default function OrderTrackingPage() {
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h4 className="font-semibold text-gray-900 dark:text-white text-sm truncate">
-                    {item.productId?.title || 'Unknown Product'}
+                  <h4 className={`font-bold text-gray-900 dark:text-white text-xs truncate ${isKm ? 'tracking-normal' : 'uppercase tracking-wider'}`}>
+                    {isKm && item.productId?.titleKm ? item.productId.titleKm : item.productId?.title || 'Product'}
                   </h4>
-                  {item.selectedVariants && Object.keys(item.selectedVariants).length > 0 && (
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                      {Object.entries(item.selectedVariants).map(([k, v]) => `${k}: ${v}`).join(', ')}
-                    </p>
-                  )}
-                  <div className="flex justify-between items-center mt-2">
-                    <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">Qty: {item.quantity}</span>
-                    <span className="text-sm font-bold text-gray-900 dark:text-white">${item.price.toFixed(2)}</span>
-                  </div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                    ${item.price?.toFixed(2)} × {item.quantity}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <span className="font-extrabold text-gray-900 dark:text-white text-xs font-mono">
+                    ${((item.price || 0) * (item.quantity || 1)).toFixed(2)}
+                  </span>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="mt-6 pt-4 border-t border-gray-100 dark:border-gray-800 space-y-2">
-            <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
-              <span>{isKm ? 'សរុប' : 'Subtotal'}</span>
-              <span>${order.subtotal?.toFixed(2) || (order.totalAmount - (order.deliveryFee || 0)).toFixed(2)}</span>
-            </div>
-            {order.deliveryFee > 0 && (
-              <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
-                <span>{isKm ? 'ថ្លៃដឹកជញ្ជូន' : 'Delivery Fee'}</span>
-                <span>${order.deliveryFee.toFixed(2)}</span>
-              </div>
-            )}
-            <div className="flex justify-between text-base font-bold text-gray-900 dark:text-white pt-2 border-t border-gray-100 dark:border-gray-800">
-              <span>{isKm ? 'សរុបទាំងអស់' : 'Total'}</span>
-              <span>${order.totalAmount.toFixed(2)}</span>
-            </div>
+          <div className="pt-4 border-t border-gray-100 dark:border-white/[0.06] flex justify-between items-center text-xs">
+            <span className="font-bold text-gray-500 dark:text-gray-400 uppercase">{isKm ? 'តម្លៃសរុប' : 'TOTAL AMOUNT'}</span>
+            <span className="text-base font-black text-gray-900 dark:text-white font-mono">${order.totalAmount?.toFixed(2)}</span>
           </div>
         </div>
       </div>

@@ -56,7 +56,11 @@ const storeSchema = new mongoose.Schema(
       logoUrl: { type: String },
       bannerUrl: { type: String },
       primaryColor: { type: String, default: '#E84C3D' },
-      themeStyle: { type: String, enum: ['default', 'minimalist', 'neo-brutalism'], default: 'default' },
+      themeStyle: { 
+        type: String, 
+        enum: ['default', 'minimalist', 'neo-brutalism', 'fashion-editorial', 'skincare-clean', 'minimal-tech'], 
+        default: 'fashion-editorial' 
+      },
     },
     contact: {
       phone: { type: String },

@@ -2,7 +2,7 @@
 
 import { Link, usePathname } from '@/navigation';
 import { useAuthStore } from '@/lib/store/useAuthStore';
-import { X, LogOut, ChevronRight } from 'lucide-react';
+import { X, LogOut, Activity } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useLocale } from 'next-intl';
 import { useRouter } from '@/navigation';
@@ -26,6 +26,7 @@ export function Sidebar({ items, title, isOpen, onClose }: SidebarProps) {
   const logout = useAuthStore((state) => state.logout);
   const router = useRouter();
   const locale = useLocale();
+  const isKm = locale === 'km';
   const [storeLogo, setStoreLogo] = useState<string | null>(null);
   const [storeName, setStoreName] = useState<string | null>(null);
 
@@ -53,6 +54,10 @@ export function Sidebar({ items, title, isOpen, onClose }: SidebarProps) {
     router.push('/login');
   };
 
+  // Separate main items from settings/secondary items
+  const mainItems = items.filter(item => !item.href.includes('settings') && !item.href.includes('upgrade'));
+  const bottomItems = items.filter(item => item.href.includes('settings') || item.href.includes('upgrade'));
+
   return (
     <>
       {/* Mobile Backdrop */}
@@ -63,90 +68,104 @@ export function Sidebar({ items, title, isOpen, onClose }: SidebarProps) {
         />
       )}
 
-      {/* Sidebar — NextAdmin Theme */}
-      <div className={`fixed lg:static inset-y-0 left-0 z-50 w-[280px] h-full bg-white dark:bg-[#111111] shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none flex flex-col transform transition-transform duration-200 ease-out ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}>
-        
-        {/* Store Brand */}
-        <div className="h-14 flex items-center justify-between px-4 border-b border-gray-100 dark:border-white/[0.05]">
-          <div className="flex items-center gap-3 min-w-0">
-            <div className="w-7 h-7 rounded-lg overflow-hidden shrink-0 ring-1 ring-gray-100 dark:ring-white/10">
-              {storeLogo ? (
-                <img src={storeLogo} alt="Logo" className="w-full h-full object-cover" />
-              ) : (
-                <div className="w-full h-full bg-[#E84C3D] flex items-center justify-center text-white text-xs font-black">
-                  {(storeName || title || 'S').charAt(0).toUpperCase()}
-                </div>
-              )}
-            </div>
-            <div className="min-w-0">
-              <p className="text-sm font-bold text-gray-900 dark:text-white truncate leading-tight">{storeName || title}</p>
-              <p className="text-[10px] text-gray-600 dark:text-gray-400 font-bold uppercase tracking-widest leading-tight">Dashboard</p>
-            </div>
-          </div>
-          <button 
-            onClick={onClose} 
-            className="lg:hidden p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 rounded-lg transition-colors"
-            title="Close sidebar"
-          >
-            <X size={20} />
-          </button>
-        </div>
-
-        {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto py-4 px-4 space-y-1.5">
-          {/* Section label */}
-          <p className="px-3 py-1 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-1">
-            {locale === 'km' ? 'ម៉ឺនុយ' : 'Menu'}
-          </p>
-          {items.map((item) => {
-            const isActive = pathname === item.href || (item.href !== '/admin' && item.href !== '/superadmin' && pathname?.startsWith(item.href));
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={onClose}
-                className={`flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-bold transition-all duration-200 group relative ${
-                  isActive
-                    ? "bg-[#E84C3D] text-white shadow-[0_4px_14px_rgba(232,76,61,0.25)]"
-                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100/80 dark:hover:bg-white/[0.06]"
-                }`}
-              >
-                <span className={`shrink-0 transition-colors ${isActive ? 'text-white' : 'text-gray-400 dark:text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-200'}`}>
-                  {item.icon}
-                </span>
-                <span className="flex-1 truncate">{item.label}</span>
-                {isActive && (
-                  <ChevronRight size={16} className="text-white/80 shrink-0" />
+      {/* Modern Sleek Charcoal Sidebar */}
+      <aside 
+        className={`fixed lg:static inset-y-0 left-0 z-50 w-[260px] h-full bg-[#111622] text-white flex flex-col justify-between shrink-0 select-none transform transition-transform duration-200 ease-out border-r border-white/[0.06] ${
+          isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        }`}
+      >
+        {/* Top: Brand Header */}
+        <div>
+          <div className="h-16 flex items-center justify-between px-6 border-b border-white/[0.06]">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#E84C3D] to-red-500 flex items-center justify-center text-white shadow-md shadow-red-500/20 shrink-0 overflow-hidden ring-1 ring-white/20">
+                {storeLogo ? (
+                  <img src={storeLogo} alt="Logo" className="w-full h-full object-cover" />
+                ) : (
+                  <Activity size={18} strokeWidth={2.5} />
                 )}
-              </Link>
-            );
-          })}
-        </nav>
-
-        {/* User footer */}
-        <div className="p-3 border-t border-gray-100 dark:border-white/[0.05]">
-          <div className="flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-gray-50 dark:hover:bg-white/5 transition-colors group cursor-default">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#E84C3D] to-[#c0392b] flex items-center justify-center text-white text-xs font-black shrink-0 shadow-sm overflow-hidden ring-1 ring-gray-200 dark:ring-white/10">
-              {user?.profilePic ? (
-                <img src={user.profilePic} alt="Profile" className="w-full h-full object-cover" />
-              ) : (
-                user?.name?.charAt(0).toUpperCase() || 'M'
-              )}
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm font-bold text-white truncate tracking-tight">
+                  {storeName || title || 'Amatak'}
+                </p>
+                <p className="text-[10px] text-gray-400 font-semibold tracking-wider uppercase truncate">
+                  {user?.role === 'superadmin' ? (isKm ? 'អ្នកគ្រប់គ្រងជាន់ខ្ពស់' : 'Super Admin') : (isKm ? 'ផ្ទាំងគ្រប់គ្រងហាង' : 'Merchant Hub')}
+                </p>
+              </div>
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-bold text-gray-900 dark:text-white truncate">{user?.name || 'Merchant'}</p>
-              <p className="text-[10px] text-gray-500 dark:text-gray-400 truncate">{user?.email}</p>
-            </div>
-            <button
-              onClick={handleLogout}
-              title="Log out"
-              className="p-1.5 text-gray-400 hover:text-red-500 dark:hover:text-red-400 rounded-lg transition-colors hover:bg-red-50 dark:hover:bg-red-950/30"
+            <button 
+              onClick={onClose} 
+              className="lg:hidden p-1.5 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+              title="Close sidebar"
             >
-              <LogOut size={16} />
+              <X size={18} />
             </button>
           </div>
+
+          {/* Primary Navigation Items */}
+          <nav className="p-4 space-y-1">
+            {mainItems.map((item) => {
+              const isActive = pathname === item.href || (item.href !== '/admin' && item.href !== '/superadmin' && pathname?.startsWith(item.href));
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={onClose}
+                  className={`flex items-center gap-3.5 px-4 py-3 rounded-2xl text-sm font-semibold transition-all duration-200 ${
+                    isActive
+                      ? "bg-white text-gray-900 shadow-md shadow-black/10 font-bold"
+                      : "text-gray-400 hover:text-white hover:bg-white/[0.06]"
+                  }`}
+                >
+                  <span className={`shrink-0 transition-colors ${isActive ? 'text-gray-900' : 'text-gray-400'}`}>
+                    {item.icon}
+                  </span>
+                  <span className="truncate">{item.label}</span>
+                </Link>
+              );
+            })}
+          </nav>
         </div>
-      </div>
+
+        {/* Bottom Section: Secondary Items + User Info + Logout */}
+        <div className="p-4 border-t border-white/[0.06] space-y-2">
+          {/* Secondary Nav (Settings, Upgrade, etc.) */}
+          {bottomItems.length > 0 && (
+            <div className="space-y-1 mb-2">
+              {bottomItems.map((item) => {
+                const isActive = pathname === item.href || (item.href !== '/admin' && item.href !== '/superadmin' && pathname?.startsWith(item.href));
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={onClose}
+                    className={`flex items-center gap-3.5 px-4 py-2.5 rounded-2xl text-sm font-semibold transition-all duration-200 ${
+                      isActive
+                        ? "bg-white text-gray-900 shadow-md shadow-black/10 font-bold"
+                        : "text-gray-400 hover:text-white hover:bg-white/[0.06]"
+                    }`}
+                  >
+                    <span className={`shrink-0 transition-colors ${isActive ? 'text-gray-900' : 'text-gray-400'}`}>
+                      {item.icon}
+                    </span>
+                    <span className="truncate">{item.label}</span>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Clean Logout Button (Matching reference bottom) */}
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-colors group"
+          >
+            <LogOut size={18} className="shrink-0 transition-transform group-hover:-translate-x-0.5" />
+            <span>{isKm ? 'ចាកចេញ' : 'Log out'}</span>
+          </button>
+        </div>
+      </aside>
     </>
   );
 }

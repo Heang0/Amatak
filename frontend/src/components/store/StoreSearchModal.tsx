@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { X, Search } from 'lucide-react';
+import { X, Search, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useParams } from 'next/navigation';
 
@@ -14,7 +14,19 @@ interface Product {
   price: number;
 }
 
-export default function StoreSearchModal({ isOpen, onClose, slug, locale, primaryColor }: { isOpen: boolean, onClose: () => void, slug: string, locale: string, primaryColor: string }) {
+export default function StoreSearchModal({ 
+  isOpen, 
+  onClose, 
+  slug, 
+  locale, 
+  primaryColor 
+}: { 
+  isOpen: boolean; 
+  onClose: () => void; 
+  slug: string; 
+  locale: string; 
+  primaryColor: string; 
+}) {
   const [query, setQuery] = useState('');
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
@@ -53,7 +65,7 @@ export default function StoreSearchModal({ isOpen, onClose, slug, locale, primar
 
   if (!isOpen) return null;
 
-  const t = (en: string, km: string) => locale === 'km' ? km : en;
+  const isKm = locale === 'km';
 
   const filteredProducts = query 
     ? products.filter(p => 
@@ -63,59 +75,97 @@ export default function StoreSearchModal({ isOpen, onClose, slug, locale, primar
     : products;
 
   return (
-    <div className="fixed inset-0 z-[100] bg-black/60 flex items-start justify-center pt-16 sm:pt-24 px-4 pb-4 animate-in fade-in duration-200" onClick={onClose}>
+    <div 
+      className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-2xs flex items-start justify-center pt-12 sm:pt-20 px-4 pb-4 animate-in fade-in duration-200" 
+      onClick={onClose}
+    >
       <div 
-        className="w-full max-w-2xl bg-white dark:bg-[#111111] rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh] animate-in slide-in-from-top-4 duration-300"
+        className="w-full max-w-2xl bg-white dark:bg-[#111318] rounded-none border border-gray-200 dark:border-white/[0.1] shadow-2xl overflow-hidden flex flex-col max-h-[80vh] animate-in slide-in-from-top-4 duration-300"
         onClick={(e) => e.stopPropagation()}
       >
-      <div className="flex items-center px-4 py-4 border-b border-gray-100 dark:border-gray-900 shrink-0 gap-3">
-        <div className="relative flex-1">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+        {/* Search Bar Header */}
+        <div className="flex items-center px-5 py-4 border-b border-gray-100 dark:border-white/[0.06] shrink-0 gap-3">
+          <Search className="text-gray-400 shrink-0" size={18} />
+          
           <input
             autoFocus
             type="text"
-            placeholder={t('Search products...', 'ស្វែងរកផលិតផល...')}
+            placeholder={isKm ? 'ស្វែងរកផលិតផល...' : 'Search for products, items, or collections...'}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full bg-gray-100 dark:bg-gray-800 border-transparent rounded-none py-3 pl-12 pr-4 outline-none text-gray-900 dark:text-white placeholder-gray-500 focus:ring-2 transition-all shadow-inner"
-            style={{ '--tw-ring-color': primaryColor } as any}
+            className="w-full bg-transparent border-none outline-none text-sm sm:text-base font-medium text-gray-900 dark:text-white placeholder-gray-400"
           />
-        </div>
-        <button onClick={onClose} className="p-2 text-red-600 bg-red-50 hover:bg-red-100 dark:text-red-400 dark:bg-red-500/10 dark:hover:bg-red-500/20 transition-colors rounded-full active:scale-95">
-          <X size={20} strokeWidth={2.5} />
-        </button>
-      </div>
 
-      <div className="flex-1 overflow-y-auto p-4 pb-safe">
-        {loading ? (
-          <div className="flex justify-center py-20"><div className="w-8 h-8 border-4 border-gray-200 border-t-black dark:border-t-white rounded-full animate-spin"></div></div>
-        ) : filteredProducts.length === 0 ? (
-          <div className="text-center py-20 text-gray-500">{t('No results found', 'រកមិនឃើញលទ្ធផល')} {query ? `${t('for', 'សម្រាប់')} "${query}"` : ''}</div>
-        ) : (
-          <div className="pb-4">
-            {!query && <h3 className="text-sm font-semibold text-gray-400 dark:text-gray-500 mb-4 px-1">{t('Suggested Products', 'ផលិតផលដែលបានណែនាំ')}</h3>}
-            <div className="flex flex-col gap-y-2">
-              {filteredProducts.map(product => (
-                <Link 
-                  key={product._id} 
-                  href={`${basePath}/product/${product.slug || product._id}`}
-                  onClick={onClose}
-                  className="flex items-center gap-4 group hover:bg-gray-50 dark:hover:bg-gray-800/80 p-2 -mx-2 rounded-xl transition-colors"
-                >
-                  <div className="w-16 h-16 shrink-0 bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden relative border border-gray-100 dark:border-gray-800">
-                    <img src={product.imageUrl?.replace('/upload/', '/upload/w_200,c_limit,q_auto/')} alt={product.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="text-[14px] font-medium text-gray-900 dark:text-white line-clamp-1">{locale === 'km' && product.titleKm ? product.titleKm : product.title}</h4>
-                    <p className="text-[14px] font-semibold mt-0.5" style={{ color: primaryColor }}>${product.price.toFixed(2)}</p>
-                  </div>
-                </Link>
-              ))}
+          <button 
+            onClick={onClose} 
+            className="p-1.5 text-gray-400 hover:text-black dark:hover:text-white transition-colors"
+            title="Close"
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        {/* Results Container */}
+        <div className="flex-1 overflow-y-auto p-5">
+          {loading ? (
+            <div className="flex justify-center py-16">
+              <div className="w-6 h-6 border-2 border-gray-200 border-t-black dark:border-t-white rounded-none animate-spin"></div>
             </div>
-          </div>
-        )}
+          ) : filteredProducts.length === 0 ? (
+            <div className="text-center py-16 text-xs font-bold uppercase tracking-wider text-gray-400">
+              {isKm ? 'រកមិនឃើញលទ្ធផល' : 'No results found'} {query ? `for "${query}"` : ''}
+            </div>
+          ) : (
+            <div>
+              {!query && (
+                <h3 className={`text-[11px] font-bold text-gray-400 ${isKm ? 'tracking-normal' : 'uppercase tracking-widest'} mb-3 px-1`}>
+                  {isKm ? 'ផលិតផលណែនាំ' : 'SUGGESTED FOR YOU'}
+                </h3>
+              )}
+              
+              <div className="divide-y divide-gray-100 dark:divide-white/[0.04]">
+                {filteredProducts.map(product => {
+                  const title = isKm && product.titleKm ? product.titleKm : product.title;
+
+                  return (
+                    <Link 
+                      key={product._id} 
+                      href={`${basePath}/product/${product.slug || product._id}`}
+                      onClick={onClose}
+                      className="flex items-center gap-4 py-3 group hover:bg-gray-50 dark:hover:bg-white/[0.03] px-2 rounded-none transition-colors"
+                    >
+                      {/* Product Thumbnail (Square & Sharp Corners) */}
+                      <div className="w-14 h-14 shrink-0 bg-stone-100 dark:bg-stone-900 rounded-none overflow-hidden border border-gray-200 dark:border-white/[0.08]">
+                        {product.imageUrl ? (
+                          <img 
+                            src={product.imageUrl.replace('/upload/', '/upload/w_200,c_limit,q_auto/')} 
+                            alt={title} 
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-[10px] text-gray-400">No Image</div>
+                        )}
+                      </div>
+
+                      {/* Info */}
+                      <div className="flex-1 min-w-0">
+                        <h4 className={`text-xs sm:text-sm font-bold ${isKm ? 'tracking-normal' : 'uppercase tracking-wider'} text-gray-900 dark:text-white line-clamp-1 group-hover:text-black dark:group-hover:text-white`}>
+                          {title}
+                        </h4>
+                        <p className="text-xs font-extrabold text-gray-900 dark:text-white mt-1">
+                          ${product.price.toFixed(2)}
+                        </p>
+                      </div>
+
+                      <ArrowRight size={14} className="text-gray-300 dark:text-gray-600 group-hover:text-black dark:group-hover:text-white group-hover:translate-x-0.5 transition-all" />
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
     </div>
   );
 }

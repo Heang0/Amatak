@@ -37,8 +37,11 @@ export const getAuthSession = (sessionId) => {
   return authSessions.get(sessionId) || null;
 };
 
+// Enable polling only if explicitly requested or in production, avoiding 409 conflict with deployed instances
+const shouldPoll = process.env.ENABLE_TELEGRAM_POLLING === 'true' || (process.env.NODE_ENV === 'production' && process.env.ENABLE_TELEGRAM_POLLING !== 'false');
+
 if (token) {
-  bot = new TelegramBot(token, { polling: true });
+  bot = new TelegramBot(token, { polling: shouldPoll });
 
   // Handle direct 1-click login from Telegram App
   bot.onText(/^\/start\s+login_([a-zA-Z0-9_-]+)/, async (msg, match) => {
@@ -129,10 +132,11 @@ if (token) {
   });
 
   bot.on('polling_error', (error) => {
-    // Avoid spamming logs on network hiccups
-    if (error?.code !== 'EFATAL') {
-      console.warn('Telegram Polling Warning:', error.message);
+    // Avoid spamming logs if another instance (e.g. deployed backend) is already polling
+    if (error?.message?.includes('409 Conflict') || error?.code === 'ETELEGRAM') {
+      return;
     }
+    console.warn('Telegram Polling Warning:', error.message);
   });
 } else {
   console.log('⚠️ TELEGRAM_BOT_TOKEN not found in .env. Telegram Bot is disabled.');

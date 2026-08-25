@@ -115,7 +115,7 @@ export default function ProductDetailClient({
         });
         if (res.ok) {
           const data = await res.json();
-          setCustomerInfo({ ...customer, favorites: data.favorites });
+          setCustomerInfo({ ...customer, favorites: Array.isArray(data) ? data : data.favorites });
         }
       } catch (e) {
         console.error('Error toggling wishlist', e);

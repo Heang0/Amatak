@@ -76,7 +76,7 @@ export default function ProductCard({
         const data = await res.json();
         setCustomerInfo({
           ...user,
-          favorites: data.favorites
+          favorites: Array.isArray(data) ? data : data.favorites
         });
       }
     } catch (err) {

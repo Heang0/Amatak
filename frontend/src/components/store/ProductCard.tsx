@@ -30,6 +30,8 @@ export default function ProductCard({
   const basePath = isPathRouting && params.slug ? `/${params.locale}/store/${params.slug}` : `/${params.locale}`;
   const isKm = params?.locale === 'km';
 
+  if (!product || !product._id) return null;
+
   const isFavorite = user?.favorites?.some(f => 
     typeof f === 'string' ? f === product._id : f?._id === product._id
   );
@@ -45,12 +47,12 @@ export default function ProductCard({
 
     addItem({
       productId: product._id,
-      title: product.title,
-      price: product.price,
+      title: product.title || '',
+      price: product.price ?? 0,
       quantity: 1,
       imageUrl: product.imageUrl,
     });
-    onAddToCart(product);
+    if (onAddToCart) onAddToCart(product);
   };
 
   const handleWishlist = async (e: React.MouseEvent) => {
@@ -64,11 +66,18 @@ export default function ProductCard({
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/users/favorites/${product._id}`, {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${user.token}` }
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.token}`
+        }
       });
+
       if (res.ok) {
         const data = await res.json();
-        setCustomerInfo({ ...user, favorites: data.favorites });
+        setCustomerInfo({
+          ...user,
+          favorites: data.favorites
+        });
       }
     } catch (err) {
       console.error(err);
@@ -90,7 +99,8 @@ export default function ProductCard({
   };
 
   const badge = getProductBadge();
-  const productTitle = params.locale === 'km' && product.titleKm ? product.titleKm : product.title;
+  const productTitle = params.locale === 'km' && product.titleKm ? product.titleKm : (product.title || 'Product');
+  const priceDisplay = Number(product.price ?? 0).toFixed(2);
 
   // 1. 👗 FASHION EDITORIAL THEME (Minimalist Luxury / Zara & COS Aesthetic)
   if (themeStyle === 'fashion-editorial' || themeStyle === 'minimalist') {
@@ -109,36 +119,39 @@ export default function ProductCard({
           {/* Clean Bookmark Badge */}
           <button
             onClick={handleWishlist}
-            className="absolute top-2.5 right-2.5 p-1.5 rounded-none bg-white/90 dark:bg-black/80 backdrop-blur-xs text-gray-900 dark:text-white hover:scale-110 active:scale-95 transition-all shadow-xs"
+            className="absolute top-2 right-2 p-1.5 rounded-none bg-white/90 dark:bg-black/60 backdrop-blur-xs text-stone-700 dark:text-stone-300 hover:scale-110 active:scale-95 transition-all shadow-2xs"
             title="Save"
           >
-            <Bookmark size={13} className={isFavorite ? 'fill-current text-black dark:text-white' : 'text-gray-600 dark:text-gray-300'} />
+            <Bookmark size={14} className={isFavorite ? 'fill-black text-black dark:fill-white dark:text-white' : 'text-stone-400'} />
           </button>
 
           {badge && (
-            <span className={`absolute top-2 left-2 text-[9px] font-bold px-2 py-0.5 ${params.locale === 'km' ? 'tracking-normal' : 'uppercase tracking-widest'} rounded-none ${badge.bg}`}>
+            <span className="absolute top-2 left-2 text-[9px] font-bold px-2 py-0.5 rounded-none uppercase tracking-wider bg-black text-white dark:bg-white dark:text-black shadow-2xs">
               {badge.text}
             </span>
           )}
         </div>
 
-        {/* Product Info */}
-        <div className="flex flex-col flex-1">
-          <h3 className={`text-xs sm:text-sm font-bold ${params.locale === 'km' ? 'tracking-normal' : 'uppercase tracking-wider'} text-gray-900 dark:text-white line-clamp-1 mb-1`}>
+        {/* Product Details */}
+        <div className="flex flex-col flex-1 px-0.5">
+          <h3 className={`text-xs sm:text-sm font-bold text-gray-900 dark:text-white line-clamp-1 mb-1 ${isKm ? 'tracking-normal' : 'uppercase tracking-wider'}`}>
             {productTitle}
           </h3>
-          <p className="text-xs font-extrabold text-gray-900 dark:text-white mb-2">
-            ${product.price.toFixed(2)}
-          </p>
 
-          {/* Clean Monochromatic Button (Sharp Corners) */}
-          <button
-            onClick={handleAdd}
-            className={`w-full mt-auto py-2 px-3 border border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-gray-900 text-[10px] sm:text-xs font-bold ${params.locale === 'km' ? 'tracking-normal' : 'uppercase tracking-widest'} transition-all flex items-center justify-center gap-1.5 active:scale-98 rounded-none`}
-          >
-            <ShoppingBag size={12} />
-            <span>{params.locale === 'km' ? 'ដាក់កន្ត្រក' : 'ADD TO BAG'}</span>
-          </button>
+          <div className="mt-auto pt-1 flex items-center justify-between">
+            <span className="text-xs sm:text-sm font-black text-gray-900 dark:text-white font-mono">
+              ${priceDisplay}
+            </span>
+
+            {/* Sharp Bag CTA */}
+            <button
+              onClick={handleAdd}
+              className="w-7 h-7 rounded-none bg-black hover:bg-neutral-800 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-black flex items-center justify-center transition-all active:scale-95 shadow-xs"
+              title="Add to bag"
+            >
+              <ShoppingBag size={13} />
+            </button>
+          </div>
         </div>
       </Link>
     );
@@ -176,7 +189,7 @@ export default function ProductCard({
         {/* Product Details */}
         <div className="flex flex-col flex-1 px-0.5">
           <p className="text-[10px] text-stone-400 dark:text-stone-500 font-mono uppercase tracking-wider mb-0.5 truncate">
-            {product.category?.name || 'FORMULA'}
+            {typeof product.category === 'object' && product.category?.name ? product.category.name : 'FORMULA'}
           </p>
 
           <h3 className={`text-xs sm:text-sm font-bold text-stone-900 dark:text-stone-100 line-clamp-1 mb-2 ${isKm ? 'tracking-normal' : 'tracking-tight'}`}>
@@ -185,7 +198,7 @@ export default function ProductCard({
 
           <div className="mt-auto pt-2 flex items-center justify-between border-t border-stone-100 dark:border-white/[0.06]">
             <span className="text-xs sm:text-sm font-black text-stone-900 dark:text-white font-mono">
-              ${product.price.toFixed(2)}
+              ${priceDisplay}
             </span>
 
             {/* Quick Add Button */}
@@ -232,7 +245,7 @@ export default function ProductCard({
 
         <div className="flex flex-col flex-1 px-0.5">
           <p className="text-[10px] text-cyan-600 dark:text-cyan-400/80 font-mono uppercase tracking-wider mb-0.5 truncate">
-            {product.category?.name || 'TECH'}
+            {typeof product.category === 'object' && product.category?.name ? product.category.name : 'TECH'}
           </p>
 
           <h3 className={`text-xs sm:text-sm font-mono font-bold text-gray-900 dark:text-white mb-2 line-clamp-1 ${isKm ? 'tracking-normal' : 'tracking-tight'}`}>
@@ -241,7 +254,7 @@ export default function ProductCard({
 
           <div className="mt-auto pt-2 flex items-center justify-between border-t border-gray-100 dark:border-white/[0.06]">
             <span className="text-xs sm:text-sm font-mono font-black text-gray-900 dark:text-cyan-300">
-              ${product.price.toFixed(2)}
+              ${priceDisplay}
             </span>
 
             <button
@@ -290,7 +303,7 @@ export default function ProductCard({
 
         <div className="mt-auto pt-1.5 flex items-center justify-between border-t-[1.5px] border-black dark:border-white">
           <span className="text-xs sm:text-sm font-black bg-amber-300 text-black px-1.5 py-0.5 border border-black rounded-none">
-            ${product.price.toFixed(2)}
+            ${priceDisplay}
           </span>
 
           <button
@@ -307,15 +320,23 @@ export default function ProductCard({
 
   // 5. 🛍️ DEFAULT MODERN RETAIL (Editorial Fashion)
   return (
-    <Link href={`${basePath}/product/${product.slug || product._id}`} className="group flex flex-col p-3 rounded-none bg-white dark:bg-[#13161F] border border-gray-200 dark:border-white/[0.08] shadow-2xs hover:border-black dark:hover:border-white transition-all">
-      <div className="relative aspect-square w-full bg-stone-100 dark:bg-stone-900 rounded-none mb-2.5 overflow-hidden">
+    <Link href={`${basePath}/product/${product.slug || product._id}`} className="group flex flex-col p-2.5 rounded-none bg-white dark:bg-[#111] border border-gray-200 dark:border-white/10 hover:border-black dark:hover:border-white transition-all shadow-2xs">
+      <div className="relative aspect-square w-full bg-stone-50 dark:bg-stone-900 rounded-none overflow-hidden mb-2.5">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img 
           src={product.imageUrl?.replace('/upload/', '/upload/w_600,c_limit,q_auto/')} 
           alt={productTitle} 
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-none" 
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
           loading="lazy"
         />
+
+        <button
+          onClick={handleWishlist}
+          className="absolute top-2 right-2 p-1.5 rounded-none bg-white/90 dark:bg-black/60 backdrop-blur-xs text-stone-700 dark:text-stone-300 hover:scale-110 active:scale-95 transition-all shadow-2xs"
+          title="Save"
+        >
+          <Bookmark size={14} className={isFavorite ? 'fill-black text-black dark:fill-white dark:text-white' : 'text-stone-400'} />
+        </button>
         
         {badge && (
           <span 
@@ -337,13 +358,13 @@ export default function ProductCard({
             className="text-xs sm:text-sm font-black text-gray-900 dark:text-white font-mono"
             style={{ color: primaryColor && primaryColor !== '#000000' && primaryColor !== '#111111' ? primaryColor : undefined }}
           >
-            ${product.price.toFixed(2)}
+            ${priceDisplay}
           </span>
           
-          <button
+          <button 
             onClick={handleAdd}
-            className="w-7 h-7 rounded-none flex items-center justify-center text-white shadow-2xs hover:scale-105 active:scale-95 transition-all bg-black hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-gray-100"
-            title="Add to cart"
+            className="w-7 h-7 rounded-none bg-black hover:bg-neutral-800 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-black flex items-center justify-center transition-all active:scale-95 shadow-xs"
+            title="Add to bag"
           >
             <ShoppingBag size={13} />
           </button>

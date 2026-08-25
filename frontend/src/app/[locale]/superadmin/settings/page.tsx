@@ -6,7 +6,7 @@ import { User } from 'lucide-react';
 
 export default function SuperadminSettings() {
  const user = useAuthStore((state) => state.user);
- const login = useAuthStore((state) => state.login);
+ const setUser = useAuthStore((state) => state.setUser);
  
  const [formData, setFormData] = useState({
   name: user?.name || '',
@@ -37,7 +37,7 @@ export default function SuperadminSettings() {
    if (res.ok) {
     setSuccessMsg('Profile updated successfully!');
     // Update user store
-    login({ ...user, ...data, token: user?.token });
+    if (user) setUser({ ...user, ...data, token: user.token });
    } else {
     alert(data.message || 'Failed to update profile');
    }

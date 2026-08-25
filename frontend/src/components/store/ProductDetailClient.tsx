@@ -299,7 +299,7 @@ export default function ProductDetailClient({
                 {productTitle}
               </h1>
               <p className="text-xl sm:text-2xl font-extrabold text-gray-900 dark:text-white">
-                ${product.price.toFixed(2)}
+                ${Number(product.price ?? 0).toFixed(2)}
               </p>
             </div>
 

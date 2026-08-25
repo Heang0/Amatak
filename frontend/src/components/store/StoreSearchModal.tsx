@@ -153,7 +153,7 @@ export default function StoreSearchModal({
                           {title}
                         </h4>
                         <p className="text-xs font-extrabold text-gray-900 dark:text-white mt-1">
-                          ${product.price.toFixed(2)}
+                          ${Number(product.price ?? 0).toFixed(2)}
                         </p>
                       </div>
 

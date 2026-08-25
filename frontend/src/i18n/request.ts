@@ -5,17 +5,12 @@ import {getRequestConfig} from 'next-intl/server';
 export const locales = ['en', 'km'];
  
 export default getRequestConfig(async ({requestLocale}) => {
-  let locale = await requestLocale;
+  const reqLocale = await requestLocale;
   
-  console.log("i18n requested with locale:", locale);
-  let resolvedLocale = locale;
-  if (!locale || !locales.includes(locale as any)) {
-    console.log("Locale not found, falling back to 'km'");
-    resolvedLocale = 'km';
-  }
+  const locale: string = (reqLocale && locales.includes(reqLocale as any)) ? reqLocale : 'km';
  
   return {
-    locale: resolvedLocale,
-    messages: (await import(`../messages/${resolvedLocale}.json`)).default
+    locale,
+    messages: (await import(`../messages/${locale}.json`)).default
   };
 });

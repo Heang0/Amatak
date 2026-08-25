@@ -2,19 +2,20 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { Heart, ArrowLeft, ShoppingCart } from 'lucide-react';
+import { Heart, Trash2, ShoppingCart, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { useFavoritesStore } from '@/lib/store/useFavoritesStore';
 import { useCartStore } from '@/lib/store/useCartStore';
-import { useAuthStore } from '@/lib/store/useAuthStore';
 
 interface Product {
   _id: string;
   name: string;
-  description: string;
   price: number;
   image: string;
+  category?: string;
+  inStock?: boolean;
   isBestSeller?: boolean;
+  description?: string;
 }
 
 export default function FavoritesPage() {
@@ -27,7 +28,6 @@ export default function FavoritesPage() {
   const removeFavorite = useFavoritesStore((state) => state.removeFavorite);
   const isFavorite = useFavoritesStore((state) => state.isFavorite);
   const addToCart = useCartStore((state) => state.addItem);
-  const store = useAuthStore((state) => state.store);
 
   useEffect(() => {
     const fetchFavoriteProducts = async () => {
@@ -70,10 +70,10 @@ export default function FavoritesPage() {
 
   const handleAddToCart = (product: Product) => {
     addToCart({
-      _id: product._id,
-      name: product.name,
+      productId: product._id,
+      title: product.name,
       price: product.price,
-      image: product.image,
+      imageUrl: product.image,
       quantity: 1,
     });
   };
@@ -95,7 +95,7 @@ export default function FavoritesPage() {
         {/* Header */}
         <div className="mb-6 sm:mb-8">
           <Link
-            href={`/${store?.slug || ''}`}
+            href="/"
             className="inline-flex items-center gap-2 text-sm sm:text-base text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-3 sm:mb-4 active:scale-95 transition-transform"
           >
             <ArrowLeft size={18} className="sm:w-5 sm:h-5" />
@@ -129,7 +129,7 @@ export default function FavoritesPage() {
               Start adding your favorite products to build your wishlist!
             </p>
             <Link
-              href={`/${store?.slug || ''}`}
+              href="/"
               className="inline-block px-5 sm:px-6 py-2 sm:py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg font-medium text-sm sm:text-base hover:bg-gray-800 dark:hover:bg-gray-100 transition active:scale-95"
             >
               Browse Products

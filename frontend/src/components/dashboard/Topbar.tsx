@@ -117,7 +117,7 @@ export function Topbar({ onMenuClick, pageTitle }: TopbarProps) {
 
       setIsSearching(true);
       try {
-        const token = useAuthStore.getState().token;
+        const token = useAuthStore.getState().user?.token;
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/search?q=${encodeURIComponent(debouncedSearchQuery)}`, {
           headers: {
             'Authorization': `Bearer ${token}`

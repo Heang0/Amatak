@@ -9,7 +9,7 @@ import StoreEditProfileModal from '@/components/store/StoreEditProfileModal';
 import BakongKHQRModal from '@/components/payment/BakongKHQRModal';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { LogOut, Package, Clock, CheckCircle2, Truck, XCircle, AlertCircle, Camera, Edit2, Hash, Link2, Activity, CreditCard, Tag, Percent, MapPin, Calendar, FileText, RefreshCcw, X, Plus, Star, Heart } from 'lucide-react';
+import { LogOut, Package, Clock, CheckCircle2, Truck, XCircle, AlertCircle, Camera, Edit2, Hash, Link2, Activity, CreditCard, Tag, Percent, MapPin, Calendar, FileText, RefreshCcw, X, Plus, Star, Heart, Bookmark } from 'lucide-react';
 import Select from 'react-select';
 
 export default function StoreProfilePage({ params }: { params: { slug: string, locale: string, path?: string[] } }) {

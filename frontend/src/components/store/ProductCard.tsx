@@ -2,6 +2,7 @@
 
 import { useCartStore } from '@/lib/store/useCartStore';
 import { useCustomerAuthStore } from '@/lib/store/useCustomerAuthStore';
+import { useFavoritesStore } from '@/lib/store/useFavoritesStore';
 import { Heart, Bookmark, ShoppingBag } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useParams, useRouter } from 'next/navigation';

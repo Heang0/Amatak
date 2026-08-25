@@ -47,9 +47,29 @@ export default function FavoritesPage() {
         
         const allProducts = await response.json();
         
+        // Merge local favorites with authenticated user's favorites
+        const localFavIds = favorites.map(f => f.productId);
+        
+        // We get auth store directly from localStorage to avoid hydration mismatch, or we can use the hook
+        // Since we are in a client component, we should probably import useCustomerAuthStore
+        const { useCustomerAuthStore } = await import('@/lib/store/useCustomerAuthStore');
+        const user = useCustomerAuthStore.getState().customerInfo;
+        
+        const authFavIds = user?.favorites?.map((f: any) => 
+          typeof f === 'string' ? f : f._id
+        ) || [];
+
+        const allFavIds = new Set([...localFavIds, ...authFavIds]);
+
+        if (allFavIds.size === 0) {
+          setProducts([]);
+          setLoading(false);
+          return;
+        }
+        
         // Filter to only favorite products
         const favoriteProducts = allProducts.filter((product: Product) =>
-          favorites.some((fav) => fav.productId === product._id)
+          allFavIds.has(product._id)
         );
         
         setProducts(favoriteProducts);

@@ -32,9 +32,13 @@ export default function ProductCard({
 
   if (!product || !product._id) return null;
 
+  const addFavorite = useFavoritesStore(state => state.addFavorite);
+  const removeFavorite = useFavoritesStore(state => state.removeFavorite);
+  const isLocalFavorite = useFavoritesStore(state => state.isFavorite(product._id));
+
   const isFavorite = user?.favorites?.some(f => 
     typeof f === 'string' ? f === product._id : f?._id === product._id
-  );
+  ) || isLocalFavorite;
 
   const handleAdd = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -58,6 +62,13 @@ export default function ProductCard({
   const handleWishlist = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    
+    if (isFavorite) {
+      removeFavorite(product._id);
+    } else {
+      addFavorite(product._id);
+    }
+
     if (!user) {
       router.push(`${basePath}/profile`);
       return;

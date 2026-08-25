@@ -252,33 +252,33 @@ export default function StorefrontView({
     }
 
     if (themeStyle === 'skincare-clean') {
-      return `flex items-center gap-1.5 whitespace-nowrap rounded-none px-4 py-2 text-xs font-semibold transition-all ${
+      return `flex items-center gap-1.5 whitespace-nowrap rounded-none px-4 py-2 text-xs font-bold ${isKm ? 'tracking-normal' : 'uppercase tracking-wider'} transition-all ${
         isActive 
-          ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-900 shadow-xs' 
-          : 'bg-stone-100 dark:bg-stone-800/80 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
+          ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-900 border border-stone-900 dark:border-white shadow-xs' 
+          : 'bg-[#FAF8F5] dark:bg-[#1A1C1F] text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-white/10 hover:border-stone-400 dark:hover:border-white/30'
       }`;
     }
 
     if (themeStyle === 'minimal-tech') {
       return `flex items-center gap-1.5 whitespace-nowrap rounded-none px-4 py-2 font-mono text-xs font-bold transition-all ${
         isActive 
-          ? 'bg-cyan-500 text-black border border-cyan-400 shadow-md shadow-cyan-500/20' 
-          : 'bg-[#151922] text-cyan-400/80 border border-white/10 hover:border-cyan-500/50'
+          ? 'bg-black text-cyan-400 dark:bg-cyan-500 dark:text-black border border-black dark:border-cyan-400 shadow-md shadow-cyan-500/20' 
+          : 'bg-gray-100 dark:bg-[#151922] text-gray-800 dark:text-cyan-400/80 border border-gray-200 dark:border-white/10 hover:border-cyan-500/50'
       }`;
     }
 
     if (themeStyle === 'neo-brutalism') {
-      return `flex items-center gap-1.5 whitespace-nowrap border-[2.5px] border-black dark:border-white px-4 py-2 text-xs font-black uppercase tracking-wider transition ${
+      return `flex items-center gap-1.5 whitespace-nowrap border-[2.5px] border-black dark:border-white px-4 py-2 text-xs font-black uppercase tracking-wider transition rounded-none ${
         isActive 
           ? 'bg-black text-white dark:bg-white dark:text-black shadow-none' 
           : 'bg-white text-black dark:bg-[#111] dark:text-white shadow-[3px_3px_0px_#000] dark:shadow-[3px_3px_0px_#fff] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none'
       }`;
     }
 
-    return `flex items-center gap-1.5 whitespace-nowrap rounded-none border px-3.5 py-1.5 text-xs font-semibold transition ${
+    return `flex items-center gap-1.5 whitespace-nowrap rounded-none border px-4 py-2 text-xs font-bold ${isKm ? 'tracking-normal' : 'uppercase tracking-wider'} transition ${
       isActive 
         ? 'bg-gray-900 text-white border-gray-900 dark:bg-white dark:text-black dark:border-white shadow-2xs' 
-        : 'bg-gray-100 text-gray-700 border-transparent hover:bg-gray-200 dark:bg-[#151515] dark:text-gray-300 dark:hover:bg-[#202020]'
+        : 'bg-white text-gray-700 border-gray-200 hover:border-gray-900 dark:bg-[#151515] dark:text-gray-300 dark:border-white/10 dark:hover:border-white'
     }`;
   };
 

@@ -202,11 +202,11 @@ export default function ProductCard({
     );
   }
 
-  // 3. 💻 MODERN TECH & MINIMALIST GADGETS
+  // 3. 💻 MODERN TECH & MINIMALIST GADGETS (Clean Precision Electronics)
   if (themeStyle === 'minimal-tech') {
     return (
-      <Link href={`${basePath}/product/${product.slug || product._id}`} className="group flex flex-col p-3 rounded-none bg-[#0D0F14] border border-white/[0.08] hover:border-cyan-500/40 transition-all shadow-2xs">
-        <div className="relative aspect-square w-full bg-[#151922] rounded-none mb-2.5 overflow-hidden p-2.5 flex items-center justify-center border border-white/[0.04]">
+      <Link href={`${basePath}/product/${product.slug || product._id}`} className="group flex flex-col p-3 rounded-none bg-white dark:bg-[#0D0F14] border border-gray-200 dark:border-white/[0.08] hover:border-cyan-500/60 dark:hover:border-cyan-400/50 transition-all shadow-2xs">
+        <div className="relative aspect-square w-full bg-[#F4F6F9] dark:bg-[#151922] rounded-none mb-2.5 overflow-hidden p-2.5 flex items-center justify-center border border-gray-100 dark:border-white/[0.04]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img 
             src={product.imageUrl?.replace('/upload/', '/upload/w_600,c_limit,q_auto/')} 
@@ -216,25 +216,37 @@ export default function ProductCard({
           />
 
           {badge && (
-            <span className="absolute top-2 left-2 text-[8px] font-mono font-bold text-cyan-400 bg-cyan-950/90 border border-cyan-500/30 px-1.5 py-0.5 rounded-none uppercase tracking-widest">
+            <span className="absolute top-2 left-2 text-[8px] font-mono font-bold text-cyan-700 dark:text-cyan-400 bg-cyan-100 dark:bg-cyan-950/90 border border-cyan-300 dark:border-cyan-500/30 px-1.5 py-0.5 rounded-none uppercase tracking-widest">
               {badge.text}
             </span>
           )}
+
+          <button
+            onClick={handleWishlist}
+            className="absolute top-2 right-2 p-1.5 rounded-none bg-white/95 dark:bg-black/80 backdrop-blur-xs text-gray-700 dark:text-gray-300 hover:scale-110 active:scale-95 transition-all shadow-2xs border border-gray-200/60 dark:border-white/10"
+            title="Save"
+          >
+            <Bookmark size={13} className={isFavorite ? 'fill-cyan-500 text-cyan-500' : 'text-gray-400'} />
+          </button>
         </div>
 
         <div className="flex flex-col flex-1 px-0.5">
-          <h3 className={`text-xs sm:text-sm font-mono font-medium text-white mb-1 line-clamp-1 ${isKm ? 'tracking-normal' : 'tracking-tight'}`}>
+          <p className="text-[10px] text-cyan-600 dark:text-cyan-400/80 font-mono uppercase tracking-wider mb-0.5 truncate">
+            {product.category?.name || 'TECH'}
+          </p>
+
+          <h3 className={`text-xs sm:text-sm font-mono font-bold text-gray-900 dark:text-white mb-2 line-clamp-1 ${isKm ? 'tracking-normal' : 'tracking-tight'}`}>
             {productTitle}
           </h3>
 
-          <div className="mt-auto pt-2 flex items-center justify-between border-t border-white/[0.06]">
-            <span className="text-xs sm:text-sm font-mono font-bold text-cyan-300">
+          <div className="mt-auto pt-2 flex items-center justify-between border-t border-gray-100 dark:border-white/[0.06]">
+            <span className="text-xs sm:text-sm font-mono font-black text-gray-900 dark:text-cyan-300">
               ${product.price.toFixed(2)}
             </span>
 
             <button
               onClick={handleAdd}
-              className="w-7 h-7 rounded-none bg-cyan-500 hover:bg-cyan-400 text-black flex items-center justify-center transition-all active:scale-95 shadow-xs"
+              className="w-7 h-7 rounded-none bg-black dark:bg-cyan-500 hover:bg-neutral-800 dark:hover:bg-cyan-400 text-white dark:text-black flex items-center justify-center transition-all active:scale-95 shadow-xs"
               title="Add to cart"
             >
               <ShoppingBag size={13} />
@@ -245,37 +257,45 @@ export default function ProductCard({
     );
   }
 
-  // 4. ⚡ NEO-BRUTALISM & STREETWEAR
+  // 4. ⚡ NEO-BRUTALISM & STREETWEAR (Bold Urban Pop)
   if (themeStyle === 'neo-brutalism') {
     return (
-      <Link href={`${basePath}/product/${product.slug || product._id}`} className="group flex flex-col p-2.5 border-2 border-black bg-white dark:bg-[#111] shadow-[3px_3px_0px_#000] dark:shadow-[3px_3px_0px_#fff] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all">
-        <div className="relative aspect-square w-full bg-[#f4f4f4] dark:bg-[#222] border border-black overflow-hidden mb-2 p-2">
+      <Link href={`${basePath}/product/${product.slug || product._id}`} className="group flex flex-col p-2.5 border-[2.5px] border-black dark:border-white bg-white dark:bg-[#111] shadow-[3px_3px_0px_#000] dark:shadow-[3px_3px_0px_#fff] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all rounded-none">
+        <div className="relative aspect-square w-full bg-[#f4f4f4] dark:bg-[#222] border-[1.5px] border-black dark:border-white overflow-hidden mb-2 p-2 rounded-none">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img 
             src={product.imageUrl?.replace('/upload/', '/upload/w_600,c_limit,q_auto/')} 
             alt={productTitle} 
-            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" 
+            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 rounded-none" 
             loading="lazy"
           />
           {badge && (
-            <span className="absolute top-1.5 left-1.5 bg-black text-white text-[9px] font-black uppercase px-1.5 py-0.5">
+            <span className="absolute top-1.5 left-1.5 bg-black text-white dark:bg-white dark:text-black text-[8px] font-black uppercase px-1.5 py-0.5 rounded-none tracking-wider">
               {badge.text}
             </span>
           )}
+
+          <button
+            onClick={handleWishlist}
+            className="absolute top-1.5 right-1.5 p-1.5 rounded-none bg-white dark:bg-black text-black dark:text-white border border-black dark:border-white hover:scale-110 active:scale-95 transition-all shadow-2xs"
+            title="Save"
+          >
+            <Bookmark size={12} className={isFavorite ? 'fill-black text-black dark:fill-white dark:text-white' : 'text-gray-400'} />
+          </button>
         </div>
 
-        <h3 className="text-xs sm:text-sm font-black uppercase text-black dark:text-white line-clamp-1 mb-1">
+        <h3 className={`text-xs sm:text-sm font-black uppercase text-black dark:text-white line-clamp-1 mb-1 ${isKm ? 'tracking-normal' : 'tracking-wider'}`}>
           {productTitle}
         </h3>
 
-        <div className="mt-auto pt-1.5 flex items-center justify-between border-t border-black dark:border-white">
-          <span className="text-xs sm:text-sm font-black bg-amber-300 text-black px-1 border border-black">
+        <div className="mt-auto pt-1.5 flex items-center justify-between border-t-[1.5px] border-black dark:border-white">
+          <span className="text-xs sm:text-sm font-black bg-amber-300 text-black px-1.5 py-0.5 border border-black rounded-none">
             ${product.price.toFixed(2)}
           </span>
 
           <button
             onClick={handleAdd}
-            className="w-7 h-7 bg-black hover:bg-neutral-800 text-white flex items-center justify-center border border-black active:scale-95 transition-all"
+            className="w-7 h-7 bg-black dark:bg-white hover:bg-neutral-800 dark:hover:bg-gray-100 text-white dark:text-black flex items-center justify-center border border-black dark:border-white active:scale-95 transition-all rounded-none"
             title="Add to cart"
           >
             <ShoppingBag size={13} />

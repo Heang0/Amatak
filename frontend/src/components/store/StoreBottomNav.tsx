@@ -1,9 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import { Home, User, Search, ShoppingBag, Tag } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import StoreSearchModal from './StoreSearchModal';
 
 export default function StoreBottomNav({ locale, primaryColor, slug, initialThemeStyle }: {
@@ -14,9 +14,11 @@ export default function StoreBottomNav({ locale, primaryColor, slug, initialThem
 }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [themeStyle, setThemeStyle] = useState(initialThemeStyle || 'default');
+  const lastTapRef = useRef<number>(0);
 
   useEffect(() => {
     setMounted(true);
@@ -32,6 +34,41 @@ export default function StoreBottomNav({ locale, primaryColor, slug, initialThem
     };
     fetchTheme();
   }, [slug, searchParams]);
+
+  const scrollToTop = () => {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handleItemClick = (e: React.MouseEvent, isItemActive: boolean, customClick?: () => void) => {
+    const now = Date.now();
+    const isDoubleTap = now - lastTapRef.current < 350;
+    lastTapRef.current = now;
+
+    if (customClick) {
+      customClick();
+      return;
+    }
+
+    if (isItemActive) {
+      e.preventDefault();
+      // If already at or near the top, trigger instant refresh (like Instagram/Twitter app)
+      if (typeof window !== 'undefined' && window.scrollY <= 60) {
+        router.refresh();
+      } else {
+        scrollToTop();
+      }
+      return;
+    }
+
+    if (isDoubleTap) {
+      scrollToTop();
+    }
+  };
 
   // Hide on cart page only (allow bottom nav on product detail pages)
   if (pathname?.includes('/cart')) return null;
@@ -102,51 +139,63 @@ export default function StoreBottomNav({ locale, primaryColor, slug, initialThem
     },
   ];
 
-  let navClass = "fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#111318]/95 backdrop-blur-md md:hidden border-t border-gray-200 dark:border-white/[0.08] pb-safe";
+  let navClass = "fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-[#111318]/95 backdrop-blur-lg md:hidden border-t border-gray-200/80 dark:border-white/[0.08] select-none touch-manipulation shadow-[0_-4px_20px_rgba(0,0,0,0.04)] dark:shadow-[0_-4px_20px_rgba(0,0,0,0.4)]";
 
   return (
     <>
-      <nav className={navClass}>
-        <div className="flex h-14 px-2 items-center">
+      <nav 
+        className={navClass} 
+        onDoubleClick={scrollToTop}
+        style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 4px)' }}
+      >
+        <div className="grid grid-cols-5 h-14 w-full max-w-md mx-auto items-stretch px-1">
           {navItems.map((item) => {
             const isItemActive = item.isActive;
-            const itemClass = `flex flex-1 flex-col items-center justify-center gap-0.5 relative h-full transition-all ${
-              isItemActive ? 'text-black dark:text-white font-bold' : 'text-gray-400 dark:text-gray-500 hover:text-black dark:hover:text-white'
+            const itemClass = `flex flex-col items-center justify-center relative w-full h-full py-1 text-center transition-all touch-manipulation active:scale-95 select-none ${
+              isItemActive 
+                ? 'text-black dark:text-white font-bold' 
+                : 'text-gray-400 dark:text-gray-500 hover:text-black dark:hover:text-white'
             }`;
 
             return item.onClick ? (
               <button
                 key={item.label}
-                onClick={item.onClick}
+                onClick={(e) => handleItemClick(e, isItemActive, item.onClick)}
                 className={itemClass}
+                type="button"
               >
-                <div className="relative">
-                  <item.icon size={18} strokeWidth={isItemActive ? 2.2 : 1.5} />
+                <div className="relative flex items-center justify-center">
+                  <item.icon size={19} strokeWidth={isItemActive ? 2.3 : 1.6} />
                   {mounted && (item.badge ?? 0) > 0 && (
-                    <span className="absolute -top-1.5 -right-2.5 min-w-[14px] h-3.5 px-0.5 text-[8px] font-bold bg-black text-white dark:bg-white dark:text-black flex items-center justify-center rounded-none shadow-xs">
+                    <span className="absolute -top-1.5 -right-3 min-w-[14px] h-3.5 px-0.5 text-[8px] font-bold bg-black text-white dark:bg-white dark:text-black flex items-center justify-center rounded-none shadow-xs">
                       {item.badge}
                     </span>
                   )}
                 </div>
-                <span className={`text-[9px] ${locale === 'km' ? 'tracking-normal' : 'uppercase tracking-wider'}`}>{item.label}</span>
+                <span className={`text-[10px] leading-tight mt-1 max-w-full px-0.5 truncate ${locale === 'km' ? 'tracking-normal font-medium' : 'uppercase tracking-wider font-semibold'}`}>
+                  {item.label}
+                </span>
               </button>
             ) : (
               <Link
                 key={item.label}
                 href={item.href!}
+                onClick={(e) => handleItemClick(e, isItemActive)}
                 className={itemClass}
               >
-                <div className="relative">
-                  <item.icon size={18} strokeWidth={isItemActive ? 2.2 : 1.5} />
+                <div className="relative flex items-center justify-center">
+                  <item.icon size={19} strokeWidth={isItemActive ? 2.3 : 1.6} />
                   {mounted && (item.badge ?? 0) > 0 && (
-                    <span className="absolute -top-1.5 -right-2.5 min-w-[14px] h-3.5 px-0.5 text-[8px] font-bold bg-black text-white dark:bg-white dark:text-black flex items-center justify-center rounded-none shadow-xs">
+                    <span className="absolute -top-1.5 -right-3 min-w-[14px] h-3.5 px-0.5 text-[8px] font-bold bg-black text-white dark:bg-white dark:text-black flex items-center justify-center rounded-none shadow-xs">
                       {item.badge}
                     </span>
                   )}
                 </div>
-                <span className={`text-[9px] ${locale === 'km' ? 'tracking-normal' : 'uppercase tracking-wider'}`}>{item.label}</span>
+                <span className={`text-[10px] leading-tight mt-1 max-w-full px-0.5 truncate ${locale === 'km' ? 'tracking-normal font-medium' : 'uppercase tracking-wider font-semibold'}`}>
+                  {item.label}
+                </span>
               </Link>
-            )
+            );
           })}
         </div>
       </nav>

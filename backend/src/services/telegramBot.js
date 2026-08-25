@@ -43,14 +43,54 @@ const shouldPoll = process.env.ENABLE_TELEGRAM_POLLING !== 'false';
 if (token) {
   bot = new TelegramBot(token, { polling: shouldPoll });
 
-  // Handle plain /start (no session) - greet user and show bot capabilities
+  // Handle plain /start (no session) - auto-link or greet
   bot.onText(/^\/start$/, async (msg) => {
     const chatId = msg.chat.id;
+    const telegramId = msg.from.id.toString();
     const firstName = msg.from?.first_name || 'there';
-    bot.sendMessage(chatId,
-      `👋 Hello *${firstName}*! Welcome to *Amatak Shop Bot*.\n\nThis bot helps you log in to your Amatak store account quickly and securely.\n\nTo log in:\n1. Visit the store website\n2. Tap *"Continue with Telegram"*\n3. Confirm here in 1 tap\n\n_Your data is never stored without your consent._`,
-      { parse_mode: 'Markdown' }
-    );
+    const fullName = [msg.from?.first_name, msg.from?.last_name].filter(Boolean).join(' ') || msg.from?.username || 'Telegram User';
+
+    try {
+      // Check if this Telegram ID is already linked to an account
+      let user = await User.findOne({ telegramId });
+
+      if (user) {
+        // Already linked — just greet them
+        bot.sendMessage(chatId,
+          `👋 Hello *${user.name}*! You're already linked to your Amatak account.\n\nUse the website's *"Continue with Telegram"* button to log in instantly next time.\n\n✅ Your Telegram account is connected.`,
+          { parse_mode: 'Markdown' }
+        );
+      } else {
+        // New user or unlinked — create/link account
+        let profilePic = '';
+        try {
+          const photos = await bot.getUserProfilePhotos(msg.from.id, { limit: 1 });
+          if (photos?.total_count > 0 && photos.photos[0]) {
+            const fileId = photos.photos[0][0].file_id;
+            const file = await bot.getFile(fileId);
+            if (file?.file_path) profilePic = `https://api.telegram.org/file/bot${token}/${file.file_path}`;
+          }
+        } catch (_) {}
+
+        user = await User.create({
+          name: fullName,
+          telegramId,
+          profilePic,
+          role: 'customer',
+        });
+
+        bot.sendMessage(chatId,
+          `👋 Hello *${firstName}*! Welcome to *Amatak Shop Bot*.\n\n✅ Your Telegram account has been linked! You can now:\n\n• Log in by tapping *"Continue with Telegram"* on the website\n• Receive login notifications here\n• Get order updates in this chat\n\n_Your data is secure and never shared._`,
+          { parse_mode: 'Markdown' }
+        );
+      }
+    } catch (err) {
+      console.error('Error in /start handler:', err);
+      bot.sendMessage(chatId,
+        `👋 Hello *${firstName}*! Welcome to *Amatak Shop Bot*.\n\nTo log in, visit the store website and tap *"Continue with Telegram"*.`,
+        { parse_mode: 'Markdown' }
+      );
+    }
   });
 
   // Handle direct 1-click login from Telegram App
@@ -127,6 +167,35 @@ if (token) {
     } catch (err) {
       console.error('Error during direct Telegram login:', err);
       bot.sendMessage(chatId, `❌ មានបញ្ហាក្នុងការចូលគណនី។ សូមសាកល្បងម្ដងទៀត។`);
+    }
+  });
+
+  // Handle /myemail command - link Telegram to an existing email account
+  bot.onText(/^\/myemail\s+(.+)/, async (msg, match) => {
+    const chatId = msg.chat.id;
+    const telegramId = msg.from.id.toString();
+    const email = match[1].trim().toLowerCase();
+
+    try {
+      const user = await User.findOne({ email });
+      if (!user) {
+        return bot.sendMessage(chatId,
+          `❌ *No account found*\n\nNo account found with email: \`${email}\`\n\nPlease check your email address or register on the website first.`,
+          { parse_mode: 'Markdown' }
+        );
+      }
+
+      // Link the telegramId to this account
+      user.telegramId = telegramId;
+      await user.save();
+
+      bot.sendMessage(chatId,
+        `✅ *Linked Successfully!*\n\nYour Telegram is now linked to:\n📧 ${email}\n👤 ${user.name}\n\nYou will now receive:\n• Login alerts 🔐\n• Order updates 📦\n• Promotions 🎁\n\nNext time, just tap *"Continue with Telegram"* on the website to log in instantly!`,
+        { parse_mode: 'Markdown' }
+      );
+    } catch (err) {
+      console.error('Error linking email via bot:', err);
+      bot.sendMessage(chatId, `❌ Something went wrong. Please try again.`);
     }
   });
 

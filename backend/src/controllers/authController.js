@@ -328,8 +328,8 @@ const googleLogin = async (req, res) => {
 const createTelegramSession = async (req, res) => {
   try {
     const { createAuthSession } = await import('../services/telegramBot.js');
-    const sessionId = createAuthSession();
-    const botUsername = process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || 'amatakshop_bot';
+    const sessionId = await createAuthSession(); // now async (MongoDB)
+    const botUsername = process.env.TELEGRAM_BOT_USERNAME || process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || 'amatakshop_bot';
     const deepLink = `https://t.me/${botUsername}?start=login_${sessionId}`;
     res.json({ sessionId, deepLink, botUsername });
   } catch (error) {
@@ -344,7 +344,7 @@ const checkTelegramSession = async (req, res) => {
   try {
     const { sessionId } = req.params;
     const { getAuthSession } = await import('../services/telegramBot.js');
-    const session = getAuthSession(sessionId);
+    const session = await getAuthSession(sessionId); // now async (MongoDB)
 
     if (!session) {
       return res.status(404).json({ status: 'expired', message: 'Session not found or expired' });
@@ -360,4 +360,18 @@ const checkTelegramSession = async (req, res) => {
   }
 };
 
-export { authUser, registerUser, telegramLogin, linkTelegramAccount, googleLogin, createTelegramSession, checkTelegramSession };
+// @desc    Receive Telegram webhook updates (production)
+// @route   POST /api/auth/telegram/webhook
+// @access  Public (Telegram servers only)
+const telegramWebhook = async (req, res) => {
+  try {
+    const { processTelegramUpdate } = await import('../services/telegramBot.js');
+    await processTelegramUpdate(req.body);
+    res.sendStatus(200);
+  } catch (error) {
+    console.error('Webhook error:', error);
+    res.sendStatus(200); // Always return 200 to Telegram
+  }
+};
+
+export { authUser, registerUser, telegramLogin, linkTelegramAccount, googleLogin, createTelegramSession, checkTelegramSession, telegramWebhook };

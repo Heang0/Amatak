@@ -1,5 +1,5 @@
 import express from 'express';
-import { authUser, registerUser, telegramLogin, linkTelegramAccount, googleLogin, createTelegramSession, checkTelegramSession } from '../controllers/authController.js';
+import { authUser, registerUser, telegramLogin, linkTelegramAccount, googleLogin, createTelegramSession, checkTelegramSession, telegramWebhook } from '../controllers/authController.js';
 import { protect } from '../middlewares/authMiddleware.js';
 import rateLimit from 'express-rate-limit';
 
@@ -17,6 +17,7 @@ router.post('/google', authLimiter, googleLogin);
 router.post('/telegram', authLimiter, telegramLogin);
 router.post('/telegram/session', createTelegramSession);
 router.get('/telegram/session/:sessionId', checkTelegramSession);
+router.post('/telegram/webhook', telegramWebhook); // Telegram sends updates here in production
 router.put('/telegram/link', protect, linkTelegramAccount);
 
 export default router;

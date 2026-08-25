@@ -8,8 +8,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
-const isProd = process.env.NODE_ENV === 'production';
-const webhookUrl = process.env.TELEGRAM_WEBHOOK_URL; // e.g. https://your-backend.com/api/auth/telegram/webhook
+const webhookUrl = process.env.TELEGRAM_WEBHOOK_URL; // Only set this on truly serverless hosts (Vercel, etc.)
 
 let bot = null;
 
@@ -150,18 +149,19 @@ export const processTelegramUpdate = async (update) => {
 };
 
 // ─── Bot initialization ───────────────────────────────────────────────────────
+// Use webhook ONLY if TELEGRAM_WEBHOOK_URL is explicitly set (e.g. on Vercel/Cloudflare)
+// Render, Railway, DigitalOcean = always-on → polling works great
 if (token) {
-  if (isProd && webhookUrl) {
-    // PRODUCTION: use webhook — Telegram POSTs to our backend
+  if (webhookUrl) {
+    // WEBHOOK MODE: Telegram POSTs updates to our backend URL
     bot = new TelegramBot(token, { webHook: false });
     bot.setWebHook(`${webhookUrl}/api/auth/telegram/webhook`)
       .then(() => console.log(`✅ Telegram webhook set: ${webhookUrl}/api/auth/telegram/webhook`))
       .catch(err => console.error('Failed to set Telegram webhook:', err.message));
   } else {
-    // DEVELOPMENT: use polling
+    // POLLING MODE: works on Render, Railway, local dev — any always-on process
     bot = new TelegramBot(token, { polling: true });
 
-    // Route all messages through the central processor
     bot.on('message', (msg) => {
       processTelegramUpdate({ message: msg }).catch(console.error);
     });
@@ -171,7 +171,7 @@ if (token) {
       console.warn('Telegram Polling Warning:', error.message);
     });
 
-    console.log('✅ Telegram bot polling started (development mode)');
+    console.log('✅ Telegram bot polling started');
   }
 } else {
   console.log('⚠️  TELEGRAM_BOT_TOKEN not set. Telegram Bot disabled.');

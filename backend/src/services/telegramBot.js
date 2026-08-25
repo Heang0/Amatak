@@ -37,8 +37,8 @@ export const getAuthSession = (sessionId) => {
   return authSessions.get(sessionId) || null;
 };
 
-// Enable polling only if explicitly requested or in production, avoiding 409 conflict with deployed instances
-const shouldPoll = process.env.ENABLE_TELEGRAM_POLLING === 'true' || (process.env.NODE_ENV === 'production' && process.env.ENABLE_TELEGRAM_POLLING !== 'false');
+// Enable polling by default when token exists unless explicitly disabled
+const shouldPoll = process.env.ENABLE_TELEGRAM_POLLING !== 'false';
 
 if (token) {
   bot = new TelegramBot(token, { polling: shouldPoll });

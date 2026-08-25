@@ -68,6 +68,24 @@ export default function StoreCustomerAuth({ primaryColor, themeStyle, isKm }: { 
     setLoading(true);
 
     try {
+      // NEW: Session-based flow - widget already returns authenticated user with token
+      if (response.token && response._id) {
+        setSuccess(true);
+        setTimeout(() => {
+          setCustomerInfo({
+            _id: response._id,
+            name: response.name,
+            email: response.email,
+            role: response.role,
+            token: response.token,
+            profilePic: response.profilePic,
+          });
+        }, 1000);
+        setLoading(false);
+        return;
+      }
+
+      // LEGACY: Old Telegram widget hash verification flow
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/auth/telegram`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

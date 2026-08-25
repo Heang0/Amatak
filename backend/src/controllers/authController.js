@@ -8,17 +8,25 @@ import { OAuth2Client } from 'google-auth-library';
 // @access  Public
 const authUser = async (req, res) => {
   const { email, password } = req.body;
-  console.log('Login attempt:', email, password);
 
   try {
     const user = await User.findOne({ email });
-    console.log('User found:', user ? user.email : 'No');
-    
-    if (user) {
-      console.log('Password match:', await user.matchPassword(password));
-    }
 
     if (user && (await user.matchPassword(password))) {
+      // Send Telegram login notification if user has linked Telegram account
+      if (user.telegramId) {
+        try {
+          const { sendTelegramNotification } = await import('../services/telegramBot.js');
+          const loginTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Phnom_Penh', hour12: false });
+          await sendTelegramNotification(
+            user.telegramId,
+            `🔐 *Login Alert*\n\nHello *${user.name}*! Your account was just signed in.\n\n📅 Time: ${loginTime} (ICT)\n\n_If this wasn't you, please contact us immediately._`
+          );
+        } catch (notifyErr) {
+          console.error('Failed to send telegram login notification:', notifyErr.message);
+        }
+      }
+
       res.json({
         _id: user._id,
         name: user.name,

@@ -43,13 +43,33 @@ const shouldPoll = process.env.ENABLE_TELEGRAM_POLLING !== 'false';
 if (token) {
   bot = new TelegramBot(token, { polling: shouldPoll });
 
+  // Handle plain /start (no session) - greet user and show bot capabilities
+  bot.onText(/^\/start$/, async (msg) => {
+    const chatId = msg.chat.id;
+    const firstName = msg.from?.first_name || 'there';
+    bot.sendMessage(chatId,
+      `👋 Hello *${firstName}*! Welcome to *Amatak Shop Bot*.\n\nThis bot helps you log in to your Amatak store account quickly and securely.\n\nTo log in:\n1. Visit the store website\n2. Tap *"Continue with Telegram"*\n3. Confirm here in 1 tap\n\n_Your data is never stored without your consent._`,
+      { parse_mode: 'Markdown' }
+    );
+  });
+
   // Handle direct 1-click login from Telegram App
   bot.onText(/^\/start\s+login_([a-zA-Z0-9_-]+)/, async (msg, match) => {
     const chatId = msg.chat.id;
     const sessionId = match[1]?.trim();
 
     if (!sessionId || !authSessions.has(sessionId)) {
-      return bot.sendMessage(chatId, `⚠️ សម័យចូលប្រើប្រាស់នេះបានផុតកំណត់ហើយ។ សូមសាកល្បងម្ដងទៀតនៅលើវេបសាយ。\n(This login session has expired. Please try again on the website.)`);
+      return bot.sendMessage(chatId,
+        `⚠️ *Session Expired*\n\nThis login link has expired or already been used.\n\nPlease return to the website and click *"Continue with Telegram"* again to get a fresh link.`,
+        {
+          parse_mode: 'Markdown',
+          reply_markup: {
+            inline_keyboard: [[
+              { text: '🌐 Visit Amatak', url: process.env.FRONTEND_URL || 'https://amatak.store' }
+            ]]
+          }
+        }
+      );
     }
 
     try {

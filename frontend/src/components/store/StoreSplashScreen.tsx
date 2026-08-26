@@ -8,6 +8,7 @@ interface StoreSplashScreenProps {
   primaryColor: string;
   themeStyle: string;
   slug: string;
+  hasSeenSplash: boolean;
 }
 
 export default function StoreSplashScreen({
@@ -16,17 +17,17 @@ export default function StoreSplashScreen({
   primaryColor,
   themeStyle,
   slug,
+  hasSeenSplash,
 }: StoreSplashScreenProps) {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(!hasSeenSplash);
   const [phase, setPhase] = useState<'in' | 'hold' | 'out'>('in');
 
   useEffect(() => {
-    // Only show splash once per session per store
-    const key = `splash_shown_${slug}`;
-    if (sessionStorage.getItem(key)) return;
-    sessionStorage.setItem(key, '1');
+    if (hasSeenSplash) return;
 
-    setVisible(true);
+    // Set cookie so the server knows next time
+    const key = `splash_shown_${slug}`;
+    document.cookie = `${key}=1; path=/; max-age=86400`; // 1 day
 
     // Phase 1: zoom in (0 → 600ms)
     // Phase 2: hold (600ms → 1200ms)

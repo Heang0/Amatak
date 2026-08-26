@@ -3,6 +3,7 @@ import StoreTopNav from '@/components/store/StoreTopNav';
 import CartDrawer from '@/components/store/CartDrawer';
 import StoreSplashScreen from '@/components/store/StoreSplashScreen';
 import { Metadata } from 'next';
+import { cookies } from 'next/headers';
 
 async function getStore(slug: string) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/stores/${slug}`, { next: { revalidate: 60 } });
@@ -88,6 +89,9 @@ export default async function StorefrontLayout({
     ? 'bg-gray-50 dark:bg-[#111318]'
     : 'bg-white dark:bg-[#0E1117]'; // fashion-editorial default
 
+  const splashKey = `splash_shown_${slug}`;
+  const hasSeenSplash = cookies().get(splashKey)?.value === '1';
+
   return (
     <div className={`min-h-screen ${layoutBg} w-full selection:bg-black/10 dark:selection:bg-white/10`}>
 
@@ -98,6 +102,7 @@ export default async function StorefrontLayout({
         primaryColor={primaryColor}
         themeStyle={themeStyle}
         slug={slug}
+        hasSeenSplash={hasSeenSplash}
       />
       
       {/* Sleek App Top Bar */}

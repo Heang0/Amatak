@@ -93,10 +93,10 @@ export default function StoreTopNav({ storeName, storeLogo, primaryColor, slug, 
       base = `/${locale === 'en' ? 'km' : 'en'}`;
     } else {
       const newLocale = locale === 'en' ? 'km' : 'en';
-      if (pathname.startsWith(`/${locale}`)) {
+      if (pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`) {
         base = pathname.replace(`/${locale}`, `/${newLocale}`);
       } else {
-        base = `/${newLocale}`;
+        base = pathname === '/' ? `/${newLocale}` : `/${newLocale}${pathname}`;
       }
     }
     return appendParams(base);

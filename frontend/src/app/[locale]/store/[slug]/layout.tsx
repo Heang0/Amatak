@@ -1,6 +1,7 @@
 import StoreBottomNav from '@/components/store/StoreBottomNav';
 import StoreTopNav from '@/components/store/StoreTopNav';
 import CartDrawer from '@/components/store/CartDrawer';
+import StoreSplashScreen from '@/components/store/StoreSplashScreen';
 import { Metadata } from 'next';
 
 async function getStore(slug: string) {
@@ -89,6 +90,15 @@ export default async function StorefrontLayout({
 
   return (
     <div className={`min-h-screen ${layoutBg} w-full selection:bg-black/10 dark:selection:bg-white/10`}>
+
+      {/* App-like Splash Screen on first visit */}
+      <StoreSplashScreen
+        storeName={store.name}
+        storeLogo={store.branding?.logoUrl}
+        primaryColor={primaryColor}
+        themeStyle={themeStyle}
+        slug={slug}
+      />
       
       {/* Sleek App Top Bar */}
       <StoreTopNav storeName={store.name} storeLogo={store.branding?.logoUrl} primaryColor={primaryColor} slug={slug} locale={locale} initialThemeStyle={store.branding?.themeStyle || 'default'} />

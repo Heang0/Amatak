@@ -75,14 +75,26 @@ export default async function StorefrontLayout({
 
   const primaryColor = store.branding?.primaryColor || '#E84C3D';
 
+  const themeStyle = store.branding?.themeStyle || 'default';
+
+  const layoutBg = themeStyle === 'minimal-tech'
+    ? 'bg-[#050B14]'
+    : themeStyle === 'neo-brutalism'
+    ? 'bg-[#f4f4f4] dark:bg-[#111111]'
+    : themeStyle === 'skincare-clean'
+    ? 'bg-[#FAF9F6] dark:bg-[#0C0C0C]'
+    : themeStyle === 'default'
+    ? 'bg-gray-50 dark:bg-[#111318]'
+    : 'bg-white dark:bg-[#0E1117]'; // fashion-editorial default
+
   return (
-    <div className="min-h-screen bg-white dark:bg-[#111111] w-full selection:bg-black/10 dark:selection:bg-white/10">
+    <div className={`min-h-screen ${layoutBg} w-full selection:bg-black/10 dark:selection:bg-white/10`}>
       
       {/* Sleek App Top Bar */}
       <StoreTopNav storeName={store.name} storeLogo={store.branding?.logoUrl} primaryColor={primaryColor} slug={slug} locale={locale} initialThemeStyle={store.branding?.themeStyle || 'default'} />
 
       {/* Content Area */}
-      <main className="w-full bg-white dark:bg-black pb-8 md:pb-12 min-h-[calc(100vh-180px)]">
+      <main className={`w-full ${layoutBg} pb-8 md:pb-12 min-h-[calc(100vh-180px)]`}>
         {children}
       </main>
 

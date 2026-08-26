@@ -9,6 +9,88 @@ import BakongKHQRModal from '@/components/payment/BakongKHQRModal';
 import { ChevronLeft } from 'lucide-react';
 import Select from 'react-select';
 
+
+const getThemeClasses = (themeStyle: string, primaryColor: string) => {
+  switch (themeStyle) {
+    case 'neo-brutalism':
+      return {
+        bg: 'bg-[#f4f4f4] dark:bg-[#111] font-sans text-black dark:text-white',
+        container: 'max-w-7xl',
+        header: 'border-b-[4px] border-black dark:border-white py-4 mb-8',
+        title: 'text-2xl font-black uppercase tracking-tight text-black dark:text-white',
+        card: 'bg-white dark:bg-black border-[4px] border-black dark:border-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)]',
+        cardTitle: 'text-lg font-black uppercase border-b-[4px] border-black dark:border-white pb-3 mb-4',
+        input: 'w-full px-4 py-3 bg-white dark:bg-black border-[3px] border-black dark:border-white focus:outline-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-bold text-black dark:text-white placeholder-gray-500',
+        label: 'block text-sm font-black uppercase mb-2',
+        buttonPrimary: 'w-full py-4 text-black text-lg font-black uppercase border-[4px] border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none transition-all flex items-center justify-center gap-2',
+        buttonSecondary: 'px-6 py-3 border-[3px] border-black dark:border-white text-black bg-white dark:bg-black font-black uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none',
+        sidebar: 'bg-white dark:bg-black border-[4px] border-black dark:border-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)]',
+        itemRow: 'py-3 border-b-[3px] border-black/20 dark:border-white/20',
+      };
+    case 'minimal-tech':
+      return {
+        bg: 'bg-[#050B14] font-mono text-cyan-50',
+        container: 'max-w-7xl',
+        header: 'border-b border-cyan-900/40 py-4 mb-8',
+        title: 'text-lg font-bold uppercase tracking-[0.2em] text-cyan-400',
+        card: 'bg-[#0D1322] border border-cyan-900/40 p-6 shadow-[0_0_20px_rgba(34,211,238,0.05)]',
+        cardTitle: 'text-xs font-bold uppercase tracking-[0.2em] text-cyan-500 pb-3 mb-4 border-b border-cyan-900/40',
+        input: 'w-full px-4 py-3 bg-[#050B14] border border-cyan-900/50 focus:border-cyan-400 focus:outline-none text-cyan-100 placeholder-cyan-900',
+        label: 'block text-xs font-bold uppercase tracking-[0.1em] text-cyan-600 mb-2',
+        buttonPrimary: 'w-full py-4 text-black text-xs font-bold uppercase tracking-[0.2em] transition-all shadow-[0_0_15px_rgba(34,211,238,0.2)] hover:opacity-90 flex items-center justify-center gap-2',
+        buttonSecondary: 'px-6 py-3 border border-cyan-500/50 text-cyan-400 bg-transparent text-xs font-bold uppercase tracking-[0.1em] hover:bg-cyan-900/20',
+        sidebar: 'bg-[#0D1322] border border-cyan-900/40 p-6 shadow-[0_0_20px_rgba(34,211,238,0.05)]',
+        itemRow: 'py-3 border-b border-cyan-900/30',
+      };
+    case 'skincare-clean':
+      return {
+        bg: 'bg-[#FAF9F6] dark:bg-[#0C0C0C] font-sans text-[#333] dark:text-[#E5E5E5]',
+        container: 'max-w-6xl',
+        header: 'border-b border-[#E5E5E5] dark:border-[#222] py-6 mb-8 text-center',
+        title: 'text-2xl font-light uppercase tracking-widest text-[#222] dark:text-[#FFF]',
+        card: 'bg-white dark:bg-[#111] border border-[#E5E5E5] dark:border-[#222] p-8',
+        cardTitle: 'text-sm font-medium uppercase tracking-widest text-[#555] dark:text-[#AAA] pb-4 mb-6 border-b border-[#E5E5E5] dark:border-[#222]',
+        input: 'w-full px-0 py-3 bg-transparent border-b border-[#CCC] dark:border-[#444] focus:border-[#000] dark:focus:border-[#FFF] focus:outline-none text-[#222] dark:text-[#FFF] placeholder-[#999]',
+        label: 'block text-xs font-medium uppercase tracking-widest text-[#888] mb-1',
+        buttonPrimary: 'w-full py-4 text-white dark:text-black bg-black dark:bg-white text-xs font-medium uppercase tracking-widest hover:opacity-80 transition-opacity flex items-center justify-center gap-2',
+        buttonSecondary: 'px-6 py-3 border border-[#CCC] dark:border-[#444] text-[#333] dark:text-[#DDD] text-xs font-medium uppercase tracking-widest hover:bg-[#F9F9F9] dark:hover:bg-[#222]',
+        sidebar: 'bg-white dark:bg-[#111] border border-[#E5E5E5] dark:border-[#222] p-8',
+        itemRow: 'py-4 border-b border-[#F0F0F0] dark:border-[#222]',
+      };
+    case 'default':
+      return {
+        bg: 'bg-gray-50 dark:bg-[#111318] font-sans text-gray-900 dark:text-white',
+        container: 'max-w-6xl',
+        header: 'py-6 mb-4',
+        title: 'text-2xl font-bold text-gray-900 dark:text-white',
+        card: 'bg-white dark:bg-white/5 border border-gray-100 dark:border-white/5 p-6 sm:p-8 rounded-3xl shadow-sm',
+        cardTitle: 'text-lg font-bold text-gray-900 dark:text-white mb-6',
+        input: 'w-full px-4 py-3.5 bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-gray-200 dark:focus:ring-white/20 focus:outline-none text-gray-900 dark:text-white placeholder-gray-400',
+        label: 'block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2',
+        buttonPrimary: 'w-full py-4 text-white dark:text-gray-900 bg-gray-900 dark:bg-white text-sm font-bold rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2',
+        buttonSecondary: 'px-6 py-3 bg-white dark:bg-white/10 border border-gray-200 dark:border-white/10 text-gray-700 dark:text-white rounded-xl text-sm font-bold shadow-sm hover:shadow-md transition-all',
+        sidebar: 'bg-white dark:bg-white/5 border border-gray-100 dark:border-white/5 p-6 sm:p-8 rounded-3xl shadow-sm',
+        itemRow: 'py-4 border-b border-gray-100 dark:border-white/10',
+      };
+    case 'fashion-editorial':
+    default:
+      return {
+        bg: 'bg-white dark:bg-[#0E1117] font-sans text-gray-900 dark:text-white',
+        container: 'max-w-5xl',
+        header: 'border-b border-gray-100 dark:border-white/[0.08] py-4 mb-8',
+        title: 'text-sm font-black uppercase tracking-widest text-gray-900 dark:text-white',
+        card: 'bg-white dark:bg-[#0E1117] border border-gray-200 dark:border-white/[0.08] p-6 rounded-none shadow-sm',
+        cardTitle: 'text-xs font-black uppercase tracking-widest text-gray-900 dark:text-white pb-3 mb-5 border-b border-gray-100 dark:border-white/[0.08]',
+        input: 'w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 focus:outline-none focus:border-gray-400 dark:focus:border-gray-600 rounded-none text-gray-900 dark:text-white placeholder-gray-400 text-sm',
+        label: 'block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-2',
+        buttonPrimary: 'w-full py-3.5 text-white dark:text-black bg-black dark:bg-white text-xs font-bold uppercase tracking-widest rounded-none hover:bg-neutral-800 dark:hover:bg-gray-200 transition-all flex items-center justify-center gap-2',
+        buttonSecondary: 'px-6 py-3 border border-gray-200 dark:border-white/20 text-gray-700 dark:text-white text-xs font-bold uppercase tracking-widest rounded-none hover:bg-gray-50 dark:hover:bg-white/5',
+        sidebar: 'bg-white dark:bg-[#13161F] border border-gray-200 dark:border-white/[0.08] p-6 rounded-none shadow-sm',
+        itemRow: 'py-4 border-b border-gray-100 dark:border-white/[0.06]',
+      };
+  }
+};
+
 export default function CheckoutPage({ params }: { params: { slug: string, locale: string } }) {
   const { items, getTotalPrice, clearCart, _hasHydrated } = useCartStore();
   const user = useCustomerAuthStore((state) => state.customerInfo);
@@ -51,6 +133,7 @@ export default function CheckoutPage({ params }: { params: { slug: string, local
   const [primaryColor, setPrimaryColor] = useState('#000000');
   const searchParams = useSearchParams();
   const isKm = params.locale === 'km';
+  const t = getThemeClasses(themeStyle, primaryColor);
 
   const text = {
     checkout: isKm ? 'ការទូទាត់' : 'CHECKOUT',
@@ -319,7 +402,7 @@ export default function CheckoutPage({ params }: { params: { slug: string, local
         <Link
           href={`/${params.locale}`}
           className="text-white font-semibold px-8 py-3 rounded-full hover:scale-105 transition-transform"
-          style={{ backgroundColor: primaryColor || '#000' }}
+          style={{ backgroundColor: primaryColor || undefined }}
         >
           {isKm ? 'ត្រលប់ទៅទិញទំនិញវិញ' : 'Return to Shopping'}
         </Link>
@@ -630,7 +713,7 @@ export default function CheckoutPage({ params }: { params: { slug: string, local
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-2xs">
           <div className="w-full max-w-md bg-white dark:bg-[#111318] p-6 border border-gray-200 dark:border-white/10 rounded-none shadow-2xl overflow-hidden space-y-5">
 
-            <h2 className={`text-xs font-black ${isKm ? 'tracking-normal' : 'uppercase tracking-widest'} text-gray-900 dark:text-white pb-3 border-b border-gray-100 dark:border-white/[0.06]`}>
+            <h2 className={t.cardTitle}>
               {isKm ? 'បញ្ចូលអាសយដ្ឋានថ្មី' : 'ENTER NEW ADDRESS'}
             </h2>
 

@@ -6,6 +6,7 @@ import { useFavoritesStore } from '@/lib/store/useFavoritesStore';
 import { Heart, Bookmark, ShoppingBag } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useParams, useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
 
 export default function ProductCard({ 
   product, 
@@ -30,6 +31,11 @@ export default function ProductCard({
   const isPathRouting = pathname?.includes('/store/');
   const basePath = isPathRouting && params.slug ? `/${params.locale}/store/${params.slug}` : `/${params.locale}`;
   const isKm = params?.locale === 'km';
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   if (!product || !product._id) return null;
 
@@ -70,29 +76,26 @@ export default function ProductCard({
       addFavorite(product._id);
     }
 
-    if (!user) {
-      router.push(`${basePath}/profile`);
-      return;
-    }
-
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/users/favorites/${product._id}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.token}`
-        }
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        setCustomerInfo({
-          ...user,
-          favorites: Array.isArray(data) ? data : data.favorites
+    if (user?.token) {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/users/favorites/${product._id}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${user.token}`
+          }
         });
+
+        if (res.ok) {
+          const data = await res.json();
+          setCustomerInfo({
+            ...user,
+            favorites: Array.isArray(data) ? data : data.favorites
+          });
+        }
+      } catch (err) {
+        console.error(err);
       }
-    } catch (err) {
-      console.error(err);
     }
   };
 
@@ -113,13 +116,16 @@ export default function ProductCard({
   const badge = getProductBadge();
   const productTitle = params.locale === 'km' && product.titleKm ? product.titleKm : (product.title || 'Product');
   const priceDisplay = Number(product.price ?? 0).toFixed(2);
+  
+  // Detect if the title contains Khmer characters to prevent weird letter spacing
+  const isKhmerTitle = /[\u1780-\u17FF]/.test(productTitle);
 
-  // 1. 👗 FASHION EDITORIAL THEME (Minimalist Luxury / Zara & COS Aesthetic)
+  // 1. 👗 FASHION EDITORIAL THEME (Minimalist Luxury / Zara & Balenciaga Aesthetic)
   if (themeStyle === 'fashion-editorial' || themeStyle === 'minimalist') {
     return (
-      <Link href={`${basePath}/product/${product.slug || product._id}`} className="group flex flex-col">
+      <div className="group flex flex-col">
         {/* Square Image (Sharp Corners) */}
-        <div className="relative aspect-square w-full bg-stone-100 dark:bg-stone-900 rounded-none overflow-hidden mb-2.5">
+        <Link href={`${basePath}/product/${product.slug || product._id}`} className="relative aspect-square w-full bg-stone-100 dark:bg-stone-900 rounded-none overflow-hidden mb-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img 
             src={product.imageUrl?.replace('/upload/', '/upload/w_600,c_limit,q_auto/')} 
@@ -128,44 +134,45 @@ export default function ProductCard({
             loading="lazy"
           />
 
-          {/* Clean Bookmark Badge */}
-          <button
-            onClick={handleWishlist}
-            className="absolute top-2 right-2 p-1.5 rounded-none bg-white/90 dark:bg-black/60 backdrop-blur-xs text-stone-700 dark:text-stone-300 hover:scale-110 active:scale-95 transition-all shadow-2xs"
-            title="Save"
-          >
-            <Bookmark size={14} className={isFavorite ? 'fill-black text-black dark:fill-white dark:text-white' : 'text-stone-400'} />
-          </button>
-
           {badge && (
             <span className="absolute top-2 left-2 text-[9px] font-bold px-2 py-0.5 rounded-none uppercase tracking-wider bg-black text-white dark:bg-white dark:text-black shadow-2xs">
               {badge.text}
             </span>
           )}
-        </div>
+        </Link>
 
-        {/* Product Details */}
-        <div className="flex flex-col flex-1 px-0.5">
-          <h3 className={`text-xs sm:text-sm font-bold text-gray-900 dark:text-white line-clamp-1 mb-1 ${isKm ? 'tracking-normal' : 'uppercase tracking-wider'}`}>
-            {productTitle}
-          </h3>
-
-          <div className="mt-auto pt-1 flex items-center justify-between">
-            <span className="text-xs sm:text-sm font-black text-gray-900 dark:text-white font-mono">
-              ${priceDisplay}
-            </span>
-
-            {/* Sharp Bag CTA */}
+        {/* Product Details - Aurum Reference Style */}
+        <div className="flex flex-col flex-1 mt-0.5">
+          <div className="flex items-center justify-between gap-2 mb-0.5">
+            <Link href={`${basePath}/product/${product.slug || product._id}`} className="flex-1">
+              <h3 className={`font-medium text-gray-900 dark:text-white line-clamp-1 ${isKhmerTitle ? 'text-[11px] tracking-tight' : 'text-[11px] sm:text-xs uppercase tracking-wider'}`}>
+                {productTitle}
+              </h3>
+            </Link>
+            
+            {/* Bookmark next to title */}
             <button
-              onClick={handleAdd}
-              className="w-7 h-7 rounded-none bg-black hover:bg-neutral-800 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-black flex items-center justify-center transition-all active:scale-95 shadow-xs"
-              title="Add to bag"
+              onClick={handleWishlist}
+              className="text-black dark:text-white hover:opacity-70 transition-opacity flex-shrink-0"
+              title="Save"
             >
-              <ShoppingBag size={13} />
+              <Bookmark size={16} strokeWidth={1.5} className={mounted && isFavorite ? 'fill-black dark:fill-white' : ''} />
             </button>
           </div>
+
+          <span className="text-[11px] sm:text-xs text-gray-600 dark:text-gray-400 mb-3">
+            ${priceDisplay}
+          </span>
+
+          {/* Full-width Add to Bag CTA */}
+          <button
+            onClick={handleAdd}
+            className="w-full mt-auto py-2.5 sm:py-3 px-4 border border-black dark:border-white bg-transparent hover:bg-black dark:hover:bg-white text-black hover:text-white dark:text-white dark:hover:text-black text-[10px] sm:text-[11px] uppercase tracking-wider font-medium transition-colors rounded-none flex items-center justify-center gap-2"
+          >
+            ADD TO BAG
+          </button>
         </div>
-      </Link>
+      </div>
     );
   }
 
@@ -194,7 +201,7 @@ export default function ProductCard({
             className="absolute top-2 right-2 p-1.5 rounded-none bg-white/95 dark:bg-black/80 backdrop-blur-xs text-stone-700 dark:text-stone-300 hover:scale-110 active:scale-95 transition-all shadow-2xs border border-stone-200/60 dark:border-white/10"
             title="Save"
           >
-            <Bookmark size={13} className={isFavorite ? 'fill-stone-900 text-stone-900 dark:fill-white dark:text-white' : 'text-stone-400'} />
+            <Bookmark size={13} className={mounted && isFavorite ? 'fill-stone-900 text-stone-900 dark:fill-white dark:text-white' : 'text-stone-400'} />
           </button>
         </div>
 
@@ -230,7 +237,7 @@ export default function ProductCard({
   // 3. 💻 MODERN TECH & MINIMALIST GADGETS (Clean Precision Electronics)
   if (themeStyle === 'minimal-tech') {
     return (
-      <Link href={`${basePath}/product/${product.slug || product._id}`} className="group flex flex-col p-3 rounded-none bg-white dark:bg-[#0D0F14] border border-gray-200 dark:border-white/[0.08] hover:border-cyan-500/60 dark:hover:border-cyan-400/50 transition-all shadow-2xs">
+      <Link href={`${basePath}/product/${product.slug || product._id}`} className="group flex flex-col p-3 rounded-none bg-white dark:bg-[#0D0F14] border border-gray-200 dark:border-white/[0.08] transition-all shadow-2xs" style={{ '--hover-border': primaryColor } as any}>
         <div className="relative aspect-square w-full bg-[#F4F6F9] dark:bg-[#151922] rounded-none mb-2.5 overflow-hidden p-2.5 flex items-center justify-center border border-gray-100 dark:border-white/[0.04]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img 
@@ -241,7 +248,7 @@ export default function ProductCard({
           />
 
           {badge && (
-            <span className="absolute top-2 left-2 text-[8px] font-mono font-bold text-cyan-700 dark:text-cyan-400 bg-cyan-100 dark:bg-cyan-950/90 border border-cyan-300 dark:border-cyan-500/30 px-1.5 py-0.5 rounded-none uppercase tracking-widest">
+            <span className="absolute top-2 left-2 text-[8px] font-mono font-bold text-white px-1.5 py-0.5 rounded-none uppercase tracking-widest" style={{ backgroundColor: primaryColor || '#0ea5e9' }}>
               {badge.text}
             </span>
           )}
@@ -251,12 +258,12 @@ export default function ProductCard({
             className="absolute top-2 right-2 p-1.5 rounded-none bg-white/95 dark:bg-black/80 backdrop-blur-xs text-gray-700 dark:text-gray-300 hover:scale-110 active:scale-95 transition-all shadow-2xs border border-gray-200/60 dark:border-white/10"
             title="Save"
           >
-            <Bookmark size={13} className={isFavorite ? 'fill-cyan-500 text-cyan-500' : 'text-gray-400'} />
+            <Bookmark size={13} className={mounted && isFavorite ? '' : 'text-gray-400'} style={mounted && isFavorite ? { fill: primaryColor || '#0ea5e9', color: primaryColor || '#0ea5e9' } : {}} />
           </button>
         </div>
 
         <div className="flex flex-col flex-1 px-0.5">
-          <p className="text-[10px] text-cyan-600 dark:text-cyan-400/80 font-mono uppercase tracking-wider mb-0.5 truncate">
+          <p className="text-[10px] font-mono uppercase tracking-wider mb-0.5 truncate" style={{ color: primaryColor || '#0ea5e9' }}>
             {typeof product.category === 'object' && product.category?.name ? product.category.name : 'TECH'}
           </p>
 
@@ -265,13 +272,14 @@ export default function ProductCard({
           </h3>
 
           <div className="mt-auto pt-2 flex items-center justify-between border-t border-gray-100 dark:border-white/[0.06]">
-            <span className="text-xs sm:text-sm font-mono font-black text-gray-900 dark:text-cyan-300">
+            <span className="text-xs sm:text-sm font-mono font-black text-gray-900 dark:text-white">
               ${priceDisplay}
             </span>
 
             <button
               onClick={handleAdd}
-              className="w-7 h-7 rounded-none bg-black dark:bg-cyan-500 hover:bg-neutral-800 dark:hover:bg-cyan-400 text-white dark:text-black flex items-center justify-center transition-all active:scale-95 shadow-xs"
+              className="w-7 h-7 rounded-none text-white flex items-center justify-center transition-all active:scale-95 shadow-xs hover:opacity-80"
+              style={{ backgroundColor: primaryColor || '#000' }}
               title="Add to cart"
             >
               <ShoppingBag size={13} />
@@ -305,7 +313,7 @@ export default function ProductCard({
             className="absolute top-1.5 right-1.5 p-1.5 rounded-none bg-white dark:bg-black text-black dark:text-white border border-black dark:border-white hover:scale-110 active:scale-95 transition-all shadow-2xs"
             title="Save"
           >
-            <Bookmark size={12} className={isFavorite ? 'fill-black text-black dark:fill-white dark:text-white' : 'text-gray-400'} />
+            <Bookmark size={12} className={mounted && isFavorite ? 'fill-black text-black dark:fill-white dark:text-white' : 'text-gray-400'} />
           </button>
         </div>
 
@@ -330,10 +338,11 @@ export default function ProductCard({
     );
   }
 
-  // 5. 🛍️ DEFAULT MODERN RETAIL (Editorial Fashion)
+  // 5. 🛍️ DEFAULT MODERN RETAIL (Editorial Fashion - Zara/SSENSE Inspired)
   return (
-    <Link href={`${basePath}/product/${product.slug || product._id}`} className="group flex flex-col p-2.5 rounded-none bg-white dark:bg-[#111] border border-gray-200 dark:border-white/10 hover:border-black dark:hover:border-white transition-all shadow-2xs">
-      <div className="relative aspect-square w-full bg-stone-50 dark:bg-stone-900 rounded-none overflow-hidden mb-2.5">
+    <div className="group flex flex-col">
+      {/* Square Image (Sharp Corners) */}
+      <Link href={`${basePath}/product/${product.slug || product._id}`} className="relative aspect-square w-full bg-stone-100 dark:bg-stone-900 rounded-none overflow-hidden mb-3">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img 
           src={product.imageUrl?.replace('/upload/', '/upload/w_600,c_limit,q_auto/')} 
@@ -342,46 +351,47 @@ export default function ProductCard({
           loading="lazy"
         />
 
-        <button
-          onClick={handleWishlist}
-          className="absolute top-2 right-2 p-1.5 rounded-none bg-white/90 dark:bg-black/60 backdrop-blur-xs text-stone-700 dark:text-stone-300 hover:scale-110 active:scale-95 transition-all shadow-2xs"
-          title="Save"
-        >
-          <Bookmark size={14} className={isFavorite ? 'fill-black text-black dark:fill-white dark:text-white' : 'text-stone-400'} />
-        </button>
-        
         {badge && (
           <span 
             className="absolute top-2 left-2 text-white text-[9px] font-bold px-2 py-0.5 rounded-none uppercase tracking-wider shadow-2xs"
-            style={{ backgroundColor: primaryColor || '#E84C3D' }}
+            style={{ backgroundColor: primaryColor || '#000000' }}
           >
             {badge.text}
           </span>
         )}
-      </div>
+      </Link>
 
-      <div className="flex flex-col flex-1 px-0.5">
-        <h3 className={`text-xs sm:text-sm font-bold text-gray-900 dark:text-white mb-1 line-clamp-1 ${isKm ? 'tracking-normal' : 'uppercase tracking-wider'}`}>
-          {productTitle}
-        </h3>
-        
-        <div className="mt-auto pt-1 flex items-center justify-between">
-          <span 
-            className="text-xs sm:text-sm font-black text-gray-900 dark:text-white font-mono"
-            style={{ color: primaryColor && primaryColor !== '#000000' && primaryColor !== '#111111' ? primaryColor : undefined }}
-          >
-            ${priceDisplay}
-          </span>
+      {/* Product Details - Aurum Reference Style */}
+      <div className="flex flex-col flex-1 mt-0.5">
+        <div className="flex items-center justify-between gap-2 mb-0.5">
+          <Link href={`${basePath}/product/${product.slug || product._id}`} className="flex-1">
+            <h3 className={`font-medium text-gray-900 dark:text-white line-clamp-1 ${isKhmerTitle ? 'text-[11px] tracking-tight' : 'text-[11px] sm:text-xs uppercase tracking-wider'}`}>
+              {productTitle}
+            </h3>
+          </Link>
           
-          <button 
-            onClick={handleAdd}
-            className="w-7 h-7 rounded-none bg-black hover:bg-neutral-800 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-black flex items-center justify-center transition-all active:scale-95 shadow-xs"
-            title="Add to bag"
+          {/* Bookmark next to title */}
+          <button
+            onClick={handleWishlist}
+            className="text-black dark:text-white hover:opacity-70 transition-opacity flex-shrink-0"
+            title="Save"
           >
-            <ShoppingBag size={13} />
+            <Bookmark size={16} strokeWidth={1.5} className={mounted && isFavorite ? 'fill-black dark:fill-white' : ''} />
           </button>
         </div>
+
+        <span className="text-[11px] sm:text-xs text-gray-600 dark:text-gray-400 mb-3">
+          ${priceDisplay}
+        </span>
+
+        {/* Full-width Add to Bag CTA */}
+        <button
+          onClick={handleAdd}
+          className="w-full mt-auto py-2.5 sm:py-3 px-4 border border-black dark:border-white bg-transparent hover:bg-black dark:hover:bg-white text-black hover:text-white dark:text-white dark:hover:text-black text-[10px] sm:text-[11px] uppercase tracking-wider font-medium transition-colors rounded-none flex items-center justify-center gap-2"
+        >
+          ADD TO BAG
+        </button>
       </div>
-    </Link>
+    </div>
   );
 }

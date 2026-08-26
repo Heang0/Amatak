@@ -5,33 +5,45 @@ import { useCartStore } from '@/lib/store/useCartStore';
 import { useFavoritesStore } from '@/lib/store/useFavoritesStore';
 import { useCustomerAuthStore } from '@/lib/store/useCustomerAuthStore';
 import { 
-  Minus, 
-  Plus, 
-  CheckCircle, 
-  ChevronLeft, 
-  ChevronRight, 
-  Heart, 
-  Share2, 
-  ShoppingBag, 
-  Truck, 
-  ShieldCheck, 
-  RotateCcw,
-  Sparkles,
-  Bookmark,
-  ChevronDown,
-  ArrowLeft
+  Minus, Plus, CheckCircle, ChevronLeft, ChevronRight, 
+  Heart, Share2, ShoppingBag, Truck, ShieldCheck, 
+  RotateCcw, Sparkles, Bookmark, ChevronDown, ArrowLeft
 } from 'lucide-react';
 import ProductCard from '@/components/store/ProductCard';
 import { useRouter } from 'next/navigation';
 
 // --- Toast Component ---
-function AddToCartToast({ message, visible }: { message: string; visible: boolean }) {
+function AddToCartToast({ message, visible, themeStyle, primaryColor }: { message: string; visible: boolean; themeStyle: string; primaryColor: string }) {
+  if (themeStyle === 'neo-brutalism') {
+    return (
+      <div className={`fixed top-4 left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 md:w-max md:max-w-sm z-[200] flex items-center gap-3 bg-white dark:bg-black border-[3px] border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] px-4 py-3 rounded-none text-black dark:text-white text-sm font-black uppercase tracking-wider transition-all duration-300 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-3 pointer-events-none'}`}>
+        <CheckCircle size={20} strokeWidth={2.5} style={{ color: primaryColor || '#4ade80' }} />
+        <span className="truncate">{message}</span>
+      </div>
+    );
+  }
+  
+  if (themeStyle === 'minimal-tech') {
+    return (
+      <div className={`fixed top-4 left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 md:w-max md:max-w-sm z-[200] flex items-center gap-3 bg-[#0D1322] border border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.3)] px-4 py-3 rounded-none text-cyan-400 text-xs font-mono uppercase tracking-widest transition-all duration-300 ${visible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-3 scale-95 pointer-events-none'}`}>
+        <CheckCircle size={16} strokeWidth={2} style={{ color: primaryColor || '#22d3ee' }} />
+        <span className="truncate">{message}</span>
+      </div>
+    );
+  }
+
+  if (themeStyle === 'default') {
+    return (
+      <div className={`fixed top-6 left-1/2 -translate-x-1/2 w-max max-w-sm z-[200] flex items-center gap-2 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md px-5 py-3 rounded-full shadow-lg border border-gray-100 dark:border-white/10 text-gray-900 dark:text-white text-sm font-bold transition-all duration-400 ease-out ${visible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-8 scale-90 pointer-events-none'}`}>
+        <CheckCircle size={18} strokeWidth={2.5} style={{ color: primaryColor || '#10b981' }} />
+        <span>{message}</span>
+      </div>
+    );
+  }
+
+  // Fashion Editorial
   return (
-    <div
-      className={`fixed top-4 left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 md:w-max md:max-w-sm z-[200] flex items-center gap-2 bg-black dark:bg-white text-white dark:text-black px-4 py-2.5 rounded-none shadow-2xl text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
-        visible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-3 scale-95 pointer-events-none'
-      }`}
-    >
+    <div className={`fixed top-4 left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 md:w-max md:max-w-sm z-[200] flex items-center gap-2 bg-black dark:bg-white text-white dark:text-black px-4 py-2.5 rounded-none shadow-2xl text-xs font-bold uppercase tracking-wider transition-all duration-300 ${visible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-3 scale-95 pointer-events-none'}`}>
       <CheckCircle size={16} strokeWidth={2.5} className="shrink-0 text-emerald-400 dark:text-emerald-600" />
       <span className="truncate">{message}</span>
     </div>
@@ -101,11 +113,8 @@ export default function ProductDetailClient({
   };
 
   const handleToggleWishlist = async () => {
-    if (isFav) {
-      removeFavorite(product._id);
-    } else {
-      addFavorite(product._id);
-    }
+    if (isFav) removeFavorite(product._id);
+    else addFavorite(product._id);
 
     if (customer?.token) {
       try {
@@ -125,21 +134,12 @@ export default function ProductDetailClient({
 
   const handleShare = async () => {
     if (typeof navigator !== 'undefined' && navigator.share) {
-      try {
-        await navigator.share({
-          title: product.title,
-          url: window.location.href,
-        });
-      } catch (err) {
-        console.error('Share failed', err);
-      }
+      try { await navigator.share({ title: product.title, url: window.location.href }); } catch (err) {}
     } else {
       try {
         await navigator.clipboard.writeText(window.location.href);
         alert(isKm ? 'បានចម្លងតំណភ្ជាប់!' : 'Link copied to clipboard!');
-      } catch (e) {
-        console.error('Clipboard copy failed', e);
-      }
+      } catch (e) {}
     }
   };
 
@@ -155,7 +155,6 @@ export default function ProductDetailClient({
         return;
       }
     }
-
     addItem({
       productId: product._id,
       title: product.title,
@@ -165,7 +164,6 @@ export default function ProductDetailClient({
       imageUrl: product.imageUrl,
       selectedVariants,
     });
-
     showToast();
   };
 
@@ -173,9 +171,498 @@ export default function ProductDetailClient({
   const productTitle = isKm && product.titleKm ? product.titleKm : product.title;
   const productDesc = isKm && product.descriptionKm ? product.descriptionKm : (product.description || '');
 
+  // -------------------------------------------------------------
+  // THEME 2: MODERN TECH (minimal-tech)
+  // -------------------------------------------------------------
+  if (themeStyle === 'minimal-tech') {
+    return (
+      <div className="flex flex-col min-h-full bg-[#050B14] text-cyan-50 dark:text-cyan-50 pb-24 md:pb-16 font-mono">
+        <AddToCartToast message={toast.message} visible={toast.visible} themeStyle={themeStyle} primaryColor={primaryColor} />
+        
+        {/* Top Mobile Bar */}
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between border-b border-cyan-900/40">
+          <button onClick={() => router.back()} className="text-cyan-600 hover:text-cyan-300 transition-colors">
+            <ArrowLeft size={20} />
+          </button>
+          <div className="flex items-center gap-4">
+            <button onClick={handleToggleWishlist} className="text-cyan-600 hover:text-cyan-300 transition-colors">
+              <Bookmark size={20} style={isFav ? { fill: primaryColor || '#22d3ee', color: primaryColor || '#22d3ee' } : {}} />
+            </button>
+            <button onClick={handleShare} className="text-cyan-600 hover:text-cyan-300 transition-colors">
+              <Share2 size={20} />
+            </button>
+            <button onClick={() => setDrawerOpen(true)} className="text-cyan-600 hover:text-cyan-300 relative transition-colors">
+              <ShoppingBag size={20} />
+              {totalCartItems > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-[16px] h-[16px] bg-cyan-500 text-black text-[9px] font-bold rounded flex items-center justify-center" style={{ backgroundColor: primaryColor || '#22d3ee' }}>
+                  {totalCartItems}
+                </span>
+              )}
+            </button>
+          </div>
+        </div>
+
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+            
+            {/* Gallery */}
+            <div className="lg:col-span-6 flex flex-col gap-4">
+              <div className="w-full aspect-square bg-[#0D1322] border border-cyan-900/50 p-4 rounded-none relative">
+                <img src={imagesList[currentImageIndex]} alt={productTitle} className="w-full h-full object-contain drop-shadow-2xl" />
+                {imagesList.length > 1 && (
+                  <>
+                    <button onClick={() => setCurrentImageIndex(prev => prev === 0 ? imagesList.length - 1 : prev - 1)} className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-[#050B14]/80 text-cyan-400 border border-cyan-900/50 flex items-center justify-center backdrop-blur hover:bg-cyan-900/30">
+                      <ChevronLeft size={16} />
+                    </button>
+                    <button onClick={() => setCurrentImageIndex(prev => prev === imagesList.length - 1 ? 0 : prev + 1)} className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-[#050B14]/80 text-cyan-400 border border-cyan-900/50 flex items-center justify-center backdrop-blur hover:bg-cyan-900/30">
+                      <ChevronRight size={16} />
+                    </button>
+                  </>
+                )}
+              </div>
+              {imagesList.length > 1 && (
+                <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+                  {imagesList.map((img: string, idx: number) => (
+                    <button key={idx} onClick={() => setCurrentImageIndex(idx)} className={`w-16 h-16 shrink-0 bg-[#0D1322] border p-1 ${currentImageIndex === idx ? 'border-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.3)]' : 'border-cyan-900/40 opacity-60 hover:opacity-100'}`} style={currentImageIndex === idx ? { borderColor: primaryColor || '#22d3ee' } : {}}>
+                      <img src={img} alt={`Thumb ${idx}`} className="w-full h-full object-contain" />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Info */}
+            <div className="lg:col-span-6 flex flex-col">
+              <div className="pb-6 border-b border-cyan-900/40 mb-6">
+                <p className="text-[10px] text-cyan-600 uppercase tracking-[0.2em] mb-2">{text.inStock}</p>
+                <h1 className="text-2xl font-bold tracking-tight text-white mb-3 leading-snug">{productTitle}</h1>
+                <p className="text-3xl font-black" style={{ color: primaryColor || '#22d3ee' }}>${Number(product.price ?? 0).toFixed(2)}</p>
+              </div>
+
+              {product.variants && product.variants.length > 0 && (
+                <div className="space-y-6 pb-6 border-b border-cyan-900/40">
+                  {product.variants.map((variant: any) => (
+                    <div key={variant.name}>
+                      <label className="text-xs font-bold uppercase tracking-widest text-cyan-600 mb-3 block">
+                        {variant.name}: <span className="text-cyan-300 font-normal">{selectedVariants[variant.name] || 'SELECT'}</span>
+                      </label>
+                      <div className="flex flex-wrap gap-3">
+                        {variant.options.map((opt: string) => {
+                          const isSelected = selectedVariants[variant.name] === opt;
+                          return (
+                            <button
+                              key={opt} onClick={() => handleSelect(variant.name, opt)}
+                              className={`h-10 px-4 flex items-center justify-center text-xs font-bold uppercase tracking-wider border transition-all ${isSelected ? 'bg-cyan-950/50 text-white shadow-[0_0_15px_rgba(34,211,238,0.2)]' : 'bg-[#0D1322] text-cyan-500 border-cyan-900/40 hover:border-cyan-500/50'}`}
+                              style={isSelected ? { borderColor: primaryColor || '#22d3ee', color: primaryColor || '#22d3ee' } : {}}
+                            >
+                              {opt}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div className="py-6 flex items-center gap-4">
+                <div className="flex items-center border border-cyan-900/60 bg-[#0D1322] h-12 px-2 shrink-0">
+                  <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="p-2 text-cyan-600 hover:text-cyan-300"><Minus size={14} /></button>
+                  <span className="w-8 text-center font-bold text-cyan-100 text-sm">{quantity}</span>
+                  <button onClick={() => setQuantity(quantity + 1)} className="p-2 text-cyan-600 hover:text-cyan-300"><Plus size={14} /></button>
+                </div>
+                <button onClick={handleAddToCart} className="flex-1 h-12 text-black text-sm font-bold uppercase tracking-widest flex items-center justify-center gap-3 transition-all hover:opacity-90 shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:scale-[1.01] active:scale-95" style={{ backgroundColor: primaryColor || '#22d3ee' }}>
+                  <ShoppingBag size={16} /> {text.addToCart}
+                </button>
+              </div>
+
+              <div className="border-t border-cyan-900/40 divide-y divide-cyan-900/20">
+                <div className="py-4">
+                  <button onClick={() => setActiveAccordion(activeAccordion === 'desc' ? null : 'desc')} className="w-full flex items-center justify-between text-xs font-bold uppercase tracking-widest text-cyan-300 text-left">
+                    <span>{text.descAndFit}</span>
+                    <ChevronDown size={16} className={`transition-transform duration-200 ${activeAccordion === 'desc' ? 'rotate-180' : ''}`} style={activeAccordion === 'desc' ? { color: primaryColor || '#22d3ee' } : {}} />
+                  </button>
+                  {activeAccordion === 'desc' && <div className="pt-4 text-xs text-cyan-600/80 leading-relaxed whitespace-pre-line">{productDesc || 'SYSTEM SPECIFICATIONS...'}</div>}
+                </div>
+                <div className="py-4">
+                  <button onClick={() => setActiveAccordion(activeAccordion === 'shipping' ? null : 'shipping')} className="w-full flex items-center justify-between text-xs font-bold uppercase tracking-widest text-cyan-300 text-left">
+                    <span>{text.shippingReturns}</span>
+                    <ChevronDown size={16} className={`transition-transform duration-200 ${activeAccordion === 'shipping' ? 'rotate-180' : ''}`} style={activeAccordion === 'shipping' ? { color: primaryColor || '#22d3ee' } : {}} />
+                  </button>
+                  {activeAccordion === 'shipping' && <div className="pt-4 text-xs text-cyan-600/80 leading-relaxed"><p>• INITIATE GLOBAL SHIPPING ROUTINE.</p></div>}
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // -------------------------------------------------------------
+  // THEME 3: NEO-BRUTALISM
+  // -------------------------------------------------------------
+  if (themeStyle === 'neo-brutalism') {
+    return (
+      <div className="flex flex-col min-h-full bg-[#f4f4f4] dark:bg-[#111111] text-black dark:text-white pb-24 md:pb-16 font-sans">
+        <AddToCartToast message={toast.message} visible={toast.visible} themeStyle={themeStyle} primaryColor={primaryColor} />
+        
+        {/* Top Mobile Bar */}
+        <div className="w-full px-4 py-4 flex items-center justify-between border-b-[4px] border-black dark:border-white bg-[#ffeb3b] dark:bg-[#222]" style={{ backgroundColor: primaryColor || '#ffeb3b' }}>
+          <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center bg-white dark:bg-black border-[3px] border-black dark:border-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all">
+            <ArrowLeft size={20} className="text-black dark:text-white" strokeWidth={3} />
+          </button>
+          <div className="flex items-center gap-3">
+            <button onClick={handleToggleWishlist} className="w-10 h-10 flex items-center justify-center bg-white dark:bg-black border-[3px] border-black dark:border-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all">
+              <Bookmark size={20} className="text-black dark:text-white" strokeWidth={2.5} style={isFav ? { fill: '#000', color: '#000' } : {}} />
+            </button>
+            <button onClick={() => setDrawerOpen(true)} className="w-10 h-10 flex items-center justify-center bg-white dark:bg-black border-[3px] border-black dark:border-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all relative">
+              <ShoppingBag size={20} className="text-black dark:text-white" strokeWidth={2.5} />
+              {totalCartItems > 0 && (
+                <span className="absolute -top-2 -right-2 w-6 h-6 bg-[#f87171] border-[2px] border-black text-black text-[10px] font-black flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                  {totalCartItems}
+                </span>
+              )}
+            </button>
+          </div>
+        </div>
+
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+            
+            {/* Gallery */}
+            <div className="lg:col-span-6 flex flex-col gap-4">
+              <div className="w-full aspect-square bg-white dark:bg-[#222] border-[4px] border-black dark:border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] p-4 relative">
+                <img src={imagesList[currentImageIndex]} alt={productTitle} className="w-full h-full object-contain" />
+                {imagesList.length > 1 && (
+                  <>
+                    <button onClick={() => setCurrentImageIndex(prev => prev === 0 ? imagesList.length - 1 : prev - 1)} className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-[#4ade80] border-[3px] border-black text-black flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all">
+                      <ChevronLeft size={20} strokeWidth={3} />
+                    </button>
+                    <button onClick={() => setCurrentImageIndex(prev => prev === imagesList.length - 1 ? 0 : prev + 1)} className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-[#60a5fa] border-[3px] border-black text-black flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all">
+                      <ChevronRight size={20} strokeWidth={3} />
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+
+            {/* Info */}
+            <div className="lg:col-span-6 flex flex-col pt-4">
+              <div className="pb-6 mb-6 border-b-[4px] border-black dark:border-white">
+                <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-black dark:text-white mb-4 leading-none">{productTitle}</h1>
+                <div className="inline-block px-4 py-2 bg-[#ff90e8] border-[3px] border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]" style={{ backgroundColor: primaryColor || '#ff90e8' }}>
+                  <p className="text-2xl font-black text-black">${Number(product.price ?? 0).toFixed(2)}</p>
+                </div>
+              </div>
+
+              {product.variants && product.variants.length > 0 && (
+                <div className="space-y-6 pb-8 border-b-[4px] border-black dark:border-white">
+                  {product.variants.map((variant: any) => (
+                    <div key={variant.name}>
+                      <label className="text-sm font-black uppercase tracking-wider text-black dark:text-white mb-3 block">
+                        {variant.name}: <span className="bg-black text-white dark:bg-white dark:text-black px-2 py-0.5 ml-2">{selectedVariants[variant.name] || 'SELECT'}</span>
+                      </label>
+                      <div className="flex flex-wrap gap-3">
+                        {variant.options.map((opt: string) => {
+                          const isSelected = selectedVariants[variant.name] === opt;
+                          return (
+                            <button
+                              key={opt} onClick={() => handleSelect(variant.name, opt)}
+                              className={`h-12 px-5 flex items-center justify-center text-sm font-black uppercase border-[3px] border-black dark:border-white transition-all ${isSelected ? 'bg-black text-white dark:bg-white dark:text-black shadow-none translate-x-[4px] translate-y-[4px]' : 'bg-white dark:bg-black text-black dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]'}`}
+                            >
+                              {opt}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div className="py-8 flex flex-col sm:flex-row gap-6">
+                <div className="flex items-center bg-white dark:bg-black border-[4px] border-black dark:border-white h-16 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
+                  <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-12 h-full flex items-center justify-center border-r-[4px] border-black dark:border-white bg-[#f87171] hover:bg-red-500 text-black active:bg-red-600 transition-colors"><Minus size={20} strokeWidth={4} /></button>
+                  <span className="w-14 text-center font-black text-xl text-black dark:text-white">{quantity}</span>
+                  <button onClick={() => setQuantity(quantity + 1)} className="w-12 h-full flex items-center justify-center border-l-[4px] border-black dark:border-white bg-[#4ade80] hover:bg-green-500 text-black active:bg-green-600 transition-colors"><Plus size={20} strokeWidth={4} /></button>
+                </div>
+                <button onClick={handleAddToCart} className="flex-1 h-16 bg-[#c084fc] text-black text-lg font-black uppercase border-[4px] border-black dark:border-white flex items-center justify-center gap-3 transition-all shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none" style={{ backgroundColor: primaryColor || '#c084fc' }}>
+                  <ShoppingBag size={24} strokeWidth={3} /> {text.addToCart}
+                </button>
+              </div>
+
+              <div className="border-t-[4px] border-black dark:border-white bg-white dark:bg-black border-x-[4px] border-b-[4px] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] mt-4">
+                <div className="border-b-[4px] border-black dark:border-white p-5">
+                  <button onClick={() => setActiveAccordion(activeAccordion === 'desc' ? null : 'desc')} className="w-full flex items-center justify-between text-sm font-black uppercase text-black dark:text-white text-left">
+                    <span>{text.descAndFit}</span>
+                    <ChevronDown size={24} strokeWidth={3} className={`transition-transform duration-200 ${activeAccordion === 'desc' ? 'rotate-180' : ''}`} />
+                  </button>
+                  {activeAccordion === 'desc' && <div className="pt-4 text-sm font-bold text-gray-700 dark:text-gray-300 leading-relaxed">{productDesc || 'LOUD DETAILS AND STREET FIT.'}</div>}
+                </div>
+                <div className="p-5">
+                  <button onClick={() => setActiveAccordion(activeAccordion === 'shipping' ? null : 'shipping')} className="w-full flex items-center justify-between text-sm font-black uppercase text-black dark:text-white text-left">
+                    <span>{text.shippingReturns}</span>
+                    <ChevronDown size={24} strokeWidth={3} className={`transition-transform duration-200 ${activeAccordion === 'shipping' ? 'rotate-180' : ''}`} />
+                  </button>
+                  {activeAccordion === 'shipping' && <div className="pt-4 text-sm font-bold text-gray-700 dark:text-gray-300 leading-relaxed"><p>• BOLD SHIPPING POLICIES HERE.</p></div>}
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // -------------------------------------------------------------
+  // THEME 4: DEFAULT MODERN RETAIL (Glassmorphism & Soft Radii)
+  // -------------------------------------------------------------
+  if (themeStyle === 'default') {
+    return (
+      <div className="flex flex-col min-h-full bg-gray-50 dark:bg-[#111318] text-gray-900 dark:text-white pb-24 md:pb-16 font-sans">
+        <AddToCartToast message={toast.message} visible={toast.visible} themeStyle={themeStyle} primaryColor={primaryColor} />
+        
+        {/* Top Mobile Bar */}
+        <div className="w-full px-4 py-4 flex items-center justify-between bg-white/70 dark:bg-black/40 backdrop-blur-md border-b border-gray-200/50 dark:border-white/5 sticky top-0 z-50">
+          <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center bg-gray-100 dark:bg-white/10 rounded-full hover:bg-gray-200 dark:hover:bg-white/20 transition-all shadow-sm">
+            <ArrowLeft size={18} className="text-gray-900 dark:text-white" strokeWidth={2.5} />
+          </button>
+          <div className="flex items-center gap-3">
+            <button onClick={handleToggleWishlist} className="w-10 h-10 flex items-center justify-center bg-gray-100 dark:bg-white/10 rounded-full hover:bg-gray-200 dark:hover:bg-white/20 transition-all shadow-sm">
+              <Bookmark size={18} className="text-gray-900 dark:text-white" strokeWidth={2.5} style={isFav ? { fill: primaryColor || '#10b981', color: primaryColor || '#10b981' } : {}} />
+            </button>
+            <button onClick={() => setDrawerOpen(true)} className="w-10 h-10 flex items-center justify-center bg-gray-100 dark:bg-white/10 rounded-full hover:bg-gray-200 dark:hover:bg-white/20 transition-all shadow-sm relative">
+              <ShoppingBag size={18} className="text-gray-900 dark:text-white" strokeWidth={2.5} />
+              {totalCartItems > 0 && (
+                <span className="absolute -top-1 -right-1 w-[18px] h-[18px] text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-md" style={{ backgroundColor: primaryColor || '#10b981' }}>
+                  {totalCartItems}
+                </span>
+              )}
+            </button>
+          </div>
+        </div>
+
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+            
+            {/* Gallery */}
+            <div className="lg:col-span-6 flex flex-col gap-4">
+              <div className="w-full aspect-[4/5] bg-white dark:bg-white/5 rounded-3xl relative overflow-hidden shadow-sm border border-gray-100 dark:border-white/5">
+                <img src={imagesList[currentImageIndex]} alt={productTitle} className="w-full h-full object-cover" />
+                {imagesList.length > 1 && (
+                  <>
+                    <button onClick={() => setCurrentImageIndex(prev => prev === 0 ? imagesList.length - 1 : prev - 1)} className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 dark:bg-black/60 backdrop-blur-md rounded-full shadow-lg flex items-center justify-center text-gray-900 dark:text-white hover:scale-105 active:scale-95 transition-all">
+                      <ChevronLeft size={20} strokeWidth={2.5} />
+                    </button>
+                    <button onClick={() => setCurrentImageIndex(prev => prev === imagesList.length - 1 ? 0 : prev + 1)} className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 dark:bg-black/60 backdrop-blur-md rounded-full shadow-lg flex items-center justify-center text-gray-900 dark:text-white hover:scale-105 active:scale-95 transition-all">
+                      <ChevronRight size={20} strokeWidth={2.5} />
+                    </button>
+                  </>
+                )}
+              </div>
+              {imagesList.length > 1 && (
+                <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide px-1">
+                  {imagesList.map((img: string, idx: number) => (
+                    <button key={idx} onClick={() => setCurrentImageIndex(idx)} className={`w-20 h-20 shrink-0 rounded-2xl overflow-hidden border-2 transition-all ${currentImageIndex === idx ? 'border-gray-900 dark:border-white shadow-md scale-105' : 'border-transparent opacity-60 hover:opacity-100'}`} style={currentImageIndex === idx ? { borderColor: primaryColor || undefined } : {}}>
+                      <img src={img} alt={`Thumb ${idx}`} className="w-full h-full object-cover rounded-xl" />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Info */}
+            <div className="lg:col-span-6 flex flex-col pt-2">
+              <div className="pb-6 mb-6 border-b border-gray-200 dark:border-white/10">
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-3 tracking-tight">{productTitle}</h1>
+                <p className="text-2xl sm:text-3xl font-extrabold" style={{ color: primaryColor || undefined }}>${Number(product.price ?? 0).toFixed(2)}</p>
+              </div>
+
+              {product.variants && product.variants.length > 0 && (
+                <div className="space-y-6 pb-8 border-b border-gray-200 dark:border-white/10">
+                  {product.variants.map((variant: any) => (
+                    <div key={variant.name}>
+                      <label className="text-sm font-bold text-gray-700 dark:text-gray-300 mb-3 block">
+                        {variant.name}: <span className="font-normal text-gray-500 dark:text-gray-400">{selectedVariants[variant.name] || 'Select option'}</span>
+                      </label>
+                      <div className="flex flex-wrap gap-3">
+                        {variant.options.map((opt: string) => {
+                          const isSelected = selectedVariants[variant.name] === opt;
+                          return (
+                            <button
+                              key={opt} onClick={() => handleSelect(variant.name, opt)}
+                              className={`h-12 px-6 flex items-center justify-center text-sm font-semibold rounded-2xl transition-all border ${isSelected ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900 border-transparent shadow-md' : 'bg-white dark:bg-white/5 text-gray-800 dark:text-gray-200 border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/30 hover:shadow-sm'}`}
+                              style={isSelected ? { backgroundColor: primaryColor || undefined, color: '#fff' } : {}}
+                            >
+                              {opt}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div className="py-8 flex flex-col sm:flex-row gap-4">
+                <div className="flex items-center bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 h-14 px-2 rounded-2xl shadow-sm shrink-0">
+                  <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 h-10 flex items-center justify-center bg-gray-50 dark:bg-white/5 rounded-xl hover:bg-gray-100 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300 transition-colors"><Minus size={18} strokeWidth={2.5} /></button>
+                  <span className="w-12 text-center font-bold text-lg text-gray-900 dark:text-white">{quantity}</span>
+                  <button onClick={() => setQuantity(quantity + 1)} className="w-10 h-10 flex items-center justify-center bg-gray-50 dark:bg-white/5 rounded-xl hover:bg-gray-100 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300 transition-colors"><Plus size={18} strokeWidth={2.5} /></button>
+                </div>
+                <button onClick={handleAddToCart} className="flex-1 h-14 bg-gray-900 text-white dark:bg-white dark:text-gray-900 text-sm font-bold flex items-center justify-center gap-3 rounded-2xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]" style={{ backgroundColor: primaryColor || undefined }}>
+                  <ShoppingBag size={20} strokeWidth={2.5} /> {text.addToCart}
+                </button>
+              </div>
+
+              <div className="bg-white dark:bg-white/5 rounded-3xl p-2 shadow-sm border border-gray-100 dark:border-white/5">
+                <div className="p-4 border-b border-gray-100 dark:border-white/5">
+                  <button onClick={() => setActiveAccordion(activeAccordion === 'desc' ? null : 'desc')} className="w-full flex items-center justify-between text-sm font-bold text-gray-900 dark:text-white text-left">
+                    <span className="flex items-center gap-2"><Sparkles size={18} className="text-gray-400" /> {text.descAndFit}</span>
+                    <ChevronDown size={20} strokeWidth={2.5} className={`text-gray-400 transition-transform duration-300 ${activeAccordion === 'desc' ? 'rotate-180' : ''}`} />
+                  </button>
+                  <div className={`transition-all duration-300 overflow-hidden ${activeAccordion === 'desc' ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                    <div className="pt-4 text-sm text-gray-600 dark:text-gray-400 leading-relaxed px-1 whitespace-pre-line">{productDesc || 'Soft minimal details describing this product.'}</div>
+                  </div>
+                </div>
+                <div className="p-4">
+                  <button onClick={() => setActiveAccordion(activeAccordion === 'shipping' ? null : 'shipping')} className="w-full flex items-center justify-between text-sm font-bold text-gray-900 dark:text-white text-left">
+                    <span className="flex items-center gap-2"><Truck size={18} className="text-gray-400" /> {text.shippingReturns}</span>
+                    <ChevronDown size={20} strokeWidth={2.5} className={`text-gray-400 transition-transform duration-300 ${activeAccordion === 'shipping' ? 'rotate-180' : ''}`} />
+                  </button>
+                  <div className={`transition-all duration-300 overflow-hidden ${activeAccordion === 'shipping' ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                    <div className="pt-4 text-sm text-gray-600 dark:text-gray-400 leading-relaxed px-1"><p>• Premium shipping and smooth return policies.</p></div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  
+  // -------------------------------------------------------------
+  // THEME 5: SKINCARE & BEAUTY (Clean Apothecary)
+  // -------------------------------------------------------------
+  if (themeStyle === 'skincare-clean') {
+    return (
+      <div className="flex flex-col min-h-full bg-[#FAF9F6] dark:bg-[#0C0C0C] text-[#333] dark:text-[#E5E5E5] pb-24 md:pb-16 font-sans">
+        <AddToCartToast message={toast.message} visible={toast.visible} themeStyle={themeStyle} primaryColor={primaryColor} />
+        
+        {/* Top Mobile Bar */}
+        <div className="w-full px-4 py-4 flex items-center justify-between border-b border-[#E5E5E5] dark:border-[#222]">
+          <button onClick={() => router.back()} className="text-[#333] dark:text-[#E5E5E5] hover:opacity-70 transition-opacity">
+            <ArrowLeft size={22} strokeWidth={1.5} />
+          </button>
+          <div className="flex items-center gap-4">
+            <button onClick={handleToggleWishlist} className="text-[#333] dark:text-[#E5E5E5] hover:opacity-70 transition-opacity">
+              <Heart size={22} strokeWidth={1.5} style={isFav ? { fill: primaryColor || '#000', color: primaryColor || '#000' } : {}} />
+            </button>
+            <button onClick={() => setDrawerOpen(true)} className="text-[#333] dark:text-[#E5E5E5] hover:opacity-70 transition-opacity relative">
+              <ShoppingBag size={22} strokeWidth={1.5} />
+              {totalCartItems > 0 && (
+                <span className="absolute -top-1 -right-1 w-[18px] h-[18px] text-white text-[9px] font-medium rounded-full flex items-center justify-center shadow-sm" style={{ backgroundColor: primaryColor || '#000' }}>
+                  {totalCartItems}
+                </span>
+              )}
+            </button>
+          </div>
+        </div>
+
+        <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+            
+            {/* Gallery */}
+            <div className="lg:col-span-6 flex flex-col gap-4">
+              <div className="w-full aspect-[4/5] bg-white dark:bg-[#111] border border-[#E5E5E5] dark:border-[#222] p-6 relative">
+                <img src={imagesList[currentImageIndex]} alt={productTitle} className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal" />
+              </div>
+              {imagesList.length > 1 && (
+                <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+                  {imagesList.map((img: string, idx: number) => (
+                    <button key={idx} onClick={() => setCurrentImageIndex(idx)} className={`w-16 h-20 shrink-0 bg-white dark:bg-[#111] border p-1 ${currentImageIndex === idx ? 'border-[#333] dark:border-[#E5E5E5]' : 'border-[#E5E5E5] dark:border-[#222] opacity-60 hover:opacity-100'}`}>
+                      <img src={img} alt={`Thumb ${idx}`} className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal" />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Info */}
+            <div className="lg:col-span-6 flex flex-col">
+              <div className="pb-6 border-b border-[#E5E5E5] dark:border-[#222] mb-6 text-center lg:text-left">
+                <h1 className="text-2xl sm:text-3xl font-light uppercase tracking-widest text-[#222] dark:text-[#FFF] mb-3 leading-snug">{productTitle}</h1>
+                <p className="text-xl font-medium" style={{ color: primaryColor || '#000' }}>${Number(product.price ?? 0).toFixed(2)}</p>
+              </div>
+
+              {product.variants && product.variants.length > 0 && (
+                <div className="space-y-6 pb-6 border-b border-[#E5E5E5] dark:border-[#222]">
+                  {product.variants.map((variant: any) => (
+                    <div key={variant.name}>
+                      <label className="text-xs font-medium uppercase tracking-widest text-[#888] mb-3 block text-center lg:text-left">
+                        {variant.name}: <span className="text-[#333] dark:text-[#CCC]">{selectedVariants[variant.name] || 'SELECT'}</span>
+                      </label>
+                      <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
+                        {variant.options.map((opt: string) => {
+                          const isSelected = selectedVariants[variant.name] === opt;
+                          return (
+                            <button
+                              key={opt} onClick={() => handleSelect(variant.name, opt)}
+                              className={`px-5 py-3 text-xs font-medium uppercase tracking-widest border transition-all ${isSelected ? 'bg-black text-white dark:bg-white dark:text-black border-black dark:border-white' : 'bg-transparent text-[#555] border-[#E5E5E5] dark:border-[#333] hover:border-[#999]'}`}
+                              style={isSelected ? { backgroundColor: primaryColor || undefined, borderColor: primaryColor || undefined, color: '#FFF' } : {}}
+                            >
+                              {opt}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div className="py-8 flex flex-col items-center lg:items-start gap-4">
+                <div className="flex items-center border-b border-[#E5E5E5] dark:border-[#333] h-12 px-2 w-32 shrink-0 justify-between">
+                  <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="p-2 text-[#888] hover:text-[#000]"><Minus size={16} strokeWidth={1.5} /></button>
+                  <span className="text-center font-light text-[#333] dark:text-[#E5E5E5] text-sm">{quantity}</span>
+                  <button onClick={() => setQuantity(quantity + 1)} className="p-2 text-[#888] hover:text-[#000]"><Plus size={16} strokeWidth={1.5} /></button>
+                </div>
+                <button onClick={handleAddToCart} className="w-full h-14 text-white text-sm font-medium uppercase tracking-widest flex items-center justify-center gap-3 transition-opacity hover:opacity-80" style={{ backgroundColor: primaryColor || '#000' }}>
+                   {text.addToCart}
+                </button>
+              </div>
+
+              <div className="divide-y divide-[#E5E5E5] dark:divide-[#222]">
+                <div className="py-4">
+                  <button onClick={() => setActiveAccordion(activeAccordion === 'desc' ? null : 'desc')} className="w-full flex items-center justify-between text-xs font-medium uppercase tracking-widest text-[#555] dark:text-[#AAA] text-left">
+                    <span>{text.descAndFit}</span>
+                    <ChevronDown size={18} strokeWidth={1.5} className={`transition-transform duration-300 ${activeAccordion === 'desc' ? 'rotate-180' : ''}`} />
+                  </button>
+                  <div className={`transition-all duration-500 overflow-hidden ${activeAccordion === 'desc' ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                    <div className="pt-4 text-sm text-[#777] font-light leading-relaxed whitespace-pre-line">{productDesc || 'Apothecary clean details.'}</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // -------------------------------------------------------------
+  // THEME 1: FASHION EDITORIAL / AURUM (Default original)
+  // -------------------------------------------------------------
   return (
     <div className="flex flex-col min-h-full bg-white dark:bg-[#0E1117] text-gray-900 dark:text-white transition-colors pb-24 md:pb-16">
-      <AddToCartToast message={toast.message} visible={toast.visible} />
+      <AddToCartToast message={toast.message} visible={toast.visible} themeStyle={themeStyle} primaryColor={primaryColor} />
 
       {/* Top Mobile & Desktop Bar */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between border-b border-gray-100 dark:border-white/[0.06]">
@@ -209,7 +696,7 @@ export default function ProductDetailClient({
           >
             <ShoppingBag size={20} />
             {totalCartItems > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 min-w-[15px] h-[15px] px-1 bg-black dark:bg-white text-white dark:text-black text-[8px] font-bold rounded-none flex items-center justify-center">
+              <span className="absolute -top-0.5 -right-0.5 min-w-[15px] h-[15px] px-1 bg-black dark:bg-white text-white dark:text-black text-[8px] font-bold rounded-none flex items-center justify-center" style={{ backgroundColor: primaryColor || undefined }}>
                 {totalCartItems}
               </span>
             )}
@@ -233,7 +720,7 @@ export default function ProductDetailClient({
 
               {/* Status / Inventory Badge */}
               {product.stock !== undefined && product.stock > 0 && product.stock <= 3 && (
-                <span className={`absolute top-3 left-3 bg-black text-white text-[9px] font-bold px-2 py-0.5 ${isKm ? 'tracking-normal' : 'uppercase tracking-widest'} rounded-none`}>
+                <span className={`absolute top-3 left-3 text-white text-[9px] font-bold px-2 py-0.5 ${isKm ? 'tracking-normal' : 'uppercase tracking-widest'} rounded-none`} style={{ backgroundColor: primaryColor || '#000' }}>
                   {isKm ? `នៅសល់តែ ${product.stock}` : `ONLY ${product.stock} LEFT`}
                 </span>
               )}
@@ -380,6 +867,7 @@ export default function ProductDetailClient({
                 <button
                   onClick={handleAddToCart}
                   className={`flex-1 h-11 bg-black hover:bg-neutral-800 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-black text-xs font-bold ${isKm ? 'tracking-normal' : 'uppercase tracking-widest'} transition-all flex items-center justify-center gap-2 active:scale-98 shadow-sm rounded-none`}
+                  style={{ backgroundColor: primaryColor || undefined, borderColor: primaryColor || undefined }}
                 >
                   <ShoppingBag size={14} />
                   <span>{text.addToCart}</span>

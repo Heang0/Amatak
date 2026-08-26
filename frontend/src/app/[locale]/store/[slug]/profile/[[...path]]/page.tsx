@@ -12,6 +12,93 @@ import { useRouter, usePathname } from 'next/navigation';
 import { LogOut, Package, Clock, CheckCircle2, Truck, XCircle, AlertCircle, Camera, Edit2, Hash, Link2, Activity, CreditCard, Tag, Percent, MapPin, Calendar, FileText, RefreshCcw, X, Plus, Star, Heart, Bookmark } from 'lucide-react';
 import Select from 'react-select';
 
+
+const getThemeClasses = (themeStyle: string, primaryColor: string) => {
+  switch (themeStyle) {
+    case 'neo-brutalism':
+      return {
+        bg: 'bg-[#f4f4f4] dark:bg-[#111] font-sans text-black dark:text-white',
+        container: 'max-w-7xl',
+        header: 'py-8 border-b-[4px] border-black dark:border-white mb-8',
+        title: 'text-3xl sm:text-4xl font-black uppercase tracking-tight text-black dark:text-white',
+        card: 'bg-white dark:bg-black border-[4px] border-black dark:border-white p-6 md:p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)]',
+        input: 'w-full px-4 py-3 bg-white dark:bg-black border-[3px] border-black dark:border-white focus:outline-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-bold text-black dark:text-white',
+        label: 'block text-sm font-black uppercase mb-2 text-black dark:text-white',
+        buttonPrimary: 'w-full py-3.5 px-4 font-black uppercase text-center transition-all mt-4 border-[4px] border-black text-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none bg-white hover:bg-gray-100',
+        buttonSecondary: 'inline-block font-black px-6 py-2.5 text-sm uppercase transition-all border-[3px] border-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none bg-white',
+        buttonDanger: 'inline-block font-black px-6 py-2.5 text-sm uppercase transition-all border-[3px] border-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none bg-[#f87171] hover:bg-red-500',
+        tableHeader: 'bg-white dark:bg-black border-b-[4px] border-black dark:border-white',
+        tableCell: 'px-4 py-4 text-sm font-bold border-b-[3px] border-black/20 dark:border-white/20',
+        navTab: 'flex items-center gap-3 w-full p-4 border-[3px] border-black dark:border-white font-black uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none mb-3',
+      };
+    case 'minimal-tech':
+      return {
+        bg: 'bg-[#050B14] font-mono text-cyan-50',
+        container: 'max-w-7xl',
+        header: 'py-8 border-b border-cyan-900/40 mb-8',
+        title: 'text-xl sm:text-2xl font-bold uppercase tracking-[0.2em] text-cyan-400',
+        card: 'bg-[#0D1322] border border-cyan-900/40 p-6 md:p-8 shadow-[0_0_20px_rgba(34,211,238,0.05)]',
+        input: 'w-full px-4 py-3 bg-[#050B14] border border-cyan-900/50 focus:border-cyan-400 focus:outline-none text-cyan-100 placeholder-cyan-900',
+        label: 'block text-xs font-bold uppercase tracking-[0.1em] text-cyan-600 mb-2',
+        buttonPrimary: 'w-full py-3.5 px-4 font-bold uppercase tracking-[0.2em] transition-all mt-4 text-black shadow-[0_0_15px_rgba(34,211,238,0.2)] hover:opacity-90',
+        buttonSecondary: 'inline-block font-bold px-6 py-2.5 text-xs uppercase tracking-[0.1em] transition-all border border-cyan-500/50 text-cyan-400 hover:bg-cyan-900/20 bg-transparent',
+        buttonDanger: 'inline-block font-bold px-6 py-2.5 text-xs uppercase tracking-[0.1em] transition-all border border-red-500/50 text-red-400 hover:bg-red-900/20 bg-transparent',
+        tableHeader: 'border-b border-cyan-900/50',
+        tableCell: 'px-4 py-4 text-sm font-mono border-b border-cyan-900/30',
+        navTab: 'flex items-center gap-3 w-full p-4 border border-cyan-900/40 font-bold uppercase tracking-[0.1em] hover:bg-cyan-900/20 text-cyan-600 mb-3',
+      };
+    case 'skincare-clean':
+      return {
+        bg: 'bg-[#FAF9F6] dark:bg-[#0C0C0C] font-sans text-[#333] dark:text-[#E5E5E5]',
+        container: 'max-w-5xl',
+        header: 'py-8 border-b border-[#E5E5E5] dark:border-[#222] mb-8 text-center',
+        title: 'text-2xl sm:text-3xl font-light uppercase tracking-widest text-[#222] dark:text-[#FFF]',
+        card: 'bg-white dark:bg-[#111] border border-[#E5E5E5] dark:border-[#222] p-8 md:p-10',
+        input: 'w-full px-0 py-3 bg-transparent border-b border-[#CCC] dark:border-[#444] focus:border-[#000] dark:focus:border-[#FFF] focus:outline-none text-[#222] dark:text-[#FFF] placeholder-[#999]',
+        label: 'block text-xs font-medium uppercase tracking-widest text-[#888] mb-1',
+        buttonPrimary: 'w-full py-4 px-4 font-medium uppercase tracking-widest transition-opacity mt-6 text-white dark:text-black bg-black dark:bg-white hover:opacity-80',
+        buttonSecondary: 'inline-block font-medium px-6 py-3 text-xs uppercase tracking-widest transition-all border border-[#CCC] dark:border-[#444] text-[#333] dark:text-[#DDD] hover:bg-[#F9F9F9] dark:hover:bg-[#222]',
+        buttonDanger: 'inline-block font-medium px-6 py-3 text-xs uppercase tracking-widest transition-all text-[#D00] border border-[#D00] hover:bg-[#FFF0F0] dark:hover:bg-[#311]',
+        tableHeader: 'border-b border-[#E5E5E5] dark:border-[#222]',
+        tableCell: 'px-4 py-5 text-sm font-light border-b border-[#F0F0F0] dark:border-[#1A1A1A]',
+        navTab: 'flex items-center gap-3 w-full p-4 text-[#555] dark:text-[#AAA] font-medium tracking-widest uppercase hover:text-[#000] dark:hover:text-[#FFF] hover:bg-[#F2F0EB] dark:hover:bg-[#1A1A1A] rounded-xl mb-2',
+      };
+    case 'default':
+      return {
+        bg: 'bg-gray-50 dark:bg-[#111318] font-sans text-gray-900 dark:text-white',
+        container: 'max-w-6xl',
+        header: 'py-8 border-b border-gray-200 dark:border-white/10 mb-8',
+        title: 'text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white',
+        card: 'bg-white dark:bg-white/5 border border-gray-100 dark:border-white/5 p-6 md:p-8 rounded-3xl shadow-sm',
+        input: 'w-full px-4 py-3.5 bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-xl focus:ring-2 focus:ring-gray-200 dark:focus:ring-white/20 focus:outline-none text-gray-900 dark:text-white',
+        label: 'block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2',
+        buttonPrimary: 'w-full py-3.5 px-4 font-bold text-center transition-all mt-4 text-white dark:text-gray-900 bg-gray-900 dark:bg-white rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0',
+        buttonSecondary: 'inline-block font-bold px-6 py-2.5 text-sm transition-all border border-gray-200 dark:border-white/10 text-gray-700 dark:text-white bg-white dark:bg-white/10 rounded-xl shadow-sm hover:shadow-md',
+        buttonDanger: 'inline-block font-bold px-6 py-2.5 text-sm transition-all bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 rounded-xl hover:bg-red-100 dark:hover:bg-red-500/20',
+        tableHeader: 'border-b border-gray-100 dark:border-white/10',
+        tableCell: 'px-4 py-4 text-sm font-medium border-b border-gray-100 dark:border-white/10',
+        navTab: 'flex items-center gap-3 w-full p-4 font-bold text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 rounded-2xl mb-2',
+      };
+    case 'fashion-editorial':
+    default:
+      return {
+        bg: 'bg-white dark:bg-[#0E1117] font-sans text-gray-900 dark:text-white',
+        container: 'max-w-5xl',
+        header: 'py-8 border-b border-gray-100 dark:border-white/[0.08] mb-8',
+        title: 'text-xl sm:text-2xl font-black uppercase tracking-widest text-gray-900 dark:text-white',
+        card: 'bg-white dark:bg-[#0E1117] border border-gray-200 dark:border-white/[0.08] p-6 md:p-8 rounded-none shadow-sm',
+        input: 'w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 focus:outline-none focus:border-gray-400 dark:focus:border-gray-600 rounded-none text-sm text-gray-900 dark:text-white',
+        label: 'block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-2',
+        buttonPrimary: 'w-full py-3.5 px-4 font-bold text-center transition-all mt-4 text-white dark:text-black bg-black dark:bg-white uppercase tracking-widest rounded-none hover:bg-neutral-800 dark:hover:bg-gray-200',
+        buttonSecondary: 'inline-block font-bold px-6 py-2.5 text-xs uppercase tracking-widest transition-all border border-gray-200 dark:border-white/20 text-gray-700 dark:text-white rounded-none hover:bg-gray-50 dark:hover:bg-white/5',
+        buttonDanger: 'inline-block font-bold px-6 py-2.5 text-xs uppercase tracking-widest transition-all text-red-600 border border-red-200 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-none',
+        tableHeader: 'border-b border-gray-100 dark:border-white/[0.08]',
+        tableCell: 'px-4 py-4 text-sm font-medium border-b border-gray-100 dark:border-white/[0.06]',
+        navTab: 'flex items-center gap-3 w-full p-4 font-bold text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 uppercase tracking-widest rounded-none mb-1 text-sm',
+      };
+  }
+};
+
 export default function StoreProfilePage({ params }: { params: { slug: string, locale: string, path?: string[] } }) {
   const user = useCustomerAuthStore((state) => state.customerInfo);
   const setCustomerInfo = useCustomerAuthStore((state) => state.setCustomerInfo);
@@ -42,6 +129,7 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
   const [storeId, setStoreId] = useState<string | null>(null);
   const [primaryColor, setPrimaryColor] = useState('#000000');
   const [themeStyle, setThemeStyle] = useState('default');
+  const t = getThemeClasses(themeStyle, primaryColor);
   const [orders, setOrders] = useState<any[]>([]);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
@@ -335,16 +423,13 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
     );
   }
 
-  const cardClass = themeStyle === 'neo-brutalism'
-    ? 'bg-white dark:bg-[#111111] border-[3px] border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] p-5 rounded-none'
-    : 'bg-white dark:bg-[#13161F] border border-gray-200 dark:border-white/[0.08] hover:border-gray-300 dark:hover:border-white/20 shadow-2xs p-5 rounded-none transition-colors';
 
-  const avatarClass = 'w-20 h-20 bg-stone-100 dark:bg-stone-900 rounded-none flex items-center justify-center text-2xl font-bold text-gray-900 dark:text-white shrink-0 overflow-hidden border border-gray-200 dark:border-white/[0.08] relative group cursor-pointer';
+  const avatarClass = `w-20 h-20 bg-stone-100 dark:bg-stone-900 rounded-none flex items-center justify-center text-2xl font-bold text-gray-900 dark:text-white shrink-0 overflow-hidden ${t.card.includes('border-[4px]') ? 'border-[4px] border-black dark:border-white' : 'border border-gray-200 dark:border-white/[0.08]'} relative group cursor-pointer`;
 
   return (
-    <div className="w-full mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 py-6 sm:py-10 space-y-8 pb-32">
+    <div className={`w-full mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 py-6 sm:py-10 space-y-8 pb-32 ${t.bg}`}>
       {/* Profile Header */}
-      <div className={`flex flex-col md:flex-row md:items-center md:justify-between gap-6 pb-8 border-b ${themeStyle === 'neo-brutalism' ? 'border-black dark:border-white border-b-[3px]' : 'border-gray-200 dark:border-white/[0.08]'}`}>
+      <div className={`flex flex-col md:flex-row md:items-center md:justify-between gap-6 ${t.header}`}>
         <div className="flex items-center gap-5">
           <label className="relative cursor-pointer group block w-fit">
             <div className={avatarClass}>
@@ -372,11 +457,11 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
           </label>
 
           <div>
-            <h1 className="text-xl sm:text-2xl font-extrabold uppercase tracking-wider text-gray-900 dark:text-white">{user.name}</h1>
+            <h1 className={t.title}>{user.name}</h1>
             <p className="text-gray-500 dark:text-gray-400 text-xs mt-0.5 mb-2">{user.email}</p>
             <button
               onClick={() => setIsEditModalOpen(true)}
-              className="mt-1 flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest w-fit px-3.5 py-1.5 border border-black dark:border-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all rounded-none"
+              className={`mt-1 flex items-center gap-1.5 text-xs w-fit ${t.buttonSecondary}`}
             >
               <Edit2 size={13} />
               {params.locale === 'km' ? 'កែប្រែគណនី' : 'Edit Profile'}
@@ -386,7 +471,7 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
 
         <button
           onClick={handleLogout}
-          className="flex items-center gap-2 px-4 py-2 text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-900/10 dark:hover:bg-red-900/20 text-xs font-bold uppercase tracking-widest transition-all w-full md:w-auto justify-center rounded-none border border-red-200 dark:border-red-900/30"
+          className={`flex items-center gap-2 px-4 py-2 text-xs w-full md:w-auto justify-center transition-all ${t.buttonDanger}`}
         >
           <LogOut size={16} />
           {params.locale === 'km' ? 'ចាកចេញ' : 'Sign Out'}
@@ -398,28 +483,28 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
         <button
           onClick={() => setActiveTab('orders')}
           className={`pb-3 transition-colors border-b-2 ${activeTab === 'orders'
-              ? 'border-black dark:border-white text-black dark:text-white font-extrabold'
+              ? 'font-extrabold'
               : 'border-transparent text-gray-400 hover:text-black dark:hover:text-white'
             }`}
-        >
+          style={activeTab === 'orders' ? { borderColor: primaryColor || '#000', color: primaryColor || '#000' } : {}}>
           {params.locale === 'km' ? 'ប្រវត្តិការបញ្ជាទិញ' : 'Order History'}
         </button>
         <button
           onClick={() => setActiveTab('address')}
           className={`pb-3 transition-colors border-b-2 ${activeTab === 'address'
-              ? 'border-black dark:border-white text-black dark:text-white font-extrabold'
+              ? 'font-extrabold'
               : 'border-transparent text-gray-400 hover:text-black dark:hover:text-white'
             }`}
-        >
+          style={activeTab === 'address' ? { borderColor: primaryColor || '#000', color: primaryColor || '#000' } : {}}>
           {params.locale === 'km' ? 'អាសយដ្ឋាន' : 'Address'}
         </button>
         <button
           onClick={() => setActiveTab('favorites')}
           className={`pb-3 transition-colors border-b-2 ${activeTab === 'favorites'
-              ? 'border-black dark:border-white text-black dark:text-white font-extrabold'
+              ? 'font-extrabold'
               : 'border-transparent text-gray-400 hover:text-black dark:hover:text-white'
             }`}
-        >
+          style={activeTab === 'favorites' ? { borderColor: primaryColor || '#000', color: primaryColor || '#000' } : {}}>
           {params.locale === 'km' ? 'សំណព្វ' : 'Favorites'}
         </button>
       </div>
@@ -428,30 +513,21 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
         <div>
 
           {orders.length === 0 ? (
-            <div className={`text-center py-16 ${themeStyle === 'neo-brutalism'
-                ? 'bg-white dark:bg-[#111111] border-[3px] border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)]'
-                : 'bg-gray-50 dark:bg-gray-900/50 rounded-3xl border border-gray-100 dark:border-gray-900'
-              }`}>
+            <div className={`text-center py-16 ${t.card}`}>
               <Package className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
               <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">{params.locale === 'km' ? 'មិនមានការបញ្ជាទិញនៅឡើយទេ' : 'No Orders Yet'}</h3>
               <p className="text-gray-500 dark:text-gray-400 mb-6 text-sm">{params.locale === 'km' ? 'អ្នកមិនទាន់បានបញ្ជាទិញអ្វីនៅហាងនេះទេ' : "You haven't placed any orders at this store."}</p>
               <Link
                 href={`/${params.locale}`}
-                className={`inline-block font-bold px-8 py-3 transition-all ${themeStyle === 'neo-brutalism'
-                    ? 'border-[2px] border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none text-black bg-white dark:bg-black dark:text-white'
-                    : 'text-white rounded-full hover:scale-105 shadow-md'
-                  }`}
-                style={themeStyle !== 'neo-brutalism' ? { backgroundColor: primaryColor || '#000' } : undefined}
+                className={`inline-block font-bold px-8 py-3 transition-all text-white ${t.buttonPrimary}`}
+                style={{ backgroundColor: primaryColor || '#000' }}
               >
                 {params.locale === 'km' ? 'ចាប់ផ្តើមទិញទំនិញ' : 'Start Shopping'}
               </Link>
             </div>
           ) : (
             selectedOrder ? (
-              <div className={`p-6 md:p-8 ${themeStyle === 'neo-brutalism'
-                  ? 'bg-white dark:bg-[#111111] border-[3px] border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]'
-                  : 'bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800'
-                }`}>
+              <div className={t.card}>
 
                 <div className="flex items-center justify-between gap-2 sm:gap-4 mb-8">
                   <button
@@ -624,8 +700,8 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
                     else acc[id].quantity += item.quantity;
                     return acc;
                   }, {})).map((item: any, idx: number) => (
-                    <div key={idx} className="flex gap-4 p-4 border border-gray-200 dark:border-white/[0.08] rounded-none bg-white dark:bg-[#13161F]">
-                      <div className="w-16 h-16 shrink-0 bg-stone-100 dark:bg-stone-900 rounded-none overflow-hidden border border-gray-200 dark:border-white/[0.08]">
+                    <div key={idx} className={`flex gap-4 p-4 ${t.card}`}>
+                      <div className={`w-16 h-16 shrink-0 bg-stone-100 dark:bg-stone-900 rounded-none overflow-hidden ${t.card.includes('border-[4px]') ? 'border-[4px] border-black dark:border-white' : 'border border-gray-200 dark:border-white/[0.08]'}`}>
                         {item.productId?.imageUrl ? (
                           // eslint-disable-next-line @next/next/no-img-element
                           <img src={item.productId.imageUrl} alt="Product" className="w-full h-full object-cover" />
@@ -649,10 +725,7 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
                 </div>
               </div>
             ) : (
-              <div className={`overflow-x-auto ${themeStyle === 'neo-brutalism'
-                  ? 'bg-white dark:bg-[#111111] border-[3px] border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]'
-                  : 'bg-white dark:bg-[#13161F] rounded-none shadow-2xs border border-gray-200 dark:border-white/[0.08]'
-                }`}>
+              <div className={`overflow-x-auto ${t.card}`}>
                 {/* Desktop Table View */}
                 <div className="hidden lg:block overflow-x-auto">
                   <table className="w-full text-left border-collapse min-w-[800px]">
@@ -673,7 +746,7 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
                       {orders.map((order, index) => (
                         <tr key={`${order._id}-${index}`} className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
                           <td className="py-4 px-4 text-sm text-gray-900 dark:text-white">{index + 1}</td>
-                          <td className="py-4 px-4 text-sm text-blue-600 dark:text-blue-400 font-semibold cursor-pointer hover:underline" onClick={() => handleSelectOrder(order)}>
+                           <td className="py-4 px-4 text-sm font-medium cursor-pointer hover:underline" style={{ color: primaryColor || '#000' }} onClick={() => handleSelectOrder(order)}>
                             {order._id.substring(0, 10).toUpperCase()}
                           </td>
                           <td className="py-4 px-4 text-sm text-gray-900 dark:text-white">${order.subtotal?.toFixed(2) || (order.totalAmount - (order.deliveryFee || 0)).toFixed(2)}</td>
@@ -719,11 +792,11 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
                 {/* Mobile Card View */}
                 <div className="lg:hidden p-4 space-y-4">
                   {orders.map((order, index) => (
-                    <div key={`${order._id}-${index}`} className="bg-white dark:bg-[#1a1a1a] p-5 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm relative overflow-hidden">
+                    <div key={`${order._id}-${index}`} className={`${t.card} p-5 relative overflow-hidden`}>
                       <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-2">
                           <span className="text-xs font-bold text-gray-500">#{index + 1}</span>
-                          <span className="font-bold text-blue-600 dark:text-blue-400 cursor-pointer" onClick={() => handleSelectOrder(order)}>
+                          <span className="font-bold cursor-pointer" style={{ color: primaryColor || '#000' }} onClick={() => handleSelectOrder(order)}>
                             {order._id.substring(0, 10).toUpperCase()}
                           </span>
                         </div>
@@ -750,10 +823,7 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
 
                       <button
                         onClick={() => handleSelectOrder(order)}
-                        className={`w-full py-2.5 text-xs font-bold uppercase tracking-wider text-center transition-colors rounded-none ${themeStyle === 'neo-brutalism'
-                            ? 'border-[2px] border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-[2px] active:translate-y-[2px] bg-gray-50 dark:bg-black text-black dark:text-white'
-                            : 'bg-stone-100 hover:bg-stone-200 dark:bg-stone-900 dark:hover:bg-stone-800 text-gray-900 dark:text-white'
-                          }`}
+                        className={`w-full py-2.5 text-xs font-bold uppercase tracking-wider text-center transition-all rounded-none ${t.buttonSecondary}`}
                       >
                         {params.locale === 'km' ? 'មើលព័ត៌មានលម្អិត' : 'View Details'}
                       </button>
@@ -767,7 +837,7 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
       ) : activeTab === 'address' ? (
         <div className="space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 min-h-[44px]">
-            <h2 className="text-base sm:text-lg font-bold uppercase tracking-wider text-gray-900 dark:text-white leading-snug">
+            <h2 className={`text-base sm:text-lg ${t.title} leading-snug`}>
               {params.locale === 'km' ? 'អាសយដ្ឋាន' : 'SAVED ADDRESSES'}
             </h2>
             <button
@@ -781,8 +851,9 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
                 setTempStreet('');
                 setIsAddressModalOpen(true);
               }}
-              className="flex items-center justify-center gap-2 w-full sm:w-auto px-4 py-2.5 sm:py-2 text-xs font-bold uppercase tracking-widest transition-all rounded-none bg-black text-white dark:bg-white dark:text-black hover:opacity-85 shadow-xs"
-            >
+              className="flex items-center justify-center gap-2 w-full sm:w-auto px-4 py-2.5 sm:py-2 text-xs font-bold uppercase tracking-widest transition-all rounded-none text-white hover:opacity-85 shadow-xs"
+              style={{ backgroundColor: primaryColor || '#000' }}>
+
               <Plus size={14} />
               {params.locale === 'km' ? 'បន្ថែមអាសយដ្ឋាន' : 'Add Address'}
             </button>
@@ -790,7 +861,8 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
 
           <div className="grid gap-4 sm:grid-cols-2">
             {user?.addresses && user.addresses.length > 0 ? user.addresses.map((addr: any, idx: number) => (
-              <div key={`${addr._id}-${idx}`} className={`p-5 relative rounded-none border border-gray-200 dark:border-white/[0.08] bg-white dark:bg-[#13161F] shadow-2xs ${addr.isDefault ? 'ring-1 ring-black dark:ring-white' : ''}`}>
+              <div key={`${addr._id}-${idx}`} className={`p-5 relative rounded-none ${t.card} ${addr.isDefault ? 'ring-1' : ''}`}
+                   style={addr.isDefault ? { boxShadow: `0 0 0 2px ${primaryColor || '#000'}` } : {}}>
                 
                 {addr.isDefault && (
                   <div className="absolute top-4 right-4 text-black dark:text-white">
@@ -829,9 +901,9 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
                 </div>
               </div>
             )) : (
-              <div className="col-span-2 text-center py-12 bg-white dark:bg-[#13161F] rounded-none border border-gray-200 dark:border-white/[0.08]">
+              <div className={`col-span-2 text-center py-12 ${t.card}`}>
                 <MapPin className="w-8 h-8 mx-auto text-gray-300 dark:text-gray-600 mb-3" />
-                <p className="text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wider">
+                <p className={`text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wider`}>
                   {params.locale === 'km' ? 'អ្នកមិនទាន់មានអាសយដ្ឋានណាមួយនៅឡើយទេ។' : 'You do not have any saved addresses yet.'}
                 </p>
               </div>
@@ -847,16 +919,14 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
           </div>
 
           {!user?.favorites || user.favorites.length === 0 ? (
-            <div className="text-center py-16 border border-gray-200 dark:border-white/[0.08] bg-white dark:bg-[#13161F] rounded-none">
+            <div className={`text-center py-16 ${t.card}`}>
               <Bookmark className="w-10 h-10 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
               <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">{params.locale === 'km' ? 'មិនមានសំណព្វនៅឡើយទេ' : 'No Favorites Yet'}</h3>
               <p className="text-gray-500 dark:text-gray-400 mb-6 text-sm">{params.locale === 'km' ? 'អ្នកមិនទាន់បានរក្សាទុកផលិតផលណាមួយជាសំណព្វទេ' : "You haven't saved any products to your favorites yet."}</p>
               <Link
                 href={`/${params.locale}/store/${params.slug}`}
-                className={`inline-block font-bold px-6 py-2.5 text-xs uppercase tracking-widest transition-all rounded-none ${themeStyle === 'neo-brutalism'
-                    ? 'border-[2px] border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none text-black bg-white dark:bg-black dark:text-white'
-                    : 'text-white bg-black dark:bg-white dark:text-black hover:opacity-80 shadow-xs'
-                  }`}
+                className="inline-block font-bold px-6 py-2.5 text-xs uppercase tracking-widest transition-all rounded-none text-white hover:opacity-80"
+                style={{ backgroundColor: primaryColor || '#000' }}
               >
                 {params.locale === 'km' ? 'ស្វែងរកផលិតផល' : 'Browse Products'}
               </Link>
@@ -935,10 +1005,7 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
                   type="text"
                   value={tempName}
                   onChange={e => setTempName(e.target.value)}
-                  className={`w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border focus:outline-none transition-colors ${themeStyle === 'neo-brutalism'
-                      ? 'border-2 border-black dark:border-white rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] focus:shadow-none focus:translate-x-[4px] focus:translate-y-[4px]'
-                      : 'rounded-xl border-gray-200 dark:border-gray-800 focus:border-gray-400'
-                    }`}
+                  className={t.input}
                   placeholder={params.locale === 'km' ? 'បញ្ចូលឈ្មោះរបស់អ្នក' : 'Enter your name'}
                 />
               </div>
@@ -949,10 +1016,7 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
                   type="tel"
                   value={tempPhone}
                   onChange={e => setTempPhone(e.target.value)}
-                  className={`w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border focus:outline-none transition-colors ${themeStyle === 'neo-brutalism'
-                      ? 'border-2 border-black dark:border-white rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] focus:shadow-none focus:translate-x-[4px] focus:translate-y-[4px]'
-                      : 'rounded-xl border-gray-200 dark:border-gray-800 focus:border-gray-400'
-                    }`}
+                  className={t.input}
                   placeholder="012 345 678"
                 />
               </div>
@@ -1009,10 +1073,7 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
                     value={tempStreet}
                     onChange={e => setTempStreet(e.target.value)}
                     placeholder={params.locale === 'km' ? 'ឧ. ផ្ទះលេខ 12, ផ្លូវ 123' : 'Ex. House 12, Street 123'}
-                    className={`w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border focus:outline-none transition-colors ${themeStyle === 'neo-brutalism'
-                        ? 'border-2 border-black dark:border-white rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] focus:shadow-none focus:translate-x-[4px] focus:translate-y-[4px]'
-                        : 'rounded-xl border-gray-200 dark:border-gray-800 focus:border-gray-400'
-                      }`}
+                    className={t.input}
                   />
                 </div>
               )}
@@ -1020,11 +1081,8 @@ export default function StoreProfilePage({ params }: { params: { slug: string, l
               <button
                 onClick={handleSaveModalAddress}
                 disabled={isSavingAddress || !tempName || !tempPhone || !tempProvince || !tempDistrict || !tempCommune || !tempStreet}
-                className={`w-full py-3.5 px-4 font-bold text-center transition-all mt-4 ${themeStyle === 'neo-brutalism'
-                    ? 'border-[2px] border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] text-black bg-[#f0f0f0]'
-                    : 'rounded-xl text-white hover:opacity-90 active:scale-[0.98]'
-                  } disabled:opacity-50 disabled:cursor-not-allowed`}
-                style={themeStyle !== 'neo-brutalism' ? { backgroundColor: primaryColor || '#000' } : undefined}
+                className={t.buttonPrimary}
+                style={{ backgroundColor: primaryColor || undefined, borderColor: themeStyle === 'neo-brutalism' ? '#000' : (primaryColor || undefined) }}
               >
                 {isSavingAddress ? (params.locale === 'km' ? 'កំពុងរក្សាទុក...' : 'Saving...') : (params.locale === 'km' ? 'បញ្ជាក់អាសយដ្ឋាន' : 'Confirm Address')}
               </button>

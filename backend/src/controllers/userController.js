@@ -128,7 +128,8 @@ const toggleFavorite = async (req, res) => {
     const { productId } = req.params;
     if (!user.favorites) user.favorites = [];
     
-    const index = user.favorites.indexOf(productId);
+    // Find index comparing strings to handle ObjectId vs String mismatch
+    const index = user.favorites.findIndex(id => id.toString() === productId.toString());
     if (index === -1) {
       user.favorites.push(productId);
     } else {

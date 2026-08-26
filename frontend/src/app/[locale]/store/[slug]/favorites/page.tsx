@@ -25,6 +25,16 @@ function AddToCartToast({ message, visible, themeStyle, primaryColor }: { messag
       </div>
     );
   }
+
+  if (themeStyle === 'skincare-clean') {
+    return (
+      <div className={`fixed top-6 left-1/2 -translate-x-1/2 w-max max-w-sm z-[200] flex items-center gap-3 bg-[#FAF9F6] dark:bg-[#0C0C0C] border border-[#E5E5E5] dark:border-[#222] px-6 py-3 shadow-md text-[#333] dark:text-[#E5E5E5] text-xs font-medium uppercase tracking-widest transition-all duration-400 ease-out ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'}`}>
+        <CheckCircle size={16} strokeWidth={1.5} className="text-[#333] dark:text-[#E5E5E5]" />
+        <span>{message}</span>
+      </div>
+    );
+  }
+
   return (
     <div className={`fixed top-4 left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 md:w-max md:max-w-sm z-[200] flex items-center gap-2 bg-black dark:bg-white text-white dark:text-black px-4 py-2.5 rounded-none shadow-xl text-xs font-bold ${message.includes('បាន') ? 'tracking-normal' : 'uppercase tracking-wider'} transition-all duration-300 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-3 pointer-events-none'}`}>
       <CheckCircle size={14} className="shrink-0" />
@@ -158,7 +168,6 @@ export default function FavoritesPage({ params }: { params: { locale: string; sl
         <div className="flex items-center justify-between py-4 border-b border-gray-200 dark:border-white/10 mb-8">
           <h1 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
             <span>{text.title}</span>
-            <span className="text-sm font-semibold text-white px-3 py-1 rounded-full shadow-sm" style={{ backgroundColor: primaryColor || '#000' }}>{displayProducts.length} Items</span>
           </h1>
           <Link href={storeHomeHref} className="text-sm font-semibold text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors">
             {text.continue}
@@ -200,7 +209,57 @@ export default function FavoritesPage({ params }: { params: { locale: string; sl
   }
 
   // -------------------------------------------------------------
-  // THEME 1: FASHION EDITORIAL / AURUM (Default original)
+  // THEME 5: SKINCARE & BEAUTY (Clean Apothecary)
+  // -------------------------------------------------------------
+  if (themeStyle === 'skincare-clean') {
+    return (
+      <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-2 sm:pt-4 pb-20 min-h-[70vh] bg-[#FAF9F6] dark:bg-[#0C0C0C] font-sans">
+        <AddToCartToast message={toast.message} visible={toast.visible} themeStyle={themeStyle} primaryColor={primaryColor} />
+        
+        <div className="flex items-center justify-between py-4 border-b border-[#E5E5E5] dark:border-[#222] mb-8">
+          <h1 className="text-sm font-medium text-[#333] dark:text-[#E5E5E5] uppercase tracking-widest flex items-center gap-3">
+            <span>{text.title}</span>
+            <span className="text-[11px] bg-[#333] text-[#FAF9F6] dark:bg-[#E5E5E5] dark:text-[#0C0C0C] px-2 py-1 rounded-sm">{displayProducts.length} ITEMS</span>
+          </h1>
+          <Link href={storeHomeHref} className="text-[11px] font-medium text-[#888] hover:text-[#333] dark:hover:text-[#E5E5E5] uppercase tracking-widest transition-colors border-b border-transparent hover:border-[#333] dark:hover:border-[#E5E5E5]">
+            {text.continue}
+          </Link>
+        </div>
+
+        {loading ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+            {[1, 2, 3, 4].map(i => (
+              <div key={i} className="animate-pulse flex flex-col space-y-3">
+                <div className="aspect-square bg-white dark:bg-[#111] border border-[#E5E5E5] dark:border-[#222] w-full" />
+                <div className="h-3 bg-[#E5E5E5] dark:bg-[#222] w-3/4" />
+                <div className="h-3 bg-[#E5E5E5] dark:bg-[#222] w-1/3" />
+              </div>
+            ))}
+          </div>
+        ) : displayProducts.length === 0 ? (
+          <div className="max-w-md mx-auto py-20 px-8 text-center space-y-6">
+            <Bookmark size={32} strokeWidth={1} className="text-[#888] mx-auto" />
+            <div>
+              <h2 className="text-sm font-medium text-[#333] dark:text-[#E5E5E5] uppercase tracking-widest mb-3">{text.emptyTitle}</h2>
+              <p className="text-xs text-[#888]">{text.emptyDesc}</p>
+            </div>
+            <Link href={storeHomeHref} className="inline-block px-10 py-3 bg-[#333] text-[#FAF9F6] dark:bg-[#E5E5E5] dark:text-[#0C0C0C] text-xs font-medium uppercase tracking-widest hover:opacity-80 transition-opacity">
+              {text.discover}
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+            {displayProducts.map((product) => (
+              <ProductCard key={product._id} product={product} primaryColor={primaryColor} themeStyle={themeStyle} onAddToCart={showToast} />
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // -------------------------------------------------------------
+  // THEME 1: FASHION EDITORIAL / AURUM (Fallback)
   // -------------------------------------------------------------
   return (
     <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-2 sm:pt-4 pb-20 min-h-[70vh]">

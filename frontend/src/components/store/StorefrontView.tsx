@@ -267,10 +267,10 @@ export default function StorefrontView({
       }`;
     }
 
-    return `flex items-center gap-1.5 whitespace-nowrap rounded-none border px-4 py-2 text-xs font-bold ${isKm ? 'tracking-normal' : 'uppercase tracking-wider'} transition ${
+    return `flex items-center gap-1.5 whitespace-nowrap rounded-full px-4 py-2 text-xs font-bold ${isKm ? 'tracking-normal' : 'uppercase tracking-wider'} transition-all ${
       isActive 
-        ? 'bg-gray-900 text-white border-gray-900 dark:bg-white dark:text-black dark:border-white shadow-2xs' 
-        : 'bg-white text-gray-700 border-gray-200 hover:border-gray-900 dark:bg-[#151515] dark:text-gray-300 dark:border-white/10 dark:hover:border-white'
+        ? 'bg-gray-900 text-white border-transparent dark:bg-white dark:text-black shadow-md' 
+        : 'bg-white text-gray-700 border-gray-100 shadow-sm hover:border-gray-200 hover:shadow-md dark:bg-white/5 dark:text-gray-300 dark:border-white/10 dark:hover:border-white/20'
     }`;
   };
 

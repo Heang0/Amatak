@@ -123,6 +123,12 @@ export default function StoreTopNav({ storeName, storeLogo, primaryColor, slug, 
           active: 'text-gray-900 dark:text-white',
           inactive: 'text-gray-500 hover:text-gray-900 dark:hover:text-white'
         };
+      case 'skincare-clean':
+        return {
+          base: `text-xs font-medium uppercase tracking-widest transition-colors`,
+          active: 'text-[#333] dark:text-[#E5E5E5]',
+          inactive: 'text-[#888] hover:text-[#333] dark:hover:text-[#E5E5E5]'
+        };
       case 'fashion-editorial':
       default:
         return {
@@ -135,13 +141,16 @@ export default function StoreTopNav({ storeName, storeLogo, primaryColor, slug, 
 
   const navTheme = getNavTheme(themeStyle, locale);
 
-  let headerClass = "bg-white dark:bg-[#111111] sticky top-0 z-50 ";
-  if (themeStyle === 'neo-brutalism') {
-    headerClass += "border-b-[3px] border-black dark:border-white shadow-[0px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[0px_4px_0px_0px_rgba(255,255,255,1)]";
-  } else if (themeStyle === 'minimalist') {
-    headerClass += "border-b border-gray-200 dark:border-gray-800";
+  let headerClass = "sticky top-0 z-50 ";
+  if (themeStyle === 'skincare-clean') {
+    headerClass += "bg-[#FAF9F6] dark:bg-[#0C0C0C] border-b border-[#E5E5E5] dark:border-[#222]";
+  } else if (themeStyle === 'neo-brutalism') {
+    headerClass += "bg-white dark:bg-[#111] border-b-[3px] border-black dark:border-white shadow-[0px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[0px_4px_0px_0px_rgba(255,255,255,1)]";
+  } else if (themeStyle === 'fashion-editorial' || themeStyle === 'minimalist') {
+    headerClass += "bg-white dark:bg-[#111] border-b border-gray-200 dark:border-gray-800";
   } else {
-    headerClass += "border-b border-gray-100 dark:border-gray-800";
+    // default (Modern Retail)
+    headerClass += "bg-white/90 dark:bg-[#111318]/90 backdrop-blur-md border-b border-gray-100 dark:border-white/5";
   }
 
   return (

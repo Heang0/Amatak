@@ -311,8 +311,8 @@ export default function ProductDetailClient({
           </div>
         </div>
 
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-16 items-start">
             
             {/* Gallery */}
             <div className="lg:col-span-6 flex flex-col gap-4">
@@ -341,10 +341,10 @@ export default function ProductDetailClient({
             </div>
 
             {/* Info */}
-            <div className="lg:col-span-6 flex flex-col pt-2">
-              <div className="pb-6 mb-6 border-b border-gray-200 dark:border-white/10">
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-3 tracking-tight">{productTitle}</h1>
-                <p className="text-2xl sm:text-3xl font-extrabold" style={{ color: primaryColor || undefined }}>${Number(product.price ?? 0).toFixed(2)}</p>
+            <div className="lg:col-span-6 flex flex-col pt-2 sm:pt-4">
+              <div className="pb-5 sm:pb-6 mb-5 sm:mb-6 border-b border-gray-200 dark:border-white/10">
+                <h1 className="text-xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-3 tracking-tight">{productTitle}</h1>
+                <p className="text-xl sm:text-3xl font-extrabold" style={{ color: primaryColor || undefined }}>${Number(product.price ?? 0).toFixed(2)}</p>
               </div>
 
               {product.variants && product.variants.length > 0 && (
@@ -373,13 +373,13 @@ export default function ProductDetailClient({
                 </div>
               )}
 
-              <div className="py-8 flex flex-col sm:flex-row gap-4">
-                <div className="flex items-center bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 h-14 px-2 rounded-2xl shadow-sm shrink-0">
-                  <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 h-10 flex items-center justify-center bg-gray-50 dark:bg-white/5 rounded-xl hover:bg-gray-100 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300 transition-colors"><Minus size={18} strokeWidth={2.5} /></button>
-                  <span className="w-12 text-center font-bold text-lg text-gray-900 dark:text-white">{quantity}</span>
-                  <button onClick={() => setQuantity(quantity + 1)} className="w-10 h-10 flex items-center justify-center bg-gray-50 dark:bg-white/5 rounded-xl hover:bg-gray-100 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300 transition-colors"><Plus size={18} strokeWidth={2.5} /></button>
+              <div className="py-6 sm:py-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
+                <div className="flex items-center justify-between sm:justify-start bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 h-14 px-4 sm:px-2 rounded-2xl shadow-sm w-full sm:w-auto shrink-0">
+                  <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 h-10 flex items-center justify-center bg-gray-50 dark:bg-white/5 rounded-xl hover:bg-gray-100 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300 transition-colors active:scale-95"><Minus size={18} strokeWidth={2.5} /></button>
+                  <span className="flex-1 sm:flex-none w-auto sm:w-12 text-center font-bold text-lg text-gray-900 dark:text-white">{quantity}</span>
+                  <button onClick={() => setQuantity(quantity + 1)} className="w-10 h-10 flex items-center justify-center bg-gray-50 dark:bg-white/5 rounded-xl hover:bg-gray-100 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300 transition-colors active:scale-95"><Plus size={18} strokeWidth={2.5} /></button>
                 </div>
-                <button onClick={handleAddToCart} className="flex-1 h-14 bg-gray-900 text-white dark:bg-white dark:text-gray-900 text-sm font-bold flex items-center justify-center gap-3 rounded-2xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]" style={{ backgroundColor: primaryColor || undefined }}>
+                <button onClick={handleAddToCart} className="w-full sm:flex-1 h-14 bg-gray-900 text-white dark:bg-white dark:text-gray-900 text-sm font-bold flex items-center justify-center gap-3 rounded-2xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]" style={{ backgroundColor: primaryColor || undefined }}>
                   <ShoppingBag size={20} strokeWidth={2.5} /> {text.addToCart}
                 </button>
               </div>

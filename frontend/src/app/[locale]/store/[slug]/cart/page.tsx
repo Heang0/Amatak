@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useCartStore } from '@/lib/store/useCartStore';
 import Link from 'next/link';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import { ShoppingBag, X, Minus, Plus, ArrowRight, ArrowLeft } from 'lucide-react';
+import { ShoppingBag, X, Minus, Plus, ArrowRight } from 'lucide-react';
 
 export default function CartPage({ params }: { params: { slug: string, locale: string } }) {
   const { items, removeItem, updateQuantity, getTotalPrice } = useCartStore();
@@ -232,7 +232,95 @@ export default function CartPage({ params }: { params: { slug: string, locale: s
   }
 
   // -------------------------------------------------------------
-  // THEME 1: FASHION EDITORIAL / AURUM (Default original)
+  // THEME 5: SKINCARE & BEAUTY (Clean Apothecary)
+  // -------------------------------------------------------------
+  if (themeStyle === 'skincare-clean') {
+    if (items.length === 0) {
+      return (
+        <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-2 sm:pt-4 pb-20 min-h-[70vh] bg-[#FAF9F6] dark:bg-[#0C0C0C] font-sans">
+          <div className="flex items-center justify-between py-4 border-b border-[#E5E5E5] dark:border-[#222] mb-8">
+            <h1 className="text-sm font-medium text-[#333] dark:text-[#E5E5E5] uppercase tracking-widest flex items-center gap-2">
+              <span>{text.shoppingBag}</span>
+              <span className="bg-[#333] text-[#FAF9F6] dark:bg-[#E5E5E5] dark:text-[#0C0C0C] px-2 py-0.5 rounded-sm text-[10px]">0</span>
+            </h1>
+            <Link href={storeHomeHref} className="text-[11px] font-medium text-[#888] hover:text-[#333] dark:hover:text-[#E5E5E5] uppercase tracking-widest transition-colors border-b border-transparent hover:border-[#333] dark:hover:border-[#E5E5E5]">
+              {text.continueShopping}
+            </Link>
+          </div>
+          <div className="max-w-md mx-auto py-20 px-8 text-center space-y-6">
+            <ShoppingBag size={32} strokeWidth={1} className="text-[#888] mx-auto" />
+            <div>
+              <h2 className="text-sm font-medium text-[#333] dark:text-[#E5E5E5] uppercase tracking-widest mb-3">{text.cartEmpty}</h2>
+              <p className="text-xs text-[#888]">{text.cartEmptyDesc}</p>
+            </div>
+            <Link href={storeHomeHref} className="inline-block px-10 py-3 bg-[#333] text-[#FAF9F6] dark:bg-[#E5E5E5] dark:text-[#0C0C0C] text-xs font-medium uppercase tracking-widest hover:opacity-80 transition-opacity">
+              {text.startShopping}
+            </Link>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div className="w-full mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pt-2 sm:pt-4 pb-20 min-h-[70vh] bg-[#FAF9F6] dark:bg-[#0C0C0C] font-sans">
+        <div className="flex items-center justify-between py-4 border-b border-[#E5E5E5] dark:border-[#222] mb-8">
+          <h1 className="text-sm font-medium text-[#333] dark:text-[#E5E5E5] uppercase tracking-widest flex items-center gap-3">
+            <span>{text.shoppingBag}</span>
+            <span className="text-[11px] bg-[#333] text-[#FAF9F6] dark:bg-[#E5E5E5] dark:text-[#0C0C0C] px-2 py-1 rounded-sm">{items.reduce((acc, i) => acc + i.quantity, 0)} ITEMS</span>
+          </h1>
+          <Link href={storeHomeHref} className="text-[11px] font-medium text-[#888] hover:text-[#333] dark:hover:text-[#E5E5E5] uppercase tracking-widest transition-colors border-b border-transparent hover:border-[#333] dark:hover:border-[#E5E5E5]">
+            {text.continueShopping}
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+          <div className="lg:col-span-8 flex flex-col">
+            {items.map((item) => (
+              <div key={item.cartItemId} className="py-6 flex gap-6 items-start border-b border-[#E5E5E5] dark:border-[#222] first:pt-0">
+                <div className="w-24 sm:w-28 aspect-square bg-white dark:bg-[#111] p-3 border border-[#E5E5E5] dark:border-[#222] shrink-0">
+                  {item.imageUrl ? <img src={item.imageUrl} alt={item.title} className="w-full h-full object-contain" /> : <div className="w-full h-full flex items-center justify-center"><ShoppingBag size={24} className="text-[#888]" strokeWidth={1}/></div>}
+                </div>
+                <div className="flex flex-col flex-1 min-w-0">
+                  <div className="flex justify-between items-start gap-4">
+                    <h3 className="font-medium text-[#333] dark:text-[#E5E5E5] text-sm sm:text-base leading-snug">{isKm && item.titleKm ? item.titleKm : item.title}</h3>
+                    <button onClick={() => removeItem(item.cartItemId)} className="p-1 text-[#888] hover:text-[#333] dark:hover:text-[#E5E5E5] transition-colors"><X size={16} strokeWidth={1.5} /></button>
+                  </div>
+                  {item.selectedVariants && Object.keys(item.selectedVariants).length > 0 && (
+                    <div className="text-[11px] text-[#888] mt-2 uppercase tracking-widest">
+                      {Object.entries(item.selectedVariants).map(([k, v]) => `${k}: ${v}`).join(' | ')}
+                    </div>
+                  )}
+                  <div className="mt-6 flex flex-row items-center justify-between gap-4">
+                    <div className="flex items-center gap-4">
+                      <button onClick={() => updateQuantity(item.cartItemId, Math.max(1, item.quantity - 1))} className="text-[#888] hover:text-[#333] dark:hover:text-[#E5E5E5]"><Minus size={14} strokeWidth={1.5} /></button>
+                      <span className="w-6 text-center font-mono text-[#333] dark:text-[#E5E5E5] text-sm">{item.quantity}</span>
+                      <button onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)} className="text-[#888] hover:text-[#333] dark:hover:text-[#E5E5E5]"><Plus size={14} strokeWidth={1.5} /></button>
+                    </div>
+                    <span className="font-mono text-[#333] dark:text-[#E5E5E5] text-base">${(item.price * item.quantity).toFixed(2)}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="lg:col-span-4 p-8 bg-white dark:bg-[#111] border border-[#E5E5E5] dark:border-[#222] space-y-6">
+            <h2 className="text-xs font-medium text-[#333] dark:text-[#E5E5E5] uppercase tracking-widest pb-4 border-b border-[#E5E5E5] dark:border-[#222]">Order Summary</h2>
+            <div className="space-y-4 text-xs font-medium text-[#888] uppercase tracking-widest">
+              <div className="flex justify-between items-center"><span>{text.subtotal}</span><span className="font-mono text-[#333] dark:text-[#E5E5E5]">${getTotalPrice().toFixed(2)}</span></div>
+              <div className="flex justify-between items-center"><span>Shipping</span><span>At checkout</span></div>
+            </div>
+            <div className="pt-6 border-t border-[#E5E5E5] dark:border-[#222] flex justify-between items-end text-[#333] dark:text-[#E5E5E5]">
+              <span className="text-xs font-medium uppercase tracking-widest">Total</span>
+              <span className="text-2xl font-mono">${getTotalPrice().toFixed(2)}</span>
+            </div>
+            <button onClick={() => router.push(checkoutHref)} className="w-full py-4 mt-2 bg-[#333] text-[#FAF9F6] dark:bg-[#E5E5E5] dark:text-[#0C0C0C] text-xs font-medium uppercase tracking-widest hover:opacity-80 transition-opacity">
+              {text.proceedCheckout}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // -------------------------------------------------------------
+  // THEME 1: FASHION EDITORIAL / AURUM (Fallback)
   // -------------------------------------------------------------
   if (items.length === 0) {
     return (

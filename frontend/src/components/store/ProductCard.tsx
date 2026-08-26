@@ -145,7 +145,7 @@ export default function ProductCard({
         <div className="flex flex-col flex-1 mt-0.5">
           <div className="flex items-center justify-between gap-2 mb-0.5">
             <Link href={`${basePath}/product/${product.slug || product._id}`} className="flex-1">
-              <h3 className={`font-medium text-gray-900 dark:text-white line-clamp-1 ${isKhmerTitle ? 'text-[11px] tracking-tight' : 'text-[11px] sm:text-xs uppercase tracking-wider'}`}>
+              <h3 className={`text-gray-900 dark:text-white line-clamp-1 ${isKhmerTitle ? 'font-normal text-[10px] leading-tight' : 'font-medium text-[11px] sm:text-xs uppercase tracking-wider'}`}>
                 {productTitle}
               </h3>
             </Link>
@@ -160,7 +160,7 @@ export default function ProductCard({
             </button>
           </div>
 
-          <span className="text-[11px] sm:text-xs text-gray-600 dark:text-gray-400 mb-3">
+          <span className="text-[13px] font-medium text-gray-900 dark:text-white mb-3">
             ${priceDisplay}
           </span>
 
@@ -283,11 +283,10 @@ export default function ProductCard({
     );
   }
 
-  // 5. 🛍️ DEFAULT MODERN RETAIL (Editorial Fashion - Zara/SSENSE Inspired)
+  // 5. 🛍️ DEFAULT MODERN RETAIL (Smooth Glassmorphism & Soft Radii)
   return (
-    <div className="group flex flex-col">
-      {/* Square Image (Sharp Corners) */}
-      <Link href={`${basePath}/product/${product.slug || product._id}`} className="relative aspect-square w-full bg-stone-100 dark:bg-stone-900 rounded-none overflow-hidden mb-3">
+    <Link href={`${basePath}/product/${product.slug || product._id}`} className="group flex flex-col bg-white dark:bg-[#1A1C20] rounded-2xl shadow-sm hover:shadow-md transition-all overflow-hidden border border-gray-100 dark:border-white/5 hover:border-gray-200 dark:hover:border-white/10">
+      <div className="relative aspect-square w-full bg-gray-50 dark:bg-black/20 overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img 
           src={product.imageUrl?.replace('/upload/', '/upload/w_600,c_limit,q_auto/')} 
@@ -298,45 +297,41 @@ export default function ProductCard({
 
         {badge && (
           <span 
-            className="absolute top-2 left-2 text-white text-[9px] font-bold px-2 py-0.5 rounded-none uppercase tracking-wider shadow-2xs"
-            style={{ backgroundColor: primaryColor || '#000000' }}
+            className="absolute top-2 left-2 text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm tracking-wide"
+            style={{ backgroundColor: primaryColor || '#10B981' }}
           >
             {badge.text}
           </span>
         )}
-      </Link>
 
-      {/* Product Details - Aurum Reference Style */}
-      <div className="flex flex-col flex-1 mt-0.5">
-        <div className="flex items-center justify-between gap-2 mb-0.5">
-          <Link href={`${basePath}/product/${product.slug || product._id}`} className="flex-1">
-            <h3 className={`font-medium text-gray-900 dark:text-white line-clamp-1 ${isKhmerTitle ? 'text-[11px] tracking-tight' : 'text-[11px] sm:text-xs uppercase tracking-wider'}`}>
-              {productTitle}
-            </h3>
-          </Link>
-          
-          {/* Bookmark next to title */}
-          <button
-            onClick={handleWishlist}
-            className="text-black dark:text-white hover:opacity-70 transition-opacity flex-shrink-0"
-            title="Save"
-          >
-            <Bookmark size={16} strokeWidth={1.5} className={mounted && isFavorite ? 'fill-black dark:fill-white' : ''} />
-          </button>
-        </div>
-
-        <span className="text-[11px] sm:text-xs text-gray-600 dark:text-gray-400 mb-3">
-          ${priceDisplay}
-        </span>
-
-        {/* Full-width Add to Bag CTA */}
         <button
-          onClick={handleAdd}
-          className="w-full mt-auto py-2.5 sm:py-3 px-4 border border-black dark:border-white bg-transparent hover:bg-black dark:hover:bg-white text-black hover:text-white dark:text-white dark:hover:text-black text-[10px] sm:text-[11px] uppercase tracking-wider font-medium transition-colors rounded-none flex items-center justify-center gap-2"
+          onClick={handleWishlist}
+          className="absolute top-2 right-2 p-2 bg-white/80 dark:bg-black/50 backdrop-blur-md rounded-full text-gray-500 hover:text-red-500 dark:text-gray-300 dark:hover:text-red-400 transition-all shadow-sm active:scale-95"
+          title="Save"
         >
-          ADD TO BAG
+          <Bookmark size={15} strokeWidth={2} className={mounted && isFavorite ? 'fill-red-500 text-red-500' : ''} />
         </button>
       </div>
-    </div>
+
+      <div className="flex flex-col flex-1 p-3.5 sm:p-4">
+        <h3 className={`font-bold text-gray-900 dark:text-white line-clamp-1 mb-1 ${isKhmerTitle ? 'text-xs tracking-normal' : 'text-sm'}`}>
+          {productTitle}
+        </h3>
+        
+        <div className="mt-auto pt-2 flex items-center justify-between">
+          <span className="text-sm font-black text-gray-900 dark:text-white">
+            ${priceDisplay}
+          </span>
+
+          <button
+            onClick={handleAdd}
+            className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-white/10 dark:hover:bg-white/20 text-gray-900 dark:text-white flex items-center justify-center transition-colors active:scale-95"
+            title="Add to cart"
+          >
+            <ShoppingBag size={14} />
+          </button>
+        </div>
+      </div>
+    </Link>
   );
 }

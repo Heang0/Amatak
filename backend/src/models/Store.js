@@ -58,7 +58,7 @@ const storeSchema = new mongoose.Schema(
       primaryColor: { type: String, default: '#E84C3D' },
       themeStyle: { 
         type: String, 
-        enum: ['default', 'minimalist', 'neo-brutalism', 'fashion-editorial', 'skincare-clean', 'minimal-tech'], 
+        enum: ['default', 'minimalist', 'neo-brutalism', 'fashion-editorial', 'skincare-clean'],
         default: 'fashion-editorial' 
       },
     },

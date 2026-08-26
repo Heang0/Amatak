@@ -79,9 +79,7 @@ export default async function StorefrontLayout({
 
   const themeStyle = store.branding?.themeStyle || 'default';
 
-  const layoutBg = themeStyle === 'minimal-tech'
-    ? 'bg-[#050B14]'
-    : themeStyle === 'neo-brutalism'
+  const layoutBg = themeStyle === 'neo-brutalism'
     ? 'bg-[#f4f4f4] dark:bg-[#111111]'
     : themeStyle === 'skincare-clean'
     ? 'bg-[#FAF9F6] dark:bg-[#0C0C0C]'

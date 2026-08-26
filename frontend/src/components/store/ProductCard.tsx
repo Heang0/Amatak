@@ -234,61 +234,6 @@ export default function ProductCard({
     );
   }
 
-  // 3. 💻 MODERN TECH & MINIMALIST GADGETS (Clean Precision Electronics)
-  if (themeStyle === 'minimal-tech') {
-    return (
-      <Link href={`${basePath}/product/${product.slug || product._id}`} className="group flex flex-col p-3 rounded-none bg-white dark:bg-[#0D0F14] border border-gray-200 dark:border-white/[0.08] transition-all shadow-2xs" style={{ '--hover-border': primaryColor } as any}>
-        <div className="relative aspect-square w-full bg-[#F4F6F9] dark:bg-[#151922] rounded-none mb-2.5 overflow-hidden p-2.5 flex items-center justify-center border border-gray-100 dark:border-white/[0.04]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img 
-            src={product.imageUrl?.replace('/upload/', '/upload/w_600,c_limit,q_auto/')} 
-            alt={productTitle} 
-            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 rounded-none" 
-            loading="lazy"
-          />
-
-          {badge && (
-            <span className="absolute top-2 left-2 text-[8px] font-mono font-bold text-white px-1.5 py-0.5 rounded-none uppercase tracking-widest" style={{ backgroundColor: primaryColor || '#0ea5e9' }}>
-              {badge.text}
-            </span>
-          )}
-
-          <button
-            onClick={handleWishlist}
-            className="absolute top-2 right-2 p-1.5 rounded-none bg-white/95 dark:bg-black/80 backdrop-blur-xs text-gray-700 dark:text-gray-300 hover:scale-110 active:scale-95 transition-all shadow-2xs border border-gray-200/60 dark:border-white/10"
-            title="Save"
-          >
-            <Bookmark size={13} className={mounted && isFavorite ? '' : 'text-gray-400'} style={mounted && isFavorite ? { fill: primaryColor || '#0ea5e9', color: primaryColor || '#0ea5e9' } : {}} />
-          </button>
-        </div>
-
-        <div className="flex flex-col flex-1 px-0.5">
-          <p className="text-[10px] font-mono uppercase tracking-wider mb-0.5 truncate" style={{ color: primaryColor || '#0ea5e9' }}>
-            {typeof product.category === 'object' && product.category?.name ? product.category.name : 'TECH'}
-          </p>
-
-          <h3 className={`text-xs sm:text-sm font-mono font-bold text-gray-900 dark:text-white mb-2 line-clamp-1 ${isKm ? 'tracking-normal' : 'tracking-tight'}`}>
-            {productTitle}
-          </h3>
-
-          <div className="mt-auto pt-2 flex items-center justify-between border-t border-gray-100 dark:border-white/[0.06]">
-            <span className="text-xs sm:text-sm font-mono font-black text-gray-900 dark:text-white">
-              ${priceDisplay}
-            </span>
-
-            <button
-              onClick={handleAdd}
-              className="w-7 h-7 rounded-none text-white flex items-center justify-center transition-all active:scale-95 shadow-xs hover:opacity-80"
-              style={{ backgroundColor: primaryColor || '#000' }}
-              title="Add to cart"
-            >
-              <ShoppingBag size={13} />
-            </button>
-          </div>
-        </div>
-      </Link>
-    );
-  }
 
   // 4. ⚡ NEO-BRUTALISM & STREETWEAR (Bold Urban Pop)
   if (themeStyle === 'neo-brutalism') {

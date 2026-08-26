@@ -27,21 +27,7 @@ const getThemeClasses = (themeStyle: string, primaryColor: string) => {
         sidebar: 'bg-white dark:bg-black border-[4px] border-black dark:border-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)]',
         itemRow: 'py-3 border-b-[3px] border-black/20 dark:border-white/20',
       };
-    case 'minimal-tech':
-      return {
-        bg: 'bg-[#050B14] font-mono text-cyan-50',
-        container: 'max-w-7xl',
-        header: 'border-b border-cyan-900/40 py-4 mb-8',
-        title: 'text-lg font-bold uppercase tracking-[0.2em] text-cyan-400',
-        card: 'bg-[#0D1322] border border-cyan-900/40 p-6 shadow-[0_0_20px_rgba(34,211,238,0.05)]',
-        cardTitle: 'text-xs font-bold uppercase tracking-[0.2em] text-cyan-500 pb-3 mb-4 border-b border-cyan-900/40',
-        input: 'w-full px-4 py-3 bg-[#050B14] border border-cyan-900/50 focus:border-cyan-400 focus:outline-none text-cyan-100 placeholder-cyan-900',
-        label: 'block text-xs font-bold uppercase tracking-[0.1em] text-cyan-600 mb-2',
-        buttonPrimary: 'w-full py-4 text-black text-xs font-bold uppercase tracking-[0.2em] transition-all shadow-[0_0_15px_rgba(34,211,238,0.2)] hover:opacity-90 flex items-center justify-center gap-2',
-        buttonSecondary: 'px-6 py-3 border border-cyan-500/50 text-cyan-400 bg-transparent text-xs font-bold uppercase tracking-[0.1em] hover:bg-cyan-900/20',
-        sidebar: 'bg-[#0D1322] border border-cyan-900/40 p-6 shadow-[0_0_20px_rgba(34,211,238,0.05)]',
-        itemRow: 'py-3 border-b border-cyan-900/30',
-      };
+
     case 'skincare-clean':
       return {
         bg: 'bg-[#FAF9F6] dark:bg-[#0C0C0C] font-sans text-[#333] dark:text-[#E5E5E5]',

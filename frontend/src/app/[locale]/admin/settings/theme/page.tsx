@@ -165,14 +165,7 @@ export default function ThemeCustomizer() {
       icon: <Sparkle size={18} className="text-pink-500" />,
       badgeColor: 'bg-pink-100 text-pink-700 dark:bg-pink-950/40 dark:text-pink-300'
     },
-    {
-      id: 'minimal-tech',
-      name: isKm ? 'បច្ចេកវិទ្យា & គ្រឿងអេឡិចត្រូនិច (Modern Tech)' : 'Modern Tech & Minimalist',
-      desc: isKm ? 'រចនាប័ទ្មបែបទំនើប ទាន់សម័យ សម្រាប់ឧបករណ៍អេឡិចត្រូនិច និង Gadgets' : 'Sleek dark/light minimalist bento cards for electronics, gadgets, and lifestyle.',
-      tag: isKm ? 'សម្រាប់អេឡិចត្រូនិច' : 'Tech & Gadgets',
-      icon: <Laptop size={18} className="text-blue-500" />,
-      badgeColor: 'bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300'
-    },
+
     {
       id: 'neo-brutalism',
       name: isKm ? 'ស្ទាយយុវវ័យ Streetwear (Neo-Brutalism)' : 'Neo-Brutalism & Streetwear',

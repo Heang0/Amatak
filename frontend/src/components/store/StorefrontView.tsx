@@ -259,14 +259,6 @@ export default function StorefrontView({
       }`;
     }
 
-    if (themeStyle === 'minimal-tech') {
-      return `flex items-center gap-1.5 whitespace-nowrap rounded-none px-4 py-2 font-mono text-xs font-bold transition-all ${
-        isActive 
-          ? 'bg-black text-cyan-400 dark:bg-cyan-500 dark:text-black border border-black dark:border-cyan-400 shadow-md shadow-cyan-500/20' 
-          : 'bg-gray-100 dark:bg-[#151922] text-gray-800 dark:text-cyan-400/80 border border-gray-200 dark:border-white/10 hover:border-cyan-500/50'
-      }`;
-    }
-
     if (themeStyle === 'neo-brutalism') {
       return `flex items-center gap-1.5 whitespace-nowrap border-[2.5px] border-black dark:border-white px-4 py-2 text-xs font-black uppercase tracking-wider transition rounded-none ${
         isActive 

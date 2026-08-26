@@ -2,7 +2,7 @@
 
 import { useCartStore } from '@/lib/store/useCartStore';
 import { useFavoritesStore } from '@/lib/store/useFavoritesStore';
-import { X, Minus, Plus, Trash2, ShoppingBag, ArrowRight } from 'lucide-react';
+import { X, Minus, Plus, Trash2, ShoppingBag, ArrowRight, Bookmark } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -79,103 +79,131 @@ export default function CartDrawer({
         <div className={`flex items-center gap-6 px-4 md:px-6 pt-3 pb-3 border-b border-gray-100 dark:border-white/[0.06] text-xs font-bold ${isKm ? 'tracking-normal' : 'uppercase tracking-widest'}`}>
           <button
             onClick={() => setActiveTab('bag')}
-            className={`transition-colors pb-1 border-b-2 ${
+            className={`flex items-center gap-2 transition-colors pb-1 border-b-2 ${
               activeTab === 'bag' 
                 ? 'border-black dark:border-white text-black dark:text-white font-extrabold' 
                 : 'border-transparent text-gray-400 hover:text-black dark:hover:text-white'
             }`}
           >
-            {isKm ? `កន្ត្រក | ${items.length} |` : `SHOPPING BAG | ${items.length} |`}
+            <span>{isKm ? 'កន្ត្រក' : 'SHOPPING BAG'}</span>
+            <span className={`text-[10px] px-1.5 py-0.5 min-w-[20px] text-center leading-none ${activeTab === 'bag' ? 'bg-black text-white dark:bg-white dark:text-black' : 'bg-gray-100 text-gray-500 dark:bg-white/10 dark:text-gray-400'}`}>
+              {items.length}
+            </span>
           </button>
           <button
             onClick={() => setActiveTab('fav')}
-            className={`transition-colors pb-1 border-b-2 ${
+            className={`flex items-center gap-2 transition-colors pb-1 border-b-2 ${
               activeTab === 'fav' 
                 ? 'border-black dark:border-white text-black dark:text-white font-extrabold' 
                 : 'border-transparent text-gray-400 hover:text-black dark:hover:text-white'
             }`}
           >
-            {isKm ? `ចំណូលចិត្ត | ${favorites.length} |` : `FAVORITE | ${favorites.length} |`}
+            <span>{isKm ? 'ចំណូលចិត្ត' : 'FAVORITE'}</span>
+            <span className={`text-[10px] px-1.5 py-0.5 min-w-[20px] text-center leading-none ${activeTab === 'fav' ? 'bg-black text-white dark:bg-white dark:text-black' : 'bg-gray-100 text-gray-500 dark:bg-white/10 dark:text-gray-400'}`}>
+              {favorites.length}
+            </span>
           </button>
         </div>
 
-        {/* Cart Items List */}
+        {/* Cart/Favorites Content */}
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-6 divide-y divide-gray-100 dark:divide-white/[0.04]">
-          {items.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-center py-16">
-              <div className="w-14 h-14 bg-gray-100 dark:bg-white/[0.05] rounded-none flex items-center justify-center mb-3 border border-gray-200 dark:border-white/10">
-                <ShoppingBag size={22} className="text-gray-400" />
-              </div>
-              <p className={`text-xs font-bold ${isKm ? 'tracking-normal' : 'uppercase tracking-wider'} text-gray-900 dark:text-white`}>
-                {isKm ? 'កន្ត្រករបស់អ្នកទទេ' : 'Your bag is empty'}
-              </p>
-              <button 
-                onClick={() => setDrawerOpen(false)}
-                className={`mt-4 px-6 py-2.5 bg-black dark:bg-white text-white dark:text-black text-xs font-bold ${isKm ? 'tracking-normal' : 'uppercase tracking-widest'} rounded-none transition-all`}
-              >
-                {isKm ? 'បន្តការទិញ' : 'Continue Shopping'}
-              </button>
-            </div>
-          ) : (
-            items.map((item) => (
-              <div key={item.cartItemId} className="pt-5 first:pt-0 flex gap-4">
-                {/* Product Thumbnail (Square) */}
-                <div className="w-20 h-20 shrink-0 bg-stone-100 dark:bg-stone-900 rounded-none overflow-hidden border border-gray-200 dark:border-white/[0.08]">
-                  {item.imageUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">No Image</div>
-                  )}
+          {activeTab === 'bag' ? (
+            items.length === 0 ? (
+              <div className="flex flex-col items-center justify-center h-full text-center py-16">
+                <div className="w-14 h-14 bg-gray-100 dark:bg-white/[0.05] rounded-none flex items-center justify-center mb-3 border border-gray-200 dark:border-white/10">
+                  <ShoppingBag size={22} className="text-gray-400" />
                 </div>
-
-                {/* Details */}
-                <div className="flex-1 flex flex-col justify-between min-w-0">
-                  <div>
-                    <h3 className="font-bold text-xs uppercase tracking-wider text-gray-900 dark:text-white line-clamp-1">
-                      {isKm && item.titleKm ? item.titleKm : item.title}
-                    </h3>
-                    <p className="text-xs font-extrabold text-gray-900 dark:text-white mt-0.5">
-                      ${item.price.toFixed(2)}
-                    </p>
-                    
-                    {/* Selected Variant Tags */}
-                    {item.selectedVariants && Object.keys(item.selectedVariants).length > 0 && (
-                      <p className="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mt-1">
-                        {Object.entries(item.selectedVariants).map(([k, v]) => `${k}: ${v}`).join(' | ')}
-                      </p>
+                <p className={`text-xs font-bold ${isKm ? 'tracking-normal' : 'uppercase tracking-wider'} text-gray-900 dark:text-white`}>
+                  {isKm ? 'កន្ត្រករបស់អ្នកទទេ' : 'Your bag is empty'}
+                </p>
+                <button 
+                  onClick={() => setDrawerOpen(false)}
+                  className={`mt-4 px-6 py-2.5 text-white text-xs font-bold ${isKm ? 'tracking-normal' : 'uppercase tracking-widest'} rounded-none transition-all`}
+                  style={{ backgroundColor: primaryColor }}
+                >
+                  {isKm ? 'បន្តការទិញ' : 'Continue Shopping'}
+                </button>
+              </div>
+            ) : (
+              items.map((item) => (
+                <div key={item.cartItemId} className="pt-5 first:pt-0 flex gap-4">
+                  {/* Product Thumbnail (Square) */}
+                  <div className="w-20 h-20 shrink-0 bg-stone-100 dark:bg-stone-900 rounded-none overflow-hidden border border-gray-200 dark:border-white/[0.08]">
+                    {item.imageUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">No Image</div>
                     )}
                   </div>
 
-                  {/* Stepper + Trash */}
-                  <div className="flex items-center justify-between mt-3 pt-2">
-                    <div className="flex items-center border border-gray-300 dark:border-white/20 h-8 px-1">
-                      <button
-                        onClick={() => updateQuantity(item.cartItemId, Math.max(1, item.quantity - 1))}
-                        className="p-1 text-gray-500 hover:text-black dark:hover:text-white"
-                      >
-                        <Minus size={11} />
-                      </button>
-                      <span className="w-7 text-center font-bold text-xs">{item.quantity}</span>
-                      <button
-                        onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)}
-                        className="p-1 text-gray-500 hover:text-black dark:hover:text-white"
-                      >
-                        <Plus size={11} />
-                      </button>
+                  {/* Details */}
+                  <div className="flex-1 flex flex-col justify-between min-w-0">
+                    <div>
+                      <h3 className="font-bold text-xs uppercase tracking-wider text-gray-900 dark:text-white line-clamp-1">
+                        {isKm && item.titleKm ? item.titleKm : item.title}
+                      </h3>
+                      <p className="text-xs font-extrabold text-gray-900 dark:text-white mt-0.5">
+                        ${item.price.toFixed(2)}
+                      </p>
+                      
+                      {/* Selected Variant Tags */}
+                      {item.selectedVariants && Object.keys(item.selectedVariants).length > 0 && (
+                        <p className="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 mt-1">
+                          {Object.entries(item.selectedVariants).map(([k, v]) => `${k}: ${v}`).join(' | ')}
+                        </p>
+                      )}
                     </div>
 
-                    <button 
-                      onClick={() => removeItem(item.cartItemId)}
-                      className="p-1.5 text-gray-400 hover:text-rose-500 transition-colors"
-                      title="Remove item"
-                    >
-                      <Trash2 size={14} />
-                    </button>
+                    {/* Stepper + Trash */}
+                    <div className="flex items-center justify-between mt-3 pt-2">
+                      <div className="flex items-center border border-gray-300 dark:border-white/20 h-8 px-1">
+                        <button
+                          onClick={() => updateQuantity(item.cartItemId, Math.max(1, item.quantity - 1))}
+                          className="p-1 text-gray-500 hover:text-black dark:hover:text-white"
+                        >
+                          <Minus size={11} />
+                        </button>
+                        <span className="w-7 text-center font-bold text-xs">{item.quantity}</span>
+                        <button
+                          onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)}
+                          className="p-1 text-gray-500 hover:text-black dark:hover:text-white"
+                        >
+                          <Plus size={11} />
+                        </button>
+                      </div>
+
+                      <button 
+                        onClick={() => removeItem(item.cartItemId)}
+                        className="p-1.5 text-gray-400 hover:text-rose-500 transition-colors"
+                        title="Remove item"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
                   </div>
                 </div>
+              ))
+            )
+          ) : (
+            <div className="flex flex-col items-center justify-center h-full text-center py-16">
+              <div className="w-14 h-14 bg-gray-100 dark:bg-white/[0.05] rounded-none flex items-center justify-center mb-3 border border-gray-200 dark:border-white/10">
+                <Bookmark size={22} className="text-gray-400" />
               </div>
-            ))
+              <p className={`text-xs font-bold ${isKm ? 'tracking-normal' : 'uppercase tracking-wider'} text-gray-900 dark:text-white mb-2`}>
+                {isKm ? `អ្នកមាន ${favorites.length} ចំណូលចិត្ត` : `You have ${favorites.length} saved items`}
+              </p>
+              <button 
+                onClick={() => {
+                  setDrawerOpen(false);
+                  router.push(isPathRouting ? `/${params.locale}/store/${params.slug}/favorites` : `/${params.locale}/favorites`);
+                }}
+                className={`mt-4 px-6 py-2.5 text-white text-xs font-bold ${isKm ? 'tracking-normal' : 'uppercase tracking-widest'} rounded-none transition-all`}
+                style={{ backgroundColor: primaryColor }}
+              >
+                {isKm ? 'មើលចំណូលចិត្ត' : 'View Favorites'}
+              </button>
+            </div>
           )}
         </div>
 

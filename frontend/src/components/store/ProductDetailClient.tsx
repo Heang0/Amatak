@@ -23,14 +23,7 @@ function AddToCartToast({ message, visible, themeStyle, primaryColor }: { messag
     );
   }
   
-  if (themeStyle === 'minimal-tech') {
-    return (
-      <div className={`fixed top-4 left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 md:w-max md:max-w-sm z-[200] flex items-center gap-3 bg-[#0D1322] border border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.3)] px-4 py-3 rounded-none text-cyan-400 text-xs font-mono uppercase tracking-widest transition-all duration-300 ${visible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-3 scale-95 pointer-events-none'}`}>
-        <CheckCircle size={16} strokeWidth={2} style={{ color: primaryColor || '#22d3ee' }} />
-        <span className="truncate">{message}</span>
-      </div>
-    );
-  }
+
 
   if (themeStyle === 'default') {
     return (
@@ -171,134 +164,7 @@ export default function ProductDetailClient({
   const productTitle = isKm && product.titleKm ? product.titleKm : product.title;
   const productDesc = isKm && product.descriptionKm ? product.descriptionKm : (product.description || '');
 
-  // -------------------------------------------------------------
-  // THEME 2: MODERN TECH (minimal-tech)
-  // -------------------------------------------------------------
-  if (themeStyle === 'minimal-tech') {
-    return (
-      <div className="flex flex-col min-h-full bg-[#050B14] text-cyan-50 dark:text-cyan-50 pb-24 md:pb-16 font-mono">
-        <AddToCartToast message={toast.message} visible={toast.visible} themeStyle={themeStyle} primaryColor={primaryColor} />
-        
-        {/* Top Mobile Bar */}
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between border-b border-cyan-900/40">
-          <button onClick={() => router.back()} className="text-cyan-600 hover:text-cyan-300 transition-colors">
-            <ArrowLeft size={20} />
-          </button>
-          <div className="flex items-center gap-4">
-            <button onClick={handleToggleWishlist} className="text-cyan-600 hover:text-cyan-300 transition-colors">
-              <Bookmark size={20} style={isFav ? { fill: primaryColor || '#22d3ee', color: primaryColor || '#22d3ee' } : {}} />
-            </button>
-            <button onClick={handleShare} className="text-cyan-600 hover:text-cyan-300 transition-colors">
-              <Share2 size={20} />
-            </button>
-            <button onClick={() => setDrawerOpen(true)} className="text-cyan-600 hover:text-cyan-300 relative transition-colors">
-              <ShoppingBag size={20} />
-              {totalCartItems > 0 && (
-                <span className="absolute -top-1 -right-1 min-w-[16px] h-[16px] bg-cyan-500 text-black text-[9px] font-bold rounded flex items-center justify-center" style={{ backgroundColor: primaryColor || '#22d3ee' }}>
-                  {totalCartItems}
-                </span>
-              )}
-            </button>
-          </div>
-        </div>
 
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
-            
-            {/* Gallery */}
-            <div className="lg:col-span-6 flex flex-col gap-4">
-              <div className="w-full aspect-square bg-[#0D1322] border border-cyan-900/50 p-4 rounded-none relative">
-                <img src={imagesList[currentImageIndex]} alt={productTitle} className="w-full h-full object-contain drop-shadow-2xl" />
-                {imagesList.length > 1 && (
-                  <>
-                    <button onClick={() => setCurrentImageIndex(prev => prev === 0 ? imagesList.length - 1 : prev - 1)} className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-[#050B14]/80 text-cyan-400 border border-cyan-900/50 flex items-center justify-center backdrop-blur hover:bg-cyan-900/30">
-                      <ChevronLeft size={16} />
-                    </button>
-                    <button onClick={() => setCurrentImageIndex(prev => prev === imagesList.length - 1 ? 0 : prev + 1)} className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-[#050B14]/80 text-cyan-400 border border-cyan-900/50 flex items-center justify-center backdrop-blur hover:bg-cyan-900/30">
-                      <ChevronRight size={16} />
-                    </button>
-                  </>
-                )}
-              </div>
-              {imagesList.length > 1 && (
-                <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-                  {imagesList.map((img: string, idx: number) => (
-                    <button key={idx} onClick={() => setCurrentImageIndex(idx)} className={`w-16 h-16 shrink-0 bg-[#0D1322] border p-1 ${currentImageIndex === idx ? 'border-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.3)]' : 'border-cyan-900/40 opacity-60 hover:opacity-100'}`} style={currentImageIndex === idx ? { borderColor: primaryColor || '#22d3ee' } : {}}>
-                      <img src={img} alt={`Thumb ${idx}`} className="w-full h-full object-contain" />
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Info */}
-            <div className="lg:col-span-6 flex flex-col">
-              <div className="pb-6 border-b border-cyan-900/40 mb-6">
-                <p className="text-[10px] text-cyan-600 uppercase tracking-[0.2em] mb-2">{text.inStock}</p>
-                <h1 className="text-2xl font-bold tracking-tight text-white mb-3 leading-snug">{productTitle}</h1>
-                <p className="text-3xl font-black" style={{ color: primaryColor || '#22d3ee' }}>${Number(product.price ?? 0).toFixed(2)}</p>
-              </div>
-
-              {product.variants && product.variants.length > 0 && (
-                <div className="space-y-6 pb-6 border-b border-cyan-900/40">
-                  {product.variants.map((variant: any) => (
-                    <div key={variant.name}>
-                      <label className="text-xs font-bold uppercase tracking-widest text-cyan-600 mb-3 block">
-                        {variant.name}: <span className="text-cyan-300 font-normal">{selectedVariants[variant.name] || 'SELECT'}</span>
-                      </label>
-                      <div className="flex flex-wrap gap-3">
-                        {variant.options.map((opt: string) => {
-                          const isSelected = selectedVariants[variant.name] === opt;
-                          return (
-                            <button
-                              key={opt} onClick={() => handleSelect(variant.name, opt)}
-                              className={`h-10 px-4 flex items-center justify-center text-xs font-bold uppercase tracking-wider border transition-all ${isSelected ? 'bg-cyan-950/50 text-white shadow-[0_0_15px_rgba(34,211,238,0.2)]' : 'bg-[#0D1322] text-cyan-500 border-cyan-900/40 hover:border-cyan-500/50'}`}
-                              style={isSelected ? { borderColor: primaryColor || '#22d3ee', color: primaryColor || '#22d3ee' } : {}}
-                            >
-                              {opt}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              <div className="py-6 flex items-center gap-4">
-                <div className="flex items-center border border-cyan-900/60 bg-[#0D1322] h-12 px-2 shrink-0">
-                  <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="p-2 text-cyan-600 hover:text-cyan-300"><Minus size={14} /></button>
-                  <span className="w-8 text-center font-bold text-cyan-100 text-sm">{quantity}</span>
-                  <button onClick={() => setQuantity(quantity + 1)} className="p-2 text-cyan-600 hover:text-cyan-300"><Plus size={14} /></button>
-                </div>
-                <button onClick={handleAddToCart} className="flex-1 h-12 text-black text-sm font-bold uppercase tracking-widest flex items-center justify-center gap-3 transition-all hover:opacity-90 shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:scale-[1.01] active:scale-95" style={{ backgroundColor: primaryColor || '#22d3ee' }}>
-                  <ShoppingBag size={16} /> {text.addToCart}
-                </button>
-              </div>
-
-              <div className="border-t border-cyan-900/40 divide-y divide-cyan-900/20">
-                <div className="py-4">
-                  <button onClick={() => setActiveAccordion(activeAccordion === 'desc' ? null : 'desc')} className="w-full flex items-center justify-between text-xs font-bold uppercase tracking-widest text-cyan-300 text-left">
-                    <span>{text.descAndFit}</span>
-                    <ChevronDown size={16} className={`transition-transform duration-200 ${activeAccordion === 'desc' ? 'rotate-180' : ''}`} style={activeAccordion === 'desc' ? { color: primaryColor || '#22d3ee' } : {}} />
-                  </button>
-                  {activeAccordion === 'desc' && <div className="pt-4 text-xs text-cyan-600/80 leading-relaxed whitespace-pre-line">{productDesc || 'SYSTEM SPECIFICATIONS...'}</div>}
-                </div>
-                <div className="py-4">
-                  <button onClick={() => setActiveAccordion(activeAccordion === 'shipping' ? null : 'shipping')} className="w-full flex items-center justify-between text-xs font-bold uppercase tracking-widest text-cyan-300 text-left">
-                    <span>{text.shippingReturns}</span>
-                    <ChevronDown size={16} className={`transition-transform duration-200 ${activeAccordion === 'shipping' ? 'rotate-180' : ''}`} style={activeAccordion === 'shipping' ? { color: primaryColor || '#22d3ee' } : {}} />
-                  </button>
-                  {activeAccordion === 'shipping' && <div className="pt-4 text-xs text-cyan-600/80 leading-relaxed"><p>• INITIATE GLOBAL SHIPPING ROUTINE.</p></div>}
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   // -------------------------------------------------------------
   // THEME 3: NEO-BRUTALISM

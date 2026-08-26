@@ -48,9 +48,7 @@ export default function StoreSplashScreen({
 
   // Background color based on theme
   const bgColor =
-    themeStyle === 'minimal-tech'
-      ? '#050B14'
-      : themeStyle === 'skincare-clean'
+    themeStyle === 'skincare-clean'
       ? '#FAF9F6'
       : themeStyle === 'neo-brutalism'
       ? '#ffffff'
@@ -69,7 +67,7 @@ export default function StoreSplashScreen({
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center transition-opacity duration-700 ${overlayOpacity}`}
+      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center transition-opacity duration-700 md:hidden ${overlayOpacity}`}
       style={{ backgroundColor: bgColor }}
     >
       {/* Logo */}

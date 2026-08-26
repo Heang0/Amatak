@@ -16,14 +16,7 @@ function AddToCartToast({ message, visible, themeStyle, primaryColor }: { messag
       </div>
     );
   }
-  if (themeStyle === 'minimal-tech') {
-    return (
-      <div className={`fixed top-4 left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 md:w-max md:max-w-sm z-[200] flex items-center gap-3 bg-[#0D1322] border border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.3)] px-4 py-3 rounded-none text-cyan-400 text-xs font-mono uppercase tracking-widest transition-all duration-300 ${visible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-3 scale-95 pointer-events-none'}`}>
-        <CheckCircle size={16} strokeWidth={2} style={{ color: primaryColor || '#22d3ee' }} />
-        <span className="truncate">{message}</span>
-      </div>
-    );
-  }
+
   if (themeStyle === 'default') {
     return (
       <div className={`fixed top-6 left-1/2 -translate-x-1/2 w-max max-w-sm z-[200] flex items-center gap-2 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md px-5 py-3 rounded-full shadow-lg border border-gray-100 dark:border-white/10 text-gray-900 dark:text-white text-sm font-bold transition-all duration-400 ease-out ${visible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-8 scale-90 pointer-events-none'}`}>
@@ -101,57 +94,6 @@ export default function FavoritesPage({ params }: { params: { locale: string; sl
     discover: isKm ? 'រុករកទំនិញ' : 'DISCOVER COLLECTION'
   };
 
-  // -------------------------------------------------------------
-  // THEME 2: MODERN TECH (minimal-tech)
-  // -------------------------------------------------------------
-  if (themeStyle === 'minimal-tech') {
-    return (
-      <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-2 sm:pt-4 pb-20 min-h-[70vh] bg-[#050B14] font-mono">
-        <AddToCartToast message={toast.message} visible={toast.visible} themeStyle={themeStyle} primaryColor={primaryColor} />
-        
-        <div className="flex items-center justify-between py-4 border-b border-cyan-900/40 mb-8">
-          <h1 className="text-sm font-bold text-cyan-400 flex items-center gap-2">
-            <span className="uppercase tracking-[0.2em]">{text.title}</span>
-            <span className="text-cyan-800">| {displayProducts.length} |</span>
-          </h1>
-          <Link href={storeHomeHref} className="text-xs text-cyan-600 hover:text-cyan-300 uppercase tracking-widest transition-colors">
-            {text.continue}
-          </Link>
-        </div>
-
-        {loading ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-            {[1, 2, 3, 4].map(i => (
-              <div key={i} className="animate-pulse flex flex-col space-y-3">
-                <div className="aspect-square bg-[#0D1322] border border-cyan-900/30 w-full" />
-                <div className="h-3 bg-[#0D1322] w-3/4" />
-                <div className="h-3 bg-[#0D1322] w-1/3" />
-              </div>
-            ))}
-          </div>
-        ) : displayProducts.length === 0 ? (
-          <div className="max-w-md mx-auto py-16 px-6 text-center border border-cyan-900/40 bg-[#0D1322] space-y-6 mt-12">
-            <div className="w-12 h-12 border border-cyan-900/50 flex items-center justify-center mx-auto text-cyan-600">
-              <Bookmark size={20} />
-            </div>
-            <div>
-              <h2 className="text-sm font-bold text-cyan-50 uppercase tracking-[0.1em] mb-2">{text.emptyTitle}</h2>
-              <p className="text-xs text-cyan-600/80">{text.emptyDesc}</p>
-            </div>
-            <Link href={storeHomeHref} className="inline-block px-6 py-3 border text-xs font-bold uppercase tracking-widest text-black hover:opacity-90 shadow-[0_0_15px_rgba(34,211,238,0.2)] transition-all" style={{ backgroundColor: primaryColor || '#22d3ee', borderColor: primaryColor || '#22d3ee' }}>
-              {text.discover}
-            </Link>
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-            {displayProducts.map((product) => (
-              <ProductCard key={product._id} product={product} primaryColor={primaryColor} themeStyle={themeStyle} onAddToCart={showToast} />
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  }
 
   // -------------------------------------------------------------
   // THEME 3: NEO-BRUTALISM

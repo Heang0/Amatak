@@ -102,6 +102,39 @@ export default function StoreTopNav({ storeName, storeLogo, primaryColor, slug, 
     return appendParams(base);
   })();
 
+  const getNavTheme = (theme: string, loc: string) => {
+    switch (theme) {
+      case 'neo-brutalism':
+        return {
+          base: `text-sm font-black ${loc === 'km' ? 'tracking-normal' : 'uppercase tracking-tight'} transition-all`,
+          active: 'text-black dark:text-white border-b-[3px] border-black dark:border-white pb-0.5',
+          inactive: 'text-gray-400 hover:text-black dark:hover:text-white'
+        };
+
+      case 'skincare-clean':
+        return {
+          base: `text-[13px] font-medium ${loc === 'km' ? 'tracking-normal' : 'uppercase tracking-widest'} transition-all`,
+          active: 'text-[#222] dark:text-[#FFF] border-b border-[#222] dark:border-[#FFF] pb-1',
+          inactive: 'text-[#999] hover:text-[#222] dark:hover:text-[#FFF]'
+        };
+      case 'default':
+        return {
+          base: `text-sm font-bold ${loc === 'km' ? 'tracking-normal' : ''} transition-colors`,
+          active: 'text-gray-900 dark:text-white',
+          inactive: 'text-gray-500 hover:text-gray-900 dark:hover:text-white'
+        };
+      case 'fashion-editorial':
+      default:
+        return {
+          base: `text-xs font-bold ${loc === 'km' ? 'tracking-normal' : 'uppercase tracking-widest'} transition-colors`,
+          active: 'text-black dark:text-white font-extrabold',
+          inactive: 'text-gray-500 hover:text-black dark:hover:text-white'
+        };
+    }
+  };
+
+  const navTheme = getNavTheme(themeStyle, locale);
+
   let headerClass = "bg-white dark:bg-[#111111] sticky top-0 z-50 ";
   if (themeStyle === 'neo-brutalism') {
     headerClass += "border-b-[3px] border-black dark:border-white shadow-[0px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[0px_4px_0px_0px_rgba(255,255,255,1)]";
@@ -177,32 +210,29 @@ export default function StoreTopNav({ storeName, storeLogo, primaryColor, slug, 
         </Link>
 
         {/* DESKTOP Center: main nav */}
-        {/* DESKTOP Center: main nav */}
         <nav className="hidden md:flex items-center gap-8 flex-1 justify-center">
           <Link
             href={homeHref}
-            className={`text-xs font-bold ${locale === 'km' ? 'tracking-normal' : 'uppercase tracking-widest'} transition-colors ${
-              isHome ? 'text-black dark:text-white font-extrabold' : 'text-gray-500 hover:text-black dark:hover:text-white'
-            }`}
+            className={`${navTheme.base} ${isHome ? navTheme.active : navTheme.inactive}`}
           >
             {locale === 'km' ? 'ទំព័រដើម' : 'Home'}
           </Link>
           <Link
             href={appendParams(`${basePath}/products`)}
-            className={`text-xs font-bold ${locale === 'km' ? 'tracking-normal' : 'uppercase tracking-widest'} transition-colors ${
+            className={`${navTheme.base} ${
               pathname?.endsWith('/products') || pathname?.endsWith('/products/') || pathname?.includes('/product/') 
-                ? 'text-black dark:text-white font-extrabold' 
-                : 'text-gray-500 hover:text-black dark:hover:text-white'
+                ? navTheme.active 
+                : navTheme.inactive
             }`}
           >
             {locale === 'km' ? 'ផលិតផល' : 'Collection'}
           </Link>
           <Link
             href={appendParams(`${basePath}/promotions`)}
-            className={`text-xs font-bold ${locale === 'km' ? 'tracking-normal' : 'uppercase tracking-widest'} transition-colors ${
+            className={`${navTheme.base} ${
               pathname?.endsWith('/promotions') || pathname?.endsWith('/promotions/')
-                ? 'text-black dark:text-white font-extrabold'
-                : 'text-gray-500 hover:text-black dark:hover:text-white'
+                ? navTheme.active
+                : navTheme.inactive
             }`}
           >
             {locale === 'km' ? 'ប្រូម៉ូសិន' : 'Offers'}
@@ -212,10 +242,10 @@ export default function StoreTopNav({ storeName, storeLogo, primaryColor, slug, 
           <div className="relative group">
             <Link
               href={appendParams(`${basePath}/categories`)}
-              className={`flex items-center gap-1 text-xs font-bold ${locale === 'km' ? 'tracking-normal' : 'uppercase tracking-widest'} transition-colors py-2 ${
+              className={`flex items-center gap-1 py-2 ${navTheme.base} ${
                 pathname?.endsWith('/categories') || pathname?.endsWith('/categories/') || pathname?.includes('/category/')
-                  ? 'text-black dark:text-white font-extrabold'
-                  : 'text-gray-500 hover:text-black dark:hover:text-white'
+                  ? navTheme.active
+                  : navTheme.inactive
               }`}
             >
               <span>{locale === 'km' ? 'ប្រភេទ' : 'Categories'}</span>

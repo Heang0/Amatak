@@ -78,7 +78,7 @@ export function Sidebar({ items, title, isOpen, onClose }: SidebarProps) {
         <div>
           <div className="h-16 flex items-center justify-between px-6 border-b border-white/[0.06]">
             <div className="flex items-center gap-3 min-w-0">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#E84C3D] to-red-500 flex items-center justify-center text-white shadow-md shadow-red-500/20 shrink-0 overflow-hidden ring-1 ring-white/20">
+              <div className="w-8 h-8 rounded-none bg-gradient-to-tr from-[#E84C3D] to-red-500 flex items-center justify-center text-white shadow-md shadow-red-500/20 shrink-0 overflow-hidden ring-1 ring-white/20">
                 {storeLogo ? (
                   <img src={storeLogo} alt="Logo" className="w-full h-full object-cover" />
                 ) : (
@@ -96,7 +96,7 @@ export function Sidebar({ items, title, isOpen, onClose }: SidebarProps) {
             </div>
             <button 
               onClick={onClose} 
-              className="lg:hidden p-1.5 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+              className="lg:hidden p-1.5 text-gray-400 hover:text-white hover:bg-white/10 rounded-none transition-colors"
               title="Close sidebar"
             >
               <X size={18} />
@@ -112,7 +112,7 @@ export function Sidebar({ items, title, isOpen, onClose }: SidebarProps) {
                   key={item.href}
                   href={item.href}
                   onClick={onClose}
-                  className={`flex items-center gap-3.5 px-4 py-3 rounded-2xl text-sm font-semibold transition-all duration-200 ${
+                  className={`flex items-center gap-3.5 px-4 py-3 rounded-none text-sm font-semibold transition-all duration-200 ${
                     isActive
                       ? "bg-white text-gray-900 shadow-md shadow-black/10 font-bold"
                       : "text-gray-400 hover:text-white hover:bg-white/[0.06]"
@@ -140,7 +140,7 @@ export function Sidebar({ items, title, isOpen, onClose }: SidebarProps) {
                     key={item.href}
                     href={item.href}
                     onClick={onClose}
-                    className={`flex items-center gap-3.5 px-4 py-2.5 rounded-2xl text-sm font-semibold transition-all duration-200 ${
+                    className={`flex items-center gap-3.5 px-4 py-2.5 rounded-none text-sm font-semibold transition-all duration-200 ${
                       isActive
                         ? "bg-white text-gray-900 shadow-md shadow-black/10 font-bold"
                         : "text-gray-400 hover:text-white hover:bg-white/[0.06]"
@@ -159,7 +159,7 @@ export function Sidebar({ items, title, isOpen, onClose }: SidebarProps) {
           {/* Clean Logout Button (Matching reference bottom) */}
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-colors group"
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-none text-sm font-semibold text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-colors group"
           >
             <LogOut size={18} className="shrink-0 transition-transform group-hover:-translate-x-0.5" />
             <span>{isKm ? 'ចាកចេញ' : 'Log out'}</span>

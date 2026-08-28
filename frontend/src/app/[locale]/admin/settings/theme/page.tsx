@@ -11,7 +11,7 @@ import { useTranslations, useLocale } from 'next-intl';
 function AdminToast({ message, visible }: { message: string; visible: boolean }) {
   return (
     <div
-      className={`fixed top-4 left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 md:w-max md:max-w-sm z-[200] flex items-center gap-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-5 py-3 rounded-full shadow-2xl text-sm font-semibold transition-all duration-300 ${
+      className={`fixed top-4 left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 md:w-max md:max-w-sm z-[200] flex items-center gap-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-5 py-3 rounded-none shadow-2xl text-sm font-semibold transition-all duration-300 ${
         visible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-3 scale-95 pointer-events-none'
       }`}
     >
@@ -194,7 +194,7 @@ export default function ThemeCustomizer() {
           <div className="flex items-center gap-3">
             <Link 
               href="/admin/settings" 
-              className="w-10 h-10 rounded-2xl bg-white dark:bg-[#13161F] border border-gray-200 dark:border-white/[0.08] flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+              className="w-10 h-10 rounded-none bg-white dark:bg-[#13161F] border border-gray-200 dark:border-white/[0.08] flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
             </Link>
@@ -211,7 +211,7 @@ export default function ThemeCustomizer() {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="px-6 py-3 bg-[#E84C3D] hover:bg-red-600 text-white text-sm font-bold rounded-2xl transition-all flex items-center justify-center gap-2 shadow-md shadow-red-500/20 active:scale-95"
+            className="px-6 py-3 bg-[#E84C3D] hover:bg-red-600 text-white text-sm font-bold rounded-none transition-all flex items-center justify-center gap-2 shadow-md shadow-red-500/20 active:scale-95"
           >
             <Save size={16} />
             <span>{saving ? (isKm ? 'កំពុងរក្សាទុក...' : 'Saving...') : (isKm ? 'រក្សាទុកការផ្លាស់ប្តូរ' : 'Save Theme')}</span>
@@ -224,7 +224,7 @@ export default function ThemeCustomizer() {
           <div className="lg:col-span-5 space-y-6">
             
             {/* Theme Selector Cards */}
-            <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-3xl p-6 shadow-sm space-y-4">
+            <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-none p-6 shadow-sm space-y-4">
               <div>
                 <h3 className="text-sm font-extrabold text-gray-900 dark:text-white uppercase tracking-wider">
                   {isKm ? 'រចនាប័ទ្មហាង (Store Themes)' : 'Store Theme Templates'}
@@ -242,7 +242,7 @@ export default function ThemeCustomizer() {
                     <div 
                       key={style.id}
                       onClick={() => setThemeStyle(style.id)}
-                      className={`p-4 rounded-2xl border-2 cursor-pointer transition-all flex flex-col gap-2 ${
+                      className={`p-4 rounded-none border-2 cursor-pointer transition-all flex flex-col gap-2 ${
                         isSelected 
                           ? 'border-[#E84C3D] bg-red-50/40 dark:bg-red-950/20 shadow-xs' 
                           : 'border-gray-100 dark:border-white/[0.06] hover:border-gray-300 dark:hover:border-white/20 bg-gray-50/50 dark:bg-[#171B26]'
@@ -250,7 +250,7 @@ export default function ThemeCustomizer() {
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2.5">
-                          <div className="w-8 h-8 rounded-xl bg-white dark:bg-gray-800 border border-gray-200/60 dark:border-white/10 flex items-center justify-center shadow-2xs">
+                          <div className="w-8 h-8 rounded-none bg-white dark:bg-gray-800 border border-gray-200/60 dark:border-white/10 flex items-center justify-center shadow-2xs">
                             {style.icon}
                           </div>
                           <div>
@@ -260,10 +260,10 @@ export default function ThemeCustomizer() {
                           </div>
                         </div>
 
-                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                        <div className={`w-5 h-5 rounded-none border-2 flex items-center justify-center shrink-0 ${
                           isSelected ? 'border-[#E84C3D]' : 'border-gray-300 dark:border-gray-600'
                         }`}>
-                          {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-[#E84C3D]" />}
+                          {isSelected && <div className="w-2.5 h-2.5 rounded-none bg-[#E84C3D]" />}
                         </div>
                       </div>
 
@@ -272,7 +272,7 @@ export default function ThemeCustomizer() {
                       </p>
 
                       <div className="pl-10 pt-1">
-                        <span className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full ${style.badgeColor}`}>
+                        <span className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-none ${style.badgeColor}`}>
                           {style.tag}
                         </span>
                       </div>
@@ -283,7 +283,7 @@ export default function ThemeCustomizer() {
             </div>
 
             {/* Brand Color Selector */}
-            <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-3xl p-6 shadow-sm space-y-4">
+            <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-none p-6 shadow-sm space-y-4">
               <div>
                 <h3 className="text-sm font-extrabold text-gray-900 dark:text-white uppercase tracking-wider">
                   {isKm ? 'ពណ៌ចម្បង (Brand Accent Color)' : 'Brand Accent Color'}
@@ -299,7 +299,7 @@ export default function ThemeCustomizer() {
                     <button
                       key={color}
                       onClick={() => setPrimaryColor(color)}
-                      className={`w-8 h-8 rounded-xl border-2 transition-all ${
+                      className={`w-8 h-8 rounded-none border-2 transition-all ${
                         primaryColor.toUpperCase() === color.toUpperCase() 
                           ? 'border-gray-900 dark:border-white scale-110 shadow-md ring-2 ring-red-500/20' 
                           : 'border-transparent hover:scale-105'
@@ -315,13 +315,13 @@ export default function ThemeCustomizer() {
                     type="color"
                     value={primaryColor}
                     onChange={(e) => setPrimaryColor(e.target.value)}
-                    className="w-12 h-10 rounded-xl cursor-pointer border border-gray-200 dark:border-white/10 p-0.5 bg-transparent overflow-hidden"
+                    className="w-12 h-10 rounded-none cursor-pointer border border-gray-200 dark:border-white/10 p-0.5 bg-transparent overflow-hidden"
                   />
                   <input
                     type="text"
                     value={primaryColor}
                     onChange={(e) => setPrimaryColor(e.target.value)}
-                    className="flex-1 px-4 py-2.5 border border-gray-200 dark:border-white/[0.08] rounded-xl bg-gray-50 dark:bg-[#171B26] text-gray-900 dark:text-white font-mono uppercase text-xs font-bold focus:outline-none focus:border-[#E84C3D]"
+                    className="flex-1 px-4 py-2.5 border border-gray-200 dark:border-white/[0.08] rounded-none bg-gray-50 dark:bg-[#171B26] text-gray-900 dark:text-white font-mono uppercase text-xs font-bold focus:outline-none focus:border-[#E84C3D]"
                   />
                 </div>
               </div>
@@ -330,16 +330,16 @@ export default function ThemeCustomizer() {
           </div>
 
           {/* Live Mobile Preview Column (Right) */}
-          <div className="lg:col-span-7 bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-3xl p-5 sm:p-6 shadow-sm flex flex-col items-center">
+          <div className="lg:col-span-7 bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-none p-5 sm:p-6 shadow-sm flex flex-col items-center">
             
             {/* Device Mockup Header */}
-            <div className="w-full mb-4 bg-gray-100 dark:bg-[#171B26] border border-gray-200 dark:border-white/[0.06] rounded-2xl flex items-center px-4 py-3 gap-3">
+            <div className="w-full mb-4 bg-gray-100 dark:bg-[#171B26] border border-gray-200 dark:border-white/[0.06] rounded-none flex items-center px-4 py-3 gap-3">
               <div className="flex gap-1.5 shrink-0">
-                <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                <div className="w-3 h-3 rounded-full bg-amber-400"></div>
-                <div className="w-3 h-3 rounded-full bg-emerald-400"></div>
+                <div className="w-3 h-3 rounded-none bg-red-400"></div>
+                <div className="w-3 h-3 rounded-none bg-amber-400"></div>
+                <div className="w-3 h-3 rounded-none bg-emerald-400"></div>
               </div>
-              <div className="flex-1 bg-white dark:bg-[#111622] rounded-xl flex items-center px-3 py-1.5 gap-2 border border-gray-200/50 dark:border-white/[0.04] min-w-0">
+              <div className="flex-1 bg-white dark:bg-[#111622] rounded-none flex items-center px-3 py-1.5 gap-2 border border-gray-200/50 dark:border-white/[0.04] min-w-0">
                 <Lock size={12} className="text-gray-400 shrink-0" />
                 <span className="text-xs text-gray-600 dark:text-gray-300 font-mono font-medium truncate">
                   {getPreviewDisplayUrl()}
@@ -349,7 +349,7 @@ export default function ThemeCustomizer() {
             
             {/* Iframe Viewport Container */}
             {storeSlug ? (
-              <div className="w-full max-w-[420px] h-[680px] rounded-3xl border-4 border-gray-800 dark:border-gray-700 overflow-hidden shadow-2xl bg-white relative">
+              <div className="w-full max-w-[420px] h-[680px] rounded-none border-4 border-gray-800 dark:border-gray-700 overflow-hidden shadow-2xl bg-white relative">
                 <iframe 
                   key={`${themeStyle}-${primaryColor}`}
                   src={getPreviewIframeUrl()}

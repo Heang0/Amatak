@@ -251,9 +251,9 @@ export default function POSPage() {
    placeholder="Search products, SKU, or Barcode..."
    value={searchQuery}
    onChange={(e) => setSearchQuery(e.target.value)}
-   className="flex-1 px-4 py-3 bg-white dark:bg-gray-900 border-none rounded-[20px] shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none focus:ring-2 focus:ring-[#E84C3D]"
+   className="flex-1 px-4 py-3 bg-white dark:bg-gray-900 border-none rounded-none shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none focus:ring-2 focus:ring-[#E84C3D]"
    />
-   <div className="bg-white dark:bg-gray-900 px-4 py-3 rounded-[20px] shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none text-sm font-medium text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa]">
+   <div className="bg-white dark:bg-gray-900 px-4 py-3 rounded-none shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none text-sm font-medium text-gray-600 dark:text-gray-400">
    Scanner Ready 🟢
    </div>
   </div>
@@ -264,16 +264,16 @@ export default function POSPage() {
     <div 
     key={product._id} 
     onClick={() => addToCart(product)}
-    className="bg-white dark:bg-[#121212] dark:border dark:border-white/10 rounded-[20px] shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none hover:shadow-md cursor-pointer overflow-hidden border border-transparent hover:border-[#E84C3D] transition-all"
+    className="bg-white dark:bg-[#121212] dark:border dark:border-white/10 rounded-none shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none hover:shadow-md cursor-pointer overflow-hidden border border-transparent hover:border-[#E84C3D] transition-all"
     >
     <div className="h-32 w-full relative bg-gray-100">
      <Image src={product.imageUrl} alt={product.title} fill className="object-cover" />
     </div>
     <div className="p-3">
-     <h3 className="font-semibold text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa] text-sm line-clamp-2">{getProductName(product)}</h3>
+     <h3 className="font-semibold text-gray-900 dark:text-white text-sm line-clamp-2">{getProductName(product)}</h3>
      <div className="mt-2 flex justify-between items-center">
      <span className="text-[#E84C3D] font-bold">${product.price.toFixed(2)}</span>
-     <span className="text-xs text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa]">{product.stock} in stock</span>
+     <span className="text-xs text-gray-600 dark:text-gray-400">{product.stock} in stock</span>
      </div>
     </div>
     </div>
@@ -285,31 +285,31 @@ export default function POSPage() {
   {/* RIGHT PANEL - CART */}
   <div className="w-[400px] bg-white dark:bg-[#121212] dark:border dark:border-white/10 shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none flex flex-col border-l border-none border-none z-10">
   <div className="p-4 border-b border-none border-none">
-   <h2 className="text-xl font-bold text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa]">Current Order</h2>
+   <h2 className="text-xl font-bold text-gray-900 dark:text-white">Current Order</h2>
   </div>
   
   <div className="flex-1 overflow-y-auto p-4 space-y-4">
    {cart.length === 0 ? (
-   <div className="h-full flex flex-col items-center justify-center text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa]">
+   <div className="h-full flex flex-col items-center justify-center text-gray-600 dark:text-gray-400">
     <span className="text-4xl mb-2">🛒</span>
     <p>Cart is empty</p>
    </div>
    ) : (
    cart.map(item => (
-    <div key={item._id} className="flex gap-3 bg-[#F4F7FE] dark:bg-gray-900 p-3 rounded-lg">
-    <div className="w-12 h-12 relative rounded overflow-hidden shrink-0">
+    <div key={item._id} className="flex gap-3 bg-[#F4F7FE] dark:bg-gray-900 p-3 rounded-none ">
+    <div className="w-12 h-12 relative rounded-none overflow-hidden shrink-0">
      <Image src={item.imageUrl} alt={item.title} fill className="object-cover" />
     </div>
     <div className="flex-1">
-     <h4 className="text-sm font-semibold text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa] line-clamp-1">{getProductName(item)}</h4>
+     <h4 className="text-sm font-semibold text-gray-900 dark:text-white line-clamp-1">{getProductName(item)}</h4>
      <div className="text-[#E84C3D] text-sm font-medium">${item.price.toFixed(2)}</div>
     </div>
     <div className="flex flex-col items-end justify-between">
-     <button onClick={() => removeFromCart(item._id)} className="text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] hover:text-red-500">✕</button>
-     <div className="flex items-center gap-2 bg-white dark:bg-gray-800 rounded px-1">
-     <button onClick={() => updateQuantity(item._id, -1)} className="w-6 h-6 flex items-center justify-center text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa]">-</button>
+     <button onClick={() => removeFromCart(item._id)} className="text-gray-600 dark:text-gray-400 hover:text-red-500">✕</button>
+     <div className="flex items-center gap-2 bg-white dark:bg-gray-800 rounded-none px-1">
+     <button onClick={() => updateQuantity(item._id, -1)} className="w-6 h-6 flex items-center justify-center text-gray-600 dark:text-gray-400">-</button>
      <span className="text-sm font-medium w-4 text-center">{item.quantity}</span>
-     <button onClick={() => updateQuantity(item._id, 1)} className="w-6 h-6 flex items-center justify-center text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa]">+</button>
+     <button onClick={() => updateQuantity(item._id, 1)} className="w-6 h-6 flex items-center justify-center text-gray-600 dark:text-gray-400">+</button>
      </div>
     </div>
     </div>
@@ -319,38 +319,38 @@ export default function POSPage() {
 
   <div className="p-4 border-t border-none border-none bg-[#F4F7FE] dark:bg-[#121212] dark:border dark:border-white/10">
    <div className="flex justify-between mb-4">
-   <span className="text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] text-lg">Total</span>
-   <span className="text-2xl font-bold text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa]">${totalAmount.toFixed(2)}</span>
+   <span className="text-gray-600 dark:text-gray-400 text-lg">Total</span>
+   <span className="text-2xl font-bold text-gray-900 dark:text-white">${totalAmount.toFixed(2)}</span>
    </div>
 
    <div className="grid grid-cols-2 gap-2 mb-4">
    <button 
     onClick={() => setPaymentMethod('CASH')}
-    className={`py-3 rounded-lg font-medium transition-colors border ${paymentMethod === 'CASH' ? 'bg-[#E84C3D] text-white border-[#E84C3D]' : 'bg-white dark:bg-gray-900 text-gray-700 dark:text-[#d4d4d8] border-gray-300 dark:border-gray-700'}`}
+    className={`py-3 rounded-none font-medium transition-colors border ${paymentMethod === 'CASH' ? 'bg-[#E84C3D] text-white border-[#E84C3D]' : 'bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-700'}`}
    >
     💵 Cash
    </button>
    <button 
     onClick={() => setPaymentMethod('KHQR')}
-    className={`py-3 rounded-lg font-medium transition-colors border ${paymentMethod === 'KHQR' ? 'bg-[#E84C3D] text-white border-[#E84C3D]' : 'bg-white dark:bg-gray-900 text-gray-700 dark:text-[#d4d4d8] border-gray-300 dark:border-gray-700'}`}
+    className={`py-3 rounded-none font-medium transition-colors border ${paymentMethod === 'KHQR' ? 'bg-[#E84C3D] text-white border-[#E84C3D]' : 'bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-700'}`}
    >
     📱 KHQR
    </button>
    </div>
 
    {paymentMethod === 'CASH' && (
-   <div className="mb-4 p-3 bg-white dark:bg-gray-900 rounded-lg border-none">
-    <label className="block text-xs font-medium text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] mb-1">Cash Received</label>
+   <div className="mb-4 p-3 bg-white dark:bg-gray-900 rounded-none border-none">
+    <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Cash Received</label>
     <input 
     type="number" 
     value={cashReceived}
     onChange={e => setCashReceived(e.target.value)}
     placeholder="0.00"
-    className="w-full text-xl font-bold bg-transparent border-none focus:ring-0 p-0 text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa]"
+    className="w-full text-xl font-bold bg-transparent border-none focus:ring-0 p-0 text-gray-900 dark:text-white"
     />
     {Number(cashReceived) >= totalAmount && (
     <div className="flex justify-between mt-2 pt-2 border-t border-none border-none">
-     <span className="text-sm text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa]">Change</span>
+     <span className="text-sm text-gray-600 dark:text-gray-400">Change</span>
      <span className="text-sm font-bold text-green-600">${change.toFixed(2)}</span>
     </div>
     )}
@@ -360,7 +360,7 @@ export default function POSPage() {
    <button 
    onClick={handleCheckout}
    disabled={cart.length === 0 || isCheckingOut || (paymentMethod === 'CASH' && Number(cashReceived) < totalAmount)}
-   className="w-full py-4 bg-[#E84C3D] text-white rounded-xl font-bold text-lg hover:bg-red-600 transition-all shadow-md shadow-red-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
+   className="w-full py-4 bg-[#E84C3D] text-white rounded-none font-bold text-lg hover:bg-red-600 transition-all shadow-md shadow-red-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
    >
    {isCheckingOut ? 'Processing...' : `Pay $${totalAmount.toFixed(2)}`}
    </button>
@@ -370,13 +370,13 @@ export default function POSPage() {
   {/* KHQR MODAL */}
   {qrData && typeof window !== 'undefined' && createPortal(
   <div className={`fixed inset-0 bg-black/60 z-50 flex items-center justify-center ${locale === 'km' ? 'font-khmer' : ''}`}>
-   <div className="bg-white rounded-[20px] p-8 max-w-sm w-full text-center">
+   <div className="bg-white rounded-none p-8 max-w-sm w-full text-center">
    <h3 className="text-xl font-bold mb-4 text-black">Scan to Pay</h3>
    {/* eslint-disable-next-line @next/next/no-img-element */}
-   <img src={qrData.qrString} alt="KHQR" className="w-full h-auto mb-4 rounded-lg" />
+   <img src={qrData.qrString} alt="KHQR" className="w-full h-auto mb-4 rounded-none " />
    <p className="text-xl font-bold text-[#E84C3D] mb-4">${qrData.totalAmount.toFixed(2)}</p>
-   <p className="text-sm text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] mb-6">Awaiting payment confirmation...</p>
-   <button onClick={() => { setQrData(null); clearPolling(); }} className="text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] hover:text-gray-800 dark:text-gray-100">Cancel</button>
+   <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">Awaiting payment confirmation...</p>
+   <button onClick={() => { setQrData(null); clearPolling(); }} className="text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:text-gray-100">Cancel</button>
    </div>
   </div>,
   document.getElementById('app-root') || document.body

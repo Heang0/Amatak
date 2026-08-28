@@ -125,34 +125,34 @@ export default function OrderTracking() {
   const getStatusBadge = (order: any) => {
     if (order.orderStatus === 'COMPLETED' || order.orderStatus === 'DELIVERED') {
       return (
-        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-[#D1FAE5] dark:bg-emerald-950/40 text-[#047857] dark:text-emerald-300">
+        <span className="inline-flex items-center px-3 py-1 rounded-none text-xs font-bold bg-[#D1FAE5] dark:bg-emerald-950/40 text-[#047857] dark:text-emerald-300">
           {order.orderStatus === 'DELIVERED' ? (isKm ? 'បានដឹកជញ្ជូន' : 'Delivered') : (isKm ? 'បានបញ្ចប់' : 'Completed')}
         </span>
       );
     }
     if (order.paymentStatus === 'PAID') {
       return (
-        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-[#FEF3C7] dark:bg-amber-950/40 text-[#B45309] dark:text-amber-300">
+        <span className="inline-flex items-center px-3 py-1 rounded-none text-xs font-bold bg-[#FEF3C7] dark:bg-amber-950/40 text-[#B45309] dark:text-amber-300">
           {isKm ? 'បានបង់ប្រាក់' : 'Paid'}
         </span>
       );
     }
     if (order.orderStatus === 'PROCESSING') {
       return (
-        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-[#FFEDD5] dark:bg-orange-950/40 text-[#C2410C] dark:text-orange-300">
+        <span className="inline-flex items-center px-3 py-1 rounded-none text-xs font-bold bg-[#FFEDD5] dark:bg-orange-950/40 text-[#C2410C] dark:text-orange-300">
           {isKm ? 'កំពុងរៀបចំ' : 'Processing'}
         </span>
       );
     }
     if (order.orderStatus === 'CANCELLED') {
       return (
-        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-[#FFE4E6] dark:bg-rose-950/40 text-[#BE123C] dark:text-rose-300">
+        <span className="inline-flex items-center px-3 py-1 rounded-none text-xs font-bold bg-[#FFE4E6] dark:bg-rose-950/40 text-[#BE123C] dark:text-rose-300">
           {isKm ? 'បានបោះបង់' : 'Cancelled'}
         </span>
       );
     }
     return (
-      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+      <span className="inline-flex items-center px-3 py-1 rounded-none text-xs font-bold bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
         {isKm ? 'រង់ចាំ' : 'Pending'}
       </span>
     );
@@ -177,7 +177,7 @@ export default function OrderTracking() {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="appearance-none bg-white dark:bg-[#161922] border border-gray-200 dark:border-white/[0.08] text-gray-800 dark:text-gray-200 text-xs sm:text-sm font-semibold pl-4 pr-9 py-2.5 rounded-2xl shadow-xs hover:border-gray-300 dark:hover:border-white/20 focus:outline-none cursor-pointer transition-all"
+              className="appearance-none bg-white dark:bg-[#161922] border border-gray-200 dark:border-white/[0.08] text-gray-800 dark:text-gray-200 text-xs sm:text-sm font-semibold pl-4 pr-9 py-2.5 rounded-none shadow-xs hover:border-gray-300 dark:hover:border-white/20 focus:outline-none cursor-pointer transition-all"
             >
               <option value="ALL">{isKm ? 'ស្ថានភាពទាំងអស់' : 'Any status'}</option>
               <option value="PAID">{isKm ? 'បានបង់ប្រាក់ (Paid)' : 'Paid'}</option>
@@ -194,7 +194,7 @@ export default function OrderTracking() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="appearance-none bg-white dark:bg-[#161922] border border-gray-200 dark:border-white/[0.08] text-gray-800 dark:text-gray-200 text-xs sm:text-sm font-semibold pl-4 pr-9 py-2.5 rounded-2xl shadow-xs hover:border-gray-300 dark:hover:border-white/20 focus:outline-none cursor-pointer transition-all"
+              className="appearance-none bg-white dark:bg-[#161922] border border-gray-200 dark:border-white/[0.08] text-gray-800 dark:text-gray-200 text-xs sm:text-sm font-semibold pl-4 pr-9 py-2.5 rounded-none shadow-xs hover:border-gray-300 dark:hover:border-white/20 focus:outline-none cursor-pointer transition-all"
             >
               <option value="newest">{isKm ? 'តម្រៀបតាម: ថ្មីបំផុត' : 'Sort by Date'}</option>
               <option value="oldest">{isKm ? 'តម្រៀបតាម: ចាស់បំផុត' : 'Sort by Oldest'}</option>
@@ -211,7 +211,7 @@ export default function OrderTracking() {
               placeholder={isKm ? 'ស្វែងរកឈ្មោះ ឬលេខកូដ...' : 'Search orders...'}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white dark:bg-[#161922] border border-gray-200 dark:border-white/[0.08] text-gray-900 dark:text-white text-xs sm:text-sm font-medium pl-9 pr-4 py-2.5 rounded-2xl placeholder-gray-400 focus:outline-none focus:border-gray-400 dark:focus:border-white/20 transition-all"
+              className="w-full bg-white dark:bg-[#161922] border border-gray-200 dark:border-white/[0.08] text-gray-900 dark:text-white text-xs sm:text-sm font-medium pl-9 pr-4 py-2.5 rounded-none placeholder-gray-400 focus:outline-none focus:border-gray-400 dark:focus:border-white/20 transition-all"
             />
           </div>
         </div>
@@ -222,11 +222,11 @@ export default function OrderTracking() {
         
         {/* Table Container Column */}
         <div className={`${selectedOrder ? 'xl:col-span-8' : 'xl:col-span-12'} transition-all duration-300`}>
-          <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-3xl shadow-sm overflow-hidden">
+          <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-none shadow-sm overflow-hidden">
             
             {loading ? (
               <div className="p-16 flex flex-col items-center justify-center gap-3">
-                <div className="w-8 h-8 border-3 border-red-500/20 border-t-[#E84C3D] rounded-full animate-spin" />
+                <div className="w-8 h-8 border-3 border-red-500/20 border-t-[#E84C3D] rounded-none animate-spin" />
                 <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('loading')}</p>
               </div>
             ) : (
@@ -237,7 +237,7 @@ export default function OrderTracking() {
                       <th className="py-4 pl-6 pr-3 w-10">
                         <button 
                           onClick={toggleSelectAll}
-                          className={`w-4 h-4 rounded-md border flex items-center justify-center transition-colors ${
+                          className={`w-4 h-4 rounded-none border flex items-center justify-center transition-colors ${
                             selectedOrderIds.length > 0 && selectedOrderIds.length === filteredOrders.length
                               ? 'bg-gray-900 dark:bg-white border-gray-900 dark:border-white text-white dark:text-gray-900'
                               : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-transparent'
@@ -272,7 +272,7 @@ export default function OrderTracking() {
                         >
                           {/* Checkbox */}
                           <td className="py-4 pl-6 pr-3" onClick={(e) => toggleSelectOrder(order._id, e)}>
-                            <div className={`w-4 h-4 rounded-md border flex items-center justify-center transition-colors ${
+                            <div className={`w-4 h-4 rounded-none border flex items-center justify-center transition-colors ${
                               isChecked
                                 ? (isSelected ? 'bg-white text-gray-900 border-white' : 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 border-gray-900 dark:border-white')
                                 : (isSelected ? 'border-white/40' : 'border-gray-300 dark:border-gray-600')
@@ -289,7 +289,7 @@ export default function OrderTracking() {
                           {/* Customer */}
                           <td className="py-4 px-4 whitespace-nowrap">
                             <div className="flex items-center gap-3">
-                              <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-black shrink-0 ${
+                              <div className={`w-7 h-7 rounded-none flex items-center justify-center text-xs font-black shrink-0 ${
                                 isSelected 
                                   ? 'bg-white/20 text-white dark:bg-gray-900/20 dark:text-gray-900' 
                                   : 'bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300'
@@ -322,7 +322,7 @@ export default function OrderTracking() {
                                 e.stopPropagation();
                                 setSelectedOrder(order);
                               }}
-                              className={`p-1 rounded-lg transition-colors ${
+                              className={`p-1 rounded-none transition-colors ${
                                 isSelected ? 'text-white dark:text-gray-900 hover:bg-white/10' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200'
                               }`}
                             >
@@ -351,7 +351,7 @@ export default function OrderTracking() {
                 <button
                   onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                   disabled={currentPage === 1}
-                  className="flex items-center gap-1.5 px-4 py-2 border border-gray-200 dark:border-white/10 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 disabled:opacity-40 transition-colors"
+                  className="flex items-center gap-1.5 px-4 py-2 border border-gray-200 dark:border-white/10 rounded-none text-xs font-bold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 disabled:opacity-40 transition-colors"
                 >
                   <ChevronLeft size={14} />
                   <span>{t('previous')}</span>
@@ -362,7 +362,7 @@ export default function OrderTracking() {
                 <button
                   onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                   disabled={currentPage === totalPages}
-                  className="flex items-center gap-1.5 px-4 py-2 border border-gray-200 dark:border-white/10 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 disabled:opacity-40 transition-colors"
+                  className="flex items-center gap-1.5 px-4 py-2 border border-gray-200 dark:border-white/10 rounded-none text-xs font-bold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 disabled:opacity-40 transition-colors"
                 >
                   <span>{t('next')}</span>
                   <ChevronRight size={14} />
@@ -374,7 +374,7 @@ export default function OrderTracking() {
 
         {/* Right Detail Slide-Over Panel (Matching Reference Design!) */}
         {selectedOrder && (
-          <div className="xl:col-span-4 bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-3xl p-6 shadow-xl sticky top-6 space-y-6 animate-in fade-in slide-in-from-right-4 duration-200">
+          <div className="xl:col-span-4 bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-none p-6 shadow-xl sticky top-6 space-y-6 animate-in fade-in slide-in-from-right-4 duration-200">
             
             {/* Drawer Header */}
             <div className="flex items-center justify-between pb-4 border-b border-gray-100 dark:border-white/[0.06]">
@@ -391,7 +391,7 @@ export default function OrderTracking() {
               </div>
               <button
                 onClick={() => setSelectedOrder(null)}
-                className="p-1.5 rounded-xl text-gray-400 hover:text-gray-700 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
+                className="p-1.5 rounded-none text-gray-400 hover:text-gray-700 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
                 title="Close"
               >
                 <X size={18} />
@@ -399,8 +399,8 @@ export default function OrderTracking() {
             </div>
 
             {/* Customer Profile Card with Quick Action Buttons */}
-            <div className="flex flex-col items-center text-center p-4 bg-gray-50 dark:bg-[#171B26] rounded-2xl border border-gray-100 dark:border-white/[0.04] space-y-3">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-amber-400 to-amber-200 text-amber-950 font-black text-xl flex items-center justify-center shadow-md ring-4 ring-white dark:ring-gray-800">
+            <div className="flex flex-col items-center text-center p-4 bg-gray-50 dark:bg-[#171B26] rounded-none border border-gray-100 dark:border-white/[0.04] space-y-3">
+              <div className="w-16 h-16 rounded-none bg-gradient-to-tr from-amber-400 to-amber-200 text-amber-950 font-black text-xl flex items-center justify-center shadow-md ring-4 ring-white dark:ring-gray-800">
                 {(selectedOrder.isGuest ? selectedOrder.guestInfo?.name : selectedOrder.customerId?.name)?.charAt(0).toUpperCase() || 'C'}
               </div>
               <div>
@@ -422,7 +422,7 @@ export default function OrderTracking() {
                 {(selectedOrder.isGuest ? selectedOrder.guestInfo?.phone : selectedOrder.customerId?.phone) && (
                   <a
                     href={`tel:${selectedOrder.isGuest ? selectedOrder.guestInfo?.phone : selectedOrder.customerId?.phone}`}
-                    className="w-9 h-9 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-white/10 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:border-emerald-500 transition-colors shadow-xs"
+                    className="w-9 h-9 rounded-none bg-white dark:bg-gray-800 border border-gray-200 dark:border-white/10 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:border-emerald-500 transition-colors shadow-xs"
                     title="Call Customer"
                   >
                     <Phone size={15} />
@@ -431,14 +431,14 @@ export default function OrderTracking() {
                 {selectedOrder.customerId?.email && (
                   <a
                     href={`mailto:${selectedOrder.customerId?.email}`}
-                    className="w-9 h-9 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-white/10 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-500 transition-colors shadow-xs"
+                    className="w-9 h-9 rounded-none bg-white dark:bg-gray-800 border border-gray-200 dark:border-white/10 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-500 transition-colors shadow-xs"
                     title="Email Customer"
                   >
                     <Mail size={15} />
                   </a>
                 )}
                 {selectedOrder.deliveryPartner && (
-                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-white/10 text-xs font-bold text-gray-700 dark:text-gray-300">
+                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-none bg-white dark:bg-gray-800 border border-gray-200 dark:border-white/10 text-xs font-bold text-gray-700 dark:text-gray-300">
                     <Truck size={13} className="text-[#E84C3D]" />
                     <span>{selectedOrder.deliveryPartner}</span>
                   </div>
@@ -453,8 +453,8 @@ export default function OrderTracking() {
               </h4>
               <div className="space-y-2.5 max-h-56 overflow-y-auto pr-1">
                 {selectedOrder.items?.map((item: any, idx: number) => (
-                  <div key={idx} className="flex items-center gap-3 p-2.5 rounded-2xl bg-gray-50 dark:bg-[#171B26] border border-gray-100 dark:border-white/[0.04]">
-                    <div className="w-11 h-11 rounded-xl bg-white dark:bg-gray-800 border border-gray-200/60 dark:border-white/10 flex items-center justify-center overflow-hidden shrink-0">
+                  <div key={idx} className="flex items-center gap-3 p-2.5 rounded-none bg-gray-50 dark:bg-[#171B26] border border-gray-100 dark:border-white/[0.04]">
+                    <div className="w-11 h-11 rounded-none bg-white dark:bg-gray-800 border border-gray-200/60 dark:border-white/10 flex items-center justify-center overflow-hidden shrink-0">
                       {item.productId?.images?.[0] ? (
                         <img src={item.productId.images[0]} alt="Product" className="w-full h-full object-cover" />
                       ) : (
@@ -511,7 +511,7 @@ export default function OrderTracking() {
                   value={selectedOrder.orderStatus || 'PENDING'}
                   onChange={(e) => handleStatusChange(selectedOrder._id, e.target.value)}
                   disabled={updatingStatus}
-                  className="w-full bg-gray-50 dark:bg-[#171B26] border border-gray-200 dark:border-white/[0.08] text-gray-900 dark:text-white text-xs font-bold px-4 py-3 rounded-2xl focus:outline-none cursor-pointer"
+                  className="w-full bg-gray-50 dark:bg-[#171B26] border border-gray-200 dark:border-white/[0.08] text-gray-900 dark:text-white text-xs font-bold px-4 py-3 rounded-none focus:outline-none cursor-pointer"
                 >
                   <option value="PENDING">⏳ {isKm ? 'រង់ចាំ (Pending)' : 'Pending'}</option>
                   <option value="PROCESSING">⚙️ {isKm ? 'កំពុងរៀបចំ (Processing)' : 'Processing'}</option>
@@ -525,14 +525,14 @@ export default function OrderTracking() {
               <div className="grid grid-cols-2 gap-3 pt-2">
                 <button
                   onClick={() => window.print()}
-                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-gray-900 hover:bg-black dark:bg-white dark:hover:bg-gray-100 text-white dark:text-gray-900 text-xs font-bold transition-all shadow-sm"
+                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-none bg-gray-900 hover:bg-black dark:bg-white dark:hover:bg-gray-100 text-white dark:text-gray-900 text-xs font-bold transition-all shadow-sm"
                 >
                   <Printer size={14} />
                   <span>{isKm ? 'បោះពុម្ពវិក្កយបត្រ' : 'Print Receipt'}</span>
                 </button>
                 <button
                   onClick={() => handleStatusChange(selectedOrder._id, 'COMPLETED')}
-                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-amber-400 hover:bg-amber-500 text-amber-950 text-xs font-bold transition-all shadow-sm"
+                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-none bg-amber-400 hover:bg-amber-500 text-amber-950 text-xs font-bold transition-all shadow-sm"
                 >
                   <CheckCircle2 size={14} />
                   <span>{isKm ? 'បញ្ចប់ការលក់' : 'Complete'}</span>

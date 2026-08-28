@@ -233,7 +233,7 @@ export default function AdminCategories() {
         <td className="px-6 py-4">
           <div className={`flex items-center ${isSub ? 'ml-8' : ''}`}>
             {isSub && (
-              <div className="w-4 h-4 border-l-2 border-b-2 border-gray-300 dark:border-gray-700 rounded-bl mr-3 -mt-3" />
+              <div className="w-4 h-4 border-l-2 border-b-2 border-gray-300 dark:border-gray-700 rounded-none mr-3 -mt-3" />
             )}
             
             {isEditing ? (
@@ -244,7 +244,7 @@ export default function AdminCategories() {
                     value={editCategoryName}
                     onChange={(e) => setEditCategoryName(e.target.value)}
                     onBlur={() => handleEditCategoryNameBlur(category._id)}
-                    className="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-[#fafafa] focus:ring-2 focus:ring-[#E84C3D] outline-none"
+                    className="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-700 rounded-none bg-white dark:bg-gray-900 text-gray-900 dark:text-[#fafafa] focus:ring-2 focus:ring-[#E84C3D] outline-none"
                     autoFocus
                   />
                   <input
@@ -252,14 +252,14 @@ export default function AdminCategories() {
                     value={editCategoryNameKm}
                     onChange={(e) => setEditCategoryNameKm(e.target.value)}
                     onBlur={() => handleEditCategoryNameKmBlur(category._id)}
-                    className="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-[#fafafa] focus:ring-2 focus:ring-[#E84C3D] outline-none"
+                    className="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-700 rounded-none bg-white dark:bg-gray-900 text-gray-900 dark:text-[#fafafa] focus:ring-2 focus:ring-[#E84C3D] outline-none"
                   />
                 </div>
                 {isSub && (
                   <select
                     value={editCategoryParent}
                     onChange={(e) => setEditCategoryParent(e.target.value)}
-                    className="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-[#fafafa] focus:ring-2 focus:ring-[#E84C3D] outline-none"
+                    className="w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-700 rounded-none bg-white dark:bg-gray-900 text-gray-900 dark:text-[#fafafa] focus:ring-2 focus:ring-[#E84C3D] outline-none"
                   >
                     <option value="">{locale === 'km' ? 'គ្មានប្រភេទមេ' : 'No Parent'}</option>
                     {categories.filter(c => !c.parentCategory && c._id !== category._id).map(c => (
@@ -268,13 +268,13 @@ export default function AdminCategories() {
                   </select>
                 )}
                 <div className="flex gap-2">
-                  <button onClick={() => handleUpdateCategory(category._id)} className="text-xs bg-green-100 text-green-700 px-3 py-1.5 rounded-lg font-bold hover:bg-green-200 transition-colors">{t('save')}</button>
-                  <button onClick={() => setEditingCategory(null)} className="text-xs bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg font-bold hover:bg-gray-300 transition-colors">{t('cancel')}</button>
+                  <button onClick={() => handleUpdateCategory(category._id)} className="text-xs bg-green-100 text-green-700 px-3 py-1.5 rounded-none font-bold hover:bg-green-200 transition-colors">{t('save')}</button>
+                  <button onClick={() => setEditingCategory(null)} className="text-xs bg-gray-200 text-gray-700 px-3 py-1.5 rounded-none font-bold hover:bg-gray-300 transition-colors">{t('cancel')}</button>
                 </div>
               </div>
             ) : (
               <div className="flex items-center gap-3">
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${isSub ? 'bg-gray-100 dark:bg-gray-800 text-gray-500' : 'bg-[#F4F7FE] dark:bg-[#000000] text-gray-900 dark:text-[#fafafa]'}`}>
+                <div className={`w-8 h-8 rounded-none flex items-center justify-center shrink-0 ${isSub ? 'bg-gray-100 dark:bg-gray-800 text-gray-500' : 'bg-[#F4F7FE] dark:bg-[#000000] text-gray-900 dark:text-[#fafafa]'}`}>
                   <Tag size={14} />
                 </div>
                 <div>
@@ -300,7 +300,7 @@ export default function AdminCategories() {
                   setEditCategoryNameKm(category.nameKm || '');
                   setEditCategoryParent(category.parentCategory || '');
                 }}
-                className="p-2 text-gray-600 dark:text-[#a1a1aa] hover:text-gray-900 dark:text-[#fafafa] dark:hover:text-white transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-white/5"
+                className="p-2 text-gray-600 dark:text-[#a1a1aa] hover:text-gray-900 dark:text-[#fafafa] dark:hover:text-white transition-colors rounded-none hover:bg-gray-100 dark:hover:bg-white/5"
                 title={t('edit')}
               >
                 <Edit2 size={16} />
@@ -308,7 +308,7 @@ export default function AdminCategories() {
             )}
             <button
               onClick={() => openDeleteModal(category)}
-              className="p-2 text-gray-600 dark:text-[#a1a1aa] hover:text-red-600 transition-colors rounded-lg hover:bg-red-50 dark:hover:bg-red-950/20"
+              className="p-2 text-gray-600 dark:text-[#a1a1aa] hover:text-red-600 transition-colors rounded-none hover:bg-red-50 dark:hover:bg-red-950/20"
               title={t('delete')}
             >
               <Trash2 size={16} />
@@ -328,7 +328,7 @@ export default function AdminCategories() {
         </div>
         <button
           onClick={() => setIsAddModalOpen(true)}
-          className="h-10 px-5 bg-[#E84C3D] hover:bg-red-600 text-white text-sm font-bold rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm shadow-red-500/20 whitespace-nowrap shrink-0"
+          className="h-10 px-5 bg-[#E84C3D] hover:bg-red-600 text-white text-sm font-bold rounded-none flex items-center justify-center gap-2 transition-all shadow-sm shadow-red-500/20 whitespace-nowrap shrink-0"
         >
           <Plus size={18} />
           {t('create_new')}
@@ -336,26 +336,26 @@ export default function AdminCategories() {
       </div>
 
       {loading ? (
-        <div className="bg-white dark:bg-[#111111] rounded-2xl p-12 flex flex-col items-center gap-3 border border-gray-100 dark:border-gray-800">
-          <div className="w-8 h-8 border-2 border-[#E84C3D] border-t-transparent rounded-full animate-spin" />
+        <div className="bg-white dark:bg-[#111111] rounded-none p-12 flex flex-col items-center gap-3 border border-gray-100 dark:border-gray-800">
+          <div className="w-8 h-8 border-2 border-[#E84C3D] border-t-transparent rounded-none animate-spin" />
         </div>
       ) : categories.length === 0 ? (
-        <div className="bg-white dark:bg-[#111111] rounded-2xl p-16 text-center border border-gray-100 dark:border-gray-800">
-          <div className="w-16 h-16 bg-red-50 dark:bg-red-950/30 rounded-full flex items-center justify-center mx-auto mb-4 text-[#E84C3D]">
+        <div className="bg-white dark:bg-[#111111] rounded-none p-16 text-center border border-gray-100 dark:border-gray-800">
+          <div className="w-16 h-16 bg-red-50 dark:bg-red-950/30 rounded-none flex items-center justify-center mx-auto mb-4 text-[#E84C3D]">
             <Tag className="w-8 h-8" />
           </div>
           <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{t('no_categories')}</h3>
           <p className="text-gray-500 dark:text-gray-400 text-sm mb-6 max-w-sm mx-auto">{t('no_categories_desc')}</p>
           <button
             onClick={() => setIsAddModalOpen(true)}
-            className="h-10 px-5 bg-[#E84C3D] hover:bg-red-600 text-white text-sm font-bold rounded-xl flex items-center justify-center gap-2 transition-all mx-auto shadow-sm shadow-red-500/20 whitespace-nowrap shrink-0"
+            className="h-10 px-5 bg-[#E84C3D] hover:bg-red-600 text-white text-sm font-bold rounded-none flex items-center justify-center gap-2 transition-all mx-auto shadow-sm shadow-red-500/20 whitespace-nowrap shrink-0"
           >
             <Plus size={18} />
             {t('create_new')}
           </button>
         </div>
       ) : (
-        <div className="bg-white dark:bg-[#111111] rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden">
+        <div className="bg-white dark:bg-[#111111] rounded-none border border-gray-100 dark:border-gray-800 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full">
               <thead>
@@ -382,7 +382,7 @@ export default function AdminCategories() {
       {/* Add Modal */}
       {isAddModalOpen && typeof window !== 'undefined' && createPortal(
         <div className={`fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 ${locale === 'km' ? 'font-khmer' : ''}`}>
-          <div className="bg-white dark:bg-[#121212] dark:border dark:border-white/10 w-full max-w-md rounded-[20px] shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none max-h-[95vh] overflow-y-auto flex flex-col">
+          <div className="bg-white dark:bg-[#121212] dark:border dark:border-white/10 w-full max-w-md rounded-none shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none max-h-[95vh] overflow-y-auto flex flex-col">
             <div className="p-6 border-b border-gray-100 dark:border-white/10 flex items-center justify-between">
               <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('create_new')}</h2>
               <button onClick={() => setIsAddModalOpen(false)} className="text-gray-400 hover:text-gray-600 dark:hover:text-white transition-colors">
@@ -392,31 +392,31 @@ export default function AdminCategories() {
             
             <form onSubmit={handleCreateCategory} className="p-6 space-y-4">
               {errorMsg && (
-                <div className="p-3 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 rounded-lg text-sm">{errorMsg}</div>
+                <div className="p-3 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 rounded-none text-sm">{errorMsg}</div>
               )}
               
-              <div className="flex gap-2 mb-2 bg-[#F4F7FE] dark:bg-black p-1 rounded-lg w-full">
+              <div className="flex gap-2 mb-2 bg-[#F4F7FE] dark:bg-black p-1 rounded-none w-full">
                 <button
                   type="button"
                   onClick={() => {
                     setCategoryType('main');
                     setNewCategoryParent('');
                   }}
-                  className={`flex-1 py-1.5 text-sm font-bold rounded-md transition-colors ${categoryType === 'main' ? 'bg-white dark:bg-[#1f1f1f] text-[#E84C3D] shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+                  className={`flex-1 py-1.5 text-sm font-bold rounded-none transition-colors ${categoryType === 'main' ? 'bg-white dark:bg-[#1f1f1f] text-[#E84C3D] shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
                 >
                   {locale === 'km' ? 'ប្រភេទចម្បង' : 'Main Category'}
                 </button>
                 <button
                   type="button"
                   onClick={() => setCategoryType('sub')}
-                  className={`flex-1 py-1.5 text-sm font-bold rounded-md transition-colors ${categoryType === 'sub' ? 'bg-white dark:bg-[#1f1f1f] text-[#E84C3D] shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+                  className={`flex-1 py-1.5 text-sm font-bold rounded-none transition-colors ${categoryType === 'sub' ? 'bg-white dark:bg-[#1f1f1f] text-[#E84C3D] shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
                 >
                   {locale === 'km' ? 'ប្រភេទរង' : 'Subcategory'}
                 </button>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-[#d4d4d8] mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Name (EN) <span className="text-[#E84C3D]">*</span>
                 </label>
                 <input
@@ -426,12 +426,12 @@ export default function AdminCategories() {
                   onChange={(e) => setNewCategoryName(e.target.value)}
                   onBlur={handleNewCategoryNameBlur}
                   placeholder="e.g. Clothing & Fashion"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E84C3D] dark:bg-gray-900 text-gray-900 dark:text-white text-sm"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-none focus:outline-none focus:ring-2 focus:ring-[#E84C3D] dark:bg-gray-900 text-gray-900 dark:text-white text-sm"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-[#d4d4d8] mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   ឈ្មោះជាភាសាខ្មែរ (KM)
                 </label>
                 <input
@@ -440,20 +440,20 @@ export default function AdminCategories() {
                   onChange={(e) => setNewCategoryNameKm(e.target.value)}
                   onBlur={handleNewCategoryNameKmBlur}
                   placeholder="ឧ. សម្លៀកបំពាក់ & ម៉ូដ"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E84C3D] dark:bg-gray-900 text-gray-900 dark:text-white text-sm"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-none focus:outline-none focus:ring-2 focus:ring-[#E84C3D] dark:bg-gray-900 text-gray-900 dark:text-white text-sm"
                 />
               </div>
 
               {categoryType === 'sub' && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-[#d4d4d8] mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Parent Category <span className="text-[#E84C3D]">*</span>
                   </label>
                   <select
                     required
                     value={newCategoryParent}
                     onChange={(e) => setNewCategoryParent(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E84C3D] dark:bg-gray-900 text-gray-900 dark:text-white text-sm"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-none focus:outline-none focus:ring-2 focus:ring-[#E84C3D] dark:bg-gray-900 text-gray-900 dark:text-white text-sm"
                   >
                     <option value="" disabled>{locale === 'km' ? 'ជ្រើសរើសប្រភេទមេ...' : 'Select Parent Category...'}</option>
                     {categories.filter(c => !c.parentCategory).map(c => (
@@ -467,10 +467,10 @@ export default function AdminCategories() {
                 <button
                   type="submit"
                   disabled={submitting || !newCategoryName.trim() || (categoryType === 'sub' && !newCategoryParent)}
-                  className="w-full py-2.5 bg-[#E84C3D] hover:bg-red-600 text-white rounded-xl font-bold transition-all shadow-md shadow-red-500/20 disabled:opacity-50 flex items-center justify-center gap-2 text-sm"
+                  className="w-full py-2.5 bg-[#E84C3D] hover:bg-red-600 text-white rounded-none font-bold transition-all shadow-md shadow-red-500/20 disabled:opacity-50 flex items-center justify-center gap-2 text-sm"
                 >
                   {submitting ? (
-                    <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></span>
+                    <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-none animate-spin"></span>
                   ) : (
                     t('add')
                   )}
@@ -485,27 +485,27 @@ export default function AdminCategories() {
       {/* Delete Modal */}
       {deleteModal.isOpen && typeof window !== 'undefined' && createPortal(
         <div className={`fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 ${locale === 'km' ? 'font-khmer' : ''}`}>
-          <div className="bg-white dark:bg-[#121212] dark:border dark:border-white/10 rounded-[20px] max-w-md w-full shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none p-6 relative overflow-hidden">
+          <div className="bg-white dark:bg-[#121212] dark:border dark:border-white/10 rounded-none max-w-md w-full shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none p-6 relative overflow-hidden">
             {deleteModal.hasProductsError ? (
               <div className="text-center">
-                <div className="w-14 h-14 rounded-full bg-amber-50 dark:bg-amber-950/30 text-amber-500 flex items-center justify-center mx-auto mb-4">
+                <div className="w-14 h-14 rounded-none bg-amber-50 dark:bg-amber-950/30 text-amber-500 flex items-center justify-center mx-auto mb-4">
                   <AlertTriangle size={28} />
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Cannot Delete Category</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">{deleteModal.hasProductsError}</p>
-                <button onClick={() => setDeleteModal(prev => ({ ...prev, isOpen: false }))} className="w-full py-2.5 bg-gray-900 dark:bg-white text-white dark:text-black rounded-xl font-bold text-sm">Okay</button>
+                <button onClick={() => setDeleteModal(prev => ({ ...prev, isOpen: false }))} className="w-full py-2.5 bg-gray-900 dark:bg-white text-white dark:text-black rounded-none font-bold text-sm">Okay</button>
               </div>
             ) : (
               <div className="text-center">
-                <div className="w-14 h-14 rounded-full bg-red-50 dark:bg-red-950/30 text-red-500 flex items-center justify-center mx-auto mb-4">
+                <div className="w-14 h-14 rounded-none bg-red-50 dark:bg-red-950/30 text-red-500 flex items-center justify-center mx-auto mb-4">
                   <Trash2 size={28} />
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Delete Category</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">Are you sure you want to delete "{deleteModal.categoryName}"?</p>
                 <div className="flex gap-3">
-                  <button onClick={() => setDeleteModal(prev => ({ ...prev, isOpen: false }))} className="flex-1 py-2.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-xl font-bold text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">Cancel</button>
-                  <button onClick={confirmDeleteCategory} className="flex-1 py-2.5 bg-[#E84C3D] hover:bg-red-600 text-white rounded-xl font-bold text-sm flex justify-center items-center shadow-md shadow-red-500/20 transition-all">
-                    {deleteModal.loading ? <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></span> : 'Delete'}
+                  <button onClick={() => setDeleteModal(prev => ({ ...prev, isOpen: false }))} className="flex-1 py-2.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-none font-bold text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">Cancel</button>
+                  <button onClick={confirmDeleteCategory} className="flex-1 py-2.5 bg-[#E84C3D] hover:bg-red-600 text-white rounded-none font-bold text-sm flex justify-center items-center shadow-md shadow-red-500/20 transition-all">
+                    {deleteModal.loading ? <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-none animate-spin"></span> : 'Delete'}
                   </button>
                 </div>
               </div>

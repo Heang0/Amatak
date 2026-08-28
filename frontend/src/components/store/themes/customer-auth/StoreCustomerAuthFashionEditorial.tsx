@@ -1,0 +1,285 @@
+'use client';
+
+import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useCustomerAuthStore } from '@/lib/store/useCustomerAuthStore';
+import TelegramLoginWidget from '@/components/ui/TelegramLoginWidget';
+import GoogleAuthButton from '@/components/ui/GoogleAuthButton';
+
+export default function StoreCustomerAuthFashionEditorial({ primaryColor, themeStyle, isKm }: { primaryColor: string, themeStyle: string, isKm: boolean }) {
+  const [isLogin, setIsLogin] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  
+  const setCustomerInfo = useCustomerAuthStore(state => state.setCustomerInfo);
+  const searchParams = useSearchParams();
+  const isSessionExpired = searchParams?.get('session') === 'expired';
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
+      const body = isLogin ? { email, password } : { name, email, password, role: 'customer' };
+
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || 'Authentication failed');
+      }
+
+      // Check role safety if logging in
+      if (isLogin && data.role !== 'customer') {
+        throw new Error('Admins cannot log in as customers on the storefront.');
+      }
+
+      setSuccess(true);
+      setTimeout(() => {
+        setCustomerInfo({
+          _id: data._id,
+          name: data.name,
+          email: data.email,
+          role: data.role,
+          token: data.token,
+          profilePic: data.profilePic,
+        });
+      }, 1000);
+      
+    } catch (err: any) {
+      setError(err.message);
+      setLoading(false);
+    }
+  };
+
+  const handleTelegramResponse = async (response: any) => {
+    setError('');
+    setLoading(true);
+
+    try {
+      // NEW: Session-based flow - widget already returns authenticated user with token
+      if (response.token && response._id) {
+        setSuccess(true);
+        setTimeout(() => {
+          setCustomerInfo({
+            _id: response._id,
+            name: response.name,
+            email: response.email,
+            role: response.role,
+            token: response.token,
+            profilePic: response.profilePic,
+          });
+        }, 1000);
+        setLoading(false);
+        return;
+      }
+
+      // LEGACY: Old Telegram widget hash verification flow
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/auth/telegram`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(response),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || 'Telegram authentication failed');
+      }
+
+      setSuccess(true);
+      setTimeout(() => {
+        setCustomerInfo({
+          _id: data._id,
+          name: data.name,
+          email: data.email,
+          role: data.role,
+          token: data.token,
+          profilePic: data.profilePic,
+        });
+      }, 1000);
+      
+    } catch (err: any) {
+      setError(err.message);
+      setLoading(false);
+    }
+  };
+
+  const inputClass = `w-full px-4 py-3 rounded-none bg-white dark:bg-[#111318] border text-xs sm:text-sm font-medium focus:outline-none transition-colors ${
+    'fashion-editorial' === 'neo-brutalism' 
+      ? 'border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] focus:shadow-none focus:translate-x-[4px] focus:translate-y-[4px]' 
+      : 'border-gray-200 dark:border-white/10 focus:border-black dark:focus:border-white'
+  }`;
+
+  const buttonClass = `w-full py-3.5 px-4 text-xs font-bold uppercase tracking-widest text-center transition-all rounded-none ${
+    'fashion-editorial' === 'neo-brutalism'
+      ? 'border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] text-black bg-[#f0f0f0]'
+      : 'bg-black text-white dark:bg-white dark:text-black hover:opacity-90 active:scale-[0.98]'
+  }`;
+
+  const googleButtonClass = `w-full py-3.5 px-4 text-xs font-bold uppercase tracking-widest text-center transition-all flex items-center justify-center gap-3 bg-white dark:bg-black text-gray-900 dark:text-white rounded-none ${
+    'fashion-editorial' === 'neo-brutalism'
+      ? 'border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] active:shadow-none active:translate-x-[4px] active:translate-y-[4px]'
+      : 'border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-white/5 active:scale-[0.98]'
+  }`;
+
+  if (success) {
+    return (
+      <div className="w-full max-w-md mx-auto pt-16 pb-20 px-4 flex flex-col items-center justify-center animate-in fade-in zoom-in duration-300">
+        <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-6 shadow-sm border border-green-200">
+          <svg className="w-8 h-8 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">
+          {isLogin ? (isKm ? 'ចូលគណនីជោគជ័យ!' : 'Sign In Successful!') : (isKm ? 'បង្កើតគណនីជោគជ័យ!' : 'Account Created!')}
+        </h2>
+        <p className="text-gray-500 font-medium animate-pulse">
+          {isKm ? 'សូមរង់ចាំបន្តិច...' : 'Redirecting...'}
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full max-w-md mx-auto pt-8 pb-20 px-4">
+
+      {/* Session expired banner */}
+      {isSessionExpired && (
+        <div className="mb-6 flex items-start gap-3 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700/40 text-amber-800 dark:text-amber-300 rounded-xl text-sm font-medium">
+          <svg className="w-5 h-5 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" /></svg>
+          <span>{isKm ? 'សម័យប្រើប្រាស់របស់អ្នកផុតកំណត់។ សូមចូលម្ដងទៀត។' : 'Your session has expired. Please sign in again.'}</span>
+        </div>
+      )}
+
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">
+          {isLogin ? (isKm ? 'សូមស្វាគមន៍ត្រឡប់មកវិញ' : 'Welcome Back') : (isKm ? 'បង្កើតគណនី' : 'Create Account')}
+        </h1>
+        <p className="text-gray-500 dark:text-gray-400">
+          {isLogin 
+            ? (isKm ? 'ចូលគណនីរបស់អ្នកដើម្បីមើលការបញ្ជាទិញ' : 'Sign in to view your orders') 
+            : (isKm ? 'ចូលរួមជាមួយយើងដើម្បីទិញទំនិញ' : 'Join us to start shopping')}
+        </p>
+      </div>
+
+      <div className="space-y-6">
+        {/* Social Login Buttons */}
+        <div className="space-y-3">
+          <TelegramLoginWidget
+            botUsername={process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || 'amatakshop_bot'}
+            onAuth={handleTelegramResponse}
+            isKm={isKm}
+          />
+
+          <GoogleAuthButton
+            isKm={isKm}
+            role="customer"
+            onError={(err) => setError(err)}
+            onSuccess={(data) => {
+              setSuccess(true);
+              setTimeout(() => {
+                setCustomerInfo({
+                  _id: data._id,
+                  name: data.name,
+                  email: data.email,
+                  role: data.role,
+                  token: data.token,
+                  profilePic: data.profilePic,
+                });
+              }, 1000);
+            }}
+          />
+        </div>
+
+        <div className="flex items-center gap-4">
+          <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800"></div>
+          <span className="text-sm text-gray-500 font-medium uppercase tracking-wider">{isKm ? 'ឬ' : 'or'}</span>
+          <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800"></div>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {error && (
+            <div className="p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-xl text-sm font-medium border border-red-200 dark:border-red-900/30">
+              {error}
+            </div>
+          )}
+
+          {!isLogin && (
+            <div>
+              <label className="block text-sm font-bold text-gray-900 dark:text-gray-300 mb-1.5">{isKm ? 'ឈ្មោះ' : 'Name'}</label>
+              <input 
+                type="text" 
+                value={name}
+                onChange={e => setName(e.target.value)}
+                className={inputClass}
+                placeholder={isKm ? 'បញ្ចូលឈ្មោះរបស់អ្នក' : 'Enter your name'}
+                required={!isLogin}
+              />
+            </div>
+          )}
+
+          <div>
+            <label className="block text-sm font-bold text-gray-900 dark:text-gray-300 mb-1.5">{isKm ? 'អ៊ីមែល' : 'Email Address'}</label>
+            <input 
+              type="email" 
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              className={inputClass}
+              placeholder={isKm ? 'បញ្ចូលអ៊ីមែលរបស់អ្នក' : 'name@example.com'}
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-bold text-gray-900 dark:text-gray-300 mb-1.5">{isKm ? 'លេខសម្ងាត់' : 'Password'}</label>
+            <input 
+              type="password" 
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              className={inputClass}
+              placeholder="••••••••"
+              required
+              minLength={6}
+            />
+          </div>
+
+          <button 
+            type="submit" 
+            disabled={loading}
+            className={buttonClass}
+            style={themeStyle !== 'neo-brutalism' ? { backgroundColor: primaryColor || '#000' } : undefined}
+          >
+            {loading ? '...' : isLogin ? (isKm ? 'ចូលគណនី' : 'Sign In') : (isKm ? 'បង្កើតគណនី' : 'Create Account')}
+          </button>
+        </form>
+
+        <div className="text-center pt-2">
+          <p className="text-gray-600 dark:text-gray-400 font-medium">
+            {isLogin 
+              ? (isKm ? 'មិនទាន់មានគណនីមែនទេ? ' : "Don't have an account? ")
+              : (isKm ? 'មានគណនីរួចហើយ? ' : "Already have an account? ")}
+            <button 
+              onClick={() => { setIsLogin(!isLogin); setError(''); }}
+              className="font-bold hover:underline"
+              style={{ color: primaryColor || '#000' }}
+            >
+              {isLogin ? (isKm ? 'ចុះឈ្មោះ' : 'Sign Up') : (isKm ? 'ចូលគណនី' : 'Sign In')}
+            </button>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -258,10 +258,10 @@ export default function UpgradePlan() {
         </div>
         
         {/* Toggle Switch */}
-        <div className="flex items-center bg-gray-100 dark:bg-[#1E1E1E] p-1 rounded-xl shrink-0 border border-gray-200/50 dark:border-white/10">
+        <div className="flex items-center bg-gray-100 dark:bg-[#1E1E1E] p-1 rounded-none shrink-0 border border-gray-200/50 dark:border-white/10">
           <button 
             onClick={() => setBillingCycle('monthly')}
-            className={`px-5 py-2 rounded-lg text-sm font-bold transition-all ${
+            className={`px-5 py-2 rounded-none text-sm font-bold transition-all ${
               billingCycle === 'monthly' 
                 ? 'bg-white dark:bg-[#2C2C2C] text-gray-900 dark:text-white shadow-sm' 
                 : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
@@ -271,14 +271,14 @@ export default function UpgradePlan() {
           </button>
           <button 
             onClick={() => setBillingCycle('annually')}
-            className={`px-5 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ${
+            className={`px-5 py-2 rounded-none text-sm font-bold transition-all flex items-center gap-2 ${
               billingCycle === 'annually' 
                 ? 'bg-white dark:bg-[#2C2C2C] text-gray-900 dark:text-white shadow-sm' 
                 : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
             }`}
           >
             {isKm ? 'ប្រចាំឆ្នាំ' : 'Annually'}
-            <span className="bg-[#E84C3D]/10 dark:bg-[#E84C3D]/25 text-[#E84C3D] dark:text-[#ff6b5d] text-[10px] uppercase px-2 py-0.5 rounded-full font-bold tracking-wider">
+            <span className="bg-[#E84C3D]/10 dark:bg-[#E84C3D]/25 text-[#E84C3D] dark:text-[#ff6b5d] text-[10px] uppercase px-2 py-0.5 rounded-none font-bold tracking-wider">
               Save 30%
             </span>
           </button>
@@ -291,7 +291,7 @@ export default function UpgradePlan() {
         <>
           {/* Current Subscription Overview */}
           {storeData && currentStorePlan && (
-            <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-3xl p-6 sm:p-7 shadow-sm mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-none p-6 sm:p-7 shadow-sm mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div>
                 <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">
                   {isKm ? 'គម្រោងបច្ចុប្បន្នរបស់អ្នក' : 'Your Current Plan'}
@@ -300,7 +300,7 @@ export default function UpgradePlan() {
                   <span className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white">
                     {currentStorePlan?.planId?.name || 'Free'}
                   </span>
-                  <span className={`px-3 py-1 rounded-full text-xs font-bold ${ isExpired() ? 'bg-rose-100 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300' }`}>
+                  <span className={`px-3 py-1 rounded-none text-xs font-bold ${ isExpired() ? 'bg-rose-100 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300' }`}>
                     {isExpired() ? (isKm ? 'ហួសកំណត់' : 'Expired') : (isKm ? 'សកម្ម' : 'Active')}
                   </span>
                 </div>
@@ -311,13 +311,13 @@ export default function UpgradePlan() {
                 </p>
               </div>
               
-              <div className="flex items-center gap-4 bg-gray-50 dark:bg-[#171B26] p-3.5 sm:p-4 rounded-2xl border border-gray-100 dark:border-white/[0.04] shadow-xs">
+              <div className="flex items-center gap-4 bg-gray-50 dark:bg-[#171B26] p-3.5 sm:p-4 rounded-none border border-gray-100 dark:border-white/[0.04] shadow-xs">
                 {storeData.branding?.logoUrl ? (
-                  <div className="w-14 h-14 rounded-full overflow-hidden bg-white dark:bg-gray-800 flex items-center justify-center shrink-0 ring-2 ring-gray-200 dark:ring-white/10 shadow-xs">
-                    <img src={storeData.branding.logoUrl} alt="Store Logo" className="w-full h-full object-cover rounded-full aspect-square" />
+                  <div className="w-14 h-14 rounded-none overflow-hidden bg-white dark:bg-gray-800 flex items-center justify-center shrink-0 ring-2 ring-gray-200 dark:ring-white/10 shadow-xs">
+                    <img src={storeData.branding.logoUrl} alt="Store Logo" className="w-full h-full object-cover rounded-none aspect-square" />
                   </div>
                 ) : (
-                  <div className="w-14 h-14 bg-gradient-to-tr from-[#E84C3D] to-red-400 text-white rounded-full flex items-center justify-center font-extrabold text-xl shrink-0 shadow-md shadow-red-500/20 ring-2 ring-white/20">
+                  <div className="w-14 h-14 bg-gradient-to-tr from-[#E84C3D] to-red-400 text-white rounded-none flex items-center justify-center font-extrabold text-xl shrink-0 shadow-md shadow-red-500/20 ring-2 ring-white/20">
                     {storeData.name.charAt(0).toUpperCase()}
                   </div>
                 )}
@@ -333,7 +333,7 @@ export default function UpgradePlan() {
             {plans.map((plan) => (
               <div 
                 key={plan._id} 
-                className={`bg-white dark:bg-[#121212] p-8 rounded-[20px] shadow-sm border flex flex-col transition-all relative ${ 
+                className={`bg-white dark:bg-[#121212] p-8 rounded-none shadow-sm border flex flex-col transition-all relative ${ 
                   currentPlanId === plan._id 
                     ? (isExpired() ? 'border-orange-500 ring-2 ring-orange-500/20' : 'border-[#E84C3D] ring-2 ring-[#E84C3D]/20 shadow-md scale-[1.02]') 
                     : 'border-gray-100 dark:border-white/10 hover:border-red-200 dark:hover:border-red-900/50 hover:scale-[1.01]' 
@@ -342,7 +342,7 @@ export default function UpgradePlan() {
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center justify-between">
                   {isKm && plan.nameKm ? plan.nameKm : plan.name}
                   {currentPlanId === plan._id && (
-                    <span className={`text-xs px-2 py-1 rounded-full font-bold uppercase tracking-wider ${isExpired() ? 'bg-orange-100 text-orange-600 dark:bg-orange-950/30 dark:text-orange-400' : 'bg-[#E84C3D]/10 text-[#E84C3D] dark:bg-red-950/30 dark:text-red-400'}`}>
+                    <span className={`text-xs px-2 py-1 rounded-none font-bold uppercase tracking-wider ${isExpired() ? 'bg-orange-100 text-orange-600 dark:bg-orange-950/30 dark:text-orange-400' : 'bg-[#E84C3D]/10 text-[#E84C3D] dark:bg-red-950/30 dark:text-red-400'}`}>
                       {isKm ? (isExpired() ? 'ហួសកំណត់' : 'គម្រោងបច្ចុប្បន្ន') : (isExpired() ? 'Expired' : 'Current Plan')}
                     </span>
                   )}
@@ -378,7 +378,7 @@ export default function UpgradePlan() {
                     <button
                       onClick={() => handleUpgrade(plan._id)}
                       disabled={isDisabled}
-                      className={`mt-8 block w-full font-bold py-3.5 px-4 rounded-xl text-center text-sm transition-all shadow-sm ${
+                      className={`mt-8 block w-full font-bold py-3.5 px-4 rounded-none text-center text-sm transition-all shadow-sm ${
                         isDisabled 
                           ? 'bg-gray-100 dark:bg-white/[0.06] text-gray-400 dark:text-gray-500 cursor-not-allowed' 
                           : 'bg-[#E84C3D] hover:bg-red-600 text-white shadow-md shadow-red-500/20 active:scale-[0.98]' 
@@ -414,11 +414,11 @@ export default function UpgradePlan() {
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{isKm ? 'វិធីសាស្ត្រដែលត្រូវបានទទួលយក' : 'Accepted payment methods'}</p>
           </div>
 
-          <div className="bg-white dark:bg-[#121212] border border-gray-100 dark:border-white/10 rounded-[20px] p-4 md:p-5 shadow-sm transition-all cursor-pointer relative overflow-hidden flex items-center justify-between group hover:border-[#E84C3D]/30 hover:shadow-md">
+          <div className="bg-white dark:bg-[#121212] border border-gray-100 dark:border-white/10 rounded-none p-4 md:p-5 shadow-sm transition-all cursor-pointer relative overflow-hidden flex items-center justify-between group hover:border-[#E84C3D]/30 hover:shadow-md">
             
             <div className="flex items-center gap-5">
               {/* Logo Box */}
-              <div className="w-12 h-12 rounded-[20px] bg-[#E1232E] flex items-center justify-center shrink-0 shadow-sm overflow-hidden">
+              <div className="w-12 h-12 rounded-none bg-[#E1232E] flex items-center justify-center shrink-0 shadow-sm overflow-hidden">
                 <img 
                   src="/logo/KHQR Logo.png" 
                   alt="KHQR" 
@@ -433,7 +433,7 @@ export default function UpgradePlan() {
 
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-bold text-[#E1232E] uppercase tracking-wider bg-[#E1232E]/10 dark:bg-[#E1232E]/20 px-2 py-0.5 rounded">KHQR</span>
+                  <span className="text-xs font-bold text-[#E1232E] uppercase tracking-wider bg-[#E1232E]/10 dark:bg-[#E1232E]/20 px-2 py-0.5 rounded-none ">KHQR</span>
                   <span className="text-[10px] text-gray-500 dark:text-gray-400 font-medium hidden sm:inline-block">• {isKm ? 'អនុញ្ញាតភ្លាមៗ' : 'Instant Approval'}</span>
                 </div>
                 <h4 className="text-base font-bold text-gray-900 dark:text-white uppercase">Bakong KHQR</h4>
@@ -442,14 +442,14 @@ export default function UpgradePlan() {
             </div>
 
             {/* Selected Indicator */}
-            <div className="w-6 h-6 rounded-full bg-[#E1232E] flex items-center justify-center shrink-0 shadow-sm mr-2">
+            <div className="w-6 h-6 rounded-none bg-[#E1232E] flex items-center justify-center shrink-0 shadow-sm mr-2">
               <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
               </svg>
             </div>
             
             {/* Subtle border effect on selected */}
-            <div className="absolute inset-0 border-2 border-[#E1232E] rounded-[20px] pointer-events-none opacity-100"></div>
+            <div className="absolute inset-0 border-2 border-[#E1232E] rounded-none pointer-events-none opacity-100"></div>
           </div>
         </div>
       )}

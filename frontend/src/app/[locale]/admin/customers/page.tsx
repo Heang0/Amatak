@@ -51,43 +51,43 @@ export default function AdminCustomersPage() {
  }, [user]);
 
  if (loading) {
- return <div className="p-8 text-center text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa]">{isKm ? 'កំពុងទាញយកទិន្នន័យអតិថិជន...' : 'Loading customers...'}</div>;
+ return <div className="p-8 text-center text-gray-600 dark:text-gray-400">{isKm ? 'កំពុងទាញយកទិន្នន័យអតិថិជន...' : 'Loading customers...'}</div>;
  }
 
  return (
  <div className="space-y-6">
   <div className="flex items-start justify-between pb-2">
   <div>
-   <h2 className="text-xl font-bold text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa]">
+   <h2 className="text-xl font-bold text-gray-900 dark:text-white">
    {isKm ? 'អតិថិជនទាំងអស់' : 'All Customers'}
    </h2>
-   <p className="text-sm text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] /40 mt-0.5">
+   <p className="text-sm text-gray-600 dark:text-gray-400 mt-0.5">
    {isKm ? 'អ្នកដែលបានទិញទំនិញពីហាងរបស់អ្នក' : 'People who have purchased from your store'}
    </p>
   </div>
   <div className="text-right">
-   <div className="text-2xl font-black text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa]">{customers.length}</div>
-   <div className="text-[10px] text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] /30 uppercase tracking-widest font-bold">
+   <div className="text-2xl font-black text-gray-900 dark:text-white">{customers.length}</div>
+   <div className="text-[10px] text-gray-600 dark:text-gray-400 /30 uppercase tracking-widest font-bold">
    {isKm ? 'សរុប' : 'Total'}
    </div>
   </div>
   </div>
 
-  <div className="bg-white dark:bg-[#121212] dark:border dark:border-white/10 rounded-[20px] shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none dark:shadow-none border-none overflow-hidden">
+  <div className="bg-white dark:bg-[#121212] dark:border dark:border-white/10 rounded-none shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none dark:shadow-none border-none overflow-hidden">
   <div className="overflow-x-auto">
    <table className="w-full text-left text-sm">
    <thead>
     <tr className="border-b border-none border-none bg-[#F4F7FE]/50 dark:bg-[#080808]">
-    <th className="px-6 py-4 text-[11px] font-bold text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] uppercase tracking-widest">
+    <th className="px-6 py-4 text-[11px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">
      {isKm ? 'ឈ្មោះអតិថិជន' : 'Customer'}
     </th>
-    <th className="px-6 py-4 text-[11px] font-bold text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] uppercase tracking-widest">
+    <th className="px-6 py-4 text-[11px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">
      {isKm ? 'ទំនាក់ទំនង' : 'Contact'}
     </th>
-    <th className="px-6 py-4 text-[11px] font-bold text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] uppercase tracking-widest text-center">
+    <th className="px-6 py-4 text-[11px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest text-center">
      {isKm ? 'ចំនួនបញ្ជាទិញ' : 'Orders'}
     </th>
-    <th className="px-6 py-4 text-[11px] font-bold text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] uppercase tracking-widest text-right">
+    <th className="px-6 py-4 text-[11px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest text-right">
      {isKm ? 'ទឹកប្រាក់សរុប' : 'Total Spent'}
     </th>
     </tr>
@@ -97,19 +97,19 @@ export default function AdminCustomersPage() {
     <tr key={c.id} className="hover:bg-[#F4F7FE] dark:hover:bg-gray-900/50 transition-colors">
      <td className="px-6 py-4">
      <div className="flex items-center gap-3">
-      <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] font-bold uppercase shrink-0">
+      <div className="w-10 h-10 rounded-none bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-400 font-bold uppercase shrink-0">
       {c.name.charAt(0)}
       </div>
       <div>
-      <div className="font-bold text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa] flex items-center gap-2">
+      <div className="font-bold text-gray-900 dark:text-white flex items-center gap-2">
        {c.name}
        {c.isGuest && (
-       <span className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa] text-[10px] rounded uppercase tracking-widest font-bold">
+       <span className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-[10px] rounded-none uppercase tracking-widest font-bold">
         Guest
        </span>
        )}
       </div>
-      <div className="text-xs text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa]">
+      <div className="text-xs text-gray-600 dark:text-gray-400">
        {isKm ? 'តាំងពី ' : 'Since '}
        {new Date(c.joinedAt).toLocaleDateString(isKm ? 'km-KH' : 'en-US')}
       </div>
@@ -117,11 +117,11 @@ export default function AdminCustomersPage() {
      </div>
      </td>
      <td className="px-6 py-4">
-     <div className="text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa] font-medium">{c.phone || '-'}</div>
-     <div className="text-xs text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa]">{c.email || ''}</div>
+     <div className="text-gray-900 dark:text-white font-medium">{c.phone || '-'}</div>
+     <div className="text-xs text-gray-600 dark:text-gray-400">{c.email || ''}</div>
      </td>
      <td className="px-6 py-4 text-center">
-     <span className="inline-flex items-center justify-center px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa] rounded-full font-bold">
+     <span className="inline-flex items-center justify-center px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white rounded-none font-bold">
       {c.totalOrders}
      </span>
      </td>
@@ -134,7 +134,7 @@ export default function AdminCustomersPage() {
     ))}
     {customers.length === 0 && (
     <tr>
-     <td colSpan={4} className="px-6 py-12 text-center text-gray-600 dark:text-[#a1a1aa] dark:text-gray-600 dark:text-[#a1a1aa]">
+     <td colSpan={4} className="px-6 py-12 text-center text-gray-600 dark:text-gray-400">
      <Users size={32} className="mx-auto mb-3 text-gray-300" />
      {isKm ? 'មិនទាន់មានអតិថិជននៅឡើយទេ' : 'No customers found yet.'}
      </td>

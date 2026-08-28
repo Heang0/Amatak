@@ -55,15 +55,15 @@ export default function AdminDashboard() {
       </div>
 
       {loading ? (
-        <div className="p-16 flex flex-col items-center justify-center gap-3 bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-3xl">
-          <div className="w-8 h-8 border-3 border-red-500/20 border-t-[#E84C3D] rounded-full animate-spin" />
+        <div className="p-16 flex flex-col items-center justify-center gap-3 bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-none ">
+          <div className="w-8 h-8 border-3 border-red-500/20 border-t-[#E84C3D] rounded-none animate-spin" />
           <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('loading_analytics')}</p>
         </div>
       ) : analytics ? (
         <>
           {/* Plan Status Warning Banners */}
           {!analytics.isActive && (
-            <div className="bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 p-5 rounded-3xl flex items-center justify-between shadow-xs">
+            <div className="bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 p-5 rounded-none flex items-center justify-between shadow-xs">
               <div className="flex items-center gap-3">
                 <ShieldAlert className="w-6 h-6 text-red-600 shrink-0" />
                 <div>
@@ -71,7 +71,7 @@ export default function AdminDashboard() {
                   <p className="text-xs text-red-700 dark:text-red-400 mt-0.5">Your store is currently suspended. Upgrade your plan to restore storefront access.</p>
                 </div>
               </div>
-              <Link href="/admin/upgrade" className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl transition-all shadow-sm shadow-red-500/20 whitespace-nowrap ml-4">
+              <Link href="/admin/upgrade" className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-none transition-all shadow-sm shadow-red-500/20 whitespace-nowrap ml-4">
                 Upgrade Plan
               </Link>
             </div>
@@ -81,12 +81,12 @@ export default function AdminDashboard() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             
             {/* Revenue Card */}
-            <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-3xl p-6 shadow-sm hover:shadow-md transition-all">
+            <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-none p-6 shadow-sm hover:shadow-md transition-all">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                <div className="w-12 h-12 rounded-none bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
                   <DollarSign className="w-6 h-6" />
                 </div>
-                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 rounded-full">
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 rounded-none ">
                   <TrendingUp className="w-3 h-3" /> +14.2%
                 </span>
               </div>
@@ -97,12 +97,12 @@ export default function AdminDashboard() {
             </div>
 
             {/* Orders Card */}
-            <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-3xl p-6 shadow-sm hover:shadow-md transition-all">
+            <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-none p-6 shadow-sm hover:shadow-md transition-all">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                <div className="w-12 h-12 rounded-none bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400">
                   <ShoppingCart className="w-6 h-6" />
                 </div>
-                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40 px-2.5 py-1 rounded-full">
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40 px-2.5 py-1 rounded-none ">
                   <ArrowUpRight className="w-3 h-3" /> +8.1%
                 </span>
               </div>
@@ -113,9 +113,9 @@ export default function AdminDashboard() {
             </div>
 
             {/* Products Card */}
-            <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-3xl p-6 shadow-sm hover:shadow-md transition-all">
+            <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-none p-6 shadow-sm hover:shadow-md transition-all">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-100 dark:border-amber-900/30 flex items-center justify-center text-amber-600 dark:text-amber-400">
+                <div className="w-12 h-12 rounded-none bg-amber-50 dark:bg-amber-950/40 border border-amber-100 dark:border-amber-900/30 flex items-center justify-center text-amber-600 dark:text-amber-400">
                   <Package className="w-6 h-6" />
                 </div>
               </div>
@@ -126,9 +126,9 @@ export default function AdminDashboard() {
             </div>
 
             {/* Customers Card */}
-            <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-3xl p-6 shadow-sm hover:shadow-md transition-all">
+            <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-none p-6 shadow-sm hover:shadow-md transition-all">
               <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 rounded-2xl bg-purple-50 dark:bg-purple-950/40 border border-purple-100 dark:border-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400">
+                <div className="w-12 h-12 rounded-none bg-purple-50 dark:bg-purple-950/40 border border-purple-100 dark:border-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400">
                   <Users className="w-6 h-6" />
                 </div>
               </div>
@@ -143,7 +143,7 @@ export default function AdminDashboard() {
           </div>
 
           {/* Revenue Chart Section */}
-          <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-3xl p-6 sm:p-8 shadow-sm">
+          <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-none p-6 sm:p-8 shadow-sm">
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white">
@@ -196,7 +196,7 @@ export default function AdminDashboard() {
           </div>
 
           {/* Recent Orders Section */}
-          <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-3xl shadow-sm overflow-hidden">
+          <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-none shadow-sm overflow-hidden">
             <div className="px-6 py-5 border-b border-gray-100 dark:border-white/[0.06] flex justify-between items-center">
               <div>
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white">{t('recent_orders')}</h3>
@@ -236,17 +236,17 @@ export default function AdminDashboard() {
                       </td>
                       <td className="py-4 px-4">
                         {order.paymentStatus === 'PAID' ? (
-                          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-[#FEF3C7] dark:bg-amber-950/40 text-[#B45309] dark:text-amber-300">
+                          <span className="inline-flex items-center px-3 py-1 rounded-none text-xs font-bold bg-[#FEF3C7] dark:bg-amber-950/40 text-[#B45309] dark:text-amber-300">
                             {isKm ? 'បានបង់ប្រាក់' : 'Paid'}
                           </span>
                         ) : (
-                          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                          <span className="inline-flex items-center px-3 py-1 rounded-none text-xs font-bold bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
                             {isKm ? 'រង់ចាំ' : 'Pending'}
                           </span>
                         )}
                       </td>
                       <td className="py-4 px-6">
-                        <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${
+                        <span className={`inline-flex items-center px-3 py-1 rounded-none text-xs font-bold ${
                           order.orderStatus === 'DELIVERED' || order.orderStatus === 'COMPLETED'
                             ? 'bg-[#D1FAE5] dark:bg-emerald-950/40 text-[#047857] dark:text-emerald-300'
                             : order.orderStatus === 'PROCESSING'

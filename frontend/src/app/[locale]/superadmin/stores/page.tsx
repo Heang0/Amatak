@@ -104,18 +104,18 @@ export default function StoresManagement() {
             Manage all tenant stores, custom domains, and subscription lifecycles.
           </p>
         </div>
-        <span className="px-3.5 py-1.5 bg-white dark:bg-[#13161F] border border-gray-200 dark:border-white/[0.08] text-gray-700 dark:text-gray-300 rounded-2xl text-xs font-bold shadow-xs">
+        <span className="px-3.5 py-1.5 bg-white dark:bg-[#13161F] border border-gray-200 dark:border-white/[0.08] text-gray-700 dark:text-gray-300 rounded-none text-xs font-bold shadow-xs">
           Total Stores: {stores.length}
         </span>
       </div>
 
       {loading ? (
-        <div className="p-16 flex flex-col items-center justify-center gap-3 bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-3xl">
-          <div className="w-8 h-8 border-3 border-red-500/20 border-t-[#E84C3D] rounded-full animate-spin" />
+        <div className="p-16 flex flex-col items-center justify-center gap-3 bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-none ">
+          <div className="w-8 h-8 border-3 border-red-500/20 border-t-[#E84C3D] rounded-none animate-spin" />
           <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Loading stores...</p>
         </div>
       ) : (
-        <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-3xl shadow-sm overflow-hidden">
+        <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-none shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
@@ -139,7 +139,7 @@ export default function StoresManagement() {
                     <tr key={store._id} className="hover:bg-gray-50/70 dark:hover:bg-white/[0.02] transition-colors">
                       <td className="py-4 px-6">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#E84C3D] to-red-400 text-white font-bold text-xs flex items-center justify-center shadow-xs shrink-0">
+                          <div className="w-8 h-8 rounded-none bg-gradient-to-tr from-[#E84C3D] to-red-400 text-white font-bold text-xs flex items-center justify-center shadow-xs shrink-0">
                             {store.name.charAt(0).toUpperCase()}
                           </div>
                           <div>
@@ -156,7 +156,7 @@ export default function StoresManagement() {
                       </td>
                       <td className="py-4 px-4">
                         {store.customDomain ? (
-                          <span className="inline-flex items-center gap-1 text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40 px-2.5 py-1 rounded-full">
+                          <span className="inline-flex items-center gap-1 text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40 px-2.5 py-1 rounded-none ">
                             <Globe size={11} /> {store.customDomain}
                           </span>
                         ) : (
@@ -164,7 +164,7 @@ export default function StoresManagement() {
                         )}
                       </td>
                       <td className="py-4 px-4">
-                        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200">
+                        <span className="inline-flex items-center px-2.5 py-1 rounded-none text-xs font-bold bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200">
                           {store.plan?.planId?.name || 'Free'}
                         </span>
                       </td>
@@ -174,16 +174,16 @@ export default function StoresManagement() {
                       <td className="py-4 px-4">
                         <div className="flex flex-wrap items-center gap-1.5">
                           {store.plan?.isActive ? (
-                            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300">
+                            <span className="px-2.5 py-0.5 rounded-none text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300">
                               Active
                             </span>
                           ) : (
-                            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-100 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300">
+                            <span className="px-2.5 py-0.5 rounded-none text-[11px] font-bold bg-rose-100 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300">
                               Expired
                             </span>
                           )}
                           {!store.isActive && (
-                            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300">
+                            <span className="px-2.5 py-0.5 rounded-none text-[11px] font-bold bg-amber-100 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300">
                               Suspended
                             </span>
                           )}
@@ -197,13 +197,13 @@ export default function StoresManagement() {
                               setDomainInput(store.customDomain || '');
                               setIsDomainModalOpen(true);
                             }}
-                            className="px-3 py-1.5 rounded-xl text-xs font-bold bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors"
+                            className="px-3 py-1.5 rounded-none text-xs font-bold bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors"
                           >
                             Domain
                           </button>
                           <button
                             onClick={() => toggleStore(store._id)}
-                            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-colors ${
+                            className={`px-3 py-1.5 rounded-none text-xs font-bold transition-colors ${
                               store.isActive 
                                 ? 'bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-950/30 dark:text-red-400' 
                                 : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400'
@@ -225,10 +225,10 @@ export default function StoresManagement() {
       {/* Edit Custom Domain Modal */}
       {isDomainModalOpen && selectedStore && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-          <div className="w-full max-w-md bg-white dark:bg-[#13161F] border border-gray-200 dark:border-white/[0.08] p-6 rounded-3xl shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-150">
+          <div className="w-full max-w-md bg-white dark:bg-[#13161F] border border-gray-200 dark:border-white/[0.08] p-6 rounded-none shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-150">
             <div className="flex justify-between items-center pb-2 border-b border-gray-100 dark:border-white/[0.06]">
               <h3 className="text-lg font-bold text-gray-900 dark:text-white">Edit Custom Domain</h3>
-              <button onClick={() => setIsDomainModalOpen(false)} className="p-1 rounded-xl text-gray-400 hover:text-gray-700 dark:hover:text-white">
+              <button onClick={() => setIsDomainModalOpen(false)} className="p-1 rounded-none text-gray-400 hover:text-gray-700 dark:hover:text-white">
                 <X size={18} />
               </button>
             </div>
@@ -244,7 +244,7 @@ export default function StoresManagement() {
                 placeholder="e.g. store.brand.com"
                 value={domainInput}
                 onChange={(e) => setDomainInput(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-200 dark:border-white/10 rounded-2xl bg-gray-50 dark:bg-[#171B26] text-gray-900 dark:text-white text-sm font-medium focus:outline-none focus:border-[#E84C3D]"
+                className="w-full px-4 py-3 border border-gray-200 dark:border-white/10 rounded-none bg-gray-50 dark:bg-[#171B26] text-gray-900 dark:text-white text-sm font-medium focus:outline-none focus:border-[#E84C3D]"
               />
               <p className="text-[11px] text-gray-400">Leave empty to remove custom domain.</p>
             </div>
@@ -252,14 +252,14 @@ export default function StoresManagement() {
             <div className="flex gap-3 pt-2">
               <button
                 onClick={() => setIsDomainModalOpen(false)}
-                className="flex-1 py-3 text-xs font-bold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 rounded-2xl transition-colors"
+                className="flex-1 py-3 text-xs font-bold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 rounded-none transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSaveDomain}
                 disabled={isSubmitting}
-                className="flex-1 py-3 text-xs font-bold text-white bg-[#E84C3D] hover:bg-red-600 rounded-2xl transition-colors disabled:opacity-50 shadow-md shadow-red-500/20"
+                className="flex-1 py-3 text-xs font-bold text-white bg-[#E84C3D] hover:bg-red-600 rounded-none transition-colors disabled:opacity-50 shadow-md shadow-red-500/20"
               >
                 {isSubmitting ? 'Saving...' : 'Save Domain'}
               </button>

@@ -79,13 +79,13 @@ export default function SuperadminSettings() {
 
  return (
   <div className="max-w-3xl mx-auto space-y-8">
-   <h2 className="text-3xl font-bold text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa]">Settings</h2>
+   <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Settings</h2>
 
-   <div className="bg-white dark:bg-[#121212] dark:border dark:border-white/10 rounded-[20px] shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none border border-none border-none p-8">
-    <h3 className="text-xl font-bold text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa] mb-6">Profile Information</h3>
+   <div className="bg-white dark:bg-[#121212] dark:border dark:border-white/10 rounded-none shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none border border-none border-none p-8">
+    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Profile Information</h3>
     
     {successMsg && (
-     <div className="mb-6 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 p-4 rounded-lg font-medium border border-green-200 dark:border-green-800/50">
+     <div className="mb-6 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 p-4 rounded-none font-medium border border-green-200 dark:border-green-800/50">
       {successMsg}
      </div>
     )}
@@ -93,7 +93,7 @@ export default function SuperadminSettings() {
     <form onSubmit={handleSubmit} className="space-y-6">
      <div className="flex items-center space-x-6">
       <div className="shrink-0">
-       <div className="h-24 w-24 rounded-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center overflow-hidden border-2 border-none dark:border-gray-700">
+       <div className="h-24 w-24 rounded-none bg-gray-200 dark:bg-gray-800 flex items-center justify-center overflow-hidden border-2 border-none dark:border-gray-700">
         {formData.profilePic ? (
          <img src={formData.profilePic} alt="Profile" className="h-full w-full object-cover" />
         ) : (
@@ -102,9 +102,9 @@ export default function SuperadminSettings() {
        </div>
       </div>
       <div>
-       <label className="block text-sm font-medium text-gray-700 dark:text-[#d4d4d8] mb-2">Profile Picture</label>
+       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Profile Picture</label>
        <div className="flex items-center space-x-4">
-        <label className="cursor-pointer bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 hover:bg-[#F4F7FE] dark:hover:bg-gray-700 text-gray-700 dark:text-[#d4d4d8] px-4 py-2 rounded-lg font-medium transition-colors">
+        <label className="cursor-pointer bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 hover:bg-[#F4F7FE] dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-none font-medium transition-colors">
          {uploading ? 'Uploading...' : 'Upload Image'}
          <input type="file" className="hidden" accept="image/*" onChange={handleFileUpload} disabled={uploading} />
         </label>
@@ -113,24 +113,24 @@ export default function SuperadminSettings() {
      </div>
 
      <div>
-      <label className="block text-sm font-medium text-gray-700 dark:text-[#d4d4d8] mb-2">Full Name</label>
+      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Full Name</label>
       <input
        type="text"
        required
        value={formData.name}
        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-[#F4F7FE] dark:bg-[#000000] text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa] focus:ring-2 focus:ring-[#E84C3D] outline-none"
+       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-none bg-[#F4F7FE] dark:bg-[#000000] text-gray-900 dark:text-white focus:ring-2 focus:ring-[#E84C3D] outline-none"
       />
      </div>
 
      <div>
-      <label className="block text-sm font-medium text-gray-700 dark:text-[#d4d4d8] mb-2">New Password (Optional)</label>
+      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">New Password (Optional)</label>
       <input
        type="password"
        placeholder="Leave blank to keep current password"
        value={formData.password}
        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-[#F4F7FE] dark:bg-[#000000] text-gray-900 dark:text-[#fafafa] dark:text-[#fafafa] focus:ring-2 focus:ring-[#E84C3D] outline-none"
+       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-none bg-[#F4F7FE] dark:bg-[#000000] text-gray-900 dark:text-white focus:ring-2 focus:ring-[#E84C3D] outline-none"
       />
      </div>
 
@@ -138,7 +138,7 @@ export default function SuperadminSettings() {
       <button
        type="submit"
        disabled={loading || uploading}
-       className="bg-[#E84C3D] text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-600 transition-colors shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none disabled:opacity-50"
+       className="bg-[#E84C3D] text-white px-6 py-3 rounded-none font-semibold hover:bg-red-600 transition-colors shadow-[0_18px_40px_rgba(112,144,176,0.12)] dark:shadow-none disabled:opacity-50"
       >
        {loading ? 'Saving...' : 'Save Changes'}
       </button>

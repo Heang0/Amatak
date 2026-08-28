@@ -163,15 +163,15 @@ export default function StoreSetup() {
       {/* Modern Stepper */}
       <div className="w-full max-w-xl mb-8">
         <div className="flex items-center justify-between relative px-6">
-          <div className="absolute left-10 right-10 top-1/2 -translate-y-1/2 h-1 bg-gray-200 dark:bg-gray-800 rounded-full -z-0"></div>
+          <div className="absolute left-10 right-10 top-1/2 -translate-y-1/2 h-1 bg-gray-200 dark:bg-gray-800 rounded-none -z-0"></div>
           <div 
-            className="absolute left-10 top-1/2 -translate-y-1/2 h-1 bg-[#E84C3D] rounded-full -z-0 transition-all duration-500 ease-out" 
+            className="absolute left-10 top-1/2 -translate-y-1/2 h-1 bg-[#E84C3D] rounded-none -z-0 transition-all duration-500 ease-out" 
             style={{ width: step === 1 ? '0%' : step === 2 ? '50%' : 'calc(100% - 5rem)' }}
           ></div>
           
           {/* Step 1 Circle */}
           <div className="relative z-10 flex flex-col items-center">
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 ${step >= 1 ? 'bg-[#E84C3D] text-white shadow-lg shadow-red-500/20 ring-4 ring-white dark:ring-[#050505]' : 'bg-gray-100 dark:bg-gray-800 text-gray-400 border border-gray-200 dark:border-gray-700'}`}>
+            <div className={`w-10 h-10 rounded-none flex items-center justify-center font-bold text-sm transition-all duration-300 ${step >= 1 ? 'bg-[#E84C3D] text-white shadow-lg shadow-red-500/20 ring-4 ring-white dark:ring-[#050505]' : 'bg-gray-100 dark:bg-gray-800 text-gray-400 border border-gray-200 dark:border-gray-700'}`}>
               <Store size={18} />
             </div>
             <span className={`text-xs font-bold mt-2 ${step >= 1 ? 'text-gray-900 dark:text-white' : 'text-gray-400'}`}>
@@ -181,7 +181,7 @@ export default function StoreSetup() {
 
           {/* Step 2 Circle */}
           <div className="relative z-10 flex flex-col items-center">
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 ${step >= 2 ? 'bg-[#E84C3D] text-white shadow-lg shadow-red-500/20 ring-4 ring-white dark:ring-[#050505]' : 'bg-gray-100 dark:bg-gray-800 text-gray-400 border border-gray-200 dark:border-gray-700'}`}>
+            <div className={`w-10 h-10 rounded-none flex items-center justify-center font-bold text-sm transition-all duration-300 ${step >= 2 ? 'bg-[#E84C3D] text-white shadow-lg shadow-red-500/20 ring-4 ring-white dark:ring-[#050505]' : 'bg-gray-100 dark:bg-gray-800 text-gray-400 border border-gray-200 dark:border-gray-700'}`}>
               <CreditCard size={18} />
             </div>
             <span className={`text-xs font-bold mt-2 ${step >= 2 ? 'text-gray-900 dark:text-white' : 'text-gray-400'}`}>
@@ -191,7 +191,7 @@ export default function StoreSetup() {
 
           {/* Step 3 Circle */}
           <div className="relative z-10 flex flex-col items-center">
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 ${step >= 3 ? 'bg-green-500 text-white shadow-lg shadow-green-500/20 ring-4 ring-white dark:ring-[#050505]' : 'bg-gray-100 dark:bg-gray-800 text-gray-400 border border-gray-200 dark:border-gray-700'}`}>
+            <div className={`w-10 h-10 rounded-none flex items-center justify-center font-bold text-sm transition-all duration-300 ${step >= 3 ? 'bg-green-500 text-white shadow-lg shadow-green-500/20 ring-4 ring-white dark:ring-[#050505]' : 'bg-gray-100 dark:bg-gray-800 text-gray-400 border border-gray-200 dark:border-gray-700'}`}>
               <CheckCircle2 size={18} />
             </div>
             <span className={`text-xs font-bold mt-2 ${step >= 3 ? 'text-green-600 dark:text-green-400' : 'text-gray-400'}`}>
@@ -202,10 +202,10 @@ export default function StoreSetup() {
       </div>
 
       {/* Main Card */}
-      <div className="w-full max-w-xl bg-white dark:bg-[#111111] rounded-3xl shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-gray-800 overflow-visible transition-colors">
+      <div className="w-full max-w-xl bg-white dark:bg-[#111111] rounded-none shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-gray-800 overflow-visible transition-colors">
         
         {message && (
-          <div className="mx-6 sm:mx-8 mt-6 p-4 rounded-2xl bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/40 flex items-center gap-3 text-sm">
+          <div className="mx-6 sm:mx-8 mt-6 p-4 rounded-none bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/40 flex items-center gap-3 text-sm">
             <span>⚠️</span>
             <p className="font-medium">{message}</p>
           </div>
@@ -225,7 +225,7 @@ export default function StoreSetup() {
                   required 
                   value={name} 
                   onChange={handleNameChange} 
-                  className="w-full h-[52px] px-4 bg-gray-50 dark:bg-[#050505] border border-gray-200 dark:border-gray-800 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-[#E84C3D] focus:border-[#E84C3D] outline-none transition-all text-sm font-medium" 
+                  className="w-full h-[52px] px-4 bg-gray-50 dark:bg-[#050505] border border-gray-200 dark:border-gray-800 rounded-none text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-[#E84C3D] focus:border-[#E84C3D] outline-none transition-all text-sm font-medium" 
                   placeholder={isKm ? 'ឧ. ហាងសម្លៀកបំពាក់ សុខា' : 'e.g. My Awesome Shop'}
                 />
               </div>
@@ -234,7 +234,7 @@ export default function StoreSetup() {
                 <label className="block text-sm font-bold text-gray-800 dark:text-gray-200 mb-2">
                   {isKm ? 'តំណភ្ជាប់ហាងរបស់អ្នក (Store URL)' : 'Your Store URL'}
                 </label>
-                <div className="flex h-[52px] rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-[#050505] focus-within:ring-2 focus-within:ring-[#E84C3D]">
+                <div className="flex h-[52px] rounded-none overflow-hidden border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-[#050505] focus-within:ring-2 focus-within:ring-[#E84C3D]">
                   <input 
                     type="text" 
                     readOnly
@@ -260,10 +260,10 @@ export default function StoreSetup() {
                 <button
                   type="button"
                   onClick={() => setIsCategoryOpen(!isCategoryOpen)}
-                  className={`w-full h-[52px] px-4 bg-gray-50 dark:bg-[#050505] border rounded-xl flex items-center justify-between text-gray-900 dark:text-white transition-all text-left ${isCategoryOpen ? 'border-[#E84C3D] ring-2 ring-[#E84C3D]/20' : 'border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700'}`}
+                  className={`w-full h-[52px] px-4 bg-gray-50 dark:bg-[#050505] border rounded-none flex items-center justify-between text-gray-900 dark:text-white transition-all text-left ${isCategoryOpen ? 'border-[#E84C3D] ring-2 ring-[#E84C3D]/20' : 'border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700'}`}
                 >
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-7 h-7 rounded-lg bg-red-50 dark:bg-red-950/40 text-[#E84C3D] flex items-center justify-center shrink-0">
+                    <div className="w-7 h-7 rounded-none bg-red-50 dark:bg-red-950/40 text-[#E84C3D] flex items-center justify-center shrink-0">
                       <SelectedIcon size={15} />
                     </div>
                     <span className="font-bold text-sm truncate">
@@ -275,7 +275,7 @@ export default function StoreSetup() {
 
                 {/* Custom Floating Popup Menu */}
                 {isCategoryOpen && (
-                  <div className="absolute left-0 right-0 top-full mt-2 bg-white dark:bg-[#141414] border border-gray-100 dark:border-gray-800 rounded-2xl shadow-2xl p-2 z-50 animate-in fade-in zoom-in-95 duration-150">
+                  <div className="absolute left-0 right-0 top-full mt-2 bg-white dark:bg-[#141414] border border-gray-100 dark:border-gray-800 rounded-none shadow-2xl p-2 z-50 animate-in fade-in zoom-in-95 duration-150">
                     <div className="space-y-1 max-h-60 overflow-y-auto custom-scrollbar">
                       {CATEGORY_OPTIONS.map((opt) => {
                         const Icon = opt.icon;
@@ -288,10 +288,10 @@ export default function StoreSetup() {
                               setCategory(opt.value);
                               setIsCategoryOpen(false);
                             }}
-                            className={`w-full px-3.5 py-2.5 rounded-xl flex items-center justify-between text-sm font-medium transition-all ${isSelected ? 'bg-red-50 dark:bg-red-950/40 text-[#E84C3D]' : 'text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800/60'}`}
+                            className={`w-full px-3.5 py-2.5 rounded-none flex items-center justify-between text-sm font-medium transition-all ${isSelected ? 'bg-red-50 dark:bg-red-950/40 text-[#E84C3D]' : 'text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800/60'}`}
                           >
                             <div className="flex items-center gap-3">
-                              <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${isSelected ? 'bg-[#E84C3D] text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-500'}`}>
+                              <div className={`w-7 h-7 rounded-none flex items-center justify-center shrink-0 ${isSelected ? 'bg-[#E84C3D] text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-500'}`}>
                                 <Icon size={14} />
                               </div>
                               <span className="font-semibold">{isKm ? opt.labelKm : opt.labelEn}</span>
@@ -310,7 +310,7 @@ export default function StoreSetup() {
           {/* STEP 2: PAYMENTS & PLAN */}
           {step === 2 && (
             <div className="space-y-5 animate-in fade-in duration-300">
-              <div className="bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-300 p-4 rounded-2xl border border-amber-200 dark:border-amber-900/40 flex items-start gap-3 text-sm">
+              <div className="bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-300 p-4 rounded-none border border-amber-200 dark:border-amber-900/40 flex items-start gap-3 text-sm">
                 <Info size={20} className="shrink-0 mt-0.5 text-amber-600 dark:text-amber-400" />
                 <div>
                   <p className="font-bold">{isKm ? 'គម្រោងឥតគិតថ្លៃ (Free Starter)' : 'Free Starter Plan Activated'}</p>
@@ -330,14 +330,14 @@ export default function StoreSetup() {
                   <button
                     type="button"
                     onClick={() => setCurrency('USD')}
-                    className={`h-[52px] px-4 rounded-xl border text-sm font-bold flex items-center justify-center gap-2 transition-all ${currency === 'USD' ? 'border-[#E84C3D] bg-red-50 dark:bg-red-950/30 text-[#E84C3D]' : 'border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-[#050505]'}`}
+                    className={`h-[52px] px-4 rounded-none border text-sm font-bold flex items-center justify-center gap-2 transition-all ${currency === 'USD' ? 'border-[#E84C3D] bg-red-50 dark:bg-red-950/30 text-[#E84C3D]' : 'border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-[#050505]'}`}
                   >
                     <span>USD ($)</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setCurrency('KHR')}
-                    className={`h-[52px] px-4 rounded-xl border text-sm font-bold flex items-center justify-center gap-2 transition-all ${currency === 'KHR' ? 'border-[#E84C3D] bg-red-50 dark:bg-red-950/30 text-[#E84C3D]' : 'border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-[#050505]'}`}
+                    className={`h-[52px] px-4 rounded-none border text-sm font-bold flex items-center justify-center gap-2 transition-all ${currency === 'KHR' ? 'border-[#E84C3D] bg-red-50 dark:bg-red-950/30 text-[#E84C3D]' : 'border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-[#050505]'}`}
                   >
                     <span>KHR (៛)</span>
                   </button>
@@ -349,7 +349,7 @@ export default function StoreSetup() {
                   <label className="text-sm font-bold text-gray-800 dark:text-gray-200">
                     Bakong KHQR Account
                   </label>
-                  <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+                  <span className="text-xs font-bold px-2 py-0.5 rounded-none bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400">
                     {isKm ? 'មិនបង្ខំ (អាចរំលងបាន)' : 'Optional (Can skip)'}
                   </span>
                 </div>
@@ -357,7 +357,7 @@ export default function StoreSetup() {
                   type="text" 
                   value={bakongId} 
                   onChange={e => setBakongId(e.target.value)}
-                  className="w-full h-[52px] px-4 bg-gray-50 dark:bg-[#050505] border border-gray-200 dark:border-gray-800 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-[#E84C3D] outline-none transition-all text-sm font-medium" 
+                  className="w-full h-[52px] px-4 bg-gray-50 dark:bg-[#050505] border border-gray-200 dark:border-gray-800 rounded-none text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-[#E84C3D] outline-none transition-all text-sm font-medium" 
                   placeholder="yourname@bkrt" 
                 />
                 <p className="mt-1.5 text-xs text-gray-500 dark:text-gray-400">
@@ -370,7 +370,7 @@ export default function StoreSetup() {
           {/* STEP 3: SUCCESS */}
           {step === 3 && (
             <div className="py-8 flex flex-col items-center justify-center text-center animate-in zoom-in-95 duration-500">
-              <div className="w-20 h-20 bg-green-50 dark:bg-green-950/30 text-green-500 rounded-full flex items-center justify-center mb-5 ring-8 ring-green-50/50 dark:ring-green-950/20">
+              <div className="w-20 h-20 bg-green-50 dark:bg-green-950/30 text-green-500 rounded-none flex items-center justify-center mb-5 ring-8 ring-green-50/50 dark:ring-green-950/20">
                 <Rocket className="w-10 h-10 animate-bounce" />
               </div>
               <h3 className="text-2xl font-extrabold text-gray-900 dark:text-white mb-2">
@@ -389,7 +389,7 @@ export default function StoreSetup() {
                 <button 
                   type="button" 
                   onClick={() => setStep(1)}
-                  className="px-5 py-2.5 text-sm text-gray-700 dark:text-gray-300 font-bold hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors flex items-center gap-2"
+                  className="px-5 py-2.5 text-sm text-gray-700 dark:text-gray-300 font-bold hover:bg-gray-100 dark:hover:bg-gray-800 rounded-none transition-colors flex items-center gap-2"
                 >
                   <ChevronLeft size={16} /> {isKm ? 'ថយក្រោយ' : 'Back'}
                 </button>
@@ -400,14 +400,14 @@ export default function StoreSetup() {
               <button 
                 type="submit" 
                 disabled={isSubmitting}
-                className="bg-[#E84C3D] hover:bg-red-600 text-white px-7 py-3 rounded-xl font-bold text-sm shadow-md shadow-red-500/20 hover:shadow-lg transition-all flex items-center gap-2 disabled:opacity-50"
+                className="bg-[#E84C3D] hover:bg-red-600 text-white px-7 py-3 rounded-none font-bold text-sm shadow-md shadow-red-500/20 hover:shadow-lg transition-all flex items-center gap-2 disabled:opacity-50"
               >
                 {step === 1 ? (
                   <>{isKm ? 'បន្តទៅមុខ' : 'Continue'} <ChevronRight size={16} /></>
                 ) : (
                   isSubmitting ? (
                     <span className="flex items-center gap-2">
-                      <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                      <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-none animate-spin"></span>
                       <span>{isKm ? 'កំពុងបង្កើតហាង...' : 'Launching Store...'}</span>
                     </span>
                   ) : (

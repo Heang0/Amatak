@@ -195,13 +195,13 @@ export function Topbar({ onMenuClick, pageTitle }: TopbarProps) {
         <div className="flex items-center gap-4 flex-1 relative">
           <button
             onClick={onMenuClick}
-            className="lg:hidden p-2 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/[0.06] transition-colors"
+            className="lg:hidden p-2 rounded-none text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/[0.06] transition-colors"
           >
             <Menu size={20} />
           </button>
           
           <div ref={searchRef} className="hidden md:flex flex-col relative w-64 md:w-80">
-            <div className="flex items-center gap-2.5 h-10 px-3.5 bg-gray-50 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] rounded-xl w-full text-gray-600 dark:text-gray-400 focus-within:border-gray-400 dark:focus-within:border-white/20 focus-within:ring-2 focus-within:ring-gray-200 dark:focus-within:ring-white/5 transition-all">
+            <div className="flex items-center gap-2.5 h-10 px-3.5 bg-gray-50 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] rounded-none w-full text-gray-600 dark:text-gray-400 focus-within:border-gray-400 dark:focus-within:border-white/20 focus-within:ring-2 focus-within:ring-gray-200 dark:focus-within:ring-white/5 transition-all">
               <Search size={16} className="text-gray-400 shrink-0" />
               <input 
                 type="text" 
@@ -216,7 +216,7 @@ export function Topbar({ onMenuClick, pageTitle }: TopbarProps) {
 
             {/* Dropdown Results */}
             {showSearchResults && searchQuery.trim() !== '' && (
-              <div className="absolute top-12 left-0 w-full md:w-[420px] bg-white dark:bg-[#161922] rounded-2xl shadow-2xl border border-gray-100 dark:border-white/[0.08] overflow-hidden z-50">
+              <div className="absolute top-12 left-0 w-full md:w-[420px] bg-white dark:bg-[#161922] rounded-none shadow-2xl border border-gray-100 dark:border-white/[0.08] overflow-hidden z-50">
                 <div className="max-h-[60vh] overflow-y-auto py-2">
                   {/* Products */}
                   {searchResults.products.length > 0 && (
@@ -283,14 +283,14 @@ export function Topbar({ onMenuClick, pageTitle }: TopbarProps) {
           <div className="relative" ref={notifRef}>
             <button
               onClick={() => setIsNotifOpen(!isNotifOpen)}
-              className="w-10 h-10 rounded-xl bg-gray-50 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/[0.08] transition-colors relative"
+              className="w-10 h-10 rounded-none bg-gray-50 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/[0.08] transition-colors relative"
               title="Notifications"
             >
               <Bell size={18} />
               
               {/* Dynamic Unread Badge */}
               {unreadCount > 0 && (
-                <span className="min-w-4 h-4 px-1 rounded-full bg-[#E84C3D] text-white text-[10px] font-black flex items-center justify-center absolute -top-1 -right-1 shadow-md shadow-red-500/30 animate-pulse">
+                <span className="min-w-4 h-4 px-1 rounded-none bg-[#E84C3D] text-white text-[10px] font-black flex items-center justify-center absolute -top-1 -right-1 shadow-md shadow-red-500/30 animate-pulse">
                   {unreadCount > 9 ? '9+' : unreadCount}
                 </span>
               )}
@@ -298,7 +298,7 @@ export function Topbar({ onMenuClick, pageTitle }: TopbarProps) {
 
             {/* Floating Notification Drawer Dropdown */}
             {isNotifOpen && (
-              <div className="absolute right-0 mt-3 w-80 sm:w-96 bg-white dark:bg-[#13161F] border border-gray-200/90 dark:border-white/[0.08] rounded-3xl shadow-2xl overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+              <div className="absolute right-0 mt-3 w-80 sm:w-96 bg-white dark:bg-[#13161F] border border-gray-200/90 dark:border-white/[0.08] rounded-none shadow-2xl overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                 
                 {/* Header */}
                 <div className="p-4 border-b border-gray-100 dark:border-white/[0.06] flex items-center justify-between">
@@ -307,7 +307,7 @@ export function Topbar({ onMenuClick, pageTitle }: TopbarProps) {
                       {isKm ? 'ការជូនដំណឹង' : 'Notifications'}
                     </h3>
                     {unreadCount > 0 && (
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#E84C3D]/10 text-[#E84C3D] dark:bg-red-950/40 dark:text-red-400">
+                      <span className="px-2 py-0.5 rounded-none text-[10px] font-bold bg-[#E84C3D]/10 text-[#E84C3D] dark:bg-red-950/40 dark:text-red-400">
                         {unreadCount} {isKm ? 'ថ្មី' : 'new'}
                       </span>
                     )}
@@ -328,7 +328,7 @@ export function Topbar({ onMenuClick, pageTitle }: TopbarProps) {
                 <div className="flex items-center gap-2 px-4 py-2 bg-gray-50/70 dark:bg-[#171B26] border-b border-gray-100 dark:border-white/[0.04] text-xs font-bold">
                   <button
                     onClick={() => setNotifFilter('all')}
-                    className={`px-3 py-1 rounded-xl transition-colors ${
+                    className={`px-3 py-1 rounded-none transition-colors ${
                       notifFilter === 'all'
                         ? 'bg-white dark:bg-white text-gray-900 shadow-xs'
                         : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
@@ -338,7 +338,7 @@ export function Topbar({ onMenuClick, pageTitle }: TopbarProps) {
                   </button>
                   <button
                     onClick={() => setNotifFilter('order')}
-                    className={`px-3 py-1 rounded-xl transition-colors ${
+                    className={`px-3 py-1 rounded-none transition-colors ${
                       notifFilter === 'order'
                         ? 'bg-white dark:bg-white text-gray-900 shadow-xs'
                         : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
@@ -348,7 +348,7 @@ export function Topbar({ onMenuClick, pageTitle }: TopbarProps) {
                   </button>
                   <button
                     onClick={() => setNotifFilter('alert')}
-                    className={`px-3 py-1 rounded-xl transition-colors ${
+                    className={`px-3 py-1 rounded-none transition-colors ${
                       notifFilter === 'alert'
                         ? 'bg-white dark:bg-white text-gray-900 shadow-xs'
                         : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
@@ -372,7 +372,7 @@ export function Topbar({ onMenuClick, pageTitle }: TopbarProps) {
                         }`}
                       >
                         {/* Notification Icon */}
-                        <div className={`w-9 h-9 rounded-2xl flex items-center justify-center shrink-0 shadow-xs ${
+                        <div className={`w-9 h-9 rounded-none flex items-center justify-center shrink-0 shadow-xs ${
                           notif.type === 'order'
                             ? (notif.paymentStatus === 'PAID' ? 'bg-amber-100 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300' : 'bg-blue-100 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300')
                             : notif.type === 'stock'
@@ -403,7 +403,7 @@ export function Topbar({ onMenuClick, pageTitle }: TopbarProps) {
 
                         {/* Unread indicator dot */}
                         {isUnread && (
-                          <span className="w-2 h-2 rounded-full bg-[#E84C3D] shrink-0 mt-1.5 ring-2 ring-white dark:ring-gray-900" />
+                          <span className="w-2 h-2 rounded-none bg-[#E84C3D] shrink-0 mt-1.5 ring-2 ring-white dark:ring-gray-900" />
                         )}
                       </div>
                     );
@@ -411,7 +411,7 @@ export function Topbar({ onMenuClick, pageTitle }: TopbarProps) {
 
                   {filteredNotifications.length === 0 && (
                     <div className="py-12 px-4 text-center">
-                      <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mx-auto text-gray-400 mb-2">
+                      <div className="w-12 h-12 rounded-none bg-gray-100 dark:bg-gray-800 flex items-center justify-center mx-auto text-gray-400 mb-2">
                         <CheckCheck size={20} />
                       </div>
                       <p className="text-xs font-bold text-gray-700 dark:text-gray-300">
@@ -443,7 +443,7 @@ export function Topbar({ onMenuClick, pageTitle }: TopbarProps) {
           {mounted && (
             <button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="w-10 h-10 rounded-xl bg-gray-50 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/[0.08] transition-colors"
+              className="w-10 h-10 rounded-none bg-gray-50 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/[0.08] transition-colors"
               aria-label="Toggle Dark Mode"
             >
               {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
@@ -454,14 +454,14 @@ export function Topbar({ onMenuClick, pageTitle }: TopbarProps) {
           <Link
             href={pathname}
             locale={locale === 'en' ? 'km' : 'en'}
-            className="w-10 h-10 rounded-xl bg-gray-50 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] flex items-center justify-center hover:bg-gray-100 dark:hover:bg-white/[0.08] transition-colors"
+            className="w-10 h-10 rounded-none bg-gray-50 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] flex items-center justify-center hover:bg-gray-100 dark:hover:bg-white/[0.08] transition-colors"
             title="Toggle Language"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
               src={locale === 'en' ? 'https://flagcdn.com/w40/us.png' : 'https://flagcdn.com/w40/kh.png'} 
               alt={locale} 
-              className="w-5 h-auto rounded-sm shadow-xs" 
+              className="w-5 h-auto rounded-none shadow-xs" 
             />
           </Link>
 
@@ -470,9 +470,9 @@ export function Topbar({ onMenuClick, pageTitle }: TopbarProps) {
             <div className="relative" ref={dropdownRef}>
               <button 
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center gap-3 pl-2 pr-3 py-1.5 rounded-2xl bg-gray-50 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] hover:bg-gray-100 dark:hover:bg-white/[0.08] transition-all"
+                className="flex items-center gap-3 pl-2 pr-3 py-1.5 rounded-none bg-gray-50 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] hover:bg-gray-100 dark:hover:bg-white/[0.08] transition-all"
               >
-                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#E84C3D] to-red-400 overflow-hidden flex items-center justify-center text-white text-xs font-black shadow-sm ring-1 ring-gray-200 dark:ring-white/10 shrink-0">
+                <div className="w-8 h-8 rounded-none bg-gradient-to-tr from-[#E84C3D] to-red-400 overflow-hidden flex items-center justify-center text-white text-xs font-black shadow-sm ring-1 ring-gray-200 dark:ring-white/10 shrink-0">
                   {user.profilePic ? (
                     <img src={user.profilePic} alt="Profile" className="w-full h-full object-cover" />
                   ) : (
@@ -487,7 +487,7 @@ export function Topbar({ onMenuClick, pageTitle }: TopbarProps) {
               </button>
 
               {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-[#161922] rounded-2xl shadow-2xl border border-gray-100 dark:border-white/[0.08] overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-[#161922] rounded-none shadow-2xl border border-gray-100 dark:border-white/[0.08] overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                   <div className="px-4 py-3 border-b border-gray-100 dark:border-white/[0.06]">
                     <p className="text-sm font-bold text-gray-900 dark:text-white truncate">{user.name || 'Admin User'}</p>
                     <p className="text-xs text-gray-500 dark:text-gray-400 truncate mt-0.5">{user.email}</p>
@@ -496,7 +496,7 @@ export function Topbar({ onMenuClick, pageTitle }: TopbarProps) {
                     <Link 
                       href="/admin/settings" 
                       onClick={() => setIsDropdownOpen(false)}
-                      className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/[0.05] rounded-xl transition-colors"
+                      className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/[0.05] rounded-none transition-colors"
                     >
                       <SettingsIcon size={16} className="text-gray-400" />
                       {locale === 'km' ? 'ការកំណត់' : 'Settings'}
@@ -507,7 +507,7 @@ export function Topbar({ onMenuClick, pageTitle }: TopbarProps) {
                         logout();
                         router.push('/login');
                       }}
-                      className="w-full flex items-center gap-3 px-3 py-2 text-sm font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-colors"
+                      className="w-full flex items-center gap-3 px-3 py-2 text-sm font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-none transition-colors"
                     >
                       <LogOut size={16} />
                       {locale === 'km' ? 'ចាកចេញ' : 'Log out'}

@@ -23,7 +23,13 @@ export default function StoreSplashScreen({
   const [phase, setPhase] = useState<'in' | 'hold' | 'out'>('in');
 
   useEffect(() => {
-    if (hasSeenSplash) return;
+    // Only show splash screen if the app is running as a PWA (standalone mode)
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone === true;
+
+    if (!isStandalone || hasSeenSplash) {
+      setVisible(false);
+      return;
+    }
 
     // Set cookie so the server knows next time
     const key = `splash_shown_${slug}`;

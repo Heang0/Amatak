@@ -64,22 +64,22 @@ export default function SuperadminUsersPage() {
               placeholder="Search user..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white dark:bg-[#13161F] border border-gray-200 dark:border-white/[0.08] text-gray-900 dark:text-white text-xs font-medium pl-9 pr-4 py-2.5 rounded-2xl placeholder-gray-400 focus:outline-none"
+              className="w-full bg-white dark:bg-[#13161F] border border-gray-200 dark:border-white/[0.08] text-gray-900 dark:text-white text-xs font-medium pl-9 pr-4 py-2.5 rounded-none placeholder-gray-400 focus:outline-none"
             />
           </div>
-          <span className="px-3.5 py-2 bg-white dark:bg-[#13161F] border border-gray-200 dark:border-white/[0.08] text-gray-700 dark:text-gray-300 rounded-2xl text-xs font-bold shadow-xs shrink-0">
+          <span className="px-3.5 py-2 bg-white dark:bg-[#13161F] border border-gray-200 dark:border-white/[0.08] text-gray-700 dark:text-gray-300 rounded-none text-xs font-bold shadow-xs shrink-0">
             Total: {users.length}
           </span>
         </div>
       </div>
 
       {loading ? (
-        <div className="p-16 flex flex-col items-center justify-center gap-3 bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-3xl">
-          <div className="w-8 h-8 border-3 border-red-500/20 border-t-[#E84C3D] rounded-full animate-spin" />
+        <div className="p-16 flex flex-col items-center justify-center gap-3 bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-none ">
+          <div className="w-8 h-8 border-3 border-red-500/20 border-t-[#E84C3D] rounded-none animate-spin" />
           <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Loading users...</p>
         </div>
       ) : (
-        <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-3xl shadow-sm overflow-hidden">
+        <div className="bg-white dark:bg-[#13161F] border border-gray-200/80 dark:border-white/[0.06] rounded-none shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
@@ -96,7 +96,7 @@ export default function SuperadminUsersPage() {
                   <tr key={u._id} className="hover:bg-gray-50/70 dark:hover:bg-white/[0.02] transition-colors">
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-400 to-amber-200 text-amber-950 font-bold text-xs flex items-center justify-center shadow-xs shrink-0">
+                        <div className="w-8 h-8 rounded-none bg-gradient-to-tr from-amber-400 to-amber-200 text-amber-950 font-bold text-xs flex items-center justify-center shadow-xs shrink-0">
                           {u.name?.charAt(0).toUpperCase() || 'U'}
                         </div>
                         <span className="font-bold text-gray-900 dark:text-white">{u.name}</span>
@@ -106,7 +106,7 @@ export default function SuperadminUsersPage() {
                       {u.email || <span className="text-gray-400 italic">No email</span>}
                     </td>
                     <td className="py-4 px-4">
-                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${
+                      <span className={`inline-flex items-center px-3 py-1 rounded-none text-xs font-bold ${
                         u.role === 'superadmin'
                           ? 'bg-purple-100 dark:bg-purple-950/40 text-purple-700 dark:text-purple-300'
                           : u.role === 'store_admin'

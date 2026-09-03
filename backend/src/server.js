@@ -30,6 +30,7 @@ import promoRoutes from './routes/promoRoutes.js';
 import translateRoutes from './routes/translateRoutes.js';
 import searchRoutes from './routes/searchRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
+import paymentRoutes from './routes/paymentRoutes.js';
 
 import path from 'path';
 
@@ -100,6 +101,7 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/translate', translateRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/payments', paymentRoutes);
 
 app.get('/', (req, res) => {
   res.send('Amatak API is running...');

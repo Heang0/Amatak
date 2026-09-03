@@ -511,12 +511,12 @@ export default function OrderTracking() {
                   disabled={updatingStatus}
                   className="w-full bg-gray-50 dark:bg-[#171B26] border border-gray-200 dark:border-white/[0.08] text-gray-900 dark:text-white text-xs font-bold px-4 py-3 rounded-none focus:outline-none cursor-pointer"
                 >
-                  <option value="PENDING">⏳ {isKm ? 'រង់ចាំ (Pending)' : 'Pending'}</option>
-                  <option value="PROCESSING"><Settings className="w-4 h-4 inline-block mr-1" /> {isKm ? 'កំពុងរៀបចំ (Processing)' : 'Processing'}</option>
-                  <option value="SHIPPED"><Truck className="w-4 h-4 inline-block mr-1" /> {isKm ? 'កំពុងដឹកជញ្ជូន (Shipped)' : 'Shipped'}</option>
-                  <option value="DELIVERED"><Package className="w-4 h-4 inline-block mr-1" /> {isKm ? 'បានដឹកជញ្ជូន (Delivered)' : 'Delivered'}</option>
-                  <option value="COMPLETED"><CheckCircle className="w-4 h-4 inline-block mr-1 text-green-500" /> {isKm ? 'បានបញ្ចប់ (Completed)' : 'Completed'}</option>
-                  <option value="CANCELLED"><XCircle className="w-4 h-4 inline-block mr-1 text-red-500" /> {isKm ? 'បានបោះបង់ (Cancelled)' : 'Cancelled'}</option>
+                  <option value="PENDING">{isKm ? 'រង់ចាំ (Pending)' : 'Pending'}</option>
+                  <option value="PROCESSING">{isKm ? 'កំពុងរៀបចំ (Processing)' : 'Processing'}</option>
+                  <option value="SHIPPED">{isKm ? 'កំពុងដឹកជញ្ជូន (Shipped)' : 'Shipped'}</option>
+                  <option value="DELIVERED">{isKm ? 'បានដឹកជញ្ជូន (Delivered)' : 'Delivered'}</option>
+                  <option value="COMPLETED">{isKm ? 'បានបញ្ចប់ (Completed)' : 'Completed'}</option>
+                  <option value="CANCELLED">{isKm ? 'បានបោះបង់ (Cancelled)' : 'Cancelled'}</option>
                 </select>
               </div>
 

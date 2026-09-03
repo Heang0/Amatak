@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from '@/navigation';
+import { useRouter, usePathname } from '@/navigation';
 import { useAuthStore } from '@/lib/store/useAuthStore';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { LayoutDashboard, Store, Tag, Settings, Users } from 'lucide-react';
@@ -15,6 +15,9 @@ export default function SuperadminLayout({
  const user = useAuthStore((state) => state.user);
  const [isHydrated, setIsHydrated] = useState(false);
 
+ const pathname = usePathname();
+ const isLoginPage = pathname.includes('/superadmin/login');
+
  useEffect(() => {
   const timer = setTimeout(() => {
    setIsHydrated(true);
@@ -23,12 +26,16 @@ export default function SuperadminLayout({
  }, []);
 
  useEffect(() => {
-  if (isHydrated) {
+  if (isHydrated && !isLoginPage) {
    if (!user || user.role !== 'superadmin') {
-    router.push('/login');
+    router.push('/superadmin/login');
    }
   }
- }, [user, router, isHydrated]);
+ }, [user, router, isHydrated, isLoginPage]);
+
+ if (isLoginPage) {
+  return <>{children}</>;
+ }
 
  if (!isHydrated || !user || user.role !== 'superadmin') {
   return (

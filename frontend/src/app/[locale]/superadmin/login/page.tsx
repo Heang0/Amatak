@@ -5,9 +5,8 @@ import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { useAuthStore } from '@/lib/store/useAuthStore';
 import { Link, useRouter } from '@/navigation';
-import GoogleAuthButton from '@/components/ui/GoogleAuthButton';
 
-export default function LoginPage() {
+export default function SuperadminLoginPage() {
   const t = useTranslations('Index');
   const router = useRouter();
   const params = useParams();
@@ -25,7 +24,8 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/auth/login`, {
+      // SECURITY: Calls the strict superadmin-only endpoint
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/auth/superadmin-login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -38,12 +38,7 @@ export default function LoginPage() {
       }
 
       setUser(data);
-      
-      if (data.role === 'store_admin') {
-        router.push('/admin');
-      } else {
-        router.push('/');
-      }
+      router.push('/superadmin');
       
     } catch (err: any) {
       setError(err.message);
@@ -65,7 +60,7 @@ export default function LoginPage() {
           </Link>
         </div>
         <h2 className="mt-2 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-          {t('login')} to Amatak
+          {isKm ? 'ចូលគណនីគ្រប់គ្រងកំពូល' : 'Superadmin Portal'}
         </h2>
       </div>
 
@@ -80,7 +75,9 @@ export default function LoginPage() {
             )}
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email address</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                {isKm ? 'អ៊ីមែលគ្រប់គ្រងកំពូល' : 'Superadmin Email'}
+              </label>
               <div className="mt-1">
                 <input
                   type="email"
@@ -93,7 +90,9 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                {isKm ? 'ពាក្យសម្ងាត់' : 'Password'}
+              </label>
               <div className="mt-1">
                 <input
                   type="password"
@@ -111,40 +110,17 @@ export default function LoginPage() {
                 disabled={loading}
                 className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-[#E84C3D] hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#E84C3D] disabled:opacity-50 transition-colors"
               >
-                {loading ? 'Logging in...' : t('login')}
+                {loading ? (isKm ? 'កំពុងចូល...' : 'Authenticating...') : (isKm ? 'ចូលគណនីសុវត្ថិភាព' : 'Secure Login')}
               </button>
             </div>
           </form>
-
-          <div className="mt-5 mb-5">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-200 dark:border-gray-800" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="px-3 bg-white dark:bg-[#111111] text-gray-400 dark:text-gray-500 font-bold">
-                  {isKm ? 'ឬ' : 'or'}
-                </span>
-              </div>
-            </div>
-
-            <div className="mt-5">
-              <GoogleAuthButton isKm={isKm} role="store_admin" onError={(err) => setError(err)} />
-            </div>
-          </div>
             
-          <p className="text-xs text-center text-gray-500 dark:text-gray-400 mt-4 mb-4">
+          <p className="text-xs text-center text-gray-500 dark:text-gray-400 mt-6">
             {isKm 
-              ? <>តាមរយៈការចូលប្រើ អ្នកយល់ព្រមនឹង <Link href="#" className="text-[#E84C3D] hover:underline">លក្ខខណ្ឌសេវាកម្ម</Link> និង <Link href="#" className="text-[#E84C3D] hover:underline">គោលការណ៍ឯកជនភាព</Link> របស់ Amatak។</>
-              : <>By logging in, you agree to Amatak's <Link href="#" className="text-[#E84C3D] hover:underline">Terms of Service</Link> and <Link href="#" className="text-[#E84C3D] hover:underline">Privacy Policy</Link>.</>
-            }
+              ? 'ការព្រមាន៖ ការចូលដោយគ្មានការអនុញ្ញាត ត្រូវបានហាមឃាត់យ៉ាងតឹងរ៉ឹង និងត្រូវបានកត់ត្រា។'
+              : 'Warning: Unauthorized access to this system is strictly prohibited and logged.'}
           </p>
 
-          <div className="w-full border-t border-gray-100 dark:border-gray-800 pt-4">
-            <Link href="/register" className="w-full flex justify-center py-2.5 px-4 border border-gray-300 dark:border-gray-700 rounded-xl shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-[#050505] hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
-              {t('register')}
-            </Link>
-          </div>
         </div>
       </div>
     </div>

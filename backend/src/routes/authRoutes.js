@@ -1,5 +1,5 @@
 import express from 'express';
-import { authUser, registerUser, telegramLogin, linkTelegramAccount, googleLogin, createTelegramSession, checkTelegramSession, telegramWebhook } from '../controllers/authController.js';
+import { authUser, superAdminLogin, registerUser, telegramLogin, linkTelegramAccount, googleLogin, createTelegramSession, checkTelegramSession, telegramWebhook } from '../controllers/authController.js';
 import { protect } from '../middlewares/authMiddleware.js';
 import rateLimit from 'express-rate-limit';
 
@@ -13,6 +13,7 @@ const authLimiter = rateLimit({
 
 router.post('/register', authLimiter, registerUser);
 router.post('/login', authLimiter, authUser);
+router.post('/superadmin-login', authLimiter, superAdminLogin);
 router.post('/google', authLimiter, googleLogin);
 router.post('/telegram', authLimiter, telegramLogin);
 router.post('/telegram/session', createTelegramSession);

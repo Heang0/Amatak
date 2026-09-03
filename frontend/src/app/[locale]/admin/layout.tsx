@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from '@/navigation';
 import { useAuthStore } from '@/lib/store/useAuthStore';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
-import { LayoutDashboard, Settings, Package, ShoppingCart, ArrowUpCircle, Monitor, Layers, Tags, Users } from 'lucide-react';
+import { LayoutDashboard, Settings, Package, ShoppingCart, ArrowUpCircle, Monitor, Layers, Tags, Users, Box, BarChart3 } from 'lucide-react';
 
 import { useTranslations, useLocale } from 'next-intl';
 
@@ -30,7 +30,7 @@ export default function StoreAdminLayout({
  useEffect(() => {
  if (isHydrated) {
   if (!user || user.role !== 'store_admin') {
-  router.push('/login');
+  router.push('/admin/login');
   }
  }
  }, [user, router, isHydrated]);
@@ -45,9 +45,11 @@ export default function StoreAdminLayout({
 
  const sidebarItems = [
  { label: t('dashboard'), href: '/admin', icon: <LayoutDashboard size={20} /> },
+ { label: locale === 'km' ? 'របាយការណ៍' : 'Reports', href: '/admin/reports', icon: <BarChart3 size={20} /> },
  { label: locale === 'km' ? 'អតិថិជន' : 'Customers', href: '/admin/customers', icon: <Users size={20} /> },
  { label: t('categories'), href: '/admin/categories', icon: <Layers size={20} /> },
  { label: t('manage_products'), href: '/admin/products', icon: <Package size={20} /> },
+ { label: locale === 'km' ? 'ស្តុក' : 'Inventory', href: '/admin/inventory', icon: <Box size={20} /> },
  { label: locale === 'km' ? 'ប្រូម៉ូសិន' : 'Promotions', href: '/admin/promotions', icon: <Tags size={20} /> },
  { label: t('order_tracking'), href: '/admin/orders', icon: <ShoppingCart size={20} /> },
  { label: t('upgrade_plan'), href: '/admin/upgrade', icon: <ArrowUpCircle size={20} /> },

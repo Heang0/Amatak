@@ -136,7 +136,7 @@ export default function PlansManagement() {
          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-[#a1a1aa] dark:text-gray-300">{plan.durationDays} Days</td>
          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-[#a1a1aa] dark:text-gray-300">{plan.maxProducts} Products</td>
          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-          <button onClick={() => handleOpenModal(plan)} className="text-gray-600 dark:text-gray-400 hover:text-[#E84C3D] mr-4 transition-colors">Edit Price</button>
+          <button onClick={() => handleOpenModal(plan)} className="text-gray-600 dark:text-gray-400 hover:text-[#E84C3D] mr-4 transition-colors">Edit Plan</button>
          </td>
         </tr>
        ))}
@@ -157,7 +157,7 @@ export default function PlansManagement() {
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
      <div className="bg-white dark:bg-gray-900 rounded-none shadow-2xl p-8 max-w-md w-full border border-none border-none">
       <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-       Edit Plan Price
+       Edit Plan
       </h3>
       <form onSubmit={handleSubmit} className="space-y-4">
        <div>
@@ -178,7 +178,7 @@ export default function PlansManagement() {
           step="0.01"
           required
           value={formData.price}
-          onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) })}
+          onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) || 0 })}
           disabled={formData.name === 'Free'}
           className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-none bg-[#F4F7FE] dark:bg-[#121212] dark:border dark:border-white/10 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#E84C3D] outline-none disabled:opacity-50 disabled:cursor-not-allowed"
          />
@@ -189,8 +189,8 @@ export default function PlansManagement() {
           type="number"
           required
           value={formData.durationDays}
-          disabled
-          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-none bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 focus:ring-2 focus:ring-[#E84C3D] outline-none cursor-not-allowed"
+          onChange={(e) => setFormData({ ...formData, durationDays: parseInt(e.target.value) || 0 })}
+          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-none bg-[#F4F7FE] dark:bg-[#121212] dark:border dark:border-white/10 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#E84C3D] outline-none"
          />
         </div>
        </div>
@@ -200,8 +200,8 @@ export default function PlansManagement() {
          type="number"
          required
          value={formData.maxProducts}
-         disabled
-         className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-none bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 focus:ring-2 focus:ring-[#E84C3D] outline-none cursor-not-allowed"
+         onChange={(e) => setFormData({ ...formData, maxProducts: parseInt(e.target.value) || 0 })}
+         className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-none bg-[#F4F7FE] dark:bg-[#121212] dark:border dark:border-white/10 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#E84C3D] outline-none"
         />
        </div>
        

@@ -35,7 +35,7 @@ export const getNotifications = async (req, res) => {
         notifications.push({
           id: `order_${order._id}`,
           type: 'order',
-          title: isPaid ? '🎉 New Paid Order' : '🛍️ New Order Received',
+          title: isPaid ? 'New Paid Order' : 'New Order Received',
           message: `${customerName} placed order #${order._id.toString().substring(order._id.toString().length - 6).toUpperCase()} for $${order.totalAmount?.toFixed(2)}`,
           time: order.createdAt,
           status: order.orderStatus || 'PENDING',
@@ -56,7 +56,7 @@ export const getNotifications = async (req, res) => {
         notifications.push({
           id: `stock_${product._id}`,
           type: 'stock',
-          title: product.stock === 0 ? '⚠️ Out of Stock Alert' : '📦 Low Stock Alert',
+          title: product.stock === 0 ? 'Out of Stock Alert' : 'Low Stock Alert',
           message: product.stock === 0 
             ? `"${prodName}" is completely out of stock.` 
             : `"${prodName}" has only ${product.stock} units remaining.`,
@@ -75,7 +75,7 @@ export const getNotifications = async (req, res) => {
           notifications.push({
             id: `plan_expired_${store._id}`,
             type: 'plan',
-            title: '🚨 Subscription Expired',
+            title: 'Subscription Expired',
             message: 'Your store subscription has expired. Renew now to prevent interruption.',
             time: store.plan.expiresAt,
             link: '/admin/upgrade',
@@ -84,7 +84,7 @@ export const getNotifications = async (req, res) => {
           notifications.push({
             id: `plan_warning_${store._id}`,
             type: 'plan',
-            title: '⏳ Plan Expiring Soon',
+            title: 'Plan Expiring Soon',
             message: `Your subscription plan will expire in ${diffDays} day${diffDays > 1 ? 's' : ''}.`,
             time: store.plan.expiresAt,
             link: '/admin/upgrade',
@@ -103,7 +103,7 @@ export const getNotifications = async (req, res) => {
         notifications.push({
           id: `store_${s._id}`,
           type: 'store',
-          title: '🏪 New Store Created',
+          title: 'New Store Created',
           message: `"${s.name}" was registered by ${s.ownerId?.name || 'a merchant'}.`,
           time: s.createdAt,
           link: '/superadmin/stores',
@@ -118,7 +118,7 @@ export const getNotifications = async (req, res) => {
         notifications.push({
           id: `user_${u._id}`,
           type: 'user',
-          title: '👤 New User Joined',
+          title: 'New User Joined',
           message: `${u.name} (${u.email || 'No email'}) registered on the platform.`,
           time: u.createdAt,
           link: '/superadmin/users',

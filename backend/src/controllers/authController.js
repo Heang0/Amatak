@@ -13,6 +13,10 @@ const authUser = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
+      // SECURITY: Reject superadmin login on the standard auth endpoint
+      if (user.role === 'superadmin') {
+        return res.status(403).json({ message: 'Superadmins must log in via the superadmin portal.' });
+      }
       // Send Telegram login notification if user has linked Telegram account
       if (user.telegramId) {
         try {
@@ -374,4 +378,50 @@ const telegramWebhook = async (req, res) => {
   }
 };
 
-export { authUser, registerUser, telegramLogin, linkTelegramAccount, googleLogin, createTelegramSession, checkTelegramSession, telegramWebhook };
+
+// @desc    Auth superadmin & get token
+// @route   POST /api/auth/superadmin-login
+// @access  Public (Secret)
+const superAdminLogin = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (user && (await user.matchPassword(password))) {
+      // SECURITY: Strictly require superadmin role
+      if (user.role !== 'superadmin') {
+        return res.status(403).json({ message: 'Unauthorized. You do not have superadmin privileges.' });
+      }
+
+      // Send Telegram login notification if user has linked Telegram account
+      if (user.telegramId) {
+        try {
+          const { sendTelegramNotification } = await import('../services/telegramBot.js');
+          const loginTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Phnom_Penh', hour12: false });
+          await sendTelegramNotification(
+            user.telegramId,
+            `🚨 *SUPERADMIN Login Alert* 🚨\n\nHello *${user.name}*! Your SUPERADMIN account was just accessed.\n\n📅 Time: ${loginTime} (ICT)\n\n_If this wasn't you, SECURE YOUR ACCOUNT IMMEDIATELY._`
+          );
+        } catch (notifyErr) {
+          console.error('Failed to send telegram login notification:', notifyErr.message);
+        }
+      }
+
+      res.json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        profilePic: user.profilePic,
+        token: generateToken(user._id),
+      });
+    } else {
+      res.status(401).json({ message: 'Invalid email or password' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export { authUser, superAdminLogin, registerUser, telegramLogin, linkTelegramAccount, googleLogin, createTelegramSession, checkTelegramSession, telegramWebhook };

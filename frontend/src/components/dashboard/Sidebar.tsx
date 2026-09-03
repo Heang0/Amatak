@@ -50,8 +50,13 @@ export function Sidebar({ items, title, isOpen, onClose }: SidebarProps) {
   }, [user]);
 
   const handleLogout = () => {
+    const isSuperadmin = user?.role === 'superadmin';
     logout();
-    router.push('/login');
+    if (isSuperadmin) {
+      router.push('/superadmin/login');
+    } else {
+      router.push('/admin/login');
+    }
   };
 
   // Separate main items from settings/secondary items

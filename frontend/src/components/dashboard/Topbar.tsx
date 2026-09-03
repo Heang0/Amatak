@@ -504,8 +504,13 @@ export function Topbar({ onMenuClick, pageTitle }: TopbarProps) {
                     <button 
                       onClick={() => {
                         setIsDropdownOpen(false);
+                        const isSuperadmin = user?.role === 'superadmin';
                         logout();
-                        router.push('/login');
+                        if (isSuperadmin) {
+                          router.push('/superadmin/login');
+                        } else {
+                          router.push('/admin/login');
+                        }
                       }}
                       className="w-full flex items-center gap-3 px-3 py-2 text-sm font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-none transition-colors"
                     >

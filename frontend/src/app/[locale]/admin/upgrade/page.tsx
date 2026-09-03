@@ -231,12 +231,19 @@ export default function UpgradePlan() {
     const benefits = [isKm ? 'ចូលប្រើមុខងារមូលដ្ឋានទាំងអស់' : 'Access to all basic features'];
     if (!plan) return benefits;
     
-    if (plan.maxProducts) {
-      benefits.push(isKm ? `ទំនិញរហូតដល់ ${plan.maxProducts}` : `Up to ${plan.maxProducts} Products`);
+    // Override Free plan display limits to match marketing page, since it doesn't support KHQR
+    if (plan.price === 0 || plan.name === 'Free') {
+      benefits.push(isKm ? 'ទំនិញរហូតដល់ ១០០' : 'Up to 100 Products');
+      // Intentionally omitting orders limit for free plan
+    } else {
+      if (plan.maxProducts) {
+        benefits.push(isKm ? `ទំនិញរហូតដល់ ${plan.maxProducts}` : `Up to ${plan.maxProducts} Products`);
+      }
+      if (plan.maxOrders) {
+        benefits.push(isKm ? `ការបញ្ជាទិញរហូតដល់ ${plan.maxOrders}/ខែ` : `Up to ${plan.maxOrders} Orders/month`);
+      }
     }
-    if (plan.maxOrders) {
-      benefits.push(isKm ? `ការបញ្ជាទិញរហូតដល់ ${plan.maxOrders}/ខែ` : `Up to ${plan.maxOrders} Orders/month`);
-    }
+    
     if (plan.hasAnalytics) {
       benefits.push(isKm ? 'របាយការណ៍វិភាគកម្រិតខ្ពស់' : 'Advanced Analytics');
     }

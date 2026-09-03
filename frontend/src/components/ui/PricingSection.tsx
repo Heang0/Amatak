@@ -18,8 +18,7 @@ export default function PricingSection({ isKm }: { isKm: boolean }) {
       popular: false,
       benefits: [
         isKm ? 'ចូលប្រើមុខងារមូលដ្ឋានទាំងអស់' : 'Access to all basic features',
-        isKm ? 'ទំនិញរហូតដល់ ៥០' : 'Up to 50 Products',
-        isKm ? 'ការបញ្ជាទិញរហូតដល់ ៥០/ខែ' : 'Up to 50 Orders/month',
+        isKm ? 'ទំនិញរហូតដល់ ១០០' : 'Up to 100 Products',
         isKm ? 'បានរួមបញ្ចូល' : 'Included'
       ]
     },

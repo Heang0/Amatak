@@ -326,6 +326,7 @@ export default function CheckoutPageSkincareClean({ params }: { params: { slug: 
     <>
       {qrData && (
         <BakongKHQRModal
+          themeStyle="skincare-clean"
           qrString={qrData.qrString}
           amount={qrData.totalAmount}
           currency={qrData.currency}

@@ -224,18 +224,18 @@ export default function StorefrontViewDefault({
   const productList = viewMode === 'catalog' ? sortedProducts : filteredProducts;
 
   let bannerContainerClass = "w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 mb-4 md:mb-6 ";
-  if (themeStyle === 'minimalist') {
+  if ('default' === 'minimalist') {
     bannerContainerClass += "rounded-sm overflow-hidden";
-  } else if (themeStyle === 'neo-brutalism') {
+  } else if ('default' === 'neo-brutalism') {
     bannerContainerClass += "rounded-none border-[3px] border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] overflow-hidden";
   } else {
     bannerContainerClass += "overflow-hidden";
   }
 
   const getCategoryClass = (isActive: boolean) => {
-    if (themeStyle === 'neo-brutalism') {
+    if ('default' === 'neo-brutalism') {
       return `whitespace-nowrap text-sm px-4 py-2 border-[2.5px] transition-all font-black rounded-none uppercase tracking-wider ${isActive ? 'bg-black text-white dark:bg-white dark:text-black border-black dark:border-white' : 'bg-white text-black dark:bg-black dark:text-white border-black dark:border-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none'}`;
-    } else if (themeStyle === 'minimalist') {
+    } else if ('default' === 'minimalist') {
       return `whitespace-nowrap pb-1 border-b transition-all tracking-widest uppercase text-xs ${isActive ? 'font-medium text-black dark:text-white border-black dark:border-white' : 'font-light text-gray-400 border-transparent hover:text-gray-700 dark:hover:text-gray-300'}`;
     } else {
       return `whitespace-nowrap text-sm pb-1 border-b-2 transition-all ${isActive ? 'font-bold text-gray-900 dark:text-white border-gray-900 dark:border-white' : 'font-semibold text-gray-400 border-transparent hover:text-gray-700 dark:hover:text-gray-300'}`;
@@ -243,7 +243,7 @@ export default function StorefrontViewDefault({
   };
 
   const getCategoryPillClass = (isActive: boolean) => {
-    if (themeStyle === 'fashion-editorial' || themeStyle === 'minimalist') {
+    if ('default' === 'fashion-editorial' || 'default' === 'minimalist') {
       return `flex items-center gap-1.5 whitespace-nowrap text-xs ${isKm ? 'tracking-normal' : 'uppercase tracking-[0.12em]'} font-bold py-2 px-4 rounded-none transition-all ${
         isActive 
           ? 'bg-black text-white dark:bg-white dark:text-black border border-black dark:border-white shadow-xs' 
@@ -251,7 +251,7 @@ export default function StorefrontViewDefault({
       }`;
     }
 
-    if (themeStyle === 'skincare-clean') {
+    if ('default' === 'skincare-clean') {
       return `flex items-center gap-1.5 whitespace-nowrap rounded-none px-4 py-2 text-xs font-bold ${isKm ? 'tracking-normal' : 'uppercase tracking-wider'} transition-all ${
         isActive 
           ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-900 border border-stone-900 dark:border-white shadow-xs' 
@@ -259,7 +259,7 @@ export default function StorefrontViewDefault({
       }`;
     }
 
-    if (themeStyle === 'neo-brutalism') {
+    if ('default' === 'neo-brutalism') {
       return `flex items-center gap-1.5 whitespace-nowrap border-[2.5px] border-black dark:border-white px-4 py-2 text-xs font-black uppercase tracking-wider transition rounded-none ${
         isActive 
           ? 'bg-black text-white dark:bg-white dark:text-black shadow-none' 

@@ -332,6 +332,7 @@ export default function CheckoutPageNeoBrutalism({ params }: { params: { slug: s
           merchantName={store?.name || "Amatak Merchant"}
           isPaid={paymentStatus === 'PAID'}
           locale={params.locale}
+          themeStyle="neo-brutalism"
           onClose={() => { clearPolling(); setQrData(null); sessionStorage.removeItem('pendingCartQR'); }}
           onSuccessClose={() => { clearPolling(); setQrData(null); sessionStorage.removeItem('pendingCartQR'); clearCart(); window.location.href = `/store/${params.slug}/orders/${qrData.orderId}`; }}
           onSimulatePay={handleSimulatePay}

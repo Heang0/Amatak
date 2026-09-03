@@ -259,7 +259,7 @@ export default function StoreCustomerAuthFashionEditorial({ primaryColor, themeS
             type="submit" 
             disabled={loading}
             className={buttonClass}
-            style={themeStyle !== 'neo-brutalism' ? { backgroundColor: primaryColor || '#000' } : undefined}
+            style={'fashion-editorial' !== 'neo-brutalism' ? { backgroundColor: primaryColor || '#000' } : undefined}
           >
             {loading ? '...' : isLogin ? (isKm ? 'ចូលគណនី' : 'Sign In') : (isKm ? 'បង្កើតគណនី' : 'Create Account')}
           </button>

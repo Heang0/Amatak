@@ -326,6 +326,7 @@ export default function CheckoutPageDefault({ params }: { params: { slug: string
     <>
       {qrData && (
         <BakongKHQRModal
+          themeStyle="default"
           qrString={qrData.qrString}
           amount={qrData.totalAmount}
           currency={qrData.currency}

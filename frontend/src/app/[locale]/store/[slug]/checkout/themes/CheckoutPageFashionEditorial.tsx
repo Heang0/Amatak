@@ -326,6 +326,7 @@ export default function CheckoutPageFashionEditorial({ params }: { params: { slu
     <>
       {qrData && (
         <BakongKHQRModal
+          themeStyle="fashion-editorial"
           qrString={qrData.qrString}
           amount={qrData.totalAmount}
           currency={qrData.currency}

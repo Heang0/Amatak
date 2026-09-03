@@ -326,6 +326,7 @@ export default function CheckoutPageTechMinimal({ params }: { params: { slug: st
     <>
       {qrData && (
         <BakongKHQRModal
+          themeStyle="tech-minimal"
           qrString={qrData.qrString}
           amount={qrData.totalAmount}
           currency={qrData.currency}

@@ -259,7 +259,7 @@ export default function StoreCustomerAuthNeoBrutalism({ primaryColor, themeStyle
             type="submit" 
             disabled={loading}
             className={buttonClass}
-            style={themeStyle !== 'neo-brutalism' ? { backgroundColor: primaryColor || '#000' } : undefined}
+            style={'neo-brutalism' !== 'neo-brutalism' ? { backgroundColor: primaryColor || '#000' } : undefined}
           >
             {loading ? '...' : isLogin ? (isKm ? 'ចូលគណនី' : 'Sign In') : (isKm ? 'បង្កើតគណនី' : 'Create Account')}
           </button>

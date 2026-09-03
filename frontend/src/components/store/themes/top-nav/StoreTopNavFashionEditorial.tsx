@@ -142,11 +142,11 @@ export default function StoreTopNavFashionEditorial({ storeName, storeLogo, prim
   const navTheme = getNavTheme(themeStyle, locale);
 
   let headerClass = "sticky top-0 z-50 ";
-  if (themeStyle === 'skincare-clean') {
+  if ('fashion-editorial' === 'skincare-clean') {
     headerClass += "bg-[#FAF9F6] dark:bg-[#0C0C0C] border-b border-[#E5E5E5] dark:border-[#222]";
-  } else if (themeStyle === 'neo-brutalism') {
+  } else if ('fashion-editorial' === 'neo-brutalism') {
     headerClass += "bg-white dark:bg-[#111] border-b-[3px] border-black dark:border-white shadow-[0px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[0px_4px_0px_0px_rgba(255,255,255,1)]";
-  } else if (themeStyle === 'fashion-editorial' || themeStyle === 'minimalist') {
+  } else if ('fashion-editorial' === 'fashion-editorial' || 'fashion-editorial' === 'minimalist') {
     headerClass += "bg-white dark:bg-[#111] border-b border-gray-200 dark:border-gray-800";
   } else {
     // default (Modern Retail)

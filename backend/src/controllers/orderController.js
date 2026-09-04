@@ -4,7 +4,7 @@ import Product from '../models/Product.js';
 import PromoCode from '../models/PromoCode.js';
 import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
-import { generateCutLuyPayment, checkCutLuyPaymentStatus } from '../services/cutluyService.js';
+import { generateKHQR, verifyKHQRTransaction } from '../services/bakongService.js';
 
 // @desc    Create Order & Generate QR
 // @route   POST /api/orders
@@ -116,25 +116,33 @@ const createOrderAndGenerateQR = async (req, res) => {
       });
     }
 
-    // Generate KHQR using Cut Luy API
-    const paymentData = await generateCutLuyPayment(
+    // Generate KHQR using Store's Bakong ID
+    const { md5, qrString } = await generateKHQR(
+      store.paymentSettings.bakongId,
       finalTotalAmount,
-      order._id.toString()
+      store.paymentSettings.currency,
+      order._id.toString(),
+      store.name
     );
 
-    // Save Cut Luy ID as bakongMd5 for backward compatibility with existing frontend
-    order.bakongMd5 = paymentData.id;
-    order.qrString = paymentData.qr_string;
+    order.bakongMd5 = md5;
+    order.qrString = qrString;
     await order.save();
+
+    let deepLink = null;
+    if (order.paymentMethod === 'bakong_app') {
+      const { generateBakongDeepLink } = await import('../services/bakongService.js');
+      deepLink = await generateBakongDeepLink(qrString);
+    }
 
     res.status(201).json({
       orderId: order._id,
-      qrString: paymentData.qr_string,
-      md5: paymentData.id,
+      qrString,
+      md5,
       totalAmount: finalTotalAmount,
       currency: store.paymentSettings.currency,
       status: 'PENDING',
-      deepLink: paymentData.checkout_url || null
+      deepLink
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -159,9 +167,9 @@ const verifyOrderPayment = async (req, res) => {
       return res.json({ status: 'PAID' });
     }
 
-    const verificationResult = await checkCutLuyPaymentStatus(md5);
+    const verificationResult = await verifyKHQRTransaction(md5);
 
-    if (verificationResult.status === 'paid' || verificationResult.status === 'approved') {
+    if (verificationResult.status === 0) {
       order.paymentStatus = 'PAID';
       order.orderStatus = 'PROCESSING';
       await order.save();

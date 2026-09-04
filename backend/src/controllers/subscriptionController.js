@@ -1,7 +1,7 @@
 import SubscriptionPayment from '../models/SubscriptionPayment.js';
 import SubscriptionPlan from '../models/SubscriptionPlan.js';
 import Store from '../models/Store.js';
-import { generateKHQR, verifyKHQRTransaction } from '../services/bakongService.js';
+import { generateCutLuyPayment, checkCutLuyPaymentStatus } from '../services/cutluyService.js';
 
 // @desc    Generate QR for Plan Upgrade
 // @route   POST /api/subscription/generate-qr
@@ -44,21 +44,18 @@ const generateSubscriptionQR = async (req, res) => {
     });
     await payment.save();
 
-    // Generate KHQR
-    const { md5, qrString } = await generateKHQR(
-      superAdminBakongId,
+    // Generate Cut Luy Payment
+    const paymentData = await generateCutLuyPayment(
       amount,
-      'USD',
-      payment._id.toString(),
-      'Amatak Subscriptions'
+      payment._id.toString()
     );
 
-    payment.md5Hash = md5;
+    payment.md5Hash = paymentData.id;
     await payment.save();
 
     res.json({
-      qrString,
-      md5,
+      qrString: paymentData.qr_string,
+      md5: paymentData.id,
       paymentId: payment._id,
     });
   } catch (error) {
@@ -83,9 +80,9 @@ const verifySubscriptionPayment = async (req, res) => {
       return res.json({ status: 'PAID' });
     }
 
-    const verification = await verifyKHQRTransaction(md5);
+    const verification = await checkCutLuyPaymentStatus(md5);
 
-    if (verification.status === 0) {
+    if (verification.status === 'paid' || verification.status === 'approved') {
       payment.status = 'PAID';
       payment.paidAt = Date.now();
       await payment.save();

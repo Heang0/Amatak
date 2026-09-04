@@ -533,7 +533,7 @@ export default function ProfilePageDefault({ params }: { params: { slug: string,
                           onClick={() => setShowPayModal(true)}
                           className={`flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-6 py-2 sm:py-2.5 text-sm font-bold text-white transition-all ${themeStyle === 'neo-brutalism'
                               ? 'border-[2px] border-black dark:border-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none bg-blue-600'
-                              : 'rounded-xl shadow-md hover:scale-[1.02] active:scale-[0.98] bg-blue-600'
+                              : 'rounded-full shadow-md hover:scale-[1.02] active:scale-[0.98] bg-blue-600'
                             }`}
                         >
                           <CreditCard size={16} className="sm:w-[18px] sm:h-[18px]" />
@@ -1076,6 +1076,18 @@ export default function ProfilePageDefault({ params }: { params: { slug: string,
         </div>,
         document.getElementById('app-root') || document.body
       )}
-    </div>
+    
+      {showPayModal && selectedOrder && selectedOrder.qrString && (
+        <BakongKHQRModal
+          qrString={selectedOrder.qrString}
+          amount={selectedOrder.totalAmount}
+          currency={selectedOrder.currency}
+          merchantName={store?.name || "Amatak Merchant"}
+          isPaid={selectedOrder.paymentStatus == "PAID"}
+          locale={params.locale}
+          onClose={() => setShowPayModal(false)}
+        />
+      )}
+</div>
   );
 }

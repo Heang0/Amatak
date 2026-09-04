@@ -13,7 +13,6 @@ interface BakongKHQRModalProps {
   isPaid: boolean;
   locale?: string;
   mode?: 'order' | 'subscription';
-  themeStyle?: string;
   onClose: () => void;
   onSuccessClose?: () => void;
   onSimulatePay?: () => void;
@@ -27,7 +26,6 @@ export default function BakongKHQRModal({
   isPaid,
   locale = 'en',
   mode = 'order',
-  themeStyle = 'default',
   onClose,
   onSuccessClose,
 }: BakongKHQRModalProps) {
@@ -88,11 +86,8 @@ export default function BakongKHQRModal({
 
         {/* KHQR Card */}
         <div
-          className={`bg-white relative overflow-hidden flex flex-col ${
-            themeStyle === 'neo-brutalism' ? 'border-[3px] border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rounded-none' : 
-            themeStyle === 'skincare-clean' ? 'rounded-3xl shadow-sm' : 'rounded-2xl'
-          }`}
-          style={{ width: '330px', height: '479px', fontFamily: isKm ? khmerFont.fontFamily : numFont.fontFamily, boxShadow: themeStyle === 'neo-brutalism' ? undefined : (themeStyle === 'skincare-clean' ? '0 4px 12px rgba(0,0,0,0.05)' : '0 0 16px rgba(0,0,0,0.1)') }}
+          className="bg-white rounded-2xl relative overflow-hidden flex flex-col"
+          style={{ width: '330px', height: '479px', fontFamily: isKm ? khmerFont.fontFamily : numFont.fontFamily, boxShadow: '0 0 16px rgba(0,0,0,0.1)' }}
         >
           {/* Header */}
           <div className="h-[57px] bg-[#E1232E] w-full shrink-0 flex items-center justify-end px-4 relative z-10">
@@ -103,84 +98,52 @@ export default function BakongKHQRModal({
               alt="KHQR" 
               className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-5 object-contain brightness-0 invert" 
             />
-            {/* Close Button */}
-            <button
-              onClick={() => setShowCancelConfirm(true)}
-              className="p-1.5 bg-white/20 hover:bg-white/30 rounded-full text-white transition-colors absolute right-4"
-              title={text.cancelPayment}
-            >
-              <X size={18} />
-            </button>
-          </div>
-
-          {/* Amount Area */}
-          <div className="bg-[#E1232E] w-full pt-1 pb-4 shrink-0 flex flex-col items-center justify-center relative z-10">
-            <div className="text-white text-3xl font-bold tracking-tight" style={numFont}>
-              {amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {currency}
-            </div>
-            {/* Simulate Pay Button (Only on localhost) */}
-            {onSimulatePay && process.env.NODE_ENV === 'development' && (
-              <button 
-                onClick={onSimulatePay}
-                className="mt-2 text-[10px] bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-full transition-colors"
-              >
-                Simulate Payment
-              </button>
-            )}
-          </div>
-
-          {/* QR Area */}
-          <div className="flex-1 bg-white relative flex flex-col items-center justify-center p-6">
-            <div className="text-center mb-5 w-full">
-              <h2 className="text-sm font-semibold text-gray-800 uppercase tracking-wider truncate px-4" style={isKm ? khmerFont : numFont}>{merchantName}</h2>
-              <p className="text-xs text-gray-500 mt-1" style={numFont}>{text.scanQR}</p>
-            </div>
             
-            <div className="bg-white p-2 border border-gray-100 shadow-sm rounded-xl mb-4 relative z-20">
-              <QRCodeSVG
-                value={qrString}
-                size={200}
-                level="H"
-                includeMargin={false}
-                imageSettings={{
-                  src: "/logo/Bakong Logo.png",
-                  x: undefined,
-                  y: undefined,
-                  height: 38,
-                  width: 38,
-                  excavate: true,
-                }}
-              />
-            </div>
-
-            <div className="flex items-center gap-1.5 text-xs text-gray-400 font-medium" style={isKm ? khmerFont : numFont}>
-              <Clock size={12} className="animate-pulse text-[#E1232E]" />
-              <span>{text.expiresIn} <span className="font-bold text-[#E1232E]" style={numFont}>{formatTime(timeLeft)}</span></span>
-            </div>
+            <button onClick={() => setShowCancelConfirm(true)} className="text-white/80 hover:text-white transition-colors relative z-20">
+              <X size={24} />
+            </button>
+            {/* Downward Tail */}
+            <div className="absolute top-full right-0 border-t-[20px] border-t-[#E1232E] border-l-[28px] border-l-transparent pointer-events-none"></div>
           </div>
 
-          {/* Bottom Wave/Pattern */}
-          <div className="h-10 w-full shrink-0 flex">
-            {/* Simple geometric pattern replacing the wave */}
-            {Array.from({ length: 20 }).map((_, i) => (
-              <div key={i} className="flex-1 bg-[#E1232E] rounded-t-full -mb-4" />
-            ))}
-          </div>
+          {/* Body */}
+          <div className="flex-1 flex flex-col pt-[38px] pb-[38px] px-[48px] relative z-0">
 
-          {/* Cancel Confirmation Overlay */}
-          {showCancelConfirm && !isPaid && (
-            <div className="absolute inset-0 bg-white/95 backdrop-blur-sm z-30 flex flex-col items-center justify-center p-6 text-center">
-              <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mb-4">
-                <X size={32} className="text-[#E1232E]" />
+            {/* Text Alignment Left strictly enforced */}
+            <div className="text-left w-full mb-auto">
+              <div className={`text-xs font-medium text-gray-500 mb-1 ${!isKm ? 'uppercase tracking-widest' : ''}`} style={isKm ? khmerFont : numFont}>{text.scanQR}</div>
+              <div className="text-[#000000] text-[14px] font-normal mb-1 truncate" style={isKm ? khmerFont : numFont}>{merchantName}</div>
+              <div className="flex items-baseline gap-1">
+                <span className="text-[#000000] text-[31px] font-bold leading-none tracking-[0px]" style={numFont}>{amount.toFixed(2)}</span>
+                <span className="text-[#000000] text-[14px] font-normal leading-none tracking-[0px]" style={numFont}>{currency}</span>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2" style={isKm ? khmerFont : numFont}>{text.cancelPayment}</h3>
-              <p className="text-sm text-gray-500 mb-6" style={isKm ? khmerFont : numFont}>
-                {text.cancelConfirm}
-              </p>
-              <div className="flex gap-3 w-full">
+            </div>
+
+            {/* Dashed Line Separator */}
+            <div className="w-full border-t-[2px] border-dashed border-gray-300/80 my-2"></div>
+
+            {/* QR Code Section */}
+            <div className="w-full aspect-square relative mt-4 mx-auto max-w-[234px] flex items-center justify-center bg-white">
+              <QRCodeSVG value={qrString} size={234} />
+
+              {/* Center Coin Badge */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[38px] h-[38px] bg-[#000000] rounded-full flex items-center justify-center border-[2.5px] border-[#FFFFFF] box-content">
+                <span className="text-white font-bold text-xl leading-none pt-0.5" style={numFont}>$</span>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Overlays inside the card structure */}
+
+          {showCancelConfirm && !isPaid && (
+            <div className="absolute inset-0 bg-white/95 z-20 flex flex-col items-center justify-center p-8 text-center animate-in fade-in zoom-in duration-200">
+              <h3 className="text-xl font-bold text-gray-900 mb-2" style={isKm ? khmerFont : numFont}>{text.cancelPayment}</h3>
+              <p className="text-sm text-gray-500 mb-8" style={isKm ? khmerFont : numFont}>{text.cancelConfirm}</p>
+              <div className="flex w-full gap-3">
                 <button
                   onClick={() => setShowCancelConfirm(false)}
-                  className="flex-1 py-3 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition-colors text-sm"
+                  className="flex-1 py-3 bg-gray-100 text-gray-900 font-bold rounded-xl hover:bg-gray-200 transition-colors text-sm"
                   style={isKm ? khmerFont : numFont}
                 >
                   {text.no}
@@ -201,22 +164,13 @@ export default function BakongKHQRModal({
             <div className="absolute inset-0 bg-white z-30 flex flex-col items-center justify-center p-8 text-center">
               {/* Animated success ring */}
               <div className="relative mb-6">
-                <div className={`w-24 h-24 rounded-full flex items-center justify-center ${
-                  themeStyle === 'neo-brutalism' ? 'bg-green-400 border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]' : 
-                  themeStyle === 'skincare-clean' ? 'bg-green-100/50' : 'bg-[#E1232E]/10'
-                }`}>
-                  <CheckCircle2 size={52} className={
-                    themeStyle === 'neo-brutalism' ? 'text-black' : 
-                    themeStyle === 'skincare-clean' ? 'text-green-500' : 'text-[#E1232E]'
-                  } strokeWidth={themeStyle === 'neo-brutalism' ? 2.5 : 1.8} />
+                <div className="w-24 h-24 rounded-full bg-[#E1232E]/10 flex items-center justify-center">
+                  <CheckCircle2 size={52} className="text-[#E1232E]" strokeWidth={1.8} />
                 </div>
-                {themeStyle !== 'neo-brutalism' && <div className={`absolute inset-0 rounded-full border-4 animate-ping opacity-30 ${themeStyle === 'skincare-clean' ? 'border-green-500/30' : 'border-[#E1232E]/30'}`} />}
+                <div className="absolute inset-0 rounded-full border-4 border-[#E1232E]/30 animate-ping opacity-30" />
               </div>
 
-              <span className={`inline-block text-xs font-bold uppercase tracking-widest px-3 py-1 mb-3 ${
-                themeStyle === 'neo-brutalism' ? 'bg-black text-white border-2 border-black rounded-none' : 
-                themeStyle === 'skincare-clean' ? 'bg-green-100/50 text-green-600 rounded-full' : 'bg-[#E1232E]/10 text-[#E1232E] rounded-full'
-              }`} style={numFont}>
+              <span className="inline-block bg-[#E1232E]/10 text-[#E1232E] text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3" style={numFont}>
                 {text.orderConfirmed}
               </span>
 
@@ -241,11 +195,7 @@ export default function BakongKHQRModal({
 
               <button
                 onClick={onSuccessClose || onClose}
-                className={
-                  themeStyle === 'neo-brutalism' ? "w-full py-4 bg-green-400 hover:bg-green-500 text-black font-black uppercase tracking-wider border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all text-sm" : 
-                  themeStyle === 'skincare-clean' ? "w-full py-4 bg-gray-900 hover:bg-black text-white font-medium rounded-3xl transition-colors shadow-sm text-sm" : 
-                  "w-full py-4 bg-[#E1232E] hover:bg-red-700 text-white font-semibold rounded-xl transition-colors shadow-sm text-sm"
-                }
+                className="w-full py-4 bg-[#E1232E] hover:bg-red-700 text-white font-semibold rounded-xl transition-colors shadow-sm text-sm"
                 style={isKm ? khmerFont : numFont}
               >
                 {text.continue}

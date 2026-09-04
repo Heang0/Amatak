@@ -322,11 +322,10 @@ export default function CheckoutPageTechMinimal({ params }: { params: { slug: st
   const districtOptions = tempProvince ? tempProvince.districts.map((d: any) => ({ value: d, label: isKm ? d.name_km : d.name_en })) : [];
   const communeOptions = tempDistrict ? tempDistrict.communes.map((c: any) => ({ value: c, label: isKm ? c.name_km : c.name_en })) : [];
 
-  const Modals = () => (
+  const modalsJsx = (
     <>
       {qrData && (
         <BakongKHQRModal
-          themeStyle="tech-minimal"
           qrString={qrData.qrString}
           amount={qrData.totalAmount}
           currency={qrData.currency}
@@ -335,7 +334,6 @@ export default function CheckoutPageTechMinimal({ params }: { params: { slug: st
           locale={params.locale}
           onClose={() => { clearPolling(); setQrData(null); sessionStorage.removeItem('pendingCartQR'); }}
           onSuccessClose={() => { clearPolling(); setQrData(null); sessionStorage.removeItem('pendingCartQR'); clearCart(); window.location.href = `/store/${params.slug}/orders/${qrData.orderId}`; }}
-          onSimulatePay={handleSimulatePay}
         />
       )}
       {isAddressModalOpen && (
@@ -366,7 +364,7 @@ export default function CheckoutPageTechMinimal({ params }: { params: { slug: st
               <div className="space-y-3">
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1.5">{isKm ? 'រាជធានី / ខេត្ត' : 'Province'}</label>
-                  <Select
+                  <Select menuPosition='fixed'
                     options={provinceOptions}
                     value={tempProvince ? { value: tempProvince, label: isKm ? tempProvince.name_km : tempProvince.name_en } : null}
                     onChange={(selected: any) => {
@@ -385,7 +383,7 @@ export default function CheckoutPageTechMinimal({ params }: { params: { slug: st
                 {tempProvince && (
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1.5">{isKm ? 'ក្រុង / ស្រុក / ខណ្ឌ' : 'District'}</label>
-                    <Select
+                    <Select menuPosition='fixed'
                       options={districtOptions}
                       value={tempDistrict ? { value: tempDistrict, label: isKm ? tempDistrict.name_km : tempDistrict.name_en } : null}
                       onChange={(selected: any) => {
@@ -404,7 +402,7 @@ export default function CheckoutPageTechMinimal({ params }: { params: { slug: st
                 {tempDistrict && (
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-1.5">{isKm ? 'ឃុំ / សង្កាត់' : 'Commune'}</label>
-                    <Select
+                    <Select menuPosition='fixed'
                       options={communeOptions}
                       value={tempCommune ? { value: tempCommune, label: isKm ? tempCommune.name_km : tempCommune.name_en } : null}
                       onChange={(selected: any) => {
@@ -504,7 +502,7 @@ export default function CheckoutPageTechMinimal({ params }: { params: { slug: st
   if (themeStyle === 'neo-brutalism') {
     return (
       <div className="min-h-screen bg-[#f4f4f4] dark:bg-[#111] font-sans text-black dark:text-white pb-32">
-        <Modals />
+        {modalsJsx}
         <div className="w-full max-w-7xl mx-auto px-4 pt-6 pb-2 flex items-center justify-between border-b-[4px] border-black dark:border-white mb-8">
           <div className="flex items-center gap-3">
             <button onClick={() => router.back()} className="p-1 border-[3px] border-black dark:border-white bg-white dark:bg-black text-black dark:text-white hover:scale-110 active:scale-95 transition-transform shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
@@ -695,7 +693,7 @@ export default function CheckoutPageTechMinimal({ params }: { params: { slug: st
   if (themeStyle === 'skincare-clean') {
     return (
       <div className="min-h-screen bg-[#FAF9F6] dark:bg-[#0C0C0C] font-sans text-[#333] dark:text-[#E5E5E5] pb-32">
-        <Modals />
+        {modalsJsx}
         <div className="w-full max-w-6xl mx-auto px-4 pt-8 pb-4 flex flex-col items-center border-b border-[#E5E5E5] dark:border-[#222] mb-10">
           <button onClick={() => router.back()} className="self-start text-[#888] hover:text-[#333] dark:hover:text-[#E5E5E5] transition-colors mb-2">
             <ChevronLeft size={20} strokeWidth={1} />
@@ -889,7 +887,7 @@ export default function CheckoutPageTechMinimal({ params }: { params: { slug: st
   if (themeStyle === 'default') {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-[#111318] font-sans text-gray-900 dark:text-white pb-32">
-        <Modals />
+        {modalsJsx}
         <div className="w-full max-w-6xl mx-auto px-4 pt-6 pb-2 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button onClick={() => router.back()} className="p-2 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-full text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors shadow-sm">
@@ -1079,7 +1077,7 @@ export default function CheckoutPageTechMinimal({ params }: { params: { slug: st
   // -------------------------------------------------------------
   return (
     <div className="min-h-screen bg-white dark:bg-[#0E1117] font-sans text-gray-900 dark:text-white pb-32">
-      <Modals />
+      {modalsJsx}
       <div className="w-full max-w-5xl mx-auto px-4 pt-6 pb-2 flex items-center justify-between border-b border-gray-100 dark:border-white/[0.08] mb-8">
         <div className="flex items-center gap-3">
           <button onClick={() => router.back()} className="p-1 -ml-1 text-gray-500 hover:text-black dark:hover:text-white transition-colors">

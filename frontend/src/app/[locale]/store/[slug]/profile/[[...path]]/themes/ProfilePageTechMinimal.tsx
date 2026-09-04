@@ -1024,7 +1024,7 @@ export default function ProfilePageTechMinimal({ params }: { params: { slug: str
 
               <div>
                 <label className="block text-sm font-bold text-gray-900 dark:text-gray-300 mb-1.5">{params.locale === 'km' ? 'ខេត្ត ក្រុង / Province' : 'Province'}</label>
-                <Select
+                <Select menuPosition='fixed'
                   options={geoData.map(p => ({ value: p.code, label: params.locale === 'km' ? p.name_km : p.name_en }))}
                   value={tempProvince}
                   onChange={(val) => {
@@ -1040,7 +1040,7 @@ export default function ProfilePageTechMinimal({ params }: { params: { slug: str
               {tempProvince && (
                 <div>
                   <label className="block text-sm font-bold text-gray-900 dark:text-gray-300 mb-1.5">{params.locale === 'km' ? 'ស្រុក ខណ្ឌ / District' : 'District'}</label>
-                  <Select
+                  <Select menuPosition='fixed'
                     options={geoData.find(p => p.code === tempProvince.value)?.districts.map((d: any) => ({ value: d.code, label: params.locale === 'km' ? d.name_km : d.name_en })) || []}
                     value={tempDistrict}
                     onChange={(val) => {
@@ -1056,7 +1056,7 @@ export default function ProfilePageTechMinimal({ params }: { params: { slug: str
               {tempDistrict && (
                 <div>
                   <label className="block text-sm font-bold text-gray-900 dark:text-gray-300 mb-1.5">{params.locale === 'km' ? 'ឃុំ សង្កាត់ / Commune' : 'Commune'}</label>
-                  <Select
+                  <Select menuPosition='fixed'
                     options={geoData.find(p => p.code === tempProvince.value)?.districts.find((d: any) => d.code === tempDistrict.value)?.communes.map((c: any) => ({ value: c.code, label: params.locale === 'km' ? c.name_km : c.name_en })) || []}
                     value={tempCommune}
                     onChange={setTempCommune}
